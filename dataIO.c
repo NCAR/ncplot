@@ -270,6 +270,11 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     else
       nc_inq_dimlen(InputFile, dimIDs[1], (size_t *)&vp->OutputRate);
 
+    if (nc_get_att_float(InputFile, i, "_FillValue", &vp->MissingValue) != NC_NOERR)
+      if (nc_get_att_float(InputFile, i, "missing_value", &vp->MissingValue) != NC_NOERR)
+        if (nc_get_att_float(InputFile, i, "MissingValue", &vp->MissingValue) != NC_NOERR)
+          vp->MissingValue = DEFAULT_MISSING_VALUE;
+
     vp->inVarID	= i;
     }
 
@@ -337,7 +342,7 @@ static void readSet(DATASET_INFO *set)
         }
 }
 
-    set->missingValue = MISSING_VALUE;
+    set->missingValue = DEFAULT_MISSING_VALUE;
     set->data = (NR_TYPE *)GetMemory(set->nPoints * sizeof(NR_TYPE));
     ComputeExp(set);
     goto bottom;
@@ -387,11 +392,7 @@ static void readSet(DATASET_INFO *set)
 
   set->data = (NR_TYPE *)GetMemory(set->nPoints * sizeof(NR_TYPE));
 
-  if (nc_get_att_float(file->ncid, set->varInfo->inVarID, "missing_value",
-	&set->missingValue) != NC_NOERR)
-    if (nc_get_att_float(file->ncid, set->varInfo->inVarID, "MissingValue",
-	&set->missingValue) != NC_NOERR)
-      set->missingValue = MISSING_VALUE;
+  set->missingValue = set->varInfo->MissingValue;
 
   nc_get_vara_float(file->ncid, set->varInfo->inVarID, start, count,
            &set->data[frontPad]);

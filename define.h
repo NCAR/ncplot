@@ -53,7 +53,7 @@ DESCRIPTION:
 
 #define ALL_SETS	(-1)
 
-#define MISSING_VALUE	(-32767.0)
+#define DEFAULT_MISSING_VALUE	(-32767.0)	/* Deprecating, retrieve from netCDF */
 #define COMPUTED	(-2)
 
 
@@ -110,6 +110,7 @@ typedef struct
 	char	name[NAMELEN];
 	int	inVarID;        /* netCDF variable ID       */
 	int	OutputRate;
+	float	MissingValue;
 	char	*expression;
 	} VARTBL;
 
