@@ -256,10 +256,10 @@ static void doLineGraph(FILE *fp, PLOT_INFO *plot)
 
     for (i = 0; i < set->nPoints; ++i)
       {
-      if (set->data[(set->head + i) % set->nPoints] == set->missingValue || i == 0)
+      if (isMissingValue(set->data[(set->head + i) % set->nPoints], set->missingValue) || i == 0)
         {
-        while (set->data[(set->head + i) % set->nPoints] ==
-                set->missingValue && i < set->nPoints)
+        while (isMissingValue(set->data[(set->head + i) % set->nPoints],
+                set->missingValue && i < set->nPoints))
           ++i;
 
         if (i > 0 && p == moveto)

@@ -168,7 +168,7 @@ void ComputeStats(DATASET_INFO *set)
  
   for (i = 0; i < set->nPoints; ++i)
     {
-    if ((y = set->data[i]) == set->missingValue ||
+    if (isMissingValue((y = set->data[i]), set->missingValue) ||
         y < set->stats.outlierMin || y > set->stats.outlierMax)
       {
       ++missCnt;
@@ -194,7 +194,7 @@ void ComputeStats(DATASET_INFO *set)
     }
 
   for (i = 0; i < set->nPoints; ++i)
-    if ((y = set->data[i]) != set->missingValue ||
+    if (!isMissingValue((y = set->data[i]), set->missingValue) ||
         y < set->stats.outlierMin || y > set->stats.outlierMax)
       sigma += pow(y - set->stats.mean, 2.0);
  

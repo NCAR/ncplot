@@ -233,9 +233,9 @@ void PSplot3dTrack(FILE *fp, PLOT_INFO *plot)
    */
   for (i = 0; i < nPts; ++i)
     {
-    if (xyzSet[0].data[(xyzSet[0].head + i) % nPts] == xyzSet[0].missingValue)
+    if (isMissingValue(xyzSet[0].data[(xyzSet[0].head + i) % nPts], xyzSet[0].missingValue))
       {
-      while (xyzSet[0].data[(xyzSet[0].head + i) % nPts] == xyzSet[0].missingValue && i < nPts)
+      while (isMissingValue(xyzSet[0].data[(xyzSet[0].head + i) % nPts], xyzSet[0].missingValue) && i < nPts)
         ++i;
 
       /* Mark the time break with "-1".

@@ -301,11 +301,11 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
 
     for (i = 0; i < nPts; ++i)
       {
-      if (xSet->data[(xSet->head + i) % xSet->nPoints] ==
-						xSet->missingValue || i == 0)
+      if (isMissingValue(xSet->data[(xSet->head + i) % xSet->nPoints],
+						xSet->missingValue) || i == 0)
         {
-        while (xSet->data[(xSet->head + i) % xSet->nPoints] ==
-						xSet->missingValue && i < nPts)
+        while (isMissingValue(xSet->data[(xSet->head + i) % xSet->nPoints],
+						xSet->missingValue) && i < nPts)
           ++i;
 
         p = (char *)moveto;

@@ -11,11 +11,11 @@ DESCRIPTION:
 #ifndef DEFINE_H
 #define DEFINE_H
 
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdlib>
+#include <cstdio>
 #include <float.h>
-#include <string.h>
+#include <cstring>
 
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
@@ -53,6 +53,7 @@ DESCRIPTION:
 
 #define ALL_SETS	(-1)
 
+/* For backwards compatability reasons, do not change this to some other value. */
 #define DEFAULT_MISSING_VALUE	(-32767.0)	/* Deprecating, retrieve from netCDF */
 #define COMPUTED	(-2)
 

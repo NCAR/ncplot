@@ -12,6 +12,7 @@ ENTRY POINTS:	AddDataFile()
 		ReadData()
 		ReduceData()
 		SetList()
+		isMissingValue()
 
 STATIC FNS:	findMinMax()
 		freeDataSets()
@@ -335,12 +336,10 @@ static void readSet(DATASET_INFO *set)
 
     for (i = 0; i < NumberExpSets; ++i) 
       if (expSet[i].panelIndex == whichExp && expSet[i].nPoints == 0)
-{printf("  reading expSet %s, nPts=%d\n", expSet[i].varInfo->name, expSet[i].nPoints);
         {
         readSet(&expSet[i]);
         set->nPoints = expSet[i].nPoints;
         }
-}
 
     set->missingValue = DEFAULT_MISSING_VALUE;
     set->data = (NR_TYPE *)GetMemory(set->nPoints * sizeof(NR_TYPE));
@@ -834,5 +833,18 @@ static void getNCattr(int ncid, char attr[], char **dest)
     }
 
 }	/* END GETNCATTR */
+
+/* -------------------------------------------------------------------- */
+bool isMissingValue(float target, float fillValue)
+{
+  if (isnan(fillValue) && isnan(target))
+    return(true);
+  else
+    if (fillValue == target)
+      return(true);
+
+  return(false);
+
+}	/* END ISMISSINGVALUE */
 
 /* END DATAIO.C */

@@ -135,9 +135,9 @@ static void doDiffGraph(FILE *fp, PLOT_INFO *plot)
 
   for (i = 0; i < dataSet[0].nPoints; ++i)
     {
-    if (diffSet.data[i] == diffSet.missingValue || i == 0)
+    if (isMissingValue(diffSet.data[i], diffSet.missingValue) || i == 0)
       {
-      while (diffSet.data[i] == diffSet.missingValue)
+      while (isMissingValue(diffSet.data[i], diffSet.missingValue))
         ++i;
 
       p = (char *)moveto;

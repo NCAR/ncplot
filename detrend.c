@@ -41,7 +41,7 @@ void CleanAndCopyData(DATASET_INFO *set, float out[])
       {		/* Linear interp missing values. */
       int	e;
       float	d1;
-printf("Filling gap, prev good = %f\n", out[i-1]);
+
       for (e = i; e < set->nPoints; ++e)
         if ((d1 = set->data[(set->head + e) % set->nPoints]) != set->missingValue)
           break;
@@ -49,10 +49,8 @@ printf("Filling gap, prev good = %f\n", out[i-1]);
       for (; i < e; ++i)
         {
         out[i] = (d1 - out[i-1]) / (e - i + 1);
-printf("   filled with %f\n", out[i]);
         }
 
-printf(" done, next good = %f\n", d1);
       --i;
       }
     }
@@ -65,7 +63,7 @@ void DiffPreFilter(DATASET_INFO *set, float out[])
   int	i;
 
   for (i = set->nPoints-1; i > 0; --i)
-    if (out[i] == set->missingValue || out[i-1] == set->missingValue)
+    if (isMissingValue(out[i], set->missingValue) || isMissingValue(out[i-1], set->missingValue))
       out[i] = set->missingValue;
     else
       out[i] = out[i] - out[i-1];
@@ -90,10 +88,10 @@ void DetrendMean(DATASET_INFO *set, float out[])
     {
     datum = out[i];
 
-    if (datum != set->missingValue)
-      out[i] = datum - set->stats.mean;
-    else
+    if (isMissingValue(datum, set->missingValue))
       out[i] = out[i-1];
+    else
+      out[i] = datum - set->stats.mean;
     }
 
 }	/* END DETRENDMEAN */
@@ -112,10 +110,10 @@ void DetrendLinear(DATASET_INFO *set, float out[])
     {
     datum = out[i];
 
-    if (datum != set->missingValue)
-      out[i] = datum - out1[i];
-    else
+    if (isMissingValue(datum, set->missingValue))
       out[i] = out[i-1];
+    else
+      out[i] = datum - out1[i];
     }
 
   free(out1);

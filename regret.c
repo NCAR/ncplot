@@ -68,7 +68,7 @@ static void stasum(DATASET_INFO *set, double *xbar, double *sd, int flag)
     return;
 
   for (i = 0; i < set->nPoints; i++)
-    if (set->data[i] != set->missingValue)
+    if (!isMissingValue(set->data[i], set->missingValue))
       {
       *xbar += set->data[i];
       ++cnt;
@@ -77,7 +77,7 @@ static void stasum(DATASET_INFO *set, double *xbar, double *sd, int flag)
   *xbar /= cnt;
 
   for (i = 0; i < set->nPoints; i++)
-    if (set->data[i] != set->missingValue)
+    if (!isMissingValue(set->data[i], set->missingValue))
       *sd += (set->data[i] - *xbar) * (set->data[i] - *xbar);
 
   if (cnt - flag)
@@ -204,7 +204,7 @@ static int linear_regression(DATASET_INFO *x, DATASET_INFO *y)
 
   for (i = 0; i < x->nPoints; i++)
     {
-    if (x->data[i] != x->missingValue && y->data[i] != y->missingValue)
+    if (!isMissingValue(x->data[i], x->missingValue) && !isMissingValue(y->data[i], y->missingValue))
       {
       xbar += x->data[i];
       ybar += y->data[i];
@@ -217,7 +217,7 @@ static int linear_regression(DATASET_INFO *x, DATASET_INFO *y)
 
   for (i = 0; i < x->nPoints; i++)
     {
-    if (x->data[i] != x->missingValue && y->data[i] != y->missingValue)
+    if (!isMissingValue(x->data[i], x->missingValue) && !isMissingValue(y->data[i], y->missingValue))
       {
       SXX += (x->data[i] - xbar) * (x->data[i] - xbar);
       SYY += (y->data[i] - ybar) * (y->data[i] - ybar);

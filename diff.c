@@ -66,8 +66,8 @@ void ComputeDiff()
     in0 = (dataSet[0].head + i) % dataSet[0].nPoints;
     in1 = (dataSet[1].head + i) % dataSet[1].nPoints;
 
-    if (dataSet[0].data[in0] == dataSet[0].missingValue ||
-        dataSet[1].data[in1] == dataSet[1].missingValue)
+    if (isMissingValue(dataSet[0].data[in0], dataSet[0].missingValue) ||
+        isMissingValue(dataSet[1].data[in1], dataSet[1].missingValue))
       diffSet.data[i] = dataSet[0].missingValue;
     else
       diffSet.data[i] = dataSet[0].data[in0] - dataSet[1].data[in1];

@@ -165,17 +165,17 @@ static void plotXYZ(PLOT_INFO *plot, XFontStruct *fontInfo)
       datumZ = xyzSet[2].data[(xyzSet[2].head + i) % xyzSet[2].nPoints];
       ++i;
       }
-    while (datumX == xyzSet[0].missingValue ||
-           datumY == xyzSet[1].missingValue ||
-           datumZ == xyzSet[2].missingValue);
+    while (isMissingValue(datumX, xyzSet[0].missingValue) ||
+           isMissingValue(datumY, xyzSet[1].missingValue) ||
+           isMissingValue(datumZ, xyzSet[2].missingValue));
 
 
     cnt = cntXY = cntBack = cntSide = 0;
     for (; cnt < reqSize && i < xyzSet[0].nPoints; ++cnt)
       {
-      if (datumX == xyzSet[0].missingValue ||
-          datumY == xyzSet[1].missingValue ||
-          datumZ == xyzSet[2].missingValue)
+      if (isMissingValue(datumX, xyzSet[0].missingValue) ||
+          isMissingValue(datumY, xyzSet[1].missingValue) ||
+          isMissingValue(datumZ, xyzSet[2].missingValue))
         break;
 
       pts[cnt].x = (int)(plot->x.LV + (xScale * (datumX - xMin)));

@@ -250,6 +250,8 @@ Widget	createParamsTitles(Widget, Widget *),
 	createLogInvert(Widget, Widget *, XtCallbackProc, PLOT_INFO *, int),
 	createARDbuttons(Widget);
 
+bool	isMissingValue(float, float);
+
 #endif
 
 /* END EXTERN.H */

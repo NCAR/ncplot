@@ -485,11 +485,11 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
    */
   for (i = 0; i < set->nPoints; ++i)
     {
-    while ((datum = set->data[(set->head + i) % set->nPoints]) ==
-	set->missingValue && i < set->nPoints)
+    while (isMissingValue((datum = set->data[(set->head + i) % set->nPoints]),
+	set->missingValue) && i < set->nPoints)
       ++i;
 
-    for (cnt = 0; (int)datum != set->missingValue &&
+    for (cnt = 0; !isMissingValue(datum, set->missingValue) &&
               cnt < reqSize && i < set->nPoints; ++cnt)
       {
       if (yAxis->logScale)
@@ -600,13 +600,13 @@ void plotXY(PLOT_INFO *plot, DATASET_INFO *Xset, DATASET_INFO *Yset, int color)
 
       ++i;
       }
-    while (datumX == Xset->missingValue || datumY == Yset->missingValue);
+    while (isMissingValue(datumX, Xset->missingValue) || isMissingValue(datumY, Yset->missingValue));
 
 //    ++nPts;
 
     for (cnt = 0; cnt < reqSize && i < nPts; ++cnt)
       {
-      if (datumX == Xset->missingValue || datumY == Yset->missingValue)
+      if (isMissingValue(datumX, Xset->missingValue) || isMissingValue(datumY, Yset->missingValue))
         break;
 
       if (xAxis->logScale)
