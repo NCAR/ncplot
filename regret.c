@@ -17,7 +17,7 @@
 #include <math.h>
 #include "define.h"
 
-#define MAXFIT	12
+static const int MAXFIT = 12;
 
 static int linear_regression(DATASET_INFO *x, DATASET_INFO *y);
 static void gauss(int n, double *a, int adim, double *b, double *x);
@@ -27,7 +27,6 @@ static void leasqu(DATASET_INFO *x, DATASET_INFO *y, int degree, double *w, int 
 /* -------------------------------------------------------------------- */
 static void gauss(int n, double *a, int adim, double *b, double *x)
 {
-
   int		i, k, j;
   double	mult;
 

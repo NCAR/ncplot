@@ -40,7 +40,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 2000-2004
 #include <Xm/RowColumn.h>
 #include <Xm/TextF.h>
 
-#define TOTAL_PREFERS	15
+static const int TOTAL_PREFERS = 15;
 
 extern char	*insVariables[], *gpsVariables[], *gpsCorrected[],
 		*windVariables[];
@@ -78,7 +78,7 @@ void EditPreferences(Widget w, XtPointer client, XtPointer call)
 void SetPreferences()
 {
   int	i;
-  char	temp[36];
+  char	temp[100];
 
   if (!PreferShell)
     return;
@@ -121,7 +121,7 @@ static void SavePreferences(Widget w, XtPointer client, XtPointer call)
 {
   int	i;
   FILE	*fp;
-  char	*p, temp[20];
+  char	*p, temp[100];
 
 printf("Save Preferences: Writing ~/.ncplotrc\n");
 
