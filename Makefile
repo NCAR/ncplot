@@ -27,7 +27,7 @@ DEFINES	= -DPNG
 INCLUDES= ${JLOCAL}/include -I/usr/X11R6/include
 LIB_DIRS= -L/usr/X11R6/lib -L${JLOCAL}/lib
 LIBS    = -lXm -lXp -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
-BIN	= /net/local_lnx/bin
+BIN	= /home/local/bin
 IHOST	= syrah
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Redhat9.0
 
