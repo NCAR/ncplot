@@ -158,12 +158,8 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
                     &data_file);
 
     curFile->fileName = data_file;
-    }
-
-
-  size_t indx = curFile->fileName.find_last_of('/');
-  if (indx != std::string::npos)
     DataPath = ExtractFileDialogFilter();
+    }
 
 
   /* See if file exists.

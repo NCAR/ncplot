@@ -83,6 +83,8 @@ char *ExtractFileDialogFilter()
   if (fltr)
     return XmTextFieldGetString(fltr);
 
+  return(0);
+
 }	/* END EXTRACTFILTER */
 
 /* -------------------------------------------------------------------- */

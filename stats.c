@@ -26,6 +26,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-9
 #include "define.h"
 #include "ps.h"
 
+#include <ctype.h>
+
 #define NO_NETCDF_2
 
 #include <netcdf.h>
@@ -143,6 +145,8 @@ void ComputeStats(DATASET_INFO *set)
     nc_get_att_text(dataFile[set->fileIndex].ncid, set->varInfo->inVarID,
 						"units", buffer);
     buffer[len] = '\0';
+    while (isspace(buffer[--len]) || buffer[len] == 0) // Strip trailing spaces.
+      buffer[len] = '\0';
 
     if (strcmp(buffer, "C") == 0 ||
         strcmp(buffer, "deg_C") == 0)

@@ -16,6 +16,8 @@ YFLAGS	= -d
 DEFINES	= -DPNG
 INCLUDES= ${JLOCAL}/include -I/usr/X11R6/include
 LIB_DIRS= -L/usr/X11R6/lib -L${JLOCAL}/lib
+# This line is for static linking Motif
+#LIBS    = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lXmu -lXp -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
 LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
 BIN	= ${LOCAL}/bin
 IHOST	= syrah
