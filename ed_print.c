@@ -36,7 +36,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 #include <Xm/ToggleB.h>
 
 #define TOTAL_PARMS	3
-#define MAX_PRINTERS	20
+#define MAX_PRINTERS	50
 
 static Widget	PrintShell, PrintWindow, parmsText[TOTAL_PARMS], shapeB[2],
 		colorB[2];
