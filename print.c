@@ -57,7 +57,7 @@ void SetPlotRatios(PLOT_INFO *plot)
     }
 
   printerSetup.fontRatio =
-          MAX((printerSetup.heightRatio + printerSetup.widthRatio) / 2, 0.6);
+     std::max((printerSetup.heightRatio + printerSetup.widthRatio) / 2, 0.6);
 
 }	/* END SETPLOTRATIOS */
 

@@ -21,7 +21,7 @@ DESCRIPTION:	This set of procedures Creates & pops up/down the widget
 		ApplyPrintParms	- Retrieves new values and puts in global
 			  variables.
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 -------------------------------------------------------------------------
 */
 
@@ -35,17 +35,17 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 #include <Xm/TextF.h>
 #include <Xm/ToggleB.h>
 
-#define TOTAL_PARMS	3
-#define MAX_PRINTERS	50
+static const size_t TOTAL_PARMS = 3;
+static const size_t MAX_PRINTERS = 50;
 
 static Widget	PrintShell, PrintWindow, parmsText[TOTAL_PARMS], shapeB[2],
 		colorB[2];
 
-static void	CreatePrintWindow(), ApplyPrintParms();
+static void	CreatePrintWindow(), ApplyPrintParms(Widget, XtPointer, XtPointer);
 
 extern Widget   AppShell;
 
-static char	*printerList[MAX_PRINTERS];
+static std::vector<std::string> printerList;
 
 
 /* -------------------------------------------------------------------- */
@@ -59,7 +59,7 @@ void EditPrintParms(Widget w, XtPointer clientData, XtPointer callData)
     firstTime = False;
     }
 
-  XmTextFieldSetString(parmsText[0], printerSetup.lpCommand);
+  XmTextFieldSetString(parmsText[0], (char *)printerSetup.lpCommand.c_str());
   sprintf(buffer, "%.3f", printerSetup.width);
   XmTextFieldSetString(parmsText[1], buffer);
   sprintf(buffer, "%.3f", printerSetup.height);
@@ -78,7 +78,7 @@ static void ApplyPrintParms(Widget w, XtPointer clientData, XtPointer callData)
   char	*p;
 
   p = XmTextFieldGetString(parmsText[0]);
-  strcpy(printerSetup.lpCommand, p);
+  printerSetup.lpCommand = p;
   XtFree(p);
 
   p = XmTextFieldGetString(parmsText[1]);
@@ -130,9 +130,9 @@ void SetPrinter(Widget w, XtPointer client, XtPointer call)
   char	*p;
 
 #ifdef SVR4
-  p = strstr(printerSetup.lpCommand, "-d");
+  p = strstr(printerSetup.lpCommand.c_str(), "-d");
 #else
-  p = strstr(printerSetup.lpCommand, "-P");
+  p = strstr(printerSetup.lpCommand.c_str(), "-P");
 #endif
 
   if (p)
@@ -141,11 +141,11 @@ void SetPrinter(Widget w, XtPointer client, XtPointer call)
   if (strcmp((char *)client, "Default"))
     {
 #ifdef SVR4
-    strcat(printerSetup.lpCommand, " -d ");
+    printerSetup.lpCommand += " -d ";
 #else
-    strcat(printerSetup.lpCommand, " -P ");
+    printerSetup.lpCommand += " -P ";
 #endif
-    strcat(printerSetup.lpCommand, (char *)client);
+    printerSetup.lpCommand += (char *)client;
     }
 
   EditPrintParms(NULL, NULL, NULL);
@@ -159,7 +159,7 @@ static void CreatePrintWindow()
 		slPD, slOpMenu, slButts[MAX_PRINTERS];
   Arg		args[10];
   XmString	name;
-  int		i, n, cnt;
+  size_t	i, n, cnt;
 
   n = 0;
   PrintShell = XtCreatePopupShell("printShell",
@@ -195,15 +195,15 @@ static void CreatePrintWindow()
   XtManageChild(slOpMenu);
 
 
-  for (i = 0; printerList[i]; ++i)
+  for (i = 0; i < printerList.size(); ++i)
     {
-    name = XmStringCreateLocalized(printerList[i]);
+    name = XmStringCreateLocalized((char *)printerList[i].c_str());
 
     n = 0;
     XtSetArg(args[n], XmNlabelString, name); ++n;
     slButts[i] = XmCreatePushButton(slPD, "opMenB", args, n);
     XtAddCallback(slButts[i], XmNactivateCallback, SetPrinter,
-                  (XtPointer)printerList[i]);
+                  (XtPointer)printerList[i].c_str());
 
     XmStringFree(name);
     }
@@ -275,9 +275,7 @@ void *GetPrinterList(void *arg)
 {
   FILE	*in;
   char	*p;
-  int	i;
-
-  memset(printerList, 0, sizeof(printerList));
+  size_t i;
 
   if ((in = popen("lpstat -v", "r")) == NULL)
     {
@@ -285,8 +283,7 @@ void *GetPrinterList(void *arg)
     return(NULL);
     }
 
-  printerList[0] = (char *)GetMemory(8);
-  strcpy(printerList[0], "Default");
+  printerList.push_back("Default");
 
   for (i = 1; fgets(buffer, 1024, in) > 0; ++i)
     {
@@ -300,12 +297,12 @@ void *GetPrinterList(void *arg)
     p = strtok(NULL, " ");
     p = strtok(NULL, ":");
 
-    printerList[i] = (char *)GetMemory(strlen(p)+1);
-    strcpy(printerList[i], p);
-//printf("%s\n", printerList[i]);
+    std::string s = p;
+    printerList.push_back(s);
     }
 
   pclose(in);
+  return(NULL);
 
 }	/* END GETPRINTERLIST */
 

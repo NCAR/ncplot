@@ -104,7 +104,7 @@ void SetASCIIdata(Widget w, XtPointer client, XtPointer call)
   if (specPlot.windowOpen)
     freqDomainASCII(NULL, psd[0].M);
   else
-    timeDomainASCII(NULL, MIN(nASCIIpoints, dataSet[0].nPoints));
+    timeDomainASCII(NULL, std::min(nASCIIpoints, dataSet[0].nPoints));
 
 }	/* END SETASCIIDATA */
 
@@ -214,9 +214,9 @@ static void PrintASCII(Widget w, XtPointer client, XtPointer call)
 #endif
     printf("Output being sent to %s.\n", p);
 
-  if ((fp = popen(printerSetup.lpCommand, "w")) == NULL)
+  if ((fp = popen(printerSetup.lpCommand.c_str(), "w")) == NULL)
     {
-    sprintf(buffer, "PrintASCII: can't open pipe to '%s'", printerSetup.lpCommand);
+    sprintf(buffer, "PrintASCII: can't open pipe to '%s'", printerSetup.lpCommand.c_str());
     ShowError(buffer);
     return;
     }
@@ -228,7 +228,7 @@ static void PrintASCII(Widget w, XtPointer client, XtPointer call)
   if (specPlot.windowOpen)
     freqDomainASCII(fp, psd[0].M);
   else
-    timeDomainASCII(fp, MIN(60, dataSet[0].nPoints));
+    timeDomainASCII(fp, std::min((size_t)60, dataSet[0].nPoints));
 
   pclose(fp);
 
@@ -288,13 +288,13 @@ static void timeDomainASCII(FILE *fp, int nPoints)
 static void freqDomainASCII(FILE *fp, int nPoints)
 {
   int		i, set, nSets = 1;
-  double	*dataP, freq;
+  double	*dataP = 0;
 
   if (!fp)
     XmTextSetString(asciiText, "");
 
   if (psd[0].display == SPECTRA)
-    nSets = MIN(NumberDataSets, MAX_PSD);
+    nSets = std::min(NumberDataSets, MAX_PSD);
 
   for (set = 0; set <= nSets; ++set)
     {
@@ -336,14 +336,14 @@ static void freqDomainASCII(FILE *fp, int nPoints)
 /* -------------------------------------------------------------------- */
 static char *formatTitle(char buff[]) 
 {
-  int		lrOffset, i, varCnt = 0;
+  int		lrOffset, varCnt = 0;
   VARTBL	*vp;
 
   lrOffset = (dataSet[0].nPoints == NumberSeconds) ? 16 : 19;
   memset(buff, ' ', 20 * (NumberDataSets+1));
   memcpy(buff, "UTC", 3);
  
-  for (i = 0; i < NumberDataSets; ++i)
+  for (size_t i = 0; i < NumberDataSets; ++i)
     {
     vp = dataSet[i].varInfo;
 
@@ -363,7 +363,7 @@ static char *formatLine(
 	int	indx,				/* Record index		*/
 	int	hour, int min, int sec, int msec) /* Time stamp		*/
 {
-  int	i;
+  size_t i;
   char	tempBuff[32];
   bool	intData;
 

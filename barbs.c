@@ -59,7 +59,7 @@ void ToggleWindBarbs(Widget w, XtPointer client, XtPointer call)
 void PlotWindBarbs(PLOT_INFO *plot, FILE *fp)
 {
   int	i, j, x1, y1, x2, y2, nPts;
-  float	xScale, yScale, barbScale, ui_sum, vi_sum, datum, yMin, yMax;
+  float	xScale, yScale, barbScale = 0, ui_sum, vi_sum, datum, yMin, yMax;
   struct plot_offset *plotInfo;
 
   if (plot->plotType != XY_PLOT)
@@ -79,7 +79,7 @@ void PlotWindBarbs(PLOT_INFO *plot, FILE *fp)
   xScale = (NR_TYPE)plotInfo->HD / (plot->Xaxis.max - plot->Xaxis.min);
   yScale = (NR_TYPE)plotInfo->VD / (yMax - yMin);
 
-  nPts = MAX(xyXset[0].nPoints, xyYset[0].nPoints);
+  nPts = std::max(xyXset[0].nPoints, xyYset[0].nPoints);
 
   if (strstr(xyXset[0].varInfo->name, "LON") == 0)
     xScale = 0;

@@ -185,7 +185,7 @@ static void readLandMarksFile()
     return;
     }
 
-  sprintf(buffer, "%s/%s/landmarks", projDir, dataFile[0].ProjectNumber);
+  sprintf(buffer, "%s/%s/landmarks", projDir,dataFile[0].ProjectNumber.c_str());
 
   if ((fp = fopen(buffer, "r")) == NULL)
     {
@@ -197,7 +197,7 @@ static void readLandMarksFile()
     {
     sscanf(buffer, "%f %f %s\n", &landMark[nMarks].lat, &landMark[nMarks].lon,
 				tempTag);
-    landMark[nMarks].tag = (char *)GetMemory(strlen(tempTag)+1);
+    landMark[nMarks].tag = new char[strlen(tempTag)+1];
     strcpy(landMark[nMarks].tag, tempTag);
     }
 

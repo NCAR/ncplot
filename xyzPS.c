@@ -31,7 +31,7 @@ static void	PScube(FILE *fp, PLOT_INFO *plot),
 
 static int	ZD;
 
-extern float	*NextColorRGB_PS();
+extern float *NextColorRGB_PS();
 extern float cosFactor, sinFactor;
 
 
@@ -45,8 +45,13 @@ void PrintXYZ()
   if ((fp = openPSfile(outFile)) == NULL)
     return;
 
+  bool warning = false;
+  for (int i = 0; i < 3; ++i)
+    if (dataFile[xyzSet[i].fileIndex].ShowPrelimDataWarning)
+      warning = true;
+
   PSheader(fp, &xyzPlot);
-  PStitles(fp, &xyzPlot);
+  PStitles(fp, &xyzPlot, warning);
   PScube(fp, &xyzPlot);
 
   /* Then move the origin
@@ -198,8 +203,8 @@ void PSplot3dTrack(FILE *fp, PLOT_INFO *plot)
   char		*p;
   int		i, nPts, indxX, indxY, indxZ;
   int		cnt, cntXY, cntBack, cntSide;
-  XPoint	*pts, *ptsXY, *ptsBack, *ptsSide;
-  float		x, y, x1, y1, xMin, yMin, zMin, *rgb;
+  XPoint	*pts, *ptsXY = 0, *ptsBack = 0, *ptsSide = 0;
+  float		x, y, xMin, yMin, zMin, *rgb;
   double	xScale, yScale, zScale;
 
   nPts = xyzSet[0].nPoints;
@@ -213,15 +218,15 @@ void PSplot3dTrack(FILE *fp, PLOT_INFO *plot)
   zScale = ZD / (plot->Zaxis.max - zMin);
 
 
-  pts = (XPoint *)GetMemory(nPts * sizeof(XPoint));
+  pts = new XPoint[nPts];
 
   if (ProjectToXY)
-    ptsXY = (XPoint *)GetMemory(nPts * sizeof(XPoint));
+    ptsXY = new XPoint[nPts];
 
   if (ProjectToBack)
     {
-    ptsBack = (XPoint *)GetMemory(nPts * sizeof(XPoint));
-    ptsSide = (XPoint *)GetMemory(nPts * sizeof(XPoint));
+    ptsBack = new XPoint[nPts];
+    ptsSide = new XPoint[nPts];
     }
 
   cnt = cntXY = cntBack = cntSide = 0;
@@ -357,7 +362,7 @@ void PSplot3dTrack(FILE *fp, PLOT_INFO *plot)
       }
     }
 
-  FreeMemory(pts);
+  delete [] pts;
 
   if (!ProjectToXY && !ProjectToBack)
     return;
@@ -434,14 +439,10 @@ void PSplot3dTrack(FILE *fp, PLOT_INFO *plot)
 
   fprintf(fp, "1 setlinewidth\n");
 
-  if (ProjectToXY)
-    FreeMemory(ptsXY);
+  delete [] ptsXY;
 
-  if (ProjectToBack)
-    {
-    FreeMemory(ptsBack);
-    FreeMemory(ptsSide);
-    }
+  delete [] ptsBack;
+  delete [] ptsSide;
 
 }	/* END PSPLOT3DTRACK */
 

@@ -10,9 +10,9 @@ DESCRIPTION:	http://raf.atd.ucar.edu/Software/ncplot.html
 
 INPUT:		Command line options
 
-AUTHOR:		websterc@ncar.ucar.edu
+AUTHOR:		cjw@ucar.edu
 
-COPYRIGHT:      University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:      University Corporation for Atmospheric Research, 1992-2005
 -------------------------------------------------------------------------
 */
 

@@ -79,7 +79,7 @@ void ViewStats(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void SetStatsData()
 {
-  int	i;
+  size_t i;
 
   static bool	firstTime = True;
 
@@ -129,9 +129,8 @@ void SetStatsData()
 /* -------------------------------------------------------------------- */
 void ComputeStats(DATASET_INFO *set)
 {
-  int       i, missCnt, len = 0;
-  NR_TYPE   y;
-  double    sum, sigma;
+  size_t i, missCnt, len = 0;
+  double y, sum, sigma;
  
   /* Read in variables units from file.
    */
@@ -143,6 +142,8 @@ void ComputeStats(DATASET_INFO *set)
 						"units", (size_t *)&len);
     nc_get_att_text(dataFile[set->fileIndex].ncid, set->varInfo->inVarID,
 						"units", buffer);
+    buffer[len] = '\0';
+
     if (strcmp(buffer, "C") == 0 ||
         strcmp(buffer, "deg_C") == 0)
       {
@@ -154,12 +155,7 @@ void ComputeStats(DATASET_INFO *set)
   else
     strcpy(buffer, "Unknown");
 
-  strncpy(set->stats.units, buffer, UNITS_LEN);
-
-  if (len < UNITS_LEN)
-    set->stats.units[len] = '\0';
-  else
-    set->stats.units[UNITS_LEN-1] = '\0';
+  set->stats.units = buffer;
 
   missCnt = 0;
   sum = sigma = 0.0;
@@ -176,8 +172,8 @@ void ComputeStats(DATASET_INFO *set)
       continue;
       }
  
-    set->stats.min = MIN(set->stats.min, y);
-    set->stats.max = MAX(set->stats.max, y);
+    set->stats.min = std::min(set->stats.min, y);
+    set->stats.max = std::max(set->stats.max, y);
 
     sum += y;
     }
@@ -254,21 +250,22 @@ static void CreateStatsWindow()
 /* -------------------------------------------------------------------- */
 static void PrintStats(Widget w, XtPointer client, XtPointer call)
 {
-  FILE    *fp;
-  int     i;
-  char	*p;
+  FILE *fp;
+  size_t i;
+  char *p;
 
   if ((p = getenv("LPDEST")) != NULL)
     printf("Output being sent to %s.\n", p);
 
-  if ((fp = popen(printerSetup.lpCommand, "w")) == NULL)
+  if ((fp = popen(printerSetup.lpCommand.c_str(), "w")) == NULL)
     {
     ShowError("PrintStats: can't open pipe to 'lp'");
     return;
     }
 
 
-  fprintf(fp, "%s, %s\n\n", mainPlot[0].title, mainPlot[0].subTitle);
+  fprintf(fp, "%s, %s\n\n",
+	mainPlot[0].title.c_str(), mainPlot[0].subTitle.c_str());
   fprintf(fp, statTitle);
 
   for (i = 0; i < NumberDataSets; ++i)
@@ -312,14 +309,14 @@ static void PrintStats(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static char *formatLine(char buff[], DATASET_INFO *set)
 {
-  char	temp[32];
+  char	temp[64];
 
   memset(buff, ' ', 256);
 
-  sprintf(temp, "%s (%s)", set->varInfo->name, set->stats.units);
+  sprintf(temp, "%s (%s)", set->varInfo->name, set->stats.units.c_str());
   memcpy(buff, temp, strlen(temp));
 
-  sprintf(temp, "%5ld/%ld", set->stats.nPoints, set->nPoints);
+  sprintf(temp, "%5ld/%ld", (long)set->stats.nPoints, (long)set->nPoints);
   memcpy(&buff[20], temp, strlen(temp));
 
   sprintf(&buff[32], "%11.3e %11.3e %11.3e %11.3e %11.3e\n",

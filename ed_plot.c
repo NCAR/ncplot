@@ -37,12 +37,12 @@ extern Widget	AppShell;
 
 
 static Widget	MainParmsShell = NULL, MainParmsWindow, parmsText[TOTAL_PARMS],
-		asciiText[2], panelB[MAX_PANELS], parmsTB[6],
-		autoScaleButton, autoTicsButton;
+		asciiText[2], panelB[MAX_PANELS], autoScaleButton, autoTicsButton;
 
 static int	currentPanel = 0;
 
-static void	CreateMainParmsWindow(), SetPlotPanel(),
+static void	CreateMainParmsWindow(),
+		SetPlotPanel(Widget, XtPointer, XtPointer),
 		ApplyMainParms(Widget w, XtPointer client, XtPointer call);
 
 void SetReadData(Widget w, XtPointer client, XtPointer call);
@@ -70,7 +70,7 @@ void EditMainParms(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void SetMainDefaults()
 {
-  int	i;
+  size_t i;
 
   if (!MainParmsShell)
     return;
@@ -81,9 +81,9 @@ void SetMainDefaults()
   /* For main plot the following are all tied together,
    * override current plot.
    */
-  XmTextFieldSetString(parmsText[0], mainPlot[0].title);
-  XmTextFieldSetString(parmsText[1], mainPlot[0].subTitle);
-  XmTextFieldSetString(parmsText[2], mainPlot[0].Xaxis.label);
+  XmTextFieldSetString(parmsText[0], (char *)mainPlot[0].title.c_str());
+  XmTextFieldSetString(parmsText[1], (char *)mainPlot[0].subTitle.c_str());
+  XmTextFieldSetString(parmsText[2], (char *)mainPlot[0].Xaxis.label.c_str());
 
   for (i = 0; i < NumberOfPanels; ++i)
     XtSetSensitive(panelB[i], True);
@@ -143,9 +143,9 @@ static void ApplyMainParms(Widget w, XtPointer client, XtPointer call)
   */
   for (i = 0; i < MAX_PANELS; ++i)
     {
-    strcpy(mainPlot[i].title, mainPlot[currentPanel].title);
-    strcpy(mainPlot[i].subTitle, mainPlot[currentPanel].subTitle);
-    strcpy(mainPlot[i].Xaxis.label, mainPlot[currentPanel].Xaxis.label);
+    mainPlot[i].title = mainPlot[currentPanel].title;
+    mainPlot[i].subTitle = mainPlot[currentPanel].subTitle;
+    mainPlot[i].Xaxis.label = mainPlot[currentPanel].Xaxis.label;
 
     mainPlot[i].Xaxis.nMajorTics = mainPlot[currentPanel].Xaxis.nMajorTics;
     mainPlot[i].Xaxis.nMinorTics = mainPlot[currentPanel].Xaxis.nMinorTics;

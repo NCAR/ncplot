@@ -31,19 +31,19 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
 /* -------------------------------------------------------------------- */
 double Spectrum(float data[],		/* Input data			*/
 		double Pxx[],		/* Output data			*/
-		int K,			/* K overlapping segments	*/
-		int M,			/* 2M points per segment	*/
-		double (*window)(int, int),	/* Window function		*/
-		int nPoints)
+		size_t K,		/* K overlapping segments	*/
+		size_t M,		/* 2M points per segment	*/
+		double (*window)(int, int),	/* Window function	*/
+		size_t nPoints)
 {
-  int    i, seg, segP, Base = 1, twoM;
+  size_t i, seg, segP, Base = 1, twoM;
   double KU, Wss, *currentSegment, *imaginary, *Window, variance;
 
 
   twoM = M << 1;
 
-  currentSegment = (double *)GetMemory(sizeof(double) * twoM);
-  imaginary = (double *)GetMemory(sizeof(double) * twoM);
+  currentSegment = new double[twoM];
+  imaginary = new double[twoM];
 
 
   /* Figure out 2^Base.
@@ -61,7 +61,7 @@ double Spectrum(float data[],		/* Input data			*/
 
   /* Generate Window & compute Window Squared and Summed.
    */
-  Window = (double *)GetMemory(sizeof(double) * twoM);
+  Window = new double[twoM];
 
   for (i = 0, Wss = 0.0; i < twoM; ++i)
     {
@@ -139,9 +139,9 @@ double Spectrum(float data[],		/* Input data			*/
     variance += Pxx[i];
     }
 
-  free(Window);
-  free(imaginary);
-  free(currentSegment);
+  delete [] Window;
+  delete [] imaginary;
+  delete [] currentSegment;
 
   return(variance);
 
@@ -152,22 +152,22 @@ double CoSpectrum(float data1[],	/* Input data			*/
 		float data2[],		/* Input data			*/
 		double Pxx[],		/* Output CoSpectrum		*/
 		double Qxx[],		/* Output Quadrature		*/
-		int K,			/* K overlapping segments	*/
-		int M,			/* 2M points per segment	*/
-		double (*window)(int, int),	/* Window function		*/
-		int nPoints)
+		size_t K,		/* K overlapping segments	*/
+		size_t M,		/* 2M points per segment	*/
+		double (*window)(int, int),	/* Window function	*/
+		size_t nPoints)
 {
-  int	i, seg, segP, Base, twoM;
+  size_t i, seg, segP, Base = 0, twoM;
   double KU, Wss, *Window;
   double *currentSegment1, *imaginary1, *currentSegment2, *imaginary2,
 	variance;
 
   twoM = M << 1;
 
-  currentSegment1 = (double *)GetMemory(sizeof(double) * twoM);
-  currentSegment2 = (double *)GetMemory(sizeof(double) * twoM);
-  imaginary1 = (double *)GetMemory(sizeof(double) * twoM);
-  imaginary2 = (double *)GetMemory(sizeof(double) * twoM);
+  currentSegment1 = new double[twoM];
+  currentSegment2 = new double[twoM];
+  imaginary1 = new double[twoM];
+  imaginary2 = new double[twoM];
 
 
   /* Figure out 2^Base.
@@ -183,7 +183,7 @@ double CoSpectrum(float data1[],	/* Input data			*/
 
   /* Generate Window & compute Window Squared and Summed.
    */
-  Window = (double *)GetMemory(sizeof(double) * twoM);
+  Window = new double[twoM];
 
   for (i = 0, Wss = 0.0; i < twoM; ++i)
     {
@@ -288,11 +288,11 @@ double CoSpectrum(float data1[],	/* Input data			*/
     variance += Pxx[i];
     }
 
-  free(Window);
-  free(imaginary2);
-  free(imaginary1);
-  free(currentSegment2);
-  free(currentSegment1);
+  delete [] Window;
+  delete [] imaginary2;
+  delete [] imaginary1;
+  delete [] currentSegment2;
+  delete [] currentSegment1;
 
   return(variance);
 

@@ -16,7 +16,7 @@ INPUT:		none
 
 OUTPUT:		none
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 -------------------------------------------------------------------------
 */
 
@@ -24,7 +24,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 #include <X11/Xutil.h>
 #include <Xm/DrawingA.h>
 
-static int	currentPanel, fontOffset;
+static size_t	currentPanel;
+static int	fontOffset;
 
 void MakeLegendLabel(char *, DATASET_INFO *);
 static void plotData(PLOT_INFO *plot);
@@ -33,7 +34,8 @@ static void plotData(PLOT_INFO *plot);
 /* -------------------------------------------------------------------- */
 void ResizeTimeSeries()
 {
-  int	n, i, totalVD, depth;
+  size_t i;
+  int	n, totalVD, depth;
   Arg	args[5];
 
   n = 0;
@@ -94,8 +96,8 @@ void ResizeTimeSeries()
 /* -------------------------------------------------------------------- */
 void DrawTimeSeries()
 {
-  int		i;
-  static bool	firstTime = True;
+  size_t	i;
+  static bool	firstTime = true;
   XFontStruct	*fontInfo;
 
   /* Set default Graphics Context stuff and get the GC
@@ -115,7 +117,7 @@ void DrawTimeSeries()
 
     ResizeTimeSeries();
     InitializeColors(&mainPlot[0]);
-    firstTime = False;
+    firstTime = false;
     }
 
 
@@ -124,7 +126,12 @@ void DrawTimeSeries()
 
   ClearPixmap(&mainPlot[0]);
 
-  plotTitlesX(&mainPlot[0], fontOffset);
+  bool warning = false;
+  for (i = 0; i < NumberDataSets; ++i)
+    if (dataFile[dataSet[i].fileIndex].ShowPrelimDataWarning)
+      warning = true;
+
+  plotTitlesX(&mainPlot[0], fontOffset, warning);
 
   fontInfo = mainPlot[0].fontInfo[3+fontOffset];
   XSetFont(mainPlot[0].dpy, mainPlot[0].gc, fontInfo->fid);
@@ -137,20 +144,20 @@ void DrawTimeSeries()
           mainPlot[currentPanel].x.HD, mainPlot[currentPanel].x.VD);
 
     if (allLabels || currentPanel == NumberOfPanels-1)
-      xTicsLabelsX(&mainPlot[currentPanel], fontInfo, True);
+      xTicsLabelsX(&mainPlot[currentPanel], fontInfo, true);
     else
-      xTicsLabelsX(&mainPlot[currentPanel], fontInfo, False);
+      xTicsLabelsX(&mainPlot[currentPanel], fontInfo, false);
 
     if (NumberDataSets > 0)
       {
       plotLabelsX(&mainPlot[currentPanel], fontOffset);
 
-      yTicsLabelsX(&mainPlot[currentPanel], fontInfo, LEFT_SIDE, True);
+      yTicsLabelsX(&mainPlot[currentPanel], fontInfo, LEFT_SIDE, true);
 
       for (i = 0; i < NumberDataSets; ++i)
         if (dataSet[i].scaleLocation == RIGHT_SIDE &&
             dataSet[i].panelIndex == currentPanel)
-          yTicsLabelsX(&mainPlot[currentPanel], fontInfo, RIGHT_SIDE, True);
+          yTicsLabelsX(&mainPlot[currentPanel], fontInfo, RIGHT_SIDE, true);
 
       plotData(&mainPlot[currentPanel]);
       }

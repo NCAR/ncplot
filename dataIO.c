@@ -41,11 +41,12 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 
 #include "netcdf.h"
 
-static void freeDataSets(int), getNCattr(int ncid, char attr[], char **dest);
+static void freeDataSets(int), getNCattr(int ncid, char attr[], std::string& dest);
+static bool VarCompareLT(const VARTBL *x, const VARTBL *y);
 
 
 /* Imported from exp.c */
-extern int		NumberExpSets;
+extern size_t		NumberExpSets;
 extern DATASET_INFO	expSet[];
 
 
@@ -54,7 +55,7 @@ void	findMinMax();
 /* -------------------------------------------------------------------- */
 void NewDataFile(Widget w, XtPointer client, XtPointer call)
 {
-  int		i, j;
+  size_t	i, j;
   DATAFILE_INFO	*curFile;
 
   /* Clear out all existing dataFiles and dataSets.  We're starting from
@@ -66,22 +67,17 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
 
     nc_close(curFile->ncid);
 
-    FreeMemory(curFile->ProjectName);
-    FreeMemory(curFile->ProjectNumber);
-    FreeMemory(curFile->FlightNumber);
-    FreeMemory(curFile->FlightDate);
-
-    for (j = 0; j < curFile->nVariables; ++j)
-      FreeMemory((char *)curFile->Variable[j]);
+    for (j = 0; j < curFile->Variable.size(); ++j)
+      delete curFile->Variable[j];
 
     for (j = 1; curFile->catName[j]; ++j)	/* [0] was not malloced	*/
-      FreeMemory(curFile->catName[j]);
+      delete [] curFile->catName[j];
 
-    curFile->nVariables = 0;
+    curFile->Variable.clear();
     }
 
-  freeDataSets(True);
-  DataChanged = True;
+  freeDataSets(true);
+  DataChanged = true;
   CurrentDataFile = NumberDataFiles = NumberDataSets = NumberXYXsets =
 	NumberXYYsets = 0;
   curFile = &dataFile[CurrentDataFile];
@@ -105,7 +101,8 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
 	if (UserStartTime[0] > UserEndTime[0])
       UserEndTime[0] += 24;
 
-    FreeMemory(timeSeg); timeSeg = NULL;
+    delete [] timeSeg;
+    timeSeg = NULL;
     }
   else
     {
@@ -124,20 +121,20 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
 
   /* Set up titles & subtitles.
    */
-  strcpy(mainPlot[0].title, curFile->ProjectName);
+  mainPlot[0].title = curFile->ProjectName;
 
-  if (strlen(curFile->FlightNumber) > 0)
+  if (curFile->FlightNumber.length() > 0)
     {
-    if (strlen(curFile->ProjectName))
-      strcat(mainPlot[0].title, ", ");
+    if (curFile->ProjectName.length() > 0)
+      mainPlot[0].title += ", ";
 
-    strcat(mainPlot[0].title, "Flight #");
-    strcat(mainPlot[0].title, curFile->FlightNumber);
+    mainPlot[0].title += "Flight #";
+    mainPlot[0].title += curFile->FlightNumber;
     }
 
-  strcpy(xyyPlot[0].title, mainPlot[0].title);
-  strcpy(specPlot.title, mainPlot[0].title);
-  strcpy(xyzPlot.title, mainPlot[0].title);
+  xyyPlot[0].title = mainPlot[0].title;
+  specPlot.title = mainPlot[0].title;
+  xyzPlot.title = mainPlot[0].title;
   SetSubtitles();
   SetTimeText();
 
@@ -147,7 +144,7 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
 void AddDataFile(Widget w, XtPointer client, XtPointer call)
 {
   int		i, InputFile, nVars, nDims, dimIDs[3], varID;
-  char		name[NAMELEN], *data_file, *p;
+  char		name[NAMELEN], *data_file;
   DATAFILE_INFO	*curFile;
   VARTBL	*vp;
 
@@ -166,20 +163,23 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     ExtractFileName(((XmFileSelectionBoxCallbackStruct *)call)->value,
                     &data_file);
 
-    strcpy(curFile->fileName, data_file);
+    curFile->fileName = data_file;
     }
 
 
-  strcpy(DataPath, curFile->fileName);
-  if ((p = strrchr(DataPath, '/')))
-    strcpy(p+1, "*.nc");
+  size_t indx = curFile->fileName.find_last_of('/');
+  if (indx != std::string::npos)
+    {
+    DataPath = curFile->fileName.substr(0, indx+1);
+    DataPath += "*.nc";
+    }
 
 
   /* See if file exists.
    */
-  if (access(curFile->fileName, R_OK) != 0)
+  if (access(curFile->fileName.c_str(), R_OK) != 0)
     {
-    sprintf(buffer, "Can't open %s.", curFile->fileName);
+    sprintf(buffer, "Can't open %s.", curFile->fileName.c_str());
     HandleError(buffer, Interactive, IRET);
     curFile->ncid = 0;
     return;
@@ -187,9 +187,9 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 
   /* Open Input File
    */
-  if (nc_open(curFile->fileName, NC_NOWRITE, &curFile->ncid) != NC_NOERR)
+  if (nc_open(curFile->fileName.c_str(), NC_NOWRITE, &curFile->ncid) != NC_NOERR)
     {
-    sprintf(buffer, "Can't open %s.", curFile->fileName);
+    sprintf(buffer, "Can't open %s.", curFile->fileName.c_str());
     HandleError(buffer, Interactive, IRET);
     return;
     }
@@ -199,18 +199,20 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 
   nc_inq_nvars(InputFile, &nVars);
 
-  if (nVars > MAX_VARIABLES)
-    {
-    sprintf(buffer, "Number of variables in file [%d], exceeds current ncplot maximum [%d],\nclipping, modify define.h and recompile to see all variables from this file.", nVars, MAX_VARIABLES);
-    HandleError(buffer, Interactive, IRET);
-    nVars = MAX_VARIABLES;
-    }
 
+  getNCattr(InputFile, "ProjectName", curFile->ProjectName);
+  getNCattr(InputFile, "ProjectNumber", curFile->ProjectNumber);
+  getNCattr(InputFile, "FlightNumber", curFile->FlightNumber);
+  getNCattr(InputFile, "FlightDate", curFile->FlightDate);
 
-  getNCattr(InputFile, "ProjectName", &curFile->ProjectName);
-  getNCattr(InputFile, "ProjectNumber", &curFile->ProjectNumber);
-  getNCattr(InputFile, "FlightNumber", &curFile->FlightNumber);
-  getNCattr(InputFile, "FlightDate", &curFile->FlightDate);
+  std::string warning;
+  getNCattr(InputFile, "WARNING", warning);
+
+  if (warning.size() > 0)
+    curFile->ShowPrelimDataWarning = true;
+  else
+    curFile->ShowPrelimDataWarning = false;
+
 
   GetTimeInterval(InputFile, curFile);
 
@@ -229,7 +231,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
  
     for (nCats = 1; p; ++nCats)
       {
-      curFile->catName[nCats] = (char *)GetMemory(strlen(p)+1);
+      curFile->catName[nCats] = new char[strlen(p)+1];
       strcpy(curFile->catName[nCats], p);
  
       p = strtok(NULL, ",");
@@ -250,7 +252,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 
   /* Read in the variables.
    */
-  curFile->nVariables = 0;
+  curFile->Variable.clear();
   for (i = 0; i < nVars; ++i)
     {
     nc_inq_var(InputFile, i, name, NULL, &nDims, dimIDs, NULL);
@@ -262,8 +264,8 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
       continue;
 
 
-    vp = curFile->Variable[curFile->nVariables++] =
-           (VARTBL *)GetMemory(sizeof(VARTBL));
+    vp = new VARTBL;
+    curFile->Variable.push_back(vp);
 
     strcpy(vp->name, name);
     if (nDims == 1)
@@ -295,7 +297,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   else
     curFile->baseDataRate = 1;
 
-  SortTable((char **)curFile->Variable, 0, curFile->nVariables - 1);
+  std::sort(curFile->Variable.begin(), curFile->Variable.end(), VarCompareLT);
   OpenControlWindow(NULL, NULL, NULL);
 
 }	/* END ADDDATAFILE */
@@ -303,18 +305,18 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void SetList()
 {
-  int		i;
+  size_t	i;
   XmString	item[MAX_VARIABLES];
   DATAFILE_INFO	*curFile = &dataFile[CurrentDataFile];
 
   XmListDeleteAllItems(varList);
 
-  for (i = 0; i < curFile->nVariables; ++i)
+  for (i = 0; i < curFile->Variable.size(); ++i)
     item[i] = XmStringCreateLocalized(curFile->Variable[i]->name);
 
-  XmListAddItems(varList, item, curFile->nVariables, 1);
+  XmListAddItems(varList, item, curFile->Variable.size(), 1);
 
-  for (i = 0; i < curFile->nVariables; ++i)
+  for (i = 0; i < curFile->Variable.size(); ++i)
     XmStringFree(item[i]);
 
 }	/* END SETLIST */
@@ -323,14 +325,14 @@ void SetList()
 static void readSet(DATASET_INFO *set)
 {
   size_t	start[3], count[3];
-  int		i, frontPad, endPad;
+  size_t	i, frontPad, endPad;
   DATAFILE_INFO *file;
 
   WaitCursorAll();
 
   if (set->varInfo->inVarID == COMPUTED)
     {
-    int	whichExp = set->varInfo->name[4] - '1';;
+    size_t whichExp = set->varInfo->name[4] - '1';;
 
     set->nPoints = NumberSeconds;
 
@@ -342,7 +344,7 @@ static void readSet(DATASET_INFO *set)
         }
 
     set->missingValue = DEFAULT_MISSING_VALUE;
-    set->data = (NR_TYPE *)GetMemory(set->nPoints * sizeof(NR_TYPE));
+    set->data = new NR_TYPE[set->nPoints];
     ComputeExp(set);
     goto bottom;
     }
@@ -389,7 +391,7 @@ static void readSet(DATASET_INFO *set)
   endPad *= set->varInfo->OutputRate;
   set->nPoints *= set->varInfo->OutputRate;
 
-  set->data = (NR_TYPE *)GetMemory(set->nPoints * sizeof(NR_TYPE));
+  set->data = new NR_TYPE[set->nPoints];
 
   set->missingValue = set->varInfo->MissingValue;
 
@@ -415,9 +417,9 @@ bottom:
 /* -------------------------------------------------------------------- */
 void ReadData()
 {
-  int	i;
+  size_t i;
 
-  Freeze = True;
+  Freeze = true;
 
   /* Perform time computations.
    */
@@ -440,7 +442,7 @@ void ReadData()
     NumberSeconds = UserEndTime[3] - UserStartTime[3];
     }
 
-  freeDataSets(False);
+  freeDataSets(false);
 
   for (i = 0; i < NumberExpSets; ++i)
     readSet(&expSet[i]);
@@ -474,15 +476,15 @@ void ReadData()
   SetSubtitles();
   SetTimeText();
 
-  Freeze = False;
-  DataChanged = True;
+  Freeze = false;
+  DataChanged = true;
 
 }	/* END READDATA */
 
 /* -------------------------------------------------------------------- */
 void findMinMax()
 {
-  int	plot, set;
+  size_t plot, set;
 
   for (plot = 0; plot < NumberOfPanels; ++plot)
     {
@@ -496,12 +498,10 @@ void findMinMax()
       if (dataSet[set].panelIndex == plot)
         {
         mainPlot[plot].Yaxis[dataSet[set].scaleLocation].smallestValue =
-            MIN(mainPlot[plot].Yaxis[dataSet[set].scaleLocation].smallestValue,
-                dataSet[set].stats.min);
+            std::min(mainPlot[plot].Yaxis[dataSet[set].scaleLocation].smallestValue, dataSet[set].stats.min);
 
         mainPlot[plot].Yaxis[dataSet[set].scaleLocation].biggestValue =
-            MAX(mainPlot[plot].Yaxis[dataSet[set].scaleLocation].biggestValue,
-                dataSet[set].stats.max);
+            std::max(mainPlot[plot].Yaxis[dataSet[set].scaleLocation].biggestValue, dataSet[set].stats.max);
         }
     }
 
@@ -518,10 +518,10 @@ void findMinMax()
       if (xyXset[set].panelIndex == plot)
         {
         xyyPlot[plot].Xaxis.smallestValue =
-           MIN(xyyPlot[plot].Xaxis.smallestValue, xyXset[set].stats.min);
+           std::min(xyyPlot[plot].Xaxis.smallestValue, xyXset[set].stats.min);
 
         xyyPlot[plot].Xaxis.biggestValue =
-           MAX(xyyPlot[plot].Xaxis.biggestValue, xyXset[set].stats.max);
+           std::max(xyyPlot[plot].Xaxis.biggestValue, xyXset[set].stats.max);
         }
       }
 
@@ -530,11 +530,11 @@ void findMinMax()
       if (xyYset[set].panelIndex == plot)
         {
         xyyPlot[plot].Yaxis[xyYset[set].scaleLocation].smallestValue =
-           MIN(xyyPlot[plot].Yaxis[xyYset[set].scaleLocation].smallestValue,
+           std::min(xyyPlot[plot].Yaxis[xyYset[set].scaleLocation].smallestValue,
            xyYset[set].stats.min);
 
         xyyPlot[plot].Yaxis[xyYset[set].scaleLocation].biggestValue =
-           MAX(xyyPlot[plot].Yaxis[xyYset[set].scaleLocation].biggestValue,
+           std::max(xyyPlot[plot].Yaxis[xyYset[set].scaleLocation].biggestValue,
            xyYset[set].stats.max);
         }
       }
@@ -568,8 +568,7 @@ int LoadVariable(DATASET_INFO *set, char varName[])
 
   /* Search variable, return error if not found.
    */
-  if ((indx = SearchTable((char **)dataFile[CurrentDataFile].Variable,
-              dataFile[CurrentDataFile].nVariables, varName)) == ERR)
+  if ((indx = SearchTable(dataFile[CurrentDataFile].Variable, varName)) == ERR)
     return(ERR);
 
   set->varInfo = dataFile[CurrentDataFile].Variable[indx];
@@ -591,14 +590,14 @@ void AddVariable(DATASET_INFO *set, int indx)
     set->varInfo = dataFile[CurrentDataFile].Variable[indx];
   else
     {
+    VARTBL	*vp;
     static int	expCnt = 0;
 
-    indx = dataFile[CurrentDataFile].nVariables++;
-    dataFile[CurrentDataFile].Variable[indx]
-		= (VARTBL *)GetMemory(sizeof(VARTBL));
+    vp = new VARTBL;
+    dataFile[CurrentDataFile].Variable.push_back(vp);
     SetList();
 
-    set->varInfo = dataFile[CurrentDataFile].Variable[indx];
+    set->varInfo = vp;
 
     sprintf(set->varInfo->name, "USER%d", expCnt);
     set->varInfo->OutputRate = 1;
@@ -618,7 +617,7 @@ void AddVariable(DATASET_INFO *set, int indx)
 /* -------------------------------------------------------------------- */
 void ReduceData(int start, int newNumberSeconds)
 {
-  int	i, rate, set;
+  size_t i, rate, set;
   int	hours, mins, sex;
 
   for (set = 0; set < NumberDataSets; ++set)
@@ -695,7 +694,7 @@ void ReduceData(int start, int newNumberSeconds)
 
   SetSubtitles();
   SetTimeText();
-  DataChanged = True;
+  DataChanged = true;
 
   for (i = 0; i < NumberDataSets; ++i)
     ComputeStats(&dataSet[i]);
@@ -705,24 +704,24 @@ void ReduceData(int start, int newNumberSeconds)
 }	/* END REDUCEDATA */
 
 /* -------------------------------------------------------------------- */
-int DeleteVariable(DATASET_INFO *sets, int nSets, int indx)
+int DeleteVariable(DATASET_INFO *sets, size_t nSets, int indx)
 {
-  int	set;
-  bool	rc = False;
+  size_t set;
+  bool rc = false;
 
   for (set = 0; set < nSets; ++set)
     if (sets[set].fileIndex == CurrentDataFile &&
         sets[set].panelIndex == CurrentPanel &&
         sets[set].varInfo == dataFile[sets[set].fileIndex].Variable[indx])
       {
-      FreeMemory((char *)sets[set].data);
+      delete [] sets[set].data;
 
       for (++set; set < nSets; ++set)
         sets[set-1] = sets[set];
 
       --nSets;
 
-      rc = True;
+      rc = true;
       break;
       }
 
@@ -736,15 +735,15 @@ int DeleteVariable(DATASET_INFO *sets, int nSets, int indx)
 /* -------------------------------------------------------------------- */
 static void freeDataSets(int mode)
 {
-  int	set;
+  size_t set;
 
   for (set = 0; set < NumberExpSets; ++set)
     {
     if (mode)
-      free(expSet[set].varInfo);
+      delete expSet[set].varInfo;
 
     if (expSet[set].nPoints > 0)
-      FreeMemory((char *)expSet[set].data);
+      delete [] expSet[set].data;
 
     expSet[set].nPoints = 0;
     }
@@ -755,7 +754,7 @@ static void freeDataSets(int mode)
       dataSet[set].varInfo = NULL;
 
     dataSet[set].nPoints = 0;
-    FreeMemory((char *)dataSet[set].data);
+    delete [] dataSet[set].data;
     }
 
 
@@ -765,7 +764,7 @@ static void freeDataSets(int mode)
       xyXset[set].varInfo = NULL;
 
     xyXset[set].nPoints = 0;
-    FreeMemory((char *)xyXset[set].data);
+    delete [] xyXset[set].data;
     }
 
   for (set = 0; set < NumberXYYsets; ++set)
@@ -774,7 +773,7 @@ static void freeDataSets(int mode)
       xyYset[set].varInfo = NULL;
 
     xyYset[set].nPoints = 0;
-    FreeMemory((char *)xyYset[set].data);
+    delete [] xyYset[set].data;
     }
 
 
@@ -785,7 +784,7 @@ static void freeDataSets(int mode)
         xyzSet[set].varInfo = NULL;
 
       xyzSet[set].nPoints = 0;
-      FreeMemory((char *)xyzSet[set].data);
+      delete [] xyzSet[set].data;
       }
 
 }	/* END FREEDATASETS */
@@ -813,23 +812,19 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
 }	/* END GETTIMEINTERVAL */
 
 /* -------------------------------------------------------------------- */
-static void getNCattr(int ncid, char attr[], char **dest)
+static void getNCattr(int ncid, char attr[], std::string& dest)
 {
   size_t len;
 
   if (nc_inq_attlen(ncid, NC_GLOBAL, attr, &len) == NC_NOERR)
     {
-    *dest = (char *)GetMemory(len+1);
-    nc_get_att_text(ncid, NC_GLOBAL, attr, *dest);
-    (*dest)[len] = '\0';
+    nc_get_att_text(ncid, NC_GLOBAL, attr, buffer);
+    buffer[len] = '\0';
 
-    while ((*dest)[--len] < 0x20)	/* Remove extraneous CR/LF, etc */
-      (*dest)[len] = '\0';
-    }
-  else
-    {
-    *dest = (char *)GetMemory(1);
-    *dest[0] = '\0';
+    while (buffer[--len] < 0x20)	/* Remove extraneous CR/LF, etc */
+      buffer[len] = '\0';
+
+    dest = buffer;
     }
 
 }	/* END GETNCATTR */
@@ -846,5 +841,11 @@ bool isMissingValue(float target, float fillValue)
   return(false);
 
 }	/* END ISMISSINGVALUE */
+
+/* -------------------------------------------------------------------- */
+static bool VarCompareLT(const VARTBL *x, const VARTBL *y)
+{
+    return(strcmp(x->name, y->name) < 0);
+}
 
 /* END DATAIO.C */

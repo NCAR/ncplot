@@ -41,7 +41,7 @@ static int	saving = MAIN_CANVAS;
 void savePNG(Widget w, XtPointer client, XtPointer call)
 {
   XImage	*image;
-  PLOT_INFO	*plot;
+  PLOT_INFO	*plot = 0;
   char		*p;
 
   strcpy(pngDirectory, outFile);
@@ -193,7 +193,7 @@ static void _SavePNG(char file_name[], XImage *image)
 	PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
 
-  if ((palette = (png_color *)GetMemory((NumberOfColors()) * sizeof(png_color))) == NULL)
+  if ((palette = new png_color[NumberOfColors()]) == NULL)
       return;
 
   for (i = 0; i < NumberOfColors(); i++) {
@@ -218,7 +218,7 @@ static void _SavePNG(char file_name[], XImage *image)
     {
     char	*p = &(image->data[i * image->bytes_per_line]);
 
-    row_pointers[i] = (png_byte *)GetMemory(image->width);
+    row_pointers[i] = new png_byte[image->width];
 
     switch (image->depth)
       {
@@ -249,9 +249,9 @@ static void _SavePNG(char file_name[], XImage *image)
   png_destroy_write_struct(&png_ptr, &info_ptr);
 
   for (i = 0; i < image->height; ++i)
-    free(row_pointers[i]);
+    delete [] row_pointers[i];
 
-  free(palette);
+  delete [] palette;
   fclose(outFP);
 
 }

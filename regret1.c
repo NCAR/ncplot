@@ -24,7 +24,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
 /* -------------------------------------------------------------------- */
 void LinearLeastSquare(DATASET_INFO *set, float inp[], float out[])
 {
-  int		i;
+  size_t	i;
   double	Ymean, Xmean, SXX, SXY, B0, B1, im;
 
 

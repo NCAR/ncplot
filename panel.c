@@ -99,9 +99,9 @@ void SetActivePanels(int n)
 }
 
 /* -------------------------------------------------------------------- */
-static int clearSet(DATASET_INFO set[], int nSets, int panel)
+static int clearSet(DATASET_INFO set[], size_t nSets, size_t panel)
 {
-  int	i, cnt;
+  size_t i, cnt;
 
   for (i = cnt = 0; i < nSets; ++i)
     {
@@ -109,7 +109,7 @@ static int clearSet(DATASET_INFO set[], int nSets, int panel)
 
     if (set[i].panelIndex == panel)
       {
-      free((char *)set[i].data);
+      delete [] set[i].data;
       set[i].nPoints = 0;
       }
     else
@@ -123,8 +123,6 @@ static int clearSet(DATASET_INFO set[], int nSets, int panel)
 /* -------------------------------------------------------------------- */
 void ClearPanel(Widget w, XtPointer client, XtPointer call)
 {
-  int i, cnt;
-
   if (PlotType == TIME_SERIES)
     {
     NumberDataSets = clearSet(dataSet, NumberDataSets, CurrentPanel);
@@ -148,8 +146,8 @@ void ClearPanel(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void AddPanel(Widget w, XtPointer client, XtPointer call)
 {
-  int		i, nPanels;
-  PLOT_INFO	*plot;
+  size_t	i, nPanels = 0;
+  PLOT_INFO	*plot = 0;
 
   switch (PlotType)
     {
@@ -172,9 +170,9 @@ void AddPanel(Widget w, XtPointer client, XtPointer call)
 
   ClearAnnotations();
 
-  plot[nPanels].Yaxis[0].label[0] = plot[nPanels].Yaxis[1].label[0] = '\0';
-  strcpy(plot[nPanels].Xaxis.label, plot[nPanels-1].Xaxis.label);
-  plot[nPanels].windowOpen = plot[nPanels].autoScale = plot[nPanels].autoTics = True;
+  plot[nPanels].Yaxis[0].label = plot[nPanels].Yaxis[1].label = "";
+  plot[nPanels].Xaxis.label = plot[nPanels-1].Xaxis.label;
+  plot[nPanels].windowOpen = plot[nPanels].autoScale = plot[nPanels].autoTics = true;
 
   ++nPanels;
 
@@ -189,7 +187,7 @@ void AddPanel(Widget w, XtPointer client, XtPointer call)
     {
     case TIME_SERIES:
       if (!allLabels)
-        plot[CurrentPanel-1].Xaxis.label[0] = '\0';
+        plot[CurrentPanel-1].Xaxis.label = "";
 
       for (i = 0; i < nPanels; ++i)
         plot[i].Yaxis[0].nMajorTics =
@@ -206,8 +204,8 @@ void AddPanel(Widget w, XtPointer client, XtPointer call)
     case XY_PLOT:
       if (!allLabels)
         {
-        plot[CurrentPanel].Yaxis[0].label[0] = '\0';
-        plot[CurrentPanel].Yaxis[1].label[0] = '\0';
+        plot[CurrentPanel].Yaxis[0].label = "";
+        plot[CurrentPanel].Yaxis[1].label = "";
         }
 
       for (i = 0; i < nPanels; ++i)
@@ -227,15 +225,15 @@ void AddPanel(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void DeletePanel(Widget w, XtPointer client, XtPointer call)
 {
-  int		i, nPanels;
-  PLOT_INFO	*plot;
+  size_t	i, nPanels = 0;
+  PLOT_INFO	*plot = 0;
 
   switch (PlotType)
     {
     case TIME_SERIES:
       plot = mainPlot;
       nPanels = NumberOfPanels;
-      strcpy(plot[nPanels-2].Xaxis.label, plot[nPanels-1].Xaxis.label);
+      plot[nPanels-2].Xaxis.label = plot[nPanels-1].Xaxis.label;
       NumberDataSets = clearSet(dataSet, NumberDataSets, CurrentPanel);
 
       for (i = 0; i < NumberDataSets; ++i)
@@ -268,8 +266,8 @@ void DeletePanel(Widget w, XtPointer client, XtPointer call)
 
   if (CurrentPanel == 0)
     {
-    strcpy(plot[1].title, plot[0].title);
-    strcpy(plot[1].subTitle, plot[0].subTitle);
+    plot[1].title = plot[0].title;
+    plot[1].subTitle = plot[0].subTitle;
     }
 
   --nPanels;

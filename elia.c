@@ -10,17 +10,9 @@ STATIC FNS:	none
 
 DESCRIPTION:	Part of Spectral.
 
-INPUT:		
-
-OUTPUT:		
-
-REFERENCES:	
-
-REFERENCED BY:	
-
 NOTES:		
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1998
+COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2005
 -------------------------------------------------------------------------
 */
 
@@ -31,13 +23,13 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1998
 /* -------------------------------------------------------------------- */
 void ComputeELIA()
 {
-  int		i, cnt, prevCnt, set, nSets = 1;
-  double	binSize, currentFreq, endFreq, sum, *dataP;
+  size_t	i, cnt = 0, prevCnt = 0, set, nSets = 1;
+  double	binSize, currentFreq, endFreq, sum, *dataP = 0;
 
   switch (psd[0].display)
     {
     case SPECTRA:
-      nSets = MIN(NumberDataSets, MAX_PSD);
+      nSets = std::min(NumberDataSets, MAX_PSD);
     case COSPECTRA:
       dataP = psd[0].Pxx;
       break;
@@ -52,18 +44,18 @@ void ComputeELIA()
     }
 
   if (psd[0].display == SPECTRA)
-    nSets = MIN(NumberDataSets, MAX_PSD);
+    nSets = std::min(NumberDataSets, MAX_PSD);
 
   for (set = 0; set < nSets; ++set)	// Looping here is for SPECTRA only
     {
     if (psd[0].display == SPECTRA)
       dataP = psd[set].Pxx;
 
-    if (psd[set].ELIAx) free(psd[set].ELIAx);
-    if (psd[set].ELIAy) free(psd[set].ELIAy);
+    if (psd[set].ELIAx) delete [] psd[set].ELIAx;
+    if (psd[set].ELIAy) delete [] psd[set].ELIAy;
 
-    psd[set].ELIAx = (double *)GetMemory((eliaPoints()+1) * sizeof(double));
-    psd[set].ELIAy = (double *)GetMemory((eliaPoints()+1) * sizeof(double));
+    psd[set].ELIAx = new double[eliaPoints()+1];
+    psd[set].ELIAy = new double[eliaPoints()+1];
 
     binSize =	(log10(psd[0].M*psd[set].freqPerBin)-log10(psd[set].freqPerBin))
 		/ eliaPoints();

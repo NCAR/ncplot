@@ -10,15 +10,11 @@ STATIC FNS:	doDiffGraph()
 
 DESCRIPTION:	This does the PostScript printing.
 
-INPUT:		none
-
-OUTPUT:		none
-
 REFERENCES:	ps.c
 
 REFERENCED BY:	diff Print Button
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 -------------------------------------------------------------------------
 */
 
@@ -76,7 +72,7 @@ void diffPostScript(Widget w, XtPointer client, XtPointer call)
     return;
 
   PSheader(fp, &diffPlot);
-  PStitles(fp, &diffPlot);
+  PStitles(fp, &diffPlot, false);
   PSbox(fp, &diffPlot);
 
   /* Move origin to (0,0) of plot window.
@@ -85,8 +81,8 @@ void diffPostScript(Widget w, XtPointer client, XtPointer call)
 
   PSlabels(fp, &diffPlot);
   fprintf(fp, "1 setlinewidth\n");
-  PSyTics(fp, &diffPlot, 0, True);
-  PSxTics(fp, &diffPlot, True);
+  PSyTics(fp, &diffPlot, 0, true);
+  PSxTics(fp, &diffPlot, true);
   fprintf(fp, "stroke 0 0 moveto\n");
 
   doDiffGraph(fp, &diffPlot);
@@ -99,7 +95,7 @@ void diffPostScript(Widget w, XtPointer client, XtPointer call)
 static void doDiffGraph(FILE *fp, PLOT_INFO *plot)
 {
   char		*p;
-  int		i, x, y;
+  int		x, y;
   NR_TYPE	xScale, yScale, halfSecond;
 
 
@@ -133,7 +129,7 @@ static void doDiffGraph(FILE *fp, PLOT_INFO *plot)
   fprintf(fp, "%d setlinewidth\n", LineThickness<<1);
 
 
-  for (i = 0; i < dataSet[0].nPoints; ++i)
+  for (size_t i = 0; i < dataSet[0].nPoints; ++i)
     {
     if (isMissingValue(diffSet.data[i], diffSet.missingValue) || i == 0)
       {

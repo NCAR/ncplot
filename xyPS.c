@@ -16,14 +16,14 @@ REFERENCES:	ps.c
 
 REFERENCED BY:	PrintPostScript()
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2005
 -------------------------------------------------------------------------
 */
 
 #include "define.h"
 #include "ps.h"
 
-static int      currentPanel;
+static size_t currentPanel;
 
 static void ResizePSxyyPlot();
 static void PSplotXY(FILE *fp, PLOT_INFO *plot);
@@ -39,7 +39,7 @@ extern float	*NextColorRGB_PS(), *GetColorRGB_PS(int);
 void PrintXY()
 {
   bool	label;
-  int	i;
+  size_t i;
   FILE	*fp;
 
   ResizePSxyyPlot();
@@ -47,8 +47,16 @@ void PrintXY()
   if ((fp = openPSfile(outFile)) == NULL)
     return;
 
+  bool warning = false;
+  for (i = 0; i < NumberXYYsets; ++i)
+    if (dataFile[xyXset[i].fileIndex].ShowPrelimDataWarning)
+      warning = true;
+  for (i = 0; i < NumberXYXsets; ++i)
+    if (dataFile[xyYset[i].fileIndex].ShowPrelimDataWarning)
+      warning = true;
+
   PSheader(fp, &xyyPlot[0]);
-  PStitles(fp, &xyyPlot[0]);
+  PStitles(fp, &xyyPlot[0], warning);
 
   for (currentPanel = 0; currentPanel < NumberOfXYpanels; ++currentPanel)
     {
@@ -96,7 +104,8 @@ void PrintXY()
 /* -------------------------------------------------------------------- */
 static void ResizePSxyyPlot()
 {
-  int	i, totalHD;
+  size_t i;
+  int totalHD;
 
   /* Number of pixels from 0,0 to each Border edge.  NOTE in PostScript
    * (0,0) is in the lower left corner of the paper, held at portrait.
@@ -158,8 +167,8 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
   DATASET_INFO	*xSet, *ySet;
   bool		xChanged, yChanged;
   struct axisInfo *yAxis, *xAxis;
-  int		i, nPts, inX, inY, x, y, prevX, prevY, pCnt, xset, yset,
-		plotNum, n;
+  int		xset, yset;
+  size_t	i, nPts, inX, inY, x, y, prevX, prevY, pCnt, plotNum, n;
   float		ratioX, ratioY, *rgb, xMin, xMax, yMin, yMax;
   double	xScale, yScale, datumY, datumX;
 
@@ -169,7 +178,8 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
   fprintf(fp, "stroke 5 setlinewidth\n");
 
   xset = yset = -1;
-  n = MAX(NumberXYXsets, NumberXYYsets);
+  prevX = prevY = 0;
+  n = std::max(NumberXYXsets, NumberXYYsets);
 
   for (CurrentDataSet = 0, plotNum = 0; plotNum < n; ++plotNum)
     {
@@ -280,7 +290,7 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
     yAxis = &plot->Yaxis[ySet->scaleLocation];
 
     ratioX = ratioY = 1.0;
-    nPts = MAX(xSet->nPoints, ySet->nPoints);
+    nPts = std::max(xSet->nPoints, ySet->nPoints);
     yScale = plot->ps.VD / (yMax - yMin);
 
     if (xSet->nPoints > ySet->nPoints)
@@ -416,9 +426,9 @@ static void PSplotRegression(FILE *fp, PLOT_INFO *plot, DATASET_INFO *x, DATASET
   void fitcurve(DATASET_INFO *x, DATASET_INFO *y, int ideg);
  
   printf("X axis variable: %s from %s\n",
-		x->varInfo->name, dataFile[x->fileIndex].fileName);
+		x->varInfo->name, dataFile[x->fileIndex].fileName.c_str());
   printf("Y axis variable: %s from %s\n",
-		y->varInfo->name, dataFile[y->fileIndex].fileName);
+		y->varInfo->name, dataFile[y->fileIndex].fileName.c_str());
 
   fitcurve(x, y, ShowRegression);
 
@@ -500,13 +510,13 @@ static void doLegendLineItemPS(FILE *fp, PLOT_INFO *plot, DATASET_INFO *set, int
       }
 
     sprintf(buffer, "%s (%s), %d s/sec",
-	set->varInfo->name, set->stats.units, set->varInfo->OutputRate);
+	set->varInfo->name, set->stats.units.c_str(), set->varInfo->OutputRate);
 
     PSstatsLegend(fp, plot, buffer, CurrentDataSet+2, set);
     }
   else
     {
-    sprintf(buffer, "%s (%s)", set->varInfo->name, set->stats.units);
+    sprintf(buffer, "%s (%s)", set->varInfo->name, set->stats.units.c_str());
 
     if (showLine)
       {
@@ -523,7 +533,7 @@ static void doLegendLineItemPS(FILE *fp, PLOT_INFO *plot, DATASET_INFO *set, int
     if (printerSetup.color)
       fprintf(fp, "stroke\n0 0 0 setrgbcolor\n");
  
-    sprintf(buffer, "%s (%s)", set->varInfo->name, set->stats.units);
+    sprintf(buffer, "%s (%s)", set->varInfo->name, set->stats.units.c_str());
 
     fprintf(fp, moveto, plot->ps.xLegendText, y);
     fprintf(fp, show, buffer);

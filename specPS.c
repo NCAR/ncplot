@@ -77,7 +77,7 @@ void specPostScript(Widget w, XtPointer client, XtPointer call)
     return;
 
   PSheader(fp, &specPlot);
-  PStitles(fp, &specPlot);
+  PStitles(fp, &specPlot, false);
   PSbox(fp, &specPlot);
 
   numXpix = (float)specPlot.ps.HD / specPlot.Xaxis.nMajorTics;
@@ -133,7 +133,7 @@ printf("specPS.c:  No multiple spec print, when added, makesure psd[0] -> psd[se
 static void printLogLog(FILE *fp, PLOT_INFO *plot, double *dataP)
 {
   char		*p;
-  int		i, nPts, set, nSets;
+  size_t	i, nPts;
   float		x, y;
   double	freq, waveNumber = 0, *plotData, datumY, xMin, yMin, xScale,
 		yScale;
@@ -220,8 +220,8 @@ static void printLogLog(FILE *fp, PLOT_INFO *plot, double *dataP)
    */
   for (i = 1; i <= psd[0].M; ++i)
     {
-    if ((int)(startFreq() / psd[0].freqPerBin) == i ||
-        (int)(endFreq() / psd[0].freqPerBin) == i)
+    if ((size_t)(startFreq() / psd[0].freqPerBin) == i ||
+        (size_t)(endFreq() / psd[0].freqPerBin) == i)
       {
       freq = psd[0].freqPerBin * i;
 
@@ -269,7 +269,7 @@ static void printLogLog(FILE *fp, PLOT_INFO *plot, double *dataP)
 static void printSemiLog(FILE *fp, PLOT_INFO *plot, double *dataP)
 {
   char		*p;
-  int		i, nPts;
+  size_t	i, nPts;
   float		x, y;
   double	freq, waveNumber = 0, *plotData, yScale, xScale, xMin;
 
@@ -343,8 +343,8 @@ static void printSemiLog(FILE *fp, PLOT_INFO *plot, double *dataP)
    */
   for (i = 1; i <= psd[0].M; ++i)
     {
-    if ((int)(startFreq() / psd[0].freqPerBin) == i ||
-        (int)(endFreq() / psd[0].freqPerBin) == i)
+    if ((size_t)(startFreq() / psd[0].freqPerBin) == i ||
+        (size_t)(endFreq() / psd[0].freqPerBin) == i)
       {
       freq = psd[0].freqPerBin * i;
 

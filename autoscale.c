@@ -32,9 +32,7 @@ static NR_TYPE	RoundBig(NR_TYPE x, int round), expt(NR_TYPE a, int n);
 /* -------------------------------------------------------------------- */
 void AutoScaleXY()
 {
-  int	p;
-
-  for (p = 0; p < NumberOfXYpanels; ++p)
+  for (size_t p = 0; p < NumberOfXYpanels; ++p)
     if (xyyPlot[p].autoScale)
       {
       scaleAxis(&xyyPlot[p].Xaxis);
@@ -126,12 +124,10 @@ static void DoEqualScale(struct axisInfo *xAxis, struct axisInfo *yAxis)
 /* -------------------------------------------------------------------- */
 void AutoScale()
 {
-  int	i;
-
   if (NumberDataSets == 0)
     return;
 
-  for (i = 0; i < NumberOfPanels; ++i)
+  for (size_t i = 0; i < NumberOfPanels; ++i)
     if (mainPlot[i].autoScale)
       {
       scaleAxis(&mainPlot[i].Yaxis[LEFT_SIDE]);

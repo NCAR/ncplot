@@ -49,8 +49,8 @@ void findMinMax();
 /* -------------------------------------------------------------------- */
 void GetDataFileName(Widget w, XtPointer client, XtPointer call)
 {
-  QueryFile("Enter Data file to read:", DataPath, (XtCallbackProc)client);
-
+  QueryFile("Enter Data file to read:", (char *)DataPath.c_str(),
+	(XtCallbackProc)client);
 }
 
 /* -------------------------------------------------------------------- */
@@ -86,26 +86,26 @@ void ToggleUTC(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void ToggleLabels(Widget w, XtPointer client, XtPointer call)
 {
-  int	i;
+  size_t i;
 
   allLabels = !allLabels;
 
   for (i = 0; i < NumberOfPanels-1; ++i)
     if (allLabels)
-      strcpy(mainPlot[i].Xaxis.label, mainPlot[NumberOfPanels-1].Xaxis.label);
+      mainPlot[i].Xaxis.label = mainPlot[NumberOfPanels-1].Xaxis.label;
     else
-      mainPlot[i].Xaxis.label[0] = '\0';
+      mainPlot[i].Xaxis.label = "";
 
   for (i = 1; i < NumberOfXYpanels; ++i)
     if (allLabels)
       {
-      strcpy(xyyPlot[i].Yaxis[0].label, xyyPlot[0].Yaxis[0].label);
-      strcpy(xyyPlot[i].Yaxis[0].label, xyyPlot[0].Yaxis[0].label);
+      xyyPlot[i].Yaxis[0].label = xyyPlot[0].Yaxis[0].label;
+      xyyPlot[i].Yaxis[0].label = xyyPlot[0].Yaxis[0].label;
       }
     else
       {
-      xyyPlot[i].Yaxis[0].label[0] = '\0';
-      xyyPlot[i].Yaxis[0].label[0] = '\0';
+      xyyPlot[i].Yaxis[0].label = "";
+      xyyPlot[i].Yaxis[0].label = "";
       }
 
   if (Interactive)
@@ -142,7 +142,6 @@ void ToggleGrid(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void ToggleTracking(Widget w, XtPointer client, XtPointer call)
 {
-  int	i;
   XmToggleButtonCallbackStruct *cb = (XmToggleButtonCallbackStruct *)call;
 
   if (cb->set)
@@ -226,31 +225,34 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
       if (choosingXaxis())
         {
         if (xyzSet[0].varInfo)
-          free((char *)xyzSet[0].data);
+          delete [] xyzSet[0].data;
 
         AddVariable(&xyzSet[0], position);
-        sprintf(xyzPlot.Xaxis.label, "%s (%s)",
-		xyzSet[0].varInfo->name, xyzSet[0].stats.units);
+        sprintf(buffer, "%s (%s)",
+		xyzSet[0].varInfo->name, xyzSet[0].stats.units.c_str());
+        xyzPlot.Xaxis.label = buffer;
         }
 
       if (choosingYaxis())
         {
         if (xyzSet[2].varInfo)
-          free((char *)xyzSet[2].data);
+          delete [] xyzSet[2].data;
 
         AddVariable(&xyzSet[2], position);
-        sprintf(xyzPlot.Zaxis.label, "%s (%s)",
-		xyzSet[2].varInfo->name, xyzSet[2].stats.units);
+        sprintf(buffer, "%s (%s)",
+		xyzSet[2].varInfo->name, xyzSet[2].stats.units.c_str());
+        xyzPlot.Zaxis.label = buffer;
         }
 
       if (choosingZaxis())
         {
         if (xyzSet[1].varInfo)
-          free((char *)xyzSet[1].data);
+          delete [] xyzSet[1].data;
 
         AddVariable(&xyzSet[1], position);
-        sprintf(xyzPlot.Yaxis[0].label, "%s (%s)",
-                xyzSet[1].varInfo->name, xyzSet[1].stats.units);
+        sprintf(buffer, "%s (%s)",
+                xyzSet[1].varInfo->name, xyzSet[1].stats.units.c_str());
+        xyzPlot.Yaxis[0].label = buffer;
         }
 
       break;
@@ -264,7 +266,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void ClearPlot(Widget w, XtPointer client, XtPointer call)
 {
-  int   i, set;
+  size_t i, set;
  
   ClearAnnotations();
 
@@ -275,7 +277,7 @@ void ClearPlot(Widget w, XtPointer client, XtPointer call)
         {
         dataSet[set].varInfo = NULL;
         dataSet[set].nPoints = 0;
-        free((char *)dataSet[set].data);
+        delete [] dataSet[set].data;
         }
 
       NumberDataSets = 0;
@@ -284,15 +286,15 @@ void ClearPlot(Widget w, XtPointer client, XtPointer call)
  
     case XY_PLOT:
       for (i = 0; i < MAX_PANELS; ++i)
-        xyyPlot[i].Xaxis.label[0] = xyyPlot[i].Yaxis[0].label[0] =
-            xyyPlot[i].Yaxis[1].label[0] = '\0';
+        xyyPlot[i].Xaxis.label = xyyPlot[i].Yaxis[0].label =
+            xyyPlot[i].Yaxis[1].label = "";
 
       for (set = 0; set < NumberXYXsets; ++set)
         if (xyXset[set].varInfo)
           {
           xyXset[set].varInfo = NULL;
           xyXset[set].nPoints = 0;
-          free((char *)xyXset[set].data);
+          delete [] xyXset[set].data;
           }
 
       for (set = 0; set < NumberXYYsets; ++set)
@@ -300,7 +302,7 @@ void ClearPlot(Widget w, XtPointer client, XtPointer call)
           {
           xyYset[set].varInfo = NULL;
           xyYset[set].nPoints = 0;
-          free((char *)xyYset[set].data);
+          delete [] xyYset[set].data;
           }
 
       ShowRegression = 0;
@@ -310,15 +312,15 @@ void ClearPlot(Widget w, XtPointer client, XtPointer call)
       break;
  
     case XYZ_PLOT:
-      xyzPlot.Xaxis.label[0] = xyzPlot.Yaxis[0].label[0] =
-            xyzPlot.Yaxis[1].label[0] = '\0';
+      xyzPlot.Xaxis.label = xyzPlot.Yaxis[0].label =
+            xyzPlot.Yaxis[1].label = "";
 
       for (set = 0; set < 3; ++set)
         if (xyzSet[set].varInfo)
           {
           xyzSet[set].varInfo = NULL;
           xyzSet[set].nPoints = 0;
-          free((char *)xyzSet[set].data);
+          delete [] xyzSet[set].data;
           }
 
       break;
@@ -341,8 +343,6 @@ void ClearRegression(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void LinearRegression(Widget w, XtPointer client, XtPointer call)
 {
-  int nDegree = 1;
-
   if (NumberXYYsets < 1 || NumberXYXsets < 1)
     return;
 

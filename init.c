@@ -31,7 +31,7 @@ char *insVariables[3], *gpsVariables[3], *gpsCorrected[3], *windVariables[3];
 /* --------------------------------------------------------------------- */
 void Initialize()
 {
-  int		i;
+  size_t	i;
   char		*p;
   pthread_t	tid;
 
@@ -45,17 +45,17 @@ void Initialize()
 
   parmsFile = outFile = timeSeg = NULL;
 
-  Interactive		= True;
-  DataChanged		= True;
-  AsciiWinOpen		= False;
-  Color			= False;
-  Freeze		= False;
-  UTCseconds		= False;
-  LandMarks		= False;
-  ScatterPlot		= False;
-  WindBarbs		= False;
-  Statistics		= True;
-  allLabels		= True;
+  Interactive		= true;
+  DataChanged		= true;
+  AsciiWinOpen		= false;
+  Color			= false;
+  Freeze		= false;
+  UTCseconds		= false;
+  LandMarks		= false;
+  ScatterPlot		= false;
+  WindBarbs		= false;
+  Statistics		= true;
+  allLabels		= true;
   ShowRegression	= 0;
 
   CurrentDataFile	= 0;
@@ -68,7 +68,7 @@ void Initialize()
   NumberOfXYpanels	= 1;
   LineThickness		= 1;
 
-  ProjectToXY = ProjectToBack = False;
+  ProjectToXY = ProjectToBack = false;
 
   nDirectionArrows = 0;
   nTimeStamps = 0;
@@ -85,7 +85,7 @@ void Initialize()
   for (i = 0; i < 3; ++i)
     xyzSet[i].varInfo = NULL;
 
-  strcpy(tasVarName, "TASX");
+  tasVarName = "TASX";
   tas.data = NULL;
 
   for (i = 0; i < MAX_DATAFILES; ++i)
@@ -94,15 +94,15 @@ void Initialize()
   for (i = 0; i < MAX_PANELS; ++i)
     {
     initPlot(&mainPlot[i]);
-    mainPlot[i].windowOpen = True;
+    mainPlot[i].windowOpen = true;
 
     initPlot(&xyyPlot[i]);
     xyyPlot[i].plotType		= XY_PLOT;
     xyyPlot[i].x.windowWidth	= 625;
     xyyPlot[i].x.windowHeight	= 800;
-    strcpy(xyyPlot[i].Xaxis.label, "");
+    xyyPlot[i].Xaxis.label	= "";
     xyyPlot[i].Yaxis[0].nMajorTics = xyyPlot[i].Yaxis[1].nMajorTics =
-                                xyyPlot[i].Xaxis.nMajorTics;
+			xyyPlot[i].Xaxis.nMajorTics;
     }
 
 
@@ -118,16 +118,16 @@ void Initialize()
   xyzPlot.x.windowHeight	= 625;
   xyzPlot.Xaxis.nMinorTics	= 0;
   xyzPlot.Yaxis[0].nMinorTics	= 0;
-  strcpy(xyzPlot.Xaxis.label, "");
+  xyzPlot.Xaxis.label = "";
 
 
   specPlot.plotType		= XY_PLOT;
-  specPlot.Xaxis.logScale	= True;
+  specPlot.Xaxis.logScale	= true;
   specPlot.Xaxis.nMinorTics	= 10;
   specPlot.Yaxis[0].nMinorTics	= 10;
   specPlot.Xaxis.min		= 0.001;
   specPlot.Xaxis.max		= 1000;
-  strcpy(specPlot.Xaxis.label, "Frequency (Hz)");
+  specPlot.Xaxis.label = "Frequency (Hz)";
 
   for (i = 0; i < MAX_PSD; ++i)
     {
@@ -142,22 +142,22 @@ void Initialize()
 
   if ((p = (char *)getenv("DATA_DIR")) != NULL)
     {
-    strcpy(DataPath, p);
-    strcat(DataPath, "/*.nc");
+    DataPath = p;
+    DataPath += "/*.nc";
     }
   else
-    strcpy(DataPath, "/*");
+    DataPath = "/*";
 
 #ifdef SVR4
-  strcpy(printerSetup.lpCommand, "lp -o nobanner");
+  printerSetup.lpCommand = "lp -o nobanner";
 #else
-  strcpy(printerSetup.lpCommand, "lpr -h");
+  printerSetup.lpCommand = "lpr -h";
 #endif
   printerSetup.width = 8.5;
   printerSetup.height = 11.0;
   printerSetup.shape = LANDSCAPE;
   printerSetup.dpi = 288;
-  printerSetup.color = False;
+  printerSetup.color = false;
 
   if (RealTime)
     {
@@ -189,15 +189,13 @@ void Initialize()
 /* --------------------------------------------------------------------- */
 static void initPlot(PLOT_INFO *plot)
 {
-  memset((char *)plot, 0, sizeof(PLOT_INFO));
-
-  plot->windowOpen	= False;
-  plot->grid		= False;
-  plot->autoScale	= True;
-  plot->autoTics	= True;
+  plot->windowOpen	= false;
+  plot->grid		= false;
+  plot->autoScale	= true;
+  plot->autoTics	= true;
   plot->plotType	= TIME_SERIES;
 
-  strcpy(plot->Xaxis.label, "UTC");
+  plot->Xaxis.label = "UTC";
 
   plot->Xaxis.nMajorTics	= 5;
   plot->Xaxis.nMinorTics	= 2;
@@ -241,7 +239,7 @@ void ProcessArgs(char **argv)
           break;
 
         case 'h':
-          Interactive = False;
+          Interactive = false;
           break;
 */
         case 's':	/* setup file	*/
@@ -255,20 +253,20 @@ void ProcessArgs(char **argv)
           if (*++argv == NULL)
             return;
 
-          timeSeg = (char *)GetMemory((unsigned)strlen(*argv)+1);
+          timeSeg = new char[(unsigned)strlen(*argv)+1];
 
           strcpy(timeSeg, *argv);
           break;
 
         case 'r':	/* Realtime		*/
-          RealTime = True;
-          strcpy(dataFile[0].fileName, "/home/tmp/RealTime.nc");
+          RealTime = true;
+          dataFile[0].fileName = "/home/tmp/RealTime.nc";
           NumberDataFiles = 1;
           break;
         }
     else
       {
-      strcpy(dataFile[0].fileName, *argv);
+      dataFile[0].fileName = *argv;
       NumberDataFiles = 1;
       }
 

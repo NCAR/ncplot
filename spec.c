@@ -161,7 +161,7 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
       XtSetSensitive(pmOptButt[2], True);
       XtSetSensitive(pmOptButt[3], True);
 
-      nSets = MIN(NumberDataSets, MAX_PSD);
+      nSets = std::min(NumberDataSets, MAX_PSD);
 
       for (i = 1; i < nSets; ++i)
         {
@@ -230,16 +230,16 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void ComputeSpectrum()
 {
-  int		i, pos, KxM, set, nSets;
+  size_t	i, pos, KxM, set, nSets;
   double	cf;
-  float		*detrendedData;
+  float		*detrendedData = 0;
   
-  nSets = MIN(NumberDataSets, MAX_PSD);
+  nSets = std::min(NumberDataSets, MAX_PSD);
 
   for (set = 0; set < nSets; ++set)
     {
-    if (psd[set].Pxx) free(psd[set].Pxx);
-    if (psd[set].Qxx) free(psd[set].Qxx);
+    delete [] psd[set].Pxx;
+    delete [] psd[set].Qxx;
 
     psd[set].Pxx = psd[set].Qxx = NULL;
 
@@ -252,8 +252,8 @@ void ComputeSpectrum()
     psd[0].K += 2;
     KxM = (psd[0].K + 1) * psd[0].M;
 
-    detrendedData = (float *)GetMemory(sizeof(float) * KxM);
-    psd[set].Pxx = (double *)GetMemory(sizeof(double) * (psd[0].M+1));
+    detrendedData = new float[KxM];
+    psd[set].Pxx = new double[psd[0].M+1];
 
 
     /* This computation of i, is to center the data in the zero padding.
@@ -275,8 +275,9 @@ void ComputeSpectrum()
       for (i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= i;
 
-      sprintf(specPlot.Yaxis[0].label, "f x PSD of %s (%s^2)",
-  	dataSet[0].varInfo->name, dataSet[0].stats.units);
+      sprintf(buffer, "f x PSD of %s (%s^2)",
+  	dataSet[0].varInfo->name, dataSet[0].stats.units.c_str());
+      specPlot.Yaxis[0].label = buffer;
       }
     else
     if (multiplyByFreq53())
@@ -284,8 +285,9 @@ void ComputeSpectrum()
       for (i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= pow((double)i, 5.0/3.0);
 
-      sprintf(specPlot.Yaxis[0].label, "f^(5/3) x PSD of %s (%s^2)",
-  	dataSet[0].varInfo->name, dataSet[0].stats.units);
+      sprintf(buffer, "f^(5/3) x PSD of %s (%s^2)",
+  	dataSet[0].varInfo->name, dataSet[0].stats.units.c_str());
+      specPlot.Yaxis[0].label = buffer;
       }
     else
       {
@@ -294,19 +296,20 @@ void ComputeSpectrum()
       for (i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= cf;
 
-      sprintf(specPlot.Yaxis[0].label, "PSD of %s (%s^2 / Hz)",
-  	dataSet[0].varInfo->name, dataSet[0].stats.units);
+      sprintf(buffer, "PSD of %s (%s^2 / Hz)",
+  	dataSet[0].varInfo->name, dataSet[0].stats.units.c_str());
+      specPlot.Yaxis[0].label = buffer;
       }
     }
 
-  free(detrendedData);
+  delete [] detrendedData;
 
 }	/* END COMPUTESPECTRUM */
 
 /* -------------------------------------------------------------------- */
 void AutoScaleSpectralWindow()
 {
-  int   i;
+  size_t i;
   struct axisInfo *Yaxis = &specPlot.Yaxis[0];
  
   if (specPlot.autoTics)
@@ -384,8 +387,8 @@ if (psd[0].display == SPECTRA && NumberDataSets > 1)
     if (psd[0].Pxx[i] < 0.0)
       continue;
  
-    Yaxis->smallestValue = MIN(Yaxis->smallestValue, psd[0].Pxx[i]);
-    Yaxis->biggestValue = MAX(Yaxis->biggestValue, psd[0].Pxx[i]);
+    Yaxis->smallestValue = std::min(Yaxis->smallestValue, psd[0].Pxx[i]);
+    Yaxis->biggestValue = std::max(Yaxis->biggestValue, psd[0].Pxx[i]);
     }
  
   if (specPlot.autoTics)
@@ -473,29 +476,29 @@ void ToggleWaveNumberScale(Widget w, XtPointer client, XtPointer call)
 
     if (!plotWaveLength()) {
       if (tas.data) {
-        free(tas.data);
+        delete [] tas.data;
         tas.data = NULL;
         }
  
-      if (LoadVariable(&tas, tasVarName) == ERR)
+      if (LoadVariable(&tas, (char*)tasVarName.c_str()) == ERR)
         {
-        sprintf(buffer, "Can't locate True Airspeed variable %s.", tasVarName);
+        sprintf(buffer, "Can't locate True Airspeed variable %s.", tasVarName.c_str());
         ShowError(buffer);
         }
       }
 
     specPlot.Xaxis.min = (min * 2.0*M_PI / tas.stats.mean);
     specPlot.Xaxis.max = (max * 2.0*M_PI / tas.stats.mean)+1;
-    strcpy(specPlot.Xaxis.label, "Wave Number (rad/m)");
+    specPlot.Xaxis.label = "Wave Number (rad/m)";
     }
   else
     {
     specPlot.Xaxis.min = min;
     specPlot.Xaxis.max = max;
-    strcpy(specPlot.Xaxis.label, "Frequency (Hz)");
+    specPlot.Xaxis.label = "Frequency (Hz)";
 
     if (!plotWaveLength()) {
-      free(tas.data);
+      delete [] tas.data;
       tas.data = NULL;
       }
     }
@@ -512,14 +515,14 @@ void ToggleWaveLengthScale(Widget w, XtPointer client, XtPointer call)
     {
     if (!plotWaveNumber()) {
       if (tas.data) {
-        free(tas.data);
+        delete [] tas.data;
         tas.data = NULL;
         }
  
-      if (LoadVariable(&tas, tasVarName) == ERR)
+      if (LoadVariable(&tas, (char*)tasVarName.c_str()) == ERR)
         {
         XmToggleButtonSetState(pmOptButt[5], False, False);
-        sprintf(buffer, "Can't locate True Airspeed variable %s.", tasVarName);
+        sprintf(buffer, "Can't locate True Airspeed variable %s.", tasVarName.c_str());
         ShowError(buffer);
         return;
         }
@@ -528,7 +531,7 @@ void ToggleWaveLengthScale(Widget w, XtPointer client, XtPointer call)
   else
     {
     if (!plotWaveNumber()) {
-      free(tas.data);
+      delete [] tas.data;
       tas.data = NULL;
       }
     }
@@ -616,13 +619,9 @@ int eliaPoints()
 /* -------------------------------------------------------------------- */
 static void CreateSpectrumWindow()
 {
-  int		i;
   Widget	optRC, frame, plRC, rc, RC[8], b[8], pb;
-  Widget	pfPD, slPD, winPD, dtPD;
-  Widget	pfButts[6], slButts[6], winButts[8], dtButts[8];
   Cardinal	n;
   Arg		args[8];
-  XmString	name;
 
 
   if (SpectrumWindow)
@@ -860,14 +859,14 @@ static void CreateSpectrumWindow()
 /* -------------------------------------------------------------------- */
 static void setDefaults()
 {
-  int	i, x;
+  size_t i, x;
   Arg	args[2];
   XmString name;
 
   /* Set default values for SegLen, Detrend, and Window.
    */
   for (x = i = 0; segLenInfo[i].name; ++i)
-    if ((int)segLenInfo[i].client == psd[0].M)
+    if ((size_t)segLenInfo[i].client == psd[0].M)
       x = i;
 
   name = XmStringCreateLocalized(segLenInfo[x].name);

@@ -38,7 +38,7 @@ static void	CreateExpressionWindow();
 
 
 /* DataSets used by variaous expressions.  Export for dataIO.c */
-int		NumberExpSets = 0;
+size_t		NumberExpSets = 0;
 DATASET_INFO	expSet[MAX_EXP_VARS];
 
 float	scanit(char *, int);
@@ -47,7 +47,7 @@ float	scanit(char *, int);
 /* -------------------------------------------------------------------- */
 void ComputeExp(DATASET_INFO *set)
 {
-  int	i;
+  size_t i;
   bool	saveState = Freeze;
   char	theExpression[256];
 
@@ -57,10 +57,7 @@ void ComputeExp(DATASET_INFO *set)
 printf("ComputeExp = %d, exp=%s", set->nPoints, theExpression);
 
   for (i = 0; i < set->nPoints; ++i)
-    {
     set->data[i] = scanit(theExpression, i);
-//printf("%f\n", set->data[i]);
-    }
 
   Freeze = saveState;
 
@@ -85,7 +82,8 @@ void GetExpression(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
 {
-  int		i, j, nExps, fileIndx, indx;
+  int		indx;
+  size_t	i, nExps, fileIndx;
   VARTBL	*vi;
   char		exp[256], *e, *p, varName[NAMELEN], theExpression[256];
 
@@ -117,17 +115,16 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
 
   /* Allocate memory for the new variables and/or add them to datafile zero.
    */
-  for (	indx = dataFile[0].nVariables-1;
+  for (	indx = dataFile[0].Variable.size()-1;
 	strncmp(dataFile[0].Variable[indx]->name, "USER", 4) == 0; --indx)
-    FreeMemory(dataFile[0].Variable[indx]->expression);
+    delete [] dataFile[0].Variable[indx]->expression;
 
 
   for (i = 0; i < nExps; ++i)
-    if (++indx >= dataFile[0].nVariables)
+    if (++indx >= (int)dataFile[0].Variable.size())
       {
-printf("Allocating a new variable\n");
-      vi = dataFile[0].Variable[dataFile[0].nVariables++]
-                = (VARTBL *)GetMemory(sizeof(VARTBL));
+      vi = new VARTBL;
+      dataFile[0].Variable.push_back(vi);
 
       sprintf(vi->name, "USER%d", i+1);
       vi->OutputRate = 1;
@@ -140,7 +137,7 @@ printf("Allocating a new variable\n");
    */
   for (i = 0; i < NumberExpSets; ++i) {
     if (expSet[i].nPoints > 0) {
-      FreeMemory(expSet[i].data);
+      delete [] expSet[i].data;
       expSet[i].nPoints = 0;
       }
     }
@@ -190,8 +187,7 @@ printf("Allocating a new variable\n");
 
       fileIndx = CurrentDataFile;
 
-      if ((indx = SearchTable((char **)dataFile[fileIndx].Variable,
-	dataFile[fileIndx].nVariables, varName)) == ERR)
+      if ((indx = SearchTable(dataFile[fileIndx].Variable, varName)) == ERR)
         {
         sprintf(buffer, "Parse error, undefined variable %s.", varName);
         HandleError(buffer, Interactive, IRET);
@@ -211,12 +207,11 @@ printf("Allocating a new variable\n");
     /* Add new variable to the *first* data file.
      */
     sprintf(buffer, "USER%d", i+1);
-//printf("  >> %d\n", SearchTable((char **)dataFile[0].Variable,dataFile[0].nVariables, buffer));
+//printf("  >> %d\n", SearchTable((char **)dataFile[0].Variable,dataFile[0].Variable.size(), buffer));
 
-    vi = dataFile[0].Variable[SearchTable((char **)dataFile[0].Variable,
-		dataFile[0].nVariables, buffer)];
+    vi = dataFile[0].Variable[SearchTable(dataFile[0].Variable, buffer)];
 
-    vi->expression = (char *)GetMemory(256);
+    vi->expression = new char[256];
     strcpy(vi->expression, theExpression);
     }
 

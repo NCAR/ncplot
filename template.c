@@ -111,7 +111,7 @@ static void save_CB2(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 {
-  int	i, x;
+  size_t i, x;
   FILE	*fp;
   bool	saveState = Freeze;
 
@@ -166,9 +166,9 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 
       for (i = 0; i < NumberOfPanels; ++i)
         {
-        fprintf(fp, "xLabel%d=%s\n", i, mainPlot[i].Xaxis.label);
-        fprintf(fp, "yLabel%dL=%s\n", i, mainPlot[i].Yaxis[0].label);
-        fprintf(fp, "yLabel%dR=%s\n", i, mainPlot[i].Yaxis[1].label);
+        fprintf(fp, "xLabel%d=%s\n", i, mainPlot[i].Xaxis.label.c_str());
+        fprintf(fp, "yLabel%dL=%s\n", i, mainPlot[i].Yaxis[0].label.c_str());
+        fprintf(fp, "yLabel%dR=%s\n", i, mainPlot[i].Yaxis[1].label.c_str());
         }
 
       break;
@@ -210,9 +210,9 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 
       for (i = 0; i < NumberOfXYpanels; ++i)
         {
-        fprintf(fp, "xLabel%d=%s\n", i, xyyPlot[i].Xaxis.label);
-        fprintf(fp, "yLabel%dL=%s\n", i, xyyPlot[i].Yaxis[0].label);
-        fprintf(fp, "yLabel%dR=%s\n", i, xyyPlot[i].Yaxis[1].label);
+        fprintf(fp, "xLabel%d=%s\n", i, xyyPlot[i].Xaxis.label.c_str());
+        fprintf(fp, "yLabel%dL=%s\n", i, xyyPlot[i].Yaxis[0].label.c_str());
+        fprintf(fp, "yLabel%dR=%s\n", i, xyyPlot[i].Yaxis[1].label.c_str());
         }
 
       break;
@@ -249,9 +249,9 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
           fprintf(fp, "Axis=%d, VarName=%s\n", i, xyzSet[i].varInfo->name);
         }
 
-      fprintf(fp, "xLabel=%s\n", xyzPlot.Xaxis.label);
-      fprintf(fp, "yLabel=%s\n", xyzPlot.Yaxis[0].label);
-      fprintf(fp, "zLabel=%s\n", xyzPlot.Zaxis.label);
+      fprintf(fp, "xLabel=%s\n", xyzPlot.Xaxis.label.c_str());
+      fprintf(fp, "yLabel=%s\n", xyzPlot.Yaxis[0].label.c_str());
+      fprintf(fp, "zLabel=%s\n", xyzPlot.Zaxis.label.c_str());
 
       break;
     }
@@ -277,7 +277,7 @@ void LoadTemplate(Widget w, XtPointer client, XtPointer call)
 static void load_CB2(Widget w, XtPointer client, XtPointer call)
 {
   FILE	*fp;
-  int	i, x, x1, x2, x3, x4, x5, x6, x7, x8, version;
+  size_t i, x, x1, x2, x3, x4, x5, x6, x7, x8, version;
   float	min0, min1, max0, max1;
   char	s[32], *p;
   XmString      name;
@@ -332,7 +332,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
       for (i = 0; i < NumberOfPanels; ++i)
         {
         fgets(buffer, 512, fp);
-        sscanf(buffer, "Grid=%d, AutoScale=%d", &x1, &x2, &x3);
+        sscanf(buffer, "Grid=%d, AutoScale=%d, AutoTics=%d", &x1, &x2, &x3);
         mainPlot[i].grid = x1;
         mainPlot[i].autoScale = x2;
         mainPlot[i].autoTics = x3;
@@ -384,8 +384,8 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           {
           DataChanged = True;
           AddVariable(&dataSet[NumberDataSets++], x2 - 1);
-          strcpy(mainPlot[CurrentPanel].Yaxis[x1].label,
-			dataSet[NumberDataSets-1].stats.units);
+          mainPlot[CurrentPanel].Yaxis[x1].label =
+			dataSet[NumberDataSets-1].stats.units;
 
           dataSet[NumberDataSets-1].scaleLocation = x1;
           }
@@ -404,15 +404,15 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           {
           fgets(buffer, 512, fp);
           buffer[strlen(buffer)-1] = '\0';  /* Remove newline */
-          strcpy(mainPlot[i].Xaxis.label, strchr(buffer, '=')+1);
+          mainPlot[i].Xaxis.label = strchr(buffer, '=')+1;
 
           fgets(buffer, 512, fp);
           buffer[strlen(buffer)-1] = '\0';  /* Remove newline */
-          strcpy(mainPlot[i].Yaxis[0].label, strchr(buffer, '=')+1);
+          mainPlot[i].Yaxis[0].label = strchr(buffer, '=')+1;
 
           fgets(buffer, 512, fp);
           buffer[strlen(buffer)-1] = '\0';  /* Remove newline */
-          strcpy(mainPlot[i].Yaxis[1].label, strchr(buffer, '=')+1);
+          mainPlot[i].Yaxis[1].label = strchr(buffer, '=')+1;
           }
         }
 
@@ -511,15 +511,15 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
             {
             DataChanged = True;
             AddVariable(&xyXset[NumberXYXsets++], x2 - 1);
-            strcpy(xyyPlot[CurrentPanel].Xaxis.label,
-			xyXset[NumberXYXsets-1].stats.units);
+            xyyPlot[CurrentPanel].Xaxis.label =
+			xyXset[NumberXYXsets-1].stats.units;
             }
           else
             {
             DataChanged = True;
             AddVariable(&xyYset[NumberXYYsets++], x2 - 1);
-            strcpy(xyyPlot[CurrentPanel].Yaxis[x1].label,
-			xyYset[NumberXYYsets-1].stats.units);
+            xyyPlot[CurrentPanel].Yaxis[x1].label =
+			xyYset[NumberXYYsets-1].stats.units;
             xyYset[NumberXYYsets].scaleLocation = x1;
             }
           }
@@ -538,15 +538,15 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           {
           fgets(buffer, 512, fp);
           buffer[strlen(buffer)-1] = '\0';  /* Remove newline */
-          strcpy(xyyPlot[i].Xaxis.label, strchr(buffer, '=')+1);
+          xyyPlot[i].Xaxis.label = strchr(buffer, '=')+1;
 
           fgets(buffer, 512, fp);
           buffer[strlen(buffer)-1] = '\0';  /* Remove newline */
-          strcpy(xyyPlot[i].Yaxis[0].label, strchr(buffer, '=')+1);
+          xyyPlot[i].Yaxis[0].label = strchr(buffer, '=')+1;
 
           fgets(buffer, 512, fp);
           buffer[strlen(buffer)-1] = '\0';  /* Remove newline */
-          strcpy(xyyPlot[i].Yaxis[1].label, strchr(buffer, '=')+1);
+          xyyPlot[i].Yaxis[1].label = strchr(buffer, '=')+1;
           }
         }
 
@@ -591,10 +591,10 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
       else
       if (version == 3)
         sscanf(buffer, "Yaxis - Invert=%d, log=%d, bounds=%e %e",
-                &x1, &x2, &x3, &x4, &min0, &max0);
+                &x1, &x2, &min0, &max0);
       else
         sscanf(buffer, "Yaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d",
-                &x1, &x2, &x3, &x4, &min0, &max0, &x5, &x6);
+                &x1, &x2, &min0, &max0, &x5, &x6);
 
       xyzPlot.Yaxis[0].invertAxis = x1;
       xyzPlot.Yaxis[0].logScale = x2;
@@ -654,18 +654,21 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           switch (x1)
             {
             case X_AXIS >> 1:
-              sprintf(xyzPlot.Xaxis.label, "%s (%s)",
-			xyzSet[x1].varInfo->name, xyzSet[x1].stats.units);
+              sprintf(buffer, "%s (%s)",
+		xyzSet[x1].varInfo->name, xyzSet[x1].stats.units.c_str());
+              xyzPlot.Xaxis.label = buffer;
               break;
 
             case Y_AXIS >> 1:
-              sprintf(xyzPlot.Yaxis[0].label, "%s (%s)",
-			xyzSet[x1].varInfo->name, xyzSet[x1].stats.units);
+              sprintf(buffer, "%s (%s)",
+		xyzSet[x1].varInfo->name, xyzSet[x1].stats.units.c_str());
+              xyzPlot.Yaxis[0].label = buffer;
               break;
 
             case Z_AXIS >> 1:
-              sprintf(xyzPlot.Zaxis.label, "%s (%s)",
-			xyzSet[x1].varInfo->name, xyzSet[x1].stats.units);
+              sprintf(buffer, "%s (%s)",
+		xyzSet[x1].varInfo->name, xyzSet[x1].stats.units.c_str());
+              xyzPlot.Zaxis.label = buffer;
               break;
             }
           }
@@ -682,15 +685,15 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         {
         fgets(buffer, 512, fp);
         buffer[strlen(buffer)-1] = '\0';  /* Remove newline */
-        strcpy(xyzPlot.Xaxis.label, strchr(buffer, '=')+1);
+        xyzPlot.Xaxis.label = strchr(buffer, '=')+1;
 
         fgets(buffer, 512, fp);
         buffer[strlen(buffer)-1] = '\0';  /* Remove newline */
-        strcpy(xyzPlot.Yaxis[0].label, strchr(buffer, '=')+1);
+        xyzPlot.Yaxis[0].label = strchr(buffer, '=')+1;
 
         fgets(buffer, 512, fp);
         buffer[strlen(buffer)-1] = '\0';  /* Remove newline */
-        strcpy(xyzPlot.Zaxis.label, strchr(buffer, '=')+1);
+        xyzPlot.Zaxis.label = strchr(buffer, '=')+1;
         }
 
       break;

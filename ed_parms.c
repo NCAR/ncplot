@@ -44,25 +44,25 @@ void ApplyParms(Widget parmsText[], PLOT_INFO *plot)
   char	*p;
 
   p = XmTextFieldGetString(parmsText[0]);
-  strcpy(plot->title, p);
+  plot->title = p;
   XtFree(p);
  
   p = XmTextFieldGetString(parmsText[1]);
-  strcpy(plot->subTitle, p);
+  plot->subTitle = p;
   XtFree(p);
  
   p = XmTextFieldGetString(parmsText[2]);
-  strcpy(plot->Xaxis.label, p);
+  plot->Xaxis.label = p;
   XtFree(p);
 
   if (plot->plotType == XYZ_PLOT)
     {
     p = XmTextFieldGetString(parmsText[4]);
-    strcpy(plot->Yaxis[0].label, p);
+    plot->Yaxis[0].label = p;
     XtFree(p);
 
     p = XmTextFieldGetString(parmsText[3]);
-    strcpy(plot->Zaxis.label, p);
+    plot->Zaxis.label = p;
     XtFree(p);
 
     p = XmTextFieldGetString(parmsText[7]);
@@ -100,11 +100,11 @@ void ApplyParms(Widget parmsText[], PLOT_INFO *plot)
   else
     {
     p = XmTextFieldGetString(parmsText[3]);
-    strcpy(plot->Yaxis[0].label, p);
+    plot->Yaxis[0].label = p;
     XtFree(p);
 
     p = XmTextFieldGetString(parmsText[4]);
-    strcpy(plot->Yaxis[1].label, p);
+    plot->Yaxis[1].label = p;
     XtFree(p);
 
     p = XmTextFieldGetString(parmsText[7]);
@@ -175,10 +175,10 @@ void ApplyLogInvert(Widget parms[], PLOT_INFO *plot, int axies)
 /* -------------------------------------------------------------------- */
 void SetDefaults(Widget parmsText[], PLOT_INFO *plot)
 {
-  XmTextFieldSetString(parmsText[0], plot->title);
-  XmTextFieldSetString(parmsText[1], plot->subTitle);
-  XmTextFieldSetString(parmsText[2], plot->Xaxis.label);
-  XmTextFieldSetString(parmsText[3], plot->Yaxis[0].label);
+  XmTextFieldSetString(parmsText[0], (char *)plot->title.c_str());
+  XmTextFieldSetString(parmsText[1], (char *)plot->subTitle.c_str());
+  XmTextFieldSetString(parmsText[2], (char *)plot->Xaxis.label.c_str());
+  XmTextFieldSetString(parmsText[3], (char *)plot->Yaxis[0].label.c_str());
 
   SetXminMax(parmsText, plot);
   SetYminMax(parmsText, plot);
@@ -192,8 +192,8 @@ void SetDefaults(Widget parmsText[], PLOT_INFO *plot)
 
   if (plot->plotType == XYZ_PLOT)
     {
-    XmTextFieldSetString(parmsText[3], plot->Zaxis.label);
-    XmTextFieldSetString(parmsText[4], plot->Yaxis[0].label);
+    XmTextFieldSetString(parmsText[3], (char *)plot->Zaxis.label.c_str());
+    XmTextFieldSetString(parmsText[4], (char *)plot->Yaxis[0].label.c_str());
     SetZminMax(parmsText, plot);
 
     sprintf(buffer, "%d", plot->Zaxis.nMajorTics);
@@ -210,8 +210,8 @@ void SetDefaults(Widget parmsText[], PLOT_INFO *plot)
     }
   else
     {
-    XmTextFieldSetString(parmsText[3], plot->Yaxis[0].label);
-    XmTextFieldSetString(parmsText[4], plot->Yaxis[1].label);
+    XmTextFieldSetString(parmsText[3], (char *)plot->Yaxis[0].label.c_str());
+    XmTextFieldSetString(parmsText[4], (char *)plot->Yaxis[1].label.c_str());
 
     sprintf(buffer, "%d", plot->Yaxis[0].nMajorTics);
     XmTextFieldSetString(parmsText[13], buffer);
@@ -296,9 +296,9 @@ void SetSubtitles()
   int	i;
   char	tmp[256];
 
-  if (strlen(dataFile[0].FlightDate) > 0)
+  if (dataFile[0].FlightDate.length() > 0)
     {
-    strcpy(buffer, dataFile[0].FlightDate);
+    strcpy(buffer, dataFile[0].FlightDate.c_str());
     strcat(buffer, ", ");
     }
   else
@@ -312,12 +312,12 @@ void SetSubtitles()
 
   for (i = 0; i < MAX_PANELS; ++i)
     {
-    strcpy(mainPlot[i].subTitle, buffer);
-    strcpy(xyyPlot[i].subTitle, buffer);
+    mainPlot[i].subTitle = buffer;
+    xyyPlot[i].subTitle = buffer;
     }
 
-  strcpy(specPlot.subTitle, mainPlot[0].subTitle);
-  strcpy(xyzPlot.subTitle, mainPlot[0].subTitle);
+  specPlot.subTitle = mainPlot[0].subTitle;
+  xyzPlot.subTitle = mainPlot[0].subTitle;
 
   SetMainDefaults();
   SetSpecDefaults();

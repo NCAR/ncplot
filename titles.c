@@ -84,14 +84,14 @@ static void SetCategory(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void SetTitles()
 {
-  int		i, len;
+  size_t	i, len;
   char		title[80], category[40];
   DATAFILE_INFO	*curFile = &dataFile[CurrentDataFile];
 
-  XmTextSetString(titleText, curFile->fileName);
+  XmTextSetString(titleText, (char *)curFile->fileName.c_str());
   XmTextInsert(titleText, XmTextGetLastPosition(titleText), "\n\n");
 
-  for (i = 0; i < curFile->nVariables; ++i)
+  for (i = 0; i < curFile->Variable.size(); ++i)
     {
     nc_inq_attlen(curFile->ncid, curFile->Variable[i]->inVarID,
 			"long_name", (size_t *)&len);
@@ -202,13 +202,14 @@ static void PrintTitles(Widget w, XtPointer client, XtPointer call)
   if ((p = getenv("LPDEST")) != NULL)
     printf("Output being sent to %s.\n", p);
 
-  if ((fp = popen(printerSetup.lpCommand, "w")) == NULL)
+  if ((fp = popen(printerSetup.lpCommand.c_str(), "w")) == NULL)
     {
     ShowError("PrintTitles: can't open pipe to 'lp'");
     return;
     }
 
-  fprintf(fp, "%s, %s\n\n", mainPlot[0].title, mainPlot[0].subTitle);
+  fprintf(fp, "%s, %s\n\n",
+	mainPlot[0].title.c_str(), mainPlot[0].subTitle.c_str());
 
   p = XmTextGetString(titleText);
   fprintf(fp, "%s\n", p);

@@ -38,9 +38,10 @@ static Widget	StatsShell = NULL, StatsParmsWindow, parmsText[TOTAL_PARMS],
 
 void SetStatsDefaults();
 
-static void	CreateStatsParmsWindow(), setOutlierList(),
-		setOutlierVar(Widget w, XtPointer client, XtPointer call),
-		ApplyStatsParms(Widget w, XtPointer client, XtPointer call);
+static void	CreateStatsParmsWindow(),
+		setOutlierList(Widget, XtPointer, XtPointer),
+		setOutlierVar(Widget, XtPointer, XtPointer),
+		ApplyStatsParms(Widget, XtPointer, XtPointer);
 
 
 /* -------------------------------------------------------------------- */
@@ -78,7 +79,7 @@ static void setOutlierVar(Widget w, XtPointer client, XtPointer call)
 
   position = ((XmListCallbackStruct *)call)->item_position - 1;
 
-  if (position < NumberDataSets)
+  if ((size_t)position < NumberDataSets)
     set = &dataSet[position];
   else
     {
@@ -92,7 +93,7 @@ static void setOutlierVar(Widget w, XtPointer client, XtPointer call)
       --position;
       }
 
-    if (position < NumberXYYsets)
+    if ((size_t)position < NumberXYYsets)
       set = &xyYset[position];
 
 
@@ -112,7 +113,7 @@ static void ApplyStatsParms(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void setOutlierList()
 {
-  int           i, cnt = 0;
+  size_t	i, cnt = 0;
   XmString      item[MAX_DATASETS<<1];
  
   XmListDeleteAllItems(list);

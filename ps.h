@@ -15,9 +15,9 @@ enum	layout { LANDSCAPE, PORTRAIT };
 
 typedef struct
 	{
-	char	lpCommand[64];
-	float	width, height;	/* Plot Size (!frame size)	*/
-	float	widthRatio, heightRatio, fontRatio;
+	std::string lpCommand;
+	double	width, height;	/* Plot Size (!frame size)	*/
+	double	widthRatio, heightRatio, fontRatio;
 	int	shape;
 	int	dpi;		/* Dots Per Inch		*/
 	bool	color;
@@ -30,7 +30,7 @@ extern const char *show, *rightShow, *lineto, *moveto;
 FILE	*openPSfile(char *outFile);
 
 void	PSheader(FILE *, PLOT_INFO *),
-	PStitles(FILE *, PLOT_INFO *),
+	PStitles(FILE *, PLOT_INFO *, bool),
 	PSlabels(FILE *, PLOT_INFO *),
 	PSbox(FILE *, PLOT_INFO *),
 	PSxTics(FILE *, PLOT_INFO *, bool),

@@ -69,9 +69,9 @@ void CanvasMotion(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
 /* -------------------------------------------------------------------- */
 static void TrackTimeSeries(int x, int y)
 {
-  int		i;
+  size_t	i;
   PLOT_INFO	*plot = NULL;
-  float		xDiff, yDiff;
+  float		yDiff;
   struct axisInfo	*axis;
 
 
@@ -156,7 +156,7 @@ static void TrackTimeSeries(int x, int y)
 /* -------------------------------------------------------------------- */
 static void TrackXY(int x, int y)
 {
-  int		i;
+  size_t	i;
   PLOT_INFO	*plot = NULL;
   float		xDiff, yDiff;
   struct axisInfo	*axis;

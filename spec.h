@@ -16,14 +16,14 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1995-7
 
 #include <Xm/Xm.h>
 
-#define MAX_PSD		4
+static const size_t MAX_PSD = 4;
 
 typedef struct  /* Spectral information.        */
 	{
 	int	display;	/* Plot type, SPEC, CO-SPEC	*/
 
-	int	K;		/* Number of Segments.		*/
-	int	M;		/* 1/2 segment length.		*/
+	size_t	K;		/* Number of Segments.		*/
+	size_t	M;		/* 1/2 segment length.		*/
 	float	frequency;	/* Sample Rate of data.		*/
 
 	void	(*detrendFn)(DATASET_INFO *, float *);
@@ -49,11 +49,11 @@ extern DATASET_INFO	tas;
 
 void	ComputeBandLimitedVariance(Widget w, XtPointer client, XtPointer call);
 
-double Spectrum(float data[], double Pxx[], int K, int M,
-		double (*window)(int, int), int nPoints);
+double Spectrum(float data[], double Pxx[], size_t K, size_t M,
+		double (*window)(int, int), size_t nPoints);
 
 double CoSpectrum(float data1[], float data2[], double Pxx[], double Qxx[],
-		int K, int M, double (*window)(int, int), int nPoints);
+	size_t K, size_t M, double (*window)(int, int), size_t nPoints);
 
 void fft(double *real, double *imaginary, int power, int direction);
 

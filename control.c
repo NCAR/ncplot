@@ -56,7 +56,8 @@ void	ChangePlotType(Widget, XtPointer, XtPointer);
 void	CheckForTemplateFile();
 void	SetInvertLogScale(Widget, XtPointer, XmToggleButtonCallbackStruct *);
 
-static void	ApplyTimeChange(), changeAxis(Widget, XtPointer, XtPointer);
+static void	ApplyTimeChange(Widget, XtPointer, XtPointer),
+		changeAxis(Widget, XtPointer, XtPointer);
 
 
 extern Widget	ControlWindow;
@@ -185,7 +186,7 @@ void ExposeMainWindow(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *c
 /* -------------------------------------------------------------------- */
 void OpenControlWindow(Widget w, XtPointer client, XtPointer call)
 {
-  int		i;
+  size_t	i;
   XmString	label;
   Arg		args[2];
 
@@ -195,7 +196,7 @@ void OpenControlWindow(Widget w, XtPointer client, XtPointer call)
       {
       XtSetSensitive(fileB[i], True);
 
-      label = XmStringCreate(dataFile[i].fileName, XmFONTLIST_DEFAULT_TAG);
+      label = XmStringCreate((char *)dataFile[i].fileName.c_str(), XmFONTLIST_DEFAULT_TAG);
       XtSetArg(args[0], XmNlabelString, label);
       XtSetValues(fileB[i], args, 1);
       XmStringFree(label);

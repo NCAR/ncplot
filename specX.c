@@ -16,13 +16,9 @@ STATIC FNS:	plotVariance()
 DESCRIPTION:	This is the Expose event procedure to regenerate the
 		whole image.
 
-INPUT:		none
+AUTHOR:		cjw@ucar.edu
 
-OUTPUT:		none
-
-AUTHOR:		websterc@ncar.ucar.edu
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2004
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2005
 -------------------------------------------------------------------------
 */
 
@@ -36,8 +32,7 @@ static double	xScale, yScale;
 static int	fontOffset;
 
 void	ComputeELIA(), doWaveLengthX(PLOT_INFO *), doFiveThirdsX(PLOT_INFO *);
-static void	plotLogLog(PLOT_INFO *), plotSemiLog(PLOT_INFO *, double *),
-		doLogXtics(PLOT_INFO *, XFontStruct *);
+static void	plotLogLog(PLOT_INFO *), plotSemiLog(PLOT_INFO *, double *);
 
 
 /* -------------------------------------------------------------------- */
@@ -96,7 +91,7 @@ void PlotSpectrum(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *call)
   XDrawRectangle(specPlot.dpy, specPlot.win, specPlot.gc,
                 specPlot.x.LV, specPlot.x.TH, specPlot.x.HD, specPlot.x.VD);
 
-  plotTitlesX(&specPlot, fontOffset);
+  plotTitlesX(&specPlot, fontOffset, false);
   plotLabelsX(&specPlot, fontOffset);
 
   if (psd[0].display == SPECTRA)
@@ -150,7 +145,7 @@ void PlotSpectrum(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *call)
 /* -------------------------------------------------------------------- */
 static void plotLogLog(PLOT_INFO *plot)
 {
-  int		i, nPts, set, nSets;
+  size_t	i, nPts, set, nSets;
   XPoint	*pts;
   double	*plotData, datumY, freq, waveNumber = 0;
   double	xMin, yMin;
@@ -180,9 +175,9 @@ static void plotLogLog(PLOT_INFO *plot)
   if (plotWaveNumber())
     waveNumber = 2.0 * M_PI / tas.stats.mean;
 
-  nSets = MIN(NumberDataSets, MAX_PSD);
+  nSets = std::min(NumberDataSets, MAX_PSD);
 
-  pts = (XPoint *)GetMemory((psd[0].M+1) * sizeof(XPoint));
+  pts = new XPoint[psd[0].M+1];
   setClippingX(plot);
   XSetLineAttributes(specPlot.dpy, specPlot.gc, LineThickness, LineSolid,CapButt,JoinMiter);
 
@@ -239,8 +234,8 @@ static void plotLogLog(PLOT_INFO *plot)
     XSetForeground(plot->dpy, plot->gc, GetColor(0));
     for (i = 1; i <= psd[0].M; ++i)
       {
-      if ((int)rint(startFreq() / psd[set].freqPerBin) == i ||
-          (int)rint(endFreq() / psd[set].freqPerBin) == i)
+      if ((size_t)rint(startFreq() / psd[set].freqPerBin) == i ||
+          (size_t)rint(endFreq() / psd[set].freqPerBin) == i)
         {
         int x, y;
 
@@ -283,14 +278,14 @@ static void plotLogLog(PLOT_INFO *plot)
   if (plotWaveLength())
     doWaveLengthX(plot);
 
-  free(pts);
+  delete [] pts;
 
 }	/* END PLOTLOGLOG */
 
 /* -------------------------------------------------------------------- */
 static void plotSemiLog(PLOT_INFO *plot, double *dataP)
 {
-  int		i, nPts;
+  size_t	i, nPts;
   XPoint	*pts;
   double	*plotData, freq, yScale, waveNumber = 0;
   double	xMin;
@@ -306,7 +301,7 @@ static void plotSemiLog(PLOT_INFO *plot, double *dataP)
     plotData = dataP;
     }
 
-  pts = (XPoint *)GetMemory((psd[0].M+1) * sizeof(XPoint));
+  pts = new XPoint[psd[0].M+1];
 
   if (plot->Xaxis.logScale)
   {
@@ -347,8 +342,8 @@ static void plotSemiLog(PLOT_INFO *plot, double *dataP)
    */
   for (i = 1; i <= psd[0].M; ++i)
     {
-    if ((int)(startFreq() / psd[0].freqPerBin) == i ||
-        (int)(endFreq() / psd[0].freqPerBin) == i)
+    if ((size_t)(startFreq() / psd[0].freqPerBin) == i ||
+        (size_t)(endFreq() / psd[0].freqPerBin) == i)
       {
       int x, y;
 
@@ -386,7 +381,7 @@ static void plotSemiLog(PLOT_INFO *plot, double *dataP)
   XSetClipMask(plot->dpy, plot->gc, None);
   XSetForeground(plot->dpy, plot->gc, GetColor(0));
 
-  free(pts);
+  delete [] pts;
 
 }	/* END PLOTSEMILOG */
 

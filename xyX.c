@@ -27,7 +27,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
 
 void MakeLegendLabel(char *, DATASET_INFO *);
 
-static int	currentPanel, fontOffset;
+static size_t	currentPanel;
+static int	fontOffset;
 
 static void	plotXYdata(PLOT_INFO *plot);
 static void	plotRegression(PLOT_INFO *plot, DATASET_INFO *x, DATASET_INFO *y);
@@ -39,7 +40,8 @@ static void	doLegendLineItem(PLOT_INFO *plot, DATASET_INFO *set,
 /* -------------------------------------------------------------------- */
 void ResizeXY()
 {
-  int	n, depth, i, totalHD;
+  size_t i;
+  int	n, depth, totalHD;
   Arg	args[5];
 
   n = 0;
@@ -110,18 +112,18 @@ void ResizeXY()
 /* -------------------------------------------------------------------- */
 void DrawXY()
 {
-  int		i;
-  bool		ySide = False, label;
+  size_t	i;
+  bool		ySide = false, label;
   XFontStruct	*fontInfo;
 
-  static bool	firstTime = True;
+  static bool	firstTime = true;
 
   /* Set default Graphics Context stuff and get the GC
   */
   if (firstTime)
     {
     ResizeXY();
-    firstTime = False;
+    firstTime = false;
     }
 
   XSetClipMask(xyyPlot[0].dpy, xyyPlot[0].gc, None);
@@ -131,7 +133,15 @@ void DrawXY()
   fontOffset =
     (xyyPlot[0].x.windowWidth < 500 || xyyPlot[0].x.windowHeight < 500) ? 1 : 0;
 
-  plotTitlesX(&xyyPlot[0], fontOffset);
+  bool warning = false;
+  for (i = 0; i < NumberXYYsets; ++i)
+    if (dataFile[xyXset[i].fileIndex].ShowPrelimDataWarning)
+      warning = true;
+  for (i = 0; i < NumberXYXsets; ++i)
+    if (dataFile[xyYset[i].fileIndex].ShowPrelimDataWarning)
+      warning = true;
+
+  plotTitlesX(&xyyPlot[0], fontOffset, warning);
 
   if (fontOffset == 0 && NumberOfXYpanels > 1)
     fontOffset = 1;
@@ -146,7 +156,7 @@ void DrawXY()
 
     for (i = 0; i < NumberXYYsets; ++i)
       if (xyYset[i].scaleLocation == RIGHT_SIDE)
-        ySide = True;
+        ySide = true;
 
     if (!ySide)
       xyyPlot[currentPanel].Yaxis[1].label[0] = '\0';
@@ -156,11 +166,11 @@ void DrawXY()
     fontInfo = xyyPlot[currentPanel].fontInfo[3+fontOffset];
     XSetFont(xyyPlot[0].dpy, xyyPlot[0].gc, fontInfo->fid);
 
-    xTicsLabelsX(&xyyPlot[currentPanel], fontInfo, True);
+    xTicsLabelsX(&xyyPlot[currentPanel], fontInfo, true);
     if (allLabels || currentPanel == 0)
-      label = True;
+      label = true;
     else
-      label = False;
+      label = false;
 
     yTicsLabelsX(&xyyPlot[currentPanel], fontInfo, LEFT_SIDE, label);
 
@@ -188,7 +198,8 @@ void DrawXY()
 /* -------------------------------------------------------------------- */
 static void plotXYdata(PLOT_INFO *plot)
 {
-  int		i, ylegend, xSet, ySet, n, plotNum;
+  size_t	i, ylegend, n, plotNum;
+  int		xSet, ySet;
   bool		xChanged, yChanged;
   char		dashList[4];
 
@@ -196,15 +207,15 @@ static void plotXYdata(PLOT_INFO *plot)
 
   xSet = ySet = -1;
 
-  n = MAX(NumberXYXsets, NumberXYYsets);
+  n = std::max(NumberXYXsets, NumberXYYsets);
   for (plotNum = 0, CurrentDataSet = 0; plotNum < n; ++plotNum)
     {
-    xChanged = yChanged = False;
+    xChanged = yChanged = false;
 
     for (i = xSet+1; i < NumberXYXsets; ++i)
       if (xyXset[i].panelIndex == currentPanel)
         {
-        xChanged = True;
+        xChanged = true;
         xSet = i;
         break;
         }
@@ -212,7 +223,7 @@ static void plotXYdata(PLOT_INFO *plot)
     for (i = ySet+1; i < NumberXYYsets; ++i)
       if (xyYset[i].panelIndex == currentPanel)
         {
-        yChanged = True;
+        yChanged = true;
         ySet = i;
         break;
         }
@@ -274,9 +285,9 @@ static void plotRegression(PLOT_INFO *plot, DATASET_INFO *x, DATASET_INFO *y)
   void fitcurve(DATASET_INFO *x, DATASET_INFO *y, int ideg);
 
   printf("X axis variable: %s from %s\n",
-		x->varInfo->name, dataFile[x->fileIndex].fileName);
+		x->varInfo->name, dataFile[x->fileIndex].fileName.c_str());
   printf("Y axis variable: %s from %s\n",
-		y->varInfo->name, dataFile[y->fileIndex].fileName);
+		y->varInfo->name, dataFile[y->fileIndex].fileName.c_str());
 
   fitcurve(x, y, ShowRegression);
 

@@ -6,7 +6,7 @@ FULL NAME:	Global Variable External Declarations
 
 DESCRIPTION:	
 
-AUTHOR:		websterc@ncar.ucar.edu
+AUTHOR:		cjw@ucar.edu
 -------------------------------------------------------------------------
 */
 
@@ -18,31 +18,29 @@ extern bool	Interactive, DataChanged, AsciiWinOpen, Statistics,
 		LandMarks, ProjectToXY, ProjectToBack, RealTime,
 		Freeze, allLabels;
 
-extern char	buffer[], *parmsFile, *outFile, DataPath[],
-		*timeSeg, UserPath[], tasVarName[];
+extern std::string DataPath, tasVarName;
+extern char	buffer[], *parmsFile, *outFile, *timeSeg;
 
-extern const char	*statsTitle;
+extern const char	*statsTitle, *prelimWarning;
 
 extern DATAFILE_INFO	dataFile[];
 extern PLOT_INFO	mainPlot[], specPlot, xyzPlot, xyyPlot[], diffPlot;
 extern DATASET_INFO	dataSet[], ui, vi, xyzSet[], xyXset[], xyYset[],
 			diffSet;
 
-extern int	CurrentDataFile, CurrentDataSet, CurrentPanel, PlotType,
+extern int	PlotType, UserStartTime[], UserEndTime[], MinStartTime[],
+                MaxEndTime[], ShowRegression;
+extern size_t	CurrentDataFile, CurrentDataSet, CurrentPanel,
 		NumberDataFiles, NumberDataSets, NumberXYYsets, NumberXYXsets,
-		NumberOfPanels, NumberOfXYpanels;
+		NumberOfPanels, NumberOfXYpanels, nASCIIpoints;
 
-extern int	NumberSeconds, UserStartTime[], UserEndTime[], MinStartTime[],
-		MaxEndTime[], nDirectionArrows, nTimeStamps, LineThickness,
-		ShowRegression;
+extern size_t	NumberSeconds, nDirectionArrows, nTimeStamps, LineThickness;
 
 extern double	regretCo[];
 
 
 /* Parameter File Variables	*/
 extern char	asciiFormat[];
-
-extern int	nASCIIpoints;
 
 /* X vars	*/
 extern Widget	varList;
@@ -53,7 +51,7 @@ extern instanceRec	iv;
 /* Procedures	*/
 char	*get_legend();
 void	*GetMemory(size_t nb), FreeMemory(void *p);
-int	DeleteVariable(DATASET_INFO *, int, int), isAverage(), whichSide(),
+int	DeleteVariable(DATASET_INFO *, size_t, int), isAverage(), whichSide(),
 	choosingXaxis(), choosingYaxis(), choosingZaxis(),
 	yLegendX(PLOT_INFO *, int row), yLegendPS(PLOT_INFO *, int row),
 	LoadVariable(DATASET_INFO *, char varName[]);
@@ -127,7 +125,7 @@ void	initPlotGC(PLOT_INFO *),
 	ClearPixmap(PLOT_INFO *),
 	NewPixmap(PLOT_INFO *, int width, int height, int depth),
 	InitializeColors(PLOT_INFO *),
-	plotTitlesX(PLOT_INFO *, int sizeOffset),
+	plotTitlesX(PLOT_INFO *, int sizeOffset, bool displayWarning),
 	plotLabelsX(PLOT_INFO *, int sizeOffset),
 	setClippingX(PLOT_INFO *),
 	yTicsLabelsX(PLOT_INFO *, XFontStruct *, int, bool),
@@ -240,7 +238,7 @@ int	MakeTicLabel(char buffer[], float diff, int majorTics, double value),
 	MakeTimeTicLabel(char buffer[], int indx, int nTics),
 	MakeXYlegendLabel(char buf[], DATASET_INFO *set);
 
-int	SearchTable(char *table[], int ntable, char target[]);
+int	SearchTable(std::vector<VARTBL *> table, char target[]);
 
 void	createPanelButts(Widget, Widget *, XtCallbackProc);
 Widget	createParamsTitles(Widget, Widget *),

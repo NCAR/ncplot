@@ -128,9 +128,10 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
       fprintf(stderr, "Can't locate variable %s\n", posVar[0]);
     else
       {
-      sprintf(xyyPlot[CurrentPanel].Xaxis.label, "%s (%s)",
+      sprintf(buffer, "%s (%s)",
 		xyXset[NumberXYXsets].varInfo->name,
-		xyXset[NumberXYXsets].stats.units);
+		xyXset[NumberXYXsets].stats.units.c_str());
+      xyyPlot[CurrentPanel].Xaxis.label = buffer;
 
       ++NumberXYXsets;
       }
@@ -143,9 +144,10 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
       fprintf(stderr, "Can't locate variable %s\n", posVar[1]);
     else
       {
-      sprintf(xyyPlot[CurrentPanel].Yaxis[0].label, "%s (%s)",
+      sprintf(buffer, "%s (%s)",
 		xyYset[NumberXYYsets].varInfo->name,
-		xyYset[NumberXYYsets].stats.units);
+		xyYset[NumberXYYsets].stats.units.c_str());
+      xyyPlot[CurrentPanel].Yaxis[0].label = buffer;
 
       ++NumberXYYsets;
       }
@@ -161,26 +163,33 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
         {
         xyzSet[set].varInfo = NULL;
         xyzSet[set].nPoints = 0;
-        FreeMemory((char *)xyzSet[set].data);
+        delete [] xyzSet[set].data;
         }
 
     if (LoadVariable(&xyzSet[0], posVar[0]) == ERR)
       fprintf(stderr, "Can't locate variable %s\n", posVar[0]);
     else
-      sprintf(xyzPlot.Xaxis.label, "%s (%s)",
-              xyzSet[0].varInfo->name, xyzSet[0].stats.units);
-
+      {
+      sprintf(buffer, "%s (%s)",
+              xyzSet[0].varInfo->name, xyzSet[0].stats.units.c_str());
+      xyzPlot.Xaxis.label = buffer;
+      }
     if (LoadVariable(&xyzSet[1], posVar[2]) == ERR)
       fprintf(stderr, "Can't locate variable %s\n", posVar[2]);
     else
-      sprintf(xyzPlot.Yaxis[0].label, "%s (%s)",
-              xyzSet[1].varInfo->name, xyzSet[1].stats.units);
-
+      {
+      sprintf(buffer, "%s (%s)",
+              xyzSet[1].varInfo->name, xyzSet[1].stats.units.c_str());
+      xyzPlot.Yaxis[0].label = buffer;
+      }
     if (LoadVariable(&xyzSet[2], posVar[1]) == ERR)
       fprintf(stderr, "Can't locate variable %s\n", posVar[1]);
     else
-      sprintf(xyzPlot.Zaxis.label, "%s (%s)",
-              xyzSet[2].varInfo->name, xyzSet[2].stats.units);
+      {
+      sprintf(buffer, "%s (%s)",
+              xyzSet[2].varInfo->name, xyzSet[2].stats.units.c_str());
+      xyzPlot.Zaxis.label = buffer;
+      }
 
     findMinMax();
     }

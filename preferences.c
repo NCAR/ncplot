@@ -101,9 +101,9 @@ void SetPreferences()
   else
     XmTextFieldSetString(prefText[3], "B&W");
 
-  XmTextFieldSetString(prefText[4], printerSetup.lpCommand);
+  XmTextFieldSetString(prefText[4], (char *)printerSetup.lpCommand.c_str());
 
-  XmTextFieldSetString(prefText[5], tasVarName);
+  XmTextFieldSetString(prefText[5], (char *)tasVarName.c_str());
   XmTextFieldSetString(prefText[6], gpsVariables[1]);
   XmTextFieldSetString(prefText[7], gpsVariables[0]);
   XmTextFieldSetString(prefText[8], gpsVariables[2]);
@@ -145,8 +145,8 @@ printf("Save Preferences: Writing ~/.ncplotrc\n");
   fprintf(fp, "TemplateDirectory = %s\n", GetTemplateDirectory());
   if (printerSetup.color)
     fprintf(fp, "PrintColor = Color\n");
-  fprintf(fp, "PrintCommand = %s\n", printerSetup.lpCommand);
-  fprintf(fp, "TrueAirspeed = %s\n", tasVarName);
+  fprintf(fp, "PrintCommand = %s\n", printerSetup.lpCommand.c_str());
+  fprintf(fp, "TrueAirspeed = %s\n", tasVarName.c_str());
   fprintf(fp, "GpsLongitude = %s\n", gpsVariables[0]);
   fprintf(fp, "GpsLatitude = %s\n", gpsVariables[1]);
   fprintf(fp, "GpsAltitude = %s\n", gpsVariables[2]);
@@ -185,11 +185,11 @@ static void ApplyPreferences(Widget w, XtPointer client, XtPointer call)
   free(p);
 
   p = XmTextFieldGetString(prefText[4]);
-  strcpy(printerSetup.lpCommand, p);
+  printerSetup.lpCommand = p;
   free(p);
 
   p = XmTextFieldGetString(prefText[5]);
-  strcpy(tasVarName, p);
+  tasVarName = p;
   free(p);
 
   p = XmTextFieldGetString(prefText[6]);
@@ -326,7 +326,7 @@ void ReadConfigFile()
       SetColorNames(p);
       }
     if (strncmp(buffer, "TrueAirspeed", 12) == 0) {
-      strcpy(tasVarName, p);
+      tasVarName = p;
       }
     if (strncmp(buffer, "GpsLatitude", 11) == 0) {
       strcpy(gpsVariables[1], p);
@@ -356,7 +356,7 @@ void ReadConfigFile()
       strcpy(windVariables[2], p);
       }
     if (strncmp(buffer, "PrintCommand", 12) == 0) {
-      strcpy(printerSetup.lpCommand, p);
+      printerSetup.lpCommand = p;
       }
     if (strncmp(buffer, "TemplateDir", 11) == 0) {
       SetTemplateDirectory(p);

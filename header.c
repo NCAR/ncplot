@@ -76,10 +76,10 @@ static void SetHeaderData()
 {
   FILE	*pp;
 
-  XmTextSetString(headerText, dataFile[CurrentDataFile].fileName);
+  XmTextSetString(headerText, (char *)dataFile[CurrentDataFile].fileName.c_str());
   XmTextInsert(headerText, XmTextGetLastPosition(headerText), "\n\n");
 
-  sprintf(buffer, "ncdump -h %s", dataFile[CurrentDataFile].fileName);
+  sprintf(buffer, "ncdump -h %s", dataFile[CurrentDataFile].fileName.c_str());
 
   if ((pp = popen(buffer, "r")) == NULL)
     {
@@ -164,13 +164,13 @@ static void PrintHeader(Widget w, XtPointer client, XtPointer call)
   if ((p = getenv("LPDEST")) != NULL)
     printf("Output being sent to %s.\n", p);
 
-  if ((fp = popen(printerSetup.lpCommand, "w")) == NULL)
+  if ((fp = popen(printerSetup.lpCommand.c_str(), "w")) == NULL)
     {
     ShowError("PrintHeader: can't open pipe to 'lp'");
     return;
     }
 
-  fprintf(fp, "%s, %s\n\n", mainPlot[0].title, mainPlot[0].subTitle);
+  fprintf(fp, "%s, %s\n\n", mainPlot[0].title.c_str(), mainPlot[0].subTitle.c_str());
 
   p = XmTextGetString(headerText);
   fprintf(fp, "%s\n", p);

@@ -26,20 +26,20 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
 #include "ps.h"
 
 static void	makeTotalVarLabel(),
-		makeBandLimitedVarLabel(int, int, double, double);
+		makeBandLimitedVarLabel(size_t, size_t, double, double);
 
 
 /* -------------------------------------------------------------------- */
 void ComputeBandLimitedVariance(Widget w, XtPointer client, XtPointer call)
 {
-  int	i, startBin, endBin;
+  size_t i, startBin, endBin;
 
   psd[0].bandVariance = 0.0;
 
-  if ((startBin = (int)(startFreq() / psd[0].freqPerBin)) <= 0)
+  if ((startBin = (size_t)(startFreq() / psd[0].freqPerBin)) <= 0)
     startBin = 1;
 
-  if ((endBin = (int)(endFreq() / psd[0].freqPerBin)) > psd[0].M)
+  if ((endBin = (size_t)(endFreq() / psd[0].freqPerBin)) > psd[0].M)
     endBin = psd[0].M;
 
   for (i = startBin; i <= endBin; ++i)
@@ -50,14 +50,14 @@ void ComputeBandLimitedVariance(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void PlotVarianceX(PLOT_INFO *plot, XFontStruct *fontInfo)
 {
-  int    startBin, endBin;
+  size_t startBin, endBin;
 
   XSetFont(plot->dpy, plot->gc, fontInfo->fid);
 
-  if ((startBin = (int)(startFreq() / psd[0].freqPerBin)) <= 0)
+  if ((startBin = (size_t)(startFreq() / psd[0].freqPerBin)) <= 0)
     startBin = 1;
 
-  if ((endBin = (int)(endFreq() / psd[0].freqPerBin)) > psd[0].M)
+  if ((endBin = (size_t)(endFreq() / psd[0].freqPerBin)) > psd[0].M)
     endBin = psd[0].M;
 
 
@@ -71,7 +71,7 @@ void PlotVarianceX(PLOT_INFO *plot, XFontStruct *fontInfo)
                 plot->x.windowHeight - 15, buffer, strlen(buffer));
 
   sprintf(buffer, "K = %d, M = %d, nPoints = %ld\n",
-                psd[0].K, psd[0].M, dataSet[0].nPoints);
+                (int)psd[0].K, (int)psd[0].M, (long)dataSet[0].nPoints);
   XDrawString(plot->dpy, plot->win, plot->gc, plot->x.LV,
                 plot->x.windowHeight - 5, buffer, strlen(buffer));
 
@@ -80,12 +80,12 @@ void PlotVarianceX(PLOT_INFO *plot, XFontStruct *fontInfo)
 /* -------------------------------------------------------------------- */
 void PlotVariancePS(PLOT_INFO *plot, FILE *fp)
 {
-  int    startBin, endBin;
+  size_t startBin, endBin;
 
-  if ((startBin = (int)(startFreq() / psd[0].freqPerBin)) <= 0)
+  if ((startBin = (size_t)(startFreq() / psd[0].freqPerBin)) <= 0)
     startBin = 1;
 
-  if ((endBin = (int)(endFreq() / psd[0].freqPerBin)) > psd[0].M)
+  if ((endBin = (size_t)(endFreq() / psd[0].freqPerBin)) > psd[0].M)
     endBin = psd[0].M;
 
 
@@ -94,12 +94,12 @@ void PlotVariancePS(PLOT_INFO *plot, FILE *fp)
   fprintf(fp, show, buffer);
 
   makeBandLimitedVarLabel(startBin, endBin,
-                          psd[0].freqPerBin * startBin, psd[0].freqPerBin * endBin);
+	psd[0].freqPerBin * startBin, psd[0].freqPerBin * endBin);
   fprintf(fp, moveto, 0, plot->ps.xLabelOffset - 120);
   fprintf(fp, show, buffer);
 
   sprintf(buffer, "K = %d, M = %d, nPoints = %ld\n",
-          psd[0].K, psd[0].M, dataSet[0].nPoints);
+          (int)psd[0].K, (int)psd[0].M, (long)dataSet[0].nPoints);
   fprintf(fp, moveto, 0, plot->ps.xLabelOffset - 165);
   fprintf(fp, show, buffer);
 
@@ -110,11 +110,10 @@ static void makeTotalVarLabel()
 {
   sprintf(buffer, "Total %svariance = %g",
 		psd[0].display == SPECTRA ? "" : "co-", psd[0].totalVariance);
-
 }
 
 /* -------------------------------------------------------------------- */
-static void makeBandLimitedVarLabel(int startBin, int endBin, double sf, double ef)
+static void makeBandLimitedVarLabel(size_t startBin, size_t endBin, double sf, double ef)
 {
   if (startBin == 1 && endBin == psd[0].M)
     sprintf(buffer, "%sVariance (w/o DC component) = %g",

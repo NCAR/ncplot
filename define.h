@@ -11,11 +11,14 @@ DESCRIPTION:
 #ifndef DEFINE_H
 #define DEFINE_H
 
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <cstdio>
 #include <float.h>
 #include <cstring>
+#include <string>
+#include <vector>
 
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
@@ -26,30 +29,18 @@ DESCRIPTION:
 #define ERR		(-1)
 #endif
  
-#define COMMENT	'#' /* Comment character for textfiles  */
+#define COMMENT	'#'	/* Comment character for textfiles  */
  
-#ifndef MAX
-#define MAX(x, y)	(x > y ? x : y)
-#endif
- 
-#ifndef MIN
-#define MIN(x, y)	(x > y ? y : x)
-#endif
-
 #define SecondsSinceMidnite(t)	(t[0] * 3600 + t[1] * 60 + t[2])
 
 
-#define BUFFSIZE	2048
-#define PATH_LEN	256
+#define BUFFSIZE	4096
 #define NAMELEN		20
 
 #define MAX_DATAFILES	4
 #define MAX_DATASETS	16
 #define MAX_PANELS	4
-#define MAX_VARIABLES	800
-
-#define TITLESIZE	100
-#define UNITS_LEN	20
+#define MAX_VARIABLES	1000
 
 #define ALL_SETS	(-1)
 
@@ -118,43 +109,47 @@ typedef struct
 typedef struct
 	{
 	long	nPoints;
-	float	min;
-	float	max;
-	float	mean;
-	float	sigma;
-	float	variance;
-	float	outlierMin;
-	float	outlierMax;
-	char	units[UNITS_LEN];
+	double	min;
+	double	max;
+	double	mean;
+	double	sigma;
+	double	variance;
+	double	outlierMin;
+	double	outlierMax;
+	std::string units;
 	} STAT;
 
 typedef struct
 	{
-	char	fileName[PATH_LEN];
+	std::string	fileName;
 	int	ncid;
-	int	nVariables;
-	VARTBL	*Variable[MAX_VARIABLES];
-	char	*ProjectNumber;
-	char	*ProjectName;
-	char	*FlightNumber;
-	char	*FlightDate;
+
+	std::vector<VARTBL *> Variable;
+
+	std::string	ProjectNumber;
+	std::string	ProjectName;
+	std::string	FlightNumber;
+	std::string	FlightDate;
+
 	int	FileStartTime[4], FileEndTime[4];
 	int	baseDataRate;	/* Most files are 1, this is to handle ncav */
+
+	bool	ShowPrelimDataWarning;
 
 	char	*catName[32];	/* Category list		*/
 	} DATAFILE_INFO;
 
 typedef struct
 	{
-	int	fileIndex;
+	size_t	fileIndex;
 	VARTBL	*varInfo;	/* Pointer into VARTBL			*/
-	int	panelIndex;	/* Which panel, time series only	*/
+	size_t	panelIndex;	/* Which panel, time series only	*/
 	int	scaleLocation;	/* LEFT_SIDE or RIGHT_SIDE		*/
 
-	long	nPoints;	/* Total # data points in array		*/
+	size_t	nPoints;	/* Total # data points in array		*/
 	NR_TYPE	*data;
 	NR_TYPE	missingValue;
-	int	head;		/* Realtime only, index into data	*/
+	size_t	head;		/* Realtime only, index into data	*/
 	STAT	stats;
 	} DATASET_INFO;
 
@@ -172,12 +167,12 @@ struct plot_offset
 
 struct axisInfo
 	{
-	char	label[TITLESIZE];
+	std::string label;
 	bool	logScale;
 	bool	invertAxis;
 	int	nMajorTics, nMinorTics;
-	float	smallestValue, biggestValue;
-	float	min, max;
+	double	smallestValue, biggestValue;
+	double	min, max;
 	};
 
 typedef struct
@@ -195,7 +190,7 @@ typedef struct
 	bool	autoScale;
 	bool	autoTics;
 
-	char	title[TITLESIZE], subTitle[TITLESIZE];
+	std::string title, subTitle;
 
 	struct plot_offset	ps;	/* PostScript info		*/
 	struct plot_offset	x;	/* Xwindow info			*/

@@ -90,7 +90,12 @@ void DrawXYZ()
   XSetClipMask(xyzPlot.dpy, xyzPlot.gc, None);
   ClearPixmap(&xyzPlot);
 
-  plotTitlesX(&xyzPlot, fontOffset);
+  bool warning = false;
+  for (int i = 0; i < 3; ++i)
+    if (dataFile[xyzSet[i].fileIndex].ShowPrelimDataWarning)
+      warning = true;
+
+  plotTitlesX(&xyzPlot, fontOffset, warning);
   draw3dAxies(&xyzPlot);
 
   plotLabelsX(&xyzPlot, fontOffset);
@@ -122,11 +127,11 @@ void DrawXYZ()
 /* -------------------------------------------------------------------- */
 static void plotXYZ(PLOT_INFO *plot, XFontStruct *fontInfo)
 {
-  int		i, cnt, cntXY, cntBack, cntSide, reqSize, segCnt = 0;
+  size_t	i, cnt, cntXY, cntBack, cntSide, reqSize, segCnt = 0;
   XPoint	*pts,	/* Regular data points. */
-		*ptsXY,	/* Points to project to XY plane. */
-		*ptsBack,	/* Points to project to back wall. */
-		*ptsSide;	/* Points to project to side wall. */
+		*ptsXY = 0,	/* Points to project to XY plane. */
+		*ptsBack = 0,	/* Points to project to back wall. */
+		*ptsSide = 0;	/* Points to project to side wall. */
 
   float		xScale, yScale, zScale, xMin, yMin, zMin;
   NR_TYPE	datumX, datumY, datumZ;
@@ -142,15 +147,15 @@ static void plotXYZ(PLOT_INFO *plot, XFontStruct *fontInfo)
   yScale = (float)plot->x.VD / (plot->Yaxis[0].max - yMin);
   zScale = (float)ZD / (plot->Zaxis.max - zMin);
 
-  pts = (XPoint *)GetMemory(xyzSet[0].nPoints * sizeof(XPoint));
+  pts = new XPoint[xyzSet[0].nPoints];
 
   if (ProjectToXY)
-    ptsXY = (XPoint *)GetMemory(xyzSet[0].nPoints * sizeof(XPoint));
+    ptsXY = new XPoint[xyzSet[0].nPoints];
 
   if (ProjectToBack)
     {
-    ptsBack = (XPoint *)GetMemory(xyzSet[0].nPoints * sizeof(XPoint));
-    ptsSide = (XPoint *)GetMemory(xyzSet[0].nPoints * sizeof(XPoint));
+    ptsBack = new XPoint[xyzSet[0].nPoints];
+    ptsSide = new XPoint[xyzSet[0].nPoints];
     }
 
 
@@ -269,14 +274,14 @@ static void plotXYZ(PLOT_INFO *plot, XFontStruct *fontInfo)
   XSetForeground(plot->dpy, plot->gc, GetColor(0));
   XSetClipMask(plot->dpy, plot->gc, None);
 
-  FreeMemory(pts);
+  delete [] pts;
 
   if (ProjectToXY)
-    FreeMemory(ptsXY);
+    delete [] ptsXY;
 
   if (ProjectToBack) {
-    FreeMemory(ptsBack);
-    FreeMemory(ptsSide);
+    delete [] ptsBack;
+    delete [] ptsSide;
     }
 
 }	/* END PLOTXYZ */

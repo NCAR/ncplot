@@ -59,7 +59,7 @@ FILE *openPSfile(char *outFile)
       }
     }
   else
-    if ((fp = popen(printerSetup.lpCommand, "w")) == NULL)
+    if ((fp = popen(printerSetup.lpCommand.c_str(), "w")) == NULL)
       {
       HandleError("ps: can't open pipe to 'lp'", Interactive, IRET);
       return(NULL);
@@ -83,7 +83,7 @@ void PSheader(FILE *fp, PLOT_INFO *plot)
   fprintf(fp, "%%!PS-Adobe-3.0 EPSF-3.0\n");
   fprintf(fp, "%%%%Creator: ncplot\n");
   fprintf(fp, "%%%%For: %s\n", user);
-  fprintf(fp, "%%%%Title: %s\n", plot->title);
+  fprintf(fp, "%%%%Title: %s\n", plot->title.c_str());
   fprintf(fp, "%%%%CreationDate: %s", date);
   fprintf(fp, "%%%%Pages: 1\n");
   fprintf(fp, "%%%%BoundingBox: 0 0 %d %d\n",
@@ -132,30 +132,40 @@ void PSheader(FILE *fp, PLOT_INFO *plot)
 }	/* END PSHEADER */
 
 /* -------------------------------------------------------------------- */
-void PStitles(FILE *fp, PLOT_INFO *plot)
+void PStitles(FILE *fp, PLOT_INFO *plot, bool showPrelimWarning)
 {
   int	x = plot->ps.windowWidth >> 1;
 
   /* Print Titles
    */
-  if (strlen(plot->title))
+  if (plot->title.length() > 0)
     {
     fprintf(fp, "/Times-Roman findfont %d scalefont setfont\n",
 		(int)(printerSetup.fontRatio * 80));
     fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
-		x, plot->title, plot->ps.titleOffset);
+		x, plot->title.c_str(), plot->ps.titleOffset);
 
-    fprintf(fp, show, plot->title);
+    fprintf(fp, show, plot->title.c_str());
     }
 
-  if (strlen(plot->subTitle))
+  if (plot->subTitle.length() > 0)
     {
     fprintf(fp, "/Times-Roman findfont %d scalefont setfont\n",
 		(int)(printerSetup.fontRatio * 60));
     fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
-		x, plot->subTitle, plot->ps.subTitleOffset);
+		x, plot->subTitle.c_str(), plot->ps.subTitleOffset);
 
-    fprintf(fp, show, plot->subTitle);
+    fprintf(fp, show, plot->subTitle.c_str());
+    }
+
+  if (showPrelimWarning)
+    {
+    fprintf(fp, "/Times-Roman findfont %d scalefont setfont\n",
+		(int)(printerSetup.fontRatio * 40));
+    fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
+		x, prelimWarning, plot->ps.subTitleOffset-35);
+printf("ps prelim\n");
+    fprintf(fp, show, prelimWarning);
     }
 
 }	/* END PSTITLES */
@@ -168,49 +178,49 @@ void PSlabels(FILE *fp, PLOT_INFO *plot)
 
   /* Print Labels
    */
-  if (strlen(plot->Yaxis[0].label))
+  if (plot->Yaxis[0].label.length() > 0)
     {
     fprintf(fp, "%d %d (%s) stringwidth pop 2 div sub moveto\n",
 		plot->ps.yLabelOffset,
-		plot->ps.VD >> 1, plot->Yaxis[0].label);
+		plot->ps.VD >> 1, plot->Yaxis[0].label.c_str());
 
     fprintf(fp, "90 rotate\n");
-    fprintf(fp, show, plot->Yaxis[0].label);
+    fprintf(fp, show, plot->Yaxis[0].label.c_str());
     fprintf(fp, "-90 rotate\n");
     }
 
-  if (strlen(plot->Yaxis[1].label))
+  if (plot->Yaxis[1].label.length() > 0)
     {
     fprintf(fp, "%d %d (%s) stringwidth pop 2 div sub moveto\n",
 		plot->ps.HD - plot->ps.yLabelOffset,
-		plot->ps.VD >> 1, plot->Yaxis[1].label);
+		plot->ps.VD >> 1, plot->Yaxis[1].label.c_str());
 
     fprintf(fp, "90 rotate\n");
-    fprintf(fp, show, plot->Yaxis[1].label);
+    fprintf(fp, show, plot->Yaxis[1].label.c_str());
     fprintf(fp, "-90 rotate\n");
     }
 
 
-  if (strlen(plot->Zaxis.label))
+  if (plot->Zaxis.label.length() > 0)
     {
     fprintf(fp, "%d %d (%s) stringwidth pop 2 div sub moveto\n",
-		plot->ps.RV + 200, plot->ps.HD >> 3, plot->Zaxis.label);
+		plot->ps.RV + 200, plot->ps.HD >> 3, plot->Zaxis.label.c_str());
 
     fprintf(fp, "30 rotate\n");
-    fprintf(fp, show, plot->Zaxis.label);
+    fprintf(fp, show, plot->Zaxis.label.c_str());
     fprintf(fp, "-30 rotate\n");
     }
 
-  if (strlen(plot->Xaxis.label))
+  if (plot->Xaxis.label.length() > 0)
     {
     if (PlotType == TIME_SERIES && NumberOfPanels > 1)
     fprintf(fp, "/Times-Roman findfont %d scalefont setfont\n",
 		(int)(printerSetup.fontRatio * 50));
 
     fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
-		plot->ps.HD >> 1, plot->Xaxis.label, plot->ps.xLabelOffset);
+		plot->ps.HD >> 1, plot->Xaxis.label.c_str(), plot->ps.xLabelOffset);
 
-    fprintf(fp, show, plot->Xaxis.label);
+    fprintf(fp, show, plot->Xaxis.label.c_str());
     }
 
 }	/* END PSLABELS */

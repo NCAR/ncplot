@@ -75,7 +75,7 @@ void CheckByteSwap(XImage *image)
 {
   int	i;
   bool	prog_byte_order;
-  unsigned long	pixel, x;
+  unsigned long	x;
 
   static bool firstTime = True;
 

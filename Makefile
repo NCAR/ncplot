@@ -52,7 +52,7 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RedHat9.0
 #INCLUDES= ${LOCAL}/include
 #LIBS	= -lXm -lXt -lX11 -lnetcdf -lm
 
-CFLAGS	= -g -O2 -I${INCLUDES} ${DEFINES}
+CFLAGS	= -Wall -g -O2 -I${INCLUDES} ${DEFINES}
 
 PROG	= ncplot
 HDRS	= define.h extern.h
@@ -62,9 +62,9 @@ SRCS=	ncplot.c global.c init.c X.c Xwin.c annotate.c arrows.c ascii.c\
 	cursor.c dataIO.c detrend.c diff.c diffPS.c diffX.c ed_diff.c\
 	ed_parms.c ed_plot.c ed_print.c ed_spec.c ed_stats.c ed_xy.c\
 	ed_xyz.c elia.c equal.c error.c expar.c exp.tab.c lex.yy.c fft.c\
-	geopolmap.c getmem.c header.c labels.c landmarks.c logtics.c page.c\
+	geopolmap.c header.c labels.c landmarks.c logtics.c page.c\
 	panel.c plotPS.c plotX.c png.c preferences.c print.c ps.c regret.c\
-	regret1.c rt.c search.c sort.c spctrm.c spec.c specPS.c specX.c\
+	regret1.c rt.c search.c spctrm.c spec.c specPS.c specX.c\
 	stats.c template.c timestamps.c titles.c track.c validate.c\
 	variance.c window.c xyPS.c xyX.c xyzPS.c xyzX.c zoom.c Xquery.c\
 	Xerror.c Xfile.c Xwarn.c
@@ -74,9 +74,9 @@ OBJS=	ncplot.o global.o init.o X.o Xwin.o annotate.o arrows.o ascii.o\
 	cursor.o dataIO.o detrend.o diff.o diffPS.o diffX.o ed_diff.o\
 	ed_parms.o ed_plot.o ed_print.o ed_spec.o ed_stats.o ed_xy.o\
 	ed_xyz.o elia.o equal.o error.o expar.o exp.tab.o lex.yy.o fft.o\
-	geopolmap.o getmem.o header.o labels.o landmarks.o logtics.o page.o\
+	geopolmap.o header.o labels.o landmarks.o logtics.o page.o\
 	panel.o plotPS.o plotX.o png.o preferences.o print.o ps.o regret.o\
-	regret1.o rt.o search.o sort.o spctrm.o spec.o specPS.o specX.o\
+	regret1.o rt.o search.o spctrm.o spec.o specPS.o specX.o\
 	stats.o template.o timestamps.o titles.o track.o validate.o\
 	variance.o window.o xyPS.o xyX.o xyzPS.o xyzX.o zoom.o Xquery.o\
 	Xerror.o Xfile.o Xwarn.o

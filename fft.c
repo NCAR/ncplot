@@ -27,7 +27,7 @@ COPYRIGHT:	Public Domain
 
 
 static void Shuffle2Arr(double *a, double *b, int bitLength);
-static unsigned int ShuffleIndex(unsigned int i, int wordLength);
+static unsigned int ShuffleIndex(unsigned int i, unsigned int wordLength);
 
 /* -------------------------------------------------------------------- */
 static double CosArray[] =
@@ -171,7 +171,7 @@ static void Shuffle2Arr(double *a, double *b, int bitLength)
 }	/* END SHUFFLE2ARR */
 
 /* -------------------------------------------------------------------- */
-static unsigned int ShuffleIndex(unsigned int i, int wordLength)
+static unsigned int ShuffleIndex(unsigned int i, unsigned int wordLength)
 {
   unsigned int	bitNr, newIndex = 0;
 

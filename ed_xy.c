@@ -31,8 +31,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 
 extern Widget	AppShell;
 static Widget	XYShell = NULL, XYParmsWindow, parmsText[TOTAL_PARMS],
-		parmsTB[6], panelB[MAX_PANELS], autoScaleButton,
-		autoTicsButton;
+		panelB[MAX_PANELS], autoScaleButton, autoTicsButton;
 
 static int      currentPanel = 0;
 
@@ -61,7 +60,7 @@ void EditXYParms(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void SetXYDefaults()
 {
-  int	i;
+  size_t i;
 
   if (XYShell == NULL)
     return;
@@ -69,8 +68,8 @@ void SetXYDefaults()
   SetDefaults(parmsText, &xyyPlot[currentPanel]);
 //  SetLogInvert(parmsTB, &xyyPlot[currentPanel], X_AXIS | Y_AXIS);
 
-  XmTextFieldSetString(parmsText[0], xyyPlot[0].title);
-  XmTextFieldSetString(parmsText[1], xyyPlot[0].subTitle);
+  XmTextFieldSetString(parmsText[0], (char *)xyyPlot[0].title.c_str());
+  XmTextFieldSetString(parmsText[1], (char *)xyyPlot[0].subTitle.c_str());
  
   for (i = 0; i < NumberOfXYpanels; ++i)
     XtSetSensitive(panelB[i], True);
@@ -123,8 +122,8 @@ static void ApplyXYParms(Widget w, XtPointer client, XtPointer call)
 
   for (i = 0; i < MAX_PANELS; ++i)
     {
-    strcpy(xyyPlot[i].title, xyyPlot[currentPanel].title);
-    strcpy(xyyPlot[i].subTitle, xyyPlot[currentPanel].subTitle);
+    xyyPlot[i].title = xyyPlot[currentPanel].title;
+    xyyPlot[i].subTitle = xyyPlot[currentPanel].subTitle;
     }
 
   DrawMainWindow();

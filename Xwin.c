@@ -585,7 +585,7 @@ Widget createLogInvert(Widget parent, Widget parmsTB[], XtCallbackProc apply,
 {
   int		n, i;
   Arg		args[2];
-  Widget	frame, RC, plRC[2], label;
+  Widget	frame, RC, plRC[2];
 
   n = 0;
   frame = XmCreateFrame(parent, "AxiesFrame", args, n);

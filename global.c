@@ -30,8 +30,8 @@ bool	WindBarbs;	/* Show wind barbs on XY			*/
 bool	LandMarks;	/* Show hl proj/###/landmarks on XY or XYZ	*/
 int	ShowRegression;	/* Show regression on XY			*/
 
-char	buffer[BUFFSIZE], *parmsFile, *outFile, DataPath[PATH_LEN],
-	*timeSeg, tasVarName[40];
+std::string DataPath, tasVarName;
+char	buffer[BUFFSIZE], *parmsFile, *outFile, *timeSeg;
 
 DATAFILE_INFO	dataFile[MAX_DATAFILES];
 
@@ -47,11 +47,12 @@ PLOT_INFO	mainPlot[MAX_PANELS], xyyPlot[MAX_PANELS], xyzPlot,
 
 PRINTER		printerSetup;
 
-int	CurrentDataFile, CurrentDataSet, CurrentPanel, PlotType,
+int	PlotType;
+size_t	CurrentDataFile, CurrentDataSet, CurrentPanel,
 	NumberDataFiles, NumberDataSets, NumberXYYsets, NumberXYXsets,
-	NumberOfPanels, NumberOfXYpanels;
+	NumberOfPanels, NumberOfXYpanels, nASCIIpoints;
 
-int	NumberSeconds, nDirectionArrows, nTimeStamps, LineThickness;
+size_t	NumberSeconds, nDirectionArrows, nTimeStamps, LineThickness;
 
 
 /* Regression coeffs	*/
@@ -62,8 +63,9 @@ PSD_INFO	psd[MAX_PSD];
 DATASET_INFO	tas;
 
 const char *statsTitle =
-	"                                     mean      sigma        min        max";
+  "                                     mean      sigma        min        max";
 
+const char *prelimWarning = "This plot contains preliminary data";
 
 /* Time stuff */
 int	UserStartTime[4], UserEndTime[4];	/* HH:MM:SS, 4th is seconds*/
@@ -71,8 +73,6 @@ int	MinStartTime[4], MaxEndTime[4];		/* since midnight.	*/
 
 /* Parameter File Variables	*/
 char	asciiFormat[10];
-
-int	nASCIIpoints;
 
 /* X vars	*/
 Widget	varList;

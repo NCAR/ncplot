@@ -17,7 +17,7 @@ REFERENCES:	regret.c (Linear only).
 
 REFERENCED BY:	spec.c, cospec.c
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2005
 -------------------------------------------------------------------------
 */
 
@@ -28,7 +28,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
 /* -------------------------------------------------------------------- */
 void CleanAndCopyData(DATASET_INFO *set, float out[])
 {
-  int	i;
+  size_t i;
   float	datum;
 
   for (i = 0; i < set->nPoints; ++i)
@@ -39,17 +39,15 @@ void CleanAndCopyData(DATASET_INFO *set, float out[])
       out[i] = datum;
     else
       {		/* Linear interp missing values. */
-      int	e;
-      float	d1;
+      size_t	e;
+      float	d1 = 0.0;
 
       for (e = i; e < set->nPoints; ++e)
         if ((d1 = set->data[(set->head + e) % set->nPoints]) != set->missingValue)
           break;
 
       for (; i < e; ++i)
-        {
         out[i] = (d1 - out[i-1]) / (e - i + 1);
-        }
 
       --i;
       }
@@ -60,7 +58,7 @@ void CleanAndCopyData(DATASET_INFO *set, float out[])
 /* -------------------------------------------------------------------- */
 void DiffPreFilter(DATASET_INFO *set, float out[])
 {
-  int	i;
+  size_t i;
 
   for (i = set->nPoints-1; i > 0; --i)
     if (isMissingValue(out[i], set->missingValue) || isMissingValue(out[i-1], set->missingValue))
@@ -81,7 +79,7 @@ void DetrendNone(DATASET_INFO *set, float out[])
 /* -------------------------------------------------------------------- */
 void DetrendMean(DATASET_INFO *set, float out[])
 {
-  int		i;
+  size_t	i;
   float		datum;
 
   for (i = 0; i < set->nPoints; ++i)
@@ -99,10 +97,10 @@ void DetrendMean(DATASET_INFO *set, float out[])
 /* -------------------------------------------------------------------- */
 void DetrendLinear(DATASET_INFO *set, float out[])
 {
-  int	i;
+  size_t i;
   float datum, *out1;
 
-  out1 = (float *)GetMemory(set->nPoints * sizeof(float));
+  out1 = new float[set->nPoints];
 
   LinearLeastSquare(set, out, out1);
 
@@ -116,7 +114,7 @@ void DetrendLinear(DATASET_INFO *set, float out[])
       out[i] = datum - out1[i];
     }
 
-  free(out1);
+  delete [] out1;
 
 }	/* END DETRENDLINEAR */
 

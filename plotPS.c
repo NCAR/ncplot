@@ -15,21 +15,22 @@ REFERENCES:	ps.c
 
 REFERENCED BY:	PrintPostScript()
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 -------------------------------------------------------------------------
 */
 
 #include "define.h"
 #include "ps.h"
 
-static int	currentPanel;
+static size_t	currentPanel;
 
 static void	doLineGraph(FILE *fp, PLOT_INFO *plot), ResizePSmainPlot();
 
 /* -------------------------------------------------------------------- */
 static void ResizePSmainPlot()
 {
-  int	i, totalVD;
+  size_t i;
+  int	totalVD;
 
   /* Number of pixels from 0,0 to each Border edge.  NOTE in PostScript
    * (0,0) is in the lower left corner of the paper, held at portrait.
@@ -78,7 +79,7 @@ static void ResizePSmainPlot()
 /* -------------------------------------------------------------------- */
 void PrintTimeSeries()
 {
-  int	i;
+  size_t i;
   FILE	*fp;
 
   ResizePSmainPlot();
@@ -86,8 +87,13 @@ void PrintTimeSeries()
   if ((fp = openPSfile(outFile)) == NULL)
     return;
 
+  bool warning = false;
+  for (i = 0; i < NumberDataSets; ++i)
+    if (dataFile[dataSet[i].fileIndex].ShowPrelimDataWarning)
+      warning = true;
+
   PSheader(fp, &mainPlot[0]);
-  PStitles(fp, &mainPlot[0]);
+  PStitles(fp, &mainPlot[0], warning);
 
   for (currentPanel = 0; currentPanel < NumberOfPanels; ++currentPanel)
     {
@@ -131,10 +137,10 @@ void PrintTimeSeries()
 /* -------------------------------------------------------------------- */
 static void doLineGraph(FILE *fp, PLOT_INFO *plot)
 {
-  char		*p;
-  int		i;
+  char		*p = 0;
+  size_t	i;
   float		halfSecond, *rgb, *NextColorRGB_PS(), yMin, yMax;
-  int		x, y, prevX, prevY, pCnt, lCnt, rCnt;
+  int		x = 0, y = 0, prevX = 0, prevY = 0, pCnt, lCnt, rCnt;
   double	xScale, yScale, datumY;
   VARTBL	*vp;
   DATASET_INFO	*set;
@@ -174,7 +180,7 @@ static void doLineGraph(FILE *fp, PLOT_INFO *plot)
       fprintf(fp, lineto, (int)(x - (20 * printerSetup.widthRatio)), y);
 
       sprintf(buffer, "%s (%s), %d s/sec",
-		vp->name, set->stats.units, vp->OutputRate);
+		vp->name, set->stats.units.c_str(), vp->OutputRate);
       PSstatsLegend(fp, plot, buffer, CurrentDataSet, set);
       }
     else

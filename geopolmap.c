@@ -43,7 +43,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
 {
   FILE	*in;
 
-  int           i, cnt, nPts, reqSize;
+  int           i, cnt, reqSize;
   XPoint        *pts;
   NR_TYPE       datumX, datumY;
   float         xScale, yScale, xMin, yMin;
@@ -71,7 +71,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
   yScale = (float)offsets->VD / (yAxis->max - yMin);
  
   reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
-  pts = (XPoint *)GetMemory(reqSize * sizeof(XPoint));
+  pts = new XPoint[reqSize];
 
 
   /* Open pipe to pscoast
@@ -141,7 +141,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
       XDrawLines(plot->dpy, plot->win, plot->gc, pts, cnt, CoordModeOrigin);
     }
  
-  FreeMemory(pts);
+  delete [] pts;
   pclose(in);
 
   if (fp)	/* PostScript */
@@ -162,7 +162,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
 {
   FILE	*in;
 
-  int           i, cnt, nPts, reqSize;
+  int           i, cnt, reqSize;
   XPoint        *pts;
   NR_TYPE       datumX, datumY;
   float         xScale, yScale, zScale, xMin, zMin, xMax, zMax, x, y;
@@ -193,7 +193,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
   zScale = (float)ZD / (zMax - zMin);
  
   reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
-  pts = (XPoint *)GetMemory(reqSize * sizeof(XPoint));
+  pts = new XPoint[reqSize];
 
 
   /* Open pipe to pscoast
@@ -269,7 +269,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
       XDrawLines(plot->dpy, plot->win, plot->gc, pts, cnt, CoordModeOrigin);
     }
  
-  FreeMemory(pts);
+  delete [] pts;
   pclose(in);
 
   if (fp)	/* PostScript */

@@ -14,7 +14,7 @@ REFERENCES:	spctrm.c
 
 REFERENCED BY:	Callback
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2004
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2005
 -------------------------------------------------------------------------
 */
 
@@ -27,7 +27,8 @@ extern Widget SpectrumWindow;
 /* -------------------------------------------------------------------- */
 void ComputeCoSpectrum()
 {
-  int		i, pos, KxM, ts;
+  size_t	i;
+  int		pos, KxM, ts;
   double	variance1, variance2, *Pxx1, *Pxx2;
   float		*detrendedData[2], cf;
 
@@ -40,9 +41,9 @@ void ComputeCoSpectrum()
 
   for (i = 0; i < MAX_PSD; ++i)
     {
-    if (psd[i].Pxx) free(psd[i].Pxx);
-    if (psd[i].Qxx) free(psd[i].Qxx);
-    if (psd[i].Special) free(psd[i].Special);
+    if (psd[i].Pxx) delete [] psd[i].Pxx;
+    if (psd[i].Qxx) delete [] psd[i].Qxx;
+    if (psd[i].Special) delete [] psd[i].Special;
 
     psd[i].Pxx = psd[i].Qxx = psd[i].Special = NULL;
     }
@@ -56,10 +57,10 @@ void ComputeCoSpectrum()
   psd[0].K += 2;
   KxM = (psd[0].K + 1) * psd[0].M;
 
-  detrendedData[0] = (float *)GetMemory(sizeof(float) * KxM);
-  detrendedData[1] = (float *)GetMemory(sizeof(float) * KxM);
-  psd[0].Pxx	= (double *)GetMemory(sizeof(double) * (psd[0].M+1));
-  psd[0].Qxx	= (double *)GetMemory(sizeof(double) * (psd[0].M+1));
+  detrendedData[0] = new float[KxM];
+  detrendedData[1] = new float[KxM];
+  psd[0].Pxx	= new double[psd[0].M+1];
+  psd[0].Qxx	= new double[psd[0].M+1];
 
 
   pos = (KxM - dataSet[0].nPoints) / 2;
@@ -90,7 +91,7 @@ void ComputeCoSpectrum()
   if (ts > 0)
     {
     int nSamples = (int)(ts / (1000 / psd[0].frequency));
-    float *f = (float *)GetMemory(sizeof(float) * dataSet[0].nPoints);
+    float *f = new float[dataSet[0].nPoints];
 
     memcpy((char *)f, (char *)&detrendedData[1][pos],
            sizeof(float) * dataSet[0].nPoints);
@@ -100,7 +101,7 @@ void ComputeCoSpectrum()
     memcpy((char *)&detrendedData[1][pos + nSamples], (char *)f,
            sizeof(float) * dataSet[0].nPoints);
 
-    free(f);
+    delete [] f;
     }
 
 
@@ -115,8 +116,9 @@ void ComputeCoSpectrum()
 
   if (psd[0].display == COSPECTRA)
     {
-    sprintf(specPlot.Yaxis[0].label, "CoSpectrum of %s x %s",
+    sprintf(buffer, "CoSpectrum of %s x %s",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name);
+    specPlot.Yaxis[0].label = buffer;
 
     ComputeBandLimitedVariance(NULL, NULL, NULL);
 
@@ -126,39 +128,43 @@ void ComputeCoSpectrum()
         {
         psd[0].Pxx[i] *= i;
 
-        sprintf(specPlot.Yaxis[0].label, "f x Co of %s x %s (%s^2 x %s^2)",
+        sprintf(buffer, "f x Co of %s x %s (%s^2 x %s^2)",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name,
-            dataSet[0].stats.units, dataSet[1].stats.units);
+            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+        specPlot.Yaxis[0].label = buffer;
         }
       else
       if (multiplyByFreq53())
         {
         psd[0].Pxx[i] *= pow((double)i, 5.0/3.0);
 
-        sprintf(specPlot.Yaxis[0].label, "f^(5/3) x Co of %s x %s (%s^2 x %s^2)",
+        sprintf(buffer, "f^(5/3) x Co of %s x %s (%s^2 x %s^2)",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name,
-            dataSet[0].stats.units, dataSet[1].stats.units);
+            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+        specPlot.Yaxis[0].label = buffer;
         }
       else
         {
         psd[0].Pxx[i] *= cf;
 
-        sprintf(specPlot.Yaxis[0].label, "Co of %s x %s (%s^2 x %s^2 / Hz)",
+        sprintf(buffer, "Co of %s x %s (%s^2 x %s^2 / Hz)",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name,
-            dataSet[0].stats.units, dataSet[1].stats.units);
+            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+        specPlot.Yaxis[0].label = buffer;
         }
 
       specPlot.Yaxis[0].smallestValue =
-           MIN(specPlot.Yaxis[0].smallestValue, psd[0].Pxx[i]);
+           std::min(specPlot.Yaxis[0].smallestValue, psd[0].Pxx[i]);
       specPlot.Yaxis[0].biggestValue =
-           MAX(specPlot.Yaxis[0].biggestValue, psd[0].Pxx[i]);
+           std::max(specPlot.Yaxis[0].biggestValue, psd[0].Pxx[i]);
       }
     }
 
   if (psd[0].display == QUADRATURE)
     {
-    sprintf(specPlot.Yaxis[0].label, "Quadrature of %s x %s",
+    sprintf(buffer, "Quadrature of %s x %s",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name);
+    specPlot.Yaxis[0].label = buffer;
 
     for (i = 1; i <= psd[0].M; ++i)
       {
@@ -166,32 +172,34 @@ void ComputeCoSpectrum()
         {
         psd[0].Qxx[i] *= i;
 
-        sprintf(specPlot.Yaxis[0].label, "f x Qxx of %s x %s (%s^2 x %s^2)",
+        sprintf(buffer, "f x Qxx of %s x %s (%s^2 x %s^2)",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name,
-            dataSet[0].stats.units, dataSet[1].stats.units);
+            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+        specPlot.Yaxis[0].label = buffer;
         }
       else
         {
         psd[0].Qxx[i] *= cf;
 
-        sprintf(specPlot.Yaxis[0].label, "Qxx of %s x %s (%s^2 x %s^2 / Hz)",
+        sprintf(buffer, "Qxx of %s x %s (%s^2 x %s^2 / Hz)",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name,
-            dataSet[0].stats.units, dataSet[1].stats.units);
+            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+        specPlot.Yaxis[0].label = buffer;
         }
 
       specPlot.Yaxis[0].smallestValue =
-             MIN(specPlot.Yaxis[0].smallestValue, psd[0].Qxx[i]);
+             std::min(specPlot.Yaxis[0].smallestValue, psd[0].Qxx[i]);
       specPlot.Yaxis[0].biggestValue =
-             MAX(specPlot.Yaxis[0].biggestValue, psd[0].Qxx[i]);
+             std::max(specPlot.Yaxis[0].biggestValue, psd[0].Qxx[i]);
       }
     }
 
   if (psd[0].display == COHERENCE || psd[0].display == RATIO)
     {
-    psd[0].Special = (double *)GetMemory(sizeof(double) * (psd[0].M+1));
+    psd[0].Special = new double[psd[0].M+1];
 
-    Pxx1 = (double *)GetMemory(sizeof(double) * (psd[0].M+1));
-    Pxx2 = (double *)GetMemory(sizeof(double) * (psd[0].M+1));
+    Pxx1 = new double[psd[0].M+1];
+    Pxx2 = new double[psd[0].M+1];
 
     CleanAndCopyData(&dataSet[0], &detrendedData[0][pos]);
     CleanAndCopyData(&dataSet[1], &detrendedData[1][pos]);
@@ -206,8 +214,9 @@ void ComputeCoSpectrum()
 
     if (psd[0].display == COHERENCE)
       {
-      sprintf(specPlot.Yaxis[0].label, "Coherence of %s x %s",
+      sprintf(buffer, "Coherence of %s x %s",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name);
+      specPlot.Yaxis[0].label = buffer;
 
       for (i = 1; i <= psd[0].M; ++i)
         psd[0].Special[i] =
@@ -217,8 +226,9 @@ void ComputeCoSpectrum()
     else
     if (psd[0].display == RATIO)
       {
-      sprintf(specPlot.Yaxis[0].label, "Ratio of %s / %s",
+      sprintf(buffer, "Ratio of %s / %s",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name);
+      specPlot.Yaxis[0].label = buffer;
 
       for (i = 1; i <= psd[0].M; ++i)
         psd[0].Special[i] = Pxx1[i] / Pxx2[i];
@@ -226,23 +236,24 @@ void ComputeCoSpectrum()
 
 
     printf("variance1=%f, variance2=%f\n", variance1, variance2);
-    free(Pxx1);
-    free(Pxx2);
+    delete [] Pxx1;
+    delete [] Pxx2;
     }
 
   if (psd[0].display == PHASE)
     {
-    psd[0].Special = (double *)GetMemory(sizeof(double) * (psd[0].M+1));
+    psd[0].Special = new double[psd[0].M+1];
 
-    sprintf(specPlot.Yaxis[0].label, "Phase of %s x %s",
+    sprintf(buffer, "Phase of %s x %s",
             dataSet[0].varInfo->name, dataSet[1].varInfo->name);
+    specPlot.Yaxis[0].label = buffer;
 
     for (i = 1; i <= psd[0].M; ++i)
       psd[0].Special[i] = atan2(psd[0].Qxx[i], psd[0].Pxx[i]) * 180.0 / M_PI;
     }
 
-  free(detrendedData[0]);
-  free(detrendedData[1]);
+  delete [] detrendedData[0];
+  delete [] detrendedData[1];
 
 }	/* END COSPECTRUM */
 

@@ -36,8 +36,8 @@ void	findMinMax();
 /* -------------------------------------------------------------------- */
 void UpdateDataRT(XtPointer client, XtIntervalId *id)
 {
-  int  		recDim, i;
-  size_t	nRecords;
+  int  		recDim;
+  size_t	i, nRecords;
 
   if (Freeze)
     goto reset;

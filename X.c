@@ -21,15 +21,11 @@ STATIC FNS:	none
 
 DESCRIPTION:	
 
-INPUT:		
-
-OUTPUT:		
-
 REFERENCES:	none
 
 REFERENCED BY:	plotX.c, diffX.c, specX.c
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 -------------------------------------------------------------------------
 */
 
@@ -137,30 +133,42 @@ void ClearPixmap(PLOT_INFO *plot)
 }	/* END CLEARPIXMAP */
 
 /* -------------------------------------------------------------------- */
-void plotTitlesX(PLOT_INFO *plot, int sizeOffset)	/* Plot titles. */
+void plotTitlesX(PLOT_INFO *plot, int sizeOffset, bool showPrelimWarning)
 {
   int	len, offset;
 
   /* Display title and subtitle
    */
-  if ((len = strlen(plot->title)))
+  if ((len = plot->title.length()) > 0)
     {
     XSetFont(plot->dpy, plot->gc, plot->fontInfo[0+sizeOffset]->fid);
     offset = (plot->x.windowWidth >> 1) -
-          (XTextWidth(plot->fontInfo[0+sizeOffset], plot->title, len) >> 1);
+      (XTextWidth(plot->fontInfo[0+sizeOffset], plot->title.c_str(), len) >> 1);
 
     XDrawString(plot->dpy, plot->win, plot->gc, offset,
-                plot->x.titleOffset, plot->title, len);
+                plot->x.titleOffset, plot->title.c_str(), len);
     }
 
-  if ((len = strlen(plot->subTitle)))
+  if ((len = plot->subTitle.length()) > 0)
     {
     XSetFont(plot->dpy, plot->gc, plot->fontInfo[1+sizeOffset]->fid);
     offset = (plot->x.windowWidth >> 1) -
-          (XTextWidth(plot->fontInfo[1+sizeOffset], plot->subTitle, len) >> 1);
+      (XTextWidth(plot->fontInfo[1+sizeOffset], plot->subTitle.c_str(), len) >> 1);
 
     XDrawString(plot->dpy, plot->win, plot->gc, offset,
-                plot->x.subTitleOffset, plot->subTitle, len);
+                plot->x.subTitleOffset, plot->subTitle.c_str(), len);
+    }
+
+  if (showPrelimWarning)
+    {
+    len = strlen(prelimWarning);
+
+    XSetFont(plot->dpy, plot->gc, plot->fontInfo[2+sizeOffset]->fid);
+    offset = (plot->x.windowWidth >> 1) -
+      (XTextWidth(plot->fontInfo[2+sizeOffset], prelimWarning, len) >> 1);
+
+    XDrawString(plot->dpy, plot->win, plot->gc, offset,
+                plot->x.subTitleOffset+16, prelimWarning, len);
     }
 
 }	/* END PLOTTITLESX */
@@ -195,13 +203,13 @@ void plotLabelsX(PLOT_INFO *plot, int sizeOffset)	/* Plot labels.	*/
     firstTime = False;
     }
 
-  if ((len = strlen(plot->Xaxis.label)))
+  if ((len = plot->Xaxis.label.length()) > 0)
     {
     xOffset = plot->x.LV + (plot->x.HD >> 1) -
-            (XTextWidth(fontInfo, plot->Xaxis.label, len) >> 1);
+            (XTextWidth(fontInfo, plot->Xaxis.label.c_str(), len) >> 1);
 
     XDrawString(plot->dpy, plot->win, plot->gc, xOffset,
-                plot->x.xLabelOffset, plot->Xaxis.label, len);
+                plot->x.xLabelOffset, plot->Xaxis.label.c_str(), len);
     }
 
 
@@ -216,10 +224,10 @@ void plotLabelsX(PLOT_INFO *plot, int sizeOffset)	/* Plot labels.	*/
     xOffset = axis == 0 ? plot->x.yLabelOffset :
           plot->x.windowWidth - plot->x.yLabelOffset - ascent;
 
-    if ((len = strlen(plot->Yaxis[axis].label)) == 0)
+    if ((len = plot->Yaxis[axis].label.length()) == 0)
       continue;
 
-    pixLen = XTextWidth(fontInfo, plot->Yaxis[axis].label, len);
+    pixLen = XTextWidth(fontInfo, plot->Yaxis[axis].label.c_str(), len);
 
     /* Create a pixmap, draw string to it and read it back out as an Image.
      */
@@ -232,7 +240,7 @@ void plotLabelsX(PLOT_INFO *plot, int sizeOffset)	/* Plot labels.	*/
       XSetForeground(plot->dpy, plot->gc, plot->values.foreground);
 
     XDrawString(plot->dpy, in_pm, plot->gc, 0, ascent,
-                plot->Yaxis[axis].label, len);
+                plot->Yaxis[axis].label.c_str(), len);
 
     im_in = XGetImage(plot->dpy, in_pm, 0, 0, pixLen, charSize, 0xffffffff, XYPixmap);
     im_out = XGetImage(plot->dpy, out_pm, 0,0, charSize,pixLen, 0xffffffff, XYPixmap);
@@ -259,10 +267,10 @@ void plotLabelsX(PLOT_INFO *plot, int sizeOffset)	/* Plot labels.	*/
 
   /* Z label.
    */
-  if ((len = strlen(plot->Zaxis.label)))
+  if ((len = plot->Zaxis.label.length()) > 0)
     {
     XDrawString(plot->dpy, plot->win, plot->gc, plot->x.RV + 100,
-                plot->x.BH - 20, plot->Zaxis.label, len);
+                plot->x.BH - 20, plot->Zaxis.label.c_str(), len);
     }
 
 }	/* END PLOTLABELSX */
@@ -443,7 +451,7 @@ void xTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, bool labels)
 /* -------------------------------------------------------------------- */
 void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
 {
-  int		i, cnt, reqSize;
+  size_t	i, cnt, reqSize;
   XPoint	*pts;
   NR_TYPE	datum;
   float		xScale, yScale, halfSecond, yMin;
@@ -466,7 +474,7 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
 
   reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
 
-  pts = (XPoint *)GetMemory(set->nPoints * sizeof(XPoint));
+  pts = new XPoint[set->nPoints];
 
   if (set->nPoints == NumberSeconds)
     halfSecond = plot->x.HD / NumberSeconds / 2;
@@ -535,7 +543,7 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
 
   XSetClipMask(plot->dpy, plot->gc, None);
 
-  FreeMemory(pts);
+  delete [] pts;
 
 }	/* END PLOTTIMESERIES */
 
@@ -576,8 +584,8 @@ void plotXY(PLOT_INFO *plot, DATASET_INFO *Xset, DATASET_INFO *Yset, int color)
 
   /* dataSet[0] is guaranteed to be the X axis variable.
    */
-  nPts = MAX(Xset->nPoints, Yset->nPoints);
-  pts = (XPoint *)GetMemory(nPts * sizeof(XPoint));
+  nPts = std::max(Xset->nPoints, Yset->nPoints);
+  pts = new XPoint[nPts];
  
   if (Xset->nPoints > Yset->nPoints)
     yRatio = (float)Yset->nPoints / Xset->nPoints;
@@ -684,7 +692,7 @@ void plotXY(PLOT_INFO *plot, DATASET_INFO *Xset, DATASET_INFO *Yset, int color)
 
   XSetClipMask(plot->dpy, plot->gc, None);
 
-  FreeMemory(pts);
+  delete [] pts;
 
 }	/* END PLOTXY */
 

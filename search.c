@@ -14,11 +14,7 @@ INPUT:		An array of pointers and target pointer.
 
 OUTPUT:		pointer to located item or NULL
 
-REFERENCES:	none
-
-REFERENCED BY:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 -------------------------------------------------------------------------
 */
 
@@ -28,38 +24,13 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 
 
 /* -------------------------------------------------------------------- */
-int SearchTable(char *table[], int ntable, char target[])
+int SearchTable(std::vector<VARTBL*> table, char target[])
 {
-  int	i;
-
-  for (i = 0; i < ntable; ++i)
-    if (strcmp(table[i], target) == 0)
+  for (size_t i = 0; i < table.size(); ++i)
+    if (strcmp(table[i]->name, target) == 0)
       return(i);
 
-/*
-  int	beg, mid, end, rc;
-
-  if (ntable == 0)
-    return(ERR);
-
-  beg = 0;
-  end = ntable - 1;
-
-  do
-    {
-    mid = (end + beg) >> 1;
-
-    if ((rc = strcmp(target, table[mid])) == 0)
-      return(mid);
-
-    if (rc < 0)
-      end = mid - 1;
-    else
-      beg = mid + 1;
-    }
-  while (beg <= end);
-*/
-  return(ERR);
+  return(-1);
 
 }	/* END SEARCHTABLE */
 

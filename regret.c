@@ -58,8 +58,7 @@ static void gauss(int n, double *a, int adim, double *b, double *x)
 /* -------------------------------------------------------------------- */
 static void stasum(DATASET_INFO *set, double *xbar, double *sd, int flag)
 {
-  int	i;
-  int	cnt = 0;
+  size_t i, cnt = 0;
 
   *xbar = 0;
   *sd = 0;
@@ -92,7 +91,8 @@ static void stasum(DATASET_INFO *set, double *xbar, double *sd, int flag)
 /* -------------------------------------------------------------------- */
 static void leasqu(DATASET_INFO *x, DATASET_INFO *y, int degree, double *w, int wdim, double *r)
 {
-  int		i, j, k;
+  size_t	i;
+  int		j, k;
   double	b[11];
   double	sumy1, sumy2, ybar, ysdev, stemp, rsqu;
   double	xbar, xsdev;
@@ -148,7 +148,7 @@ static void leasqu(DATASET_INFO *x, DATASET_INFO *y, int degree, double *w, int 
   printf("Number of data points = %d\n", x->nPoints);
   printf("A[0] is the constant, A[i] is the coefficient for ith power of X\n");
 
-  for (i = 0; i <= degree; i++)
+  for (i = 0; i <= (size_t)degree; i++)
     printf("A[%d] = %15.8f\n", i, r[i]);
 
   printf("R square = %15.8f\n", rsqu);
@@ -184,7 +184,7 @@ void fitcurve(DATASET_INFO *x, DATASET_INFO *y, int ideg)
 /* -------------------------------------------------------------------- */
 static int linear_regression(DATASET_INFO *x, DATASET_INFO *y)
 {
-  int		i, cnt = 0;
+  size_t	i, cnt = 0;
   double	xbar, ybar;	/* sample means			*/
   double	sdx, sdy;	/* sample standard deviations	*/
   double	sxy, rxy;	/* sample covariance and sample correlation */

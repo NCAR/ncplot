@@ -16,7 +16,7 @@ REFERENCES:	XplotDiff.c
 
 REFERENCED BY:	Callback
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2005
 -------------------------------------------------------------------------
 */
 
@@ -38,12 +38,11 @@ float scanit(char *s);
 void ComputeDiff()
 {
   bool	saveState = Freeze;
-  int	i, in0, in1;
-  char	myExpression[512];
+  size_t i, in0, in1;
 
   if (diffSet.data)
     {
-    free((char *)diffSet.data);
+    delete [] diffSet.data;
     diffSet.data = NULL;
     }
 
@@ -56,10 +55,11 @@ void ComputeDiff()
   diffSet.fileIndex = dataSet[0].fileIndex;
   diffSet.varInfo = dataSet[0].varInfo;
   diffSet.missingValue = dataSet[0].missingValue;
-  diffSet.data = (float *)GetMemory(sizeof(NR_TYPE) * dataSet[0].nPoints);
+  diffSet.data = new float[dataSet[0].nPoints];
 
-  sprintf(diffPlot.Yaxis[0].label, "(%s-%s) %s", dataSet[0].varInfo->name,
-            dataSet[1].varInfo->name, mainPlot[0].Yaxis[0].label);
+  sprintf(buffer, "(%s-%s) %s", dataSet[0].varInfo->name,
+            dataSet[1].varInfo->name, mainPlot[0].Yaxis[0].label.c_str());
+  diffPlot.Yaxis[0].label = buffer;
 
   for (i = 0; i < dataSet[0].nPoints; ++i)
     {
