@@ -164,7 +164,7 @@ void PStitles(FILE *fp, PLOT_INFO *plot, bool showPrelimWarning)
 		(int)(printerSetup.fontRatio * 40));
     fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
 		x, prelimWarning, plot->ps.subTitleOffset-35);
-printf("ps prelim\n");
+
     fprintf(fp, show, prelimWarning);
     }
 
