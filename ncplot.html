@@ -1,0 +1,761 @@
+<html>
+<head>
+<title>NCPLOT User's Guide</title>
+
+<style type="text/css">
+<!--
+body { background: white; color: black; margin: 2em; margin-left: 3em; }
+h1,h2 { font-size: 1.5em }
+h3 { font-size: 1.3em }
+h4 { font-size: 1.2em }
+h1, h2, h3, h4 { font-style: normal; font-weight: normal; color: #3860B0; }
+span.runin { font-size: 1.1em; font-weight: bold; color: #3860B0; }
+a:link { color:navy; }
+a:visited { color:#386090; }
+li.toc { list-style: none; padding: .1em; }
+kbd.att { font-weight: normal; color: blue; }
+div.example { margin-left: 3em; margin-right: 3em; }
+div.definition { margin-left: 1em; }
+pre.CDL { color: brown; }
+table { padding: .25em; }
+span.new { background-color: #FF6666; }
+span.old { background-color: #FFFF88; text-decoration: line-through; }
+span.comment { background-color: #88FF88; font-style: italic; }
+-->
+</style>
+
+</head>
+
+<body>
+
+<h1 align=CENTER>NCPLOT User's Guide</h1>
+<h1 align=CENTER>Version 4.6.3</h1>
+<hr>
+<h1 align=CENTER>Table Of Contents</h1>
+<ol type=A>
+ <li><a href="#oview">Overview</a>
+ <li><a href="#gs">Getting Started</a>
+ <ol>
+  <li>Acquiring
+  <li>Installing
+  <li>Environment
+  <li>Fonts
+  <li>Command line options
+ </ol>
+ <li><a href="#vsw">Variable Selection Window</a>
+ <ol>
+  <li>Moving around in Time
+  <li>Selecting plot type
+  <li>Axes
+  <li>Panels
+  <li>Selecting and Deselecting variables
+  <li>Options
+  <li>XY and XYZ additional options
+ </ol>
+ <li><a href="#pc">Plot Canvas</a>
+ <ol>
+  <li><a href="#pc1">Canvas features</a>
+  <ol type=a>
+   <li>Annotations
+   <li>Resizing canvas windows
+   <li>Zooming
+   <li>Menu accelerators
+  </ol>
+  <li><a href="#pc2">Guide to menus</a>
+  <ol type=a>
+   <li>File menu
+   <ol>
+    <li>Data files
+    <li>Templates
+    <li>Printing
+    <li>Save PNG (GIF substitute)
+   </ol>
+   <li>Edit Menu
+   <ol>
+    <li>Editing plot parameters
+   </ol>
+   <li>View Menu
+   <ol>
+    <li>ASCII
+    <li>Statistics
+    <li>Variable Titles
+    <li>netCDF header
+    <li>Spectra, Cospectra, Quadrature, Phase and Coherence
+   </ol>
+   <li>Options Menu
+   <ol>
+    <li>Expression Parser/User Calculations
+    <li>Regressions
+   </ol>
+  </ol>
+ </ol>
+ <li><a href="#sw">Spectral Window</a>
+ <ol>
+  <li><a href="#sw1">Features</a>
+  <ol type=a>
+   <li>Detrending, Segment lengths, and Windowing functions
+   <li>Band Limited Variance
+   <li>Equal-log interval averaging
+   <li>Time shifting (co-spectra)
+   <li>Plot Options
+  </ol>
+  <li><a href="#sw2">How is my Spectrum being computed?</a>
+ </ol>
+ <li><a href="#cf">Configuration File</a>
+ <li><a href="#kp">Known problems</a>
+</ol>
+ 
+<a name="oview"></a>
+<hr>
+<h1 align=CENTER>Overview</h1>
+<b>ncplot</b> is an interactive plotting tool for workstations running X11/R5,
+Motif 1.2.  <b>ncplot</b> allows the user to view time-series data stored in
+<a href="http://www.unidata.ucar.edu/packages/netcdf/index.html">netCDF</a>
+files that conform to the
+<a href="http://raf.atd.ucar.edu/Software/netCDF.html">NCAR-RAF/nimbus</a>
+
+conventions.  Both Low-rate and Mixed-rate files are supported, as well as
+files where the data have been reduced below 1 sps (sample per second), e.g.,
+files run through <b>ncav</b>.
+<p>
+A few of its features are:
+<p>
+<ul>
+<li>Plots up to 8 datasets per graph.
+<li>Can draw from up to 4 netCDF files on the same plot.
+<li>1 to 4 time-series strip charts.
+<li>1 to 4 XY plots.
+<li>XYZ plot.
+<li>ASCII window.
+<li>Spectra, Co-spectra, Quadrature, Coherence, and Phase.
+<li>Allows user-defined titles, labels, scaling, and major & minor tic marks.
+<li>Annotations.
+<li>Publication quality [Encapsulated] [color] PostScript printouts.
+<li>Optional realtime/on-board mode.
+</ul>
+<b>ncplot</b> is NOT for contouring, image or vector data.
+<p>
+<b>ncplot</b> was written at the <a href="http://raf.atd.ucar.edu/">Research
+Aviation Facility</a> of <a href="http://www.ncar.ucar.edu/">The National
+Center for Atmospheric Research</a> to view and analyze our aircraft data
+(and NOAA's GIV).  The
+<a href="http://raf.atd.ucar.edu/Software/netCDF.html">NCAR-RAF/nimbus</a>
+conventions were designed to store multi-rate data, i.e., variable A may be
+stored at 5sps and variable B at 25sps.  <b>ncplot</b> will plot variables of
+differing rates (and from different files) next to each other.  Every effort
+has been made to make it "what you see is what you get" between the screen
+and printouts.
+
+<a name="gs"></a>
+<hr>
+<h1 align=CENTER>Getting Started</h1>
+
+<dl>
+<dt><h3>Acquiring</h3>
+<dd><b>ncplot</b> is available via anonymous ftp from <b>raf.atd.ucar.edu</b>.
+For Solaris binaries, <b>cd pub/src/bin.Solaris2.?</b> (or <b>bin.RedHat6.?</b>
+for linux), and retrieve <b>ncplot</b>, and <b>ncplot.html</b> (optional).
+
+<dt><h3>Installing</h3>
+<dd>For system use, the binary may be placed in something like
+<b>/usr/local/bin</b>.
+<p>
+For single user, place the binary in ~/bin (Make sure ~/bin is in your
+<b>PATH</b>).
+
+<dt><h3>Environment</h3>
+<dd><b>ncplot</b> is written in C, requiring X11/R5 and Motif 1.2 (or later),
+and the <b>netCDF</b> library 3.0 or later.  Specifically it is developed
+on Sun Microsystems, under Solaris 2.7, using the GNU compiler (<a href="http://gcc.gnu.org/">gcc</a> 2.95.2).
+<p>
+<b>ncplot</b> uses, though it is not required, a shell environment variable
+called <b>DATA_DIR</b> as the default directory to locate data files.
+<p>
+The Landmarks button on the track window looks in the directory defined by
+the environment variable <b>PROJ_DIR</b> to locate <b>WINDS</b> landmarks
+file.  If <b>PROJ_DIR</b> points to <b>/home/local/proj</b>, and you are
+looking at data from ACE-1, (which is project number 130), then <b>ncplot</b>
+will look for the file <b>/home/local/proj/130/landmarks</b>.  The project
+number is stored in the header of the netCDF file and can be viewed from
+the <b>netCDF Header</b> option under the <b>View</b> menu, or with the
+netCDF utility program <b>ncdump</b>.
+<p>
+
+<dt><h3>Fonts</h3>
+<dd>Fonts (on screen) have been a source of irritation from the start.  What
+looks great on Solaris looks like crap on Linux or an HP.  You can modify
+the fonts for the screen in the <b>XmNCplot</b> file.  All font references
+are at the top.  The <b>X</b> programs <b>xfontsel</b> and <b>xlsfonts</b>
+can help you locate a font that looks good on your machine (you'll need
+10, 12, 14, 18, and 24 point sizes for the font you do locate, with 12 &
+14 being the most heavely used).
+
+<dt><h3>Command Line Options</h3>
+<dd><kbd class="att">-r</kbd> Run in realtime "onboard" mode.
+<p>
+<kbd class="att">-t hh:mm:ss-hh:mm:ss</kbd>, allows time segment to be entered on command line.
+<p>
+<kbd class="att">-s template_file</kbd>, load a template file at startup.
+<p>
+<kbd class="att">data_file</kbd>, a netCDF data file that conforms to the
+<b>NCAR-RAF/nimbus</b> conventions.
+
+<dt><h3>Examples</h3>
+<dd>Run with no command line parameters:
+<ul>
+<pre class="CDL">1024% ncplot</pre>
+</ul>
+<p>
+Load a single data file:
+<ul>
+<pre class="CDL">1025% ncplot /home/data/817rf15.cdf</pre>
+</ul>
+<p>
+Using everything:
+<ul>
+<pre class="CDL">1025% ncplot -s ~/sounding -t 02:00:00-03:00:00 /home/data/181rf15.cdf</pre>
+</ul>
+<p>
+Run ncplot in real-time mode for onboard use (file is currently hard coded to be
+/home/tmp/RealTime.cdf):
+<ul>
+<pre class="CDL">1026% ncplot -r</pre>
+</ul>
+</dl>
+
+<a name="vsw"></a>
+<hr>
+<h1 align=CENTER>Variable Selection Window</h1>
+
+<img src="http://raf.atd.ucar.edu/Software/ctrl.png" align=right>
+
+<dl>
+<dt><h3>Moving around in Time</h3>
+<dd><b>ncplot</b> comes up with the first 30 minutes of the file as the starting
+time frame.  New time frames may be entered in the <b>Time Period</b> area
+at the top of the Variable Selection window, and then pressing <b>Apply</b>.
+<p>
+<b>PgFwd</b> and <b>PgBkd</b> buttons exist to facilitate moving through the
+file in a sequential manner.  The <b>Page</b> buttons will keep the same
+time frame length until End-of-File is reached; then the time frame may change
+to whatever amount of time is remaining in the file.  Subsequent <b>PgBkd</b>
+will maintain the new time frame length.
+<p>
+The time frame may also be changed in the <b>time-series</b> plots via the
+<b>zoom</b> option.
+<p>
+If the flight wraps around midnight, times past midnight should be greater
+than 24:00:00 (e.g. 1:00am start time should be entered as 25:00).
+
+<dt><h3>Plot Type</h3>
+<dd>Three primary plot types are supported, <b>time-series</b>, <b>XY</b>, and
+<b>XYZ</b>.  When you move from one plot type to another, your previous plot
+is not lost.  To select a plot type, click on its button.
+<p>
+When you select <b>XY</b> or <b>XYZ</b> plot types, a window with additional
+options pops up.
+<p>
+Keep in mind that, if you have all the plot types loaded with variables and
+move around in time, ALL the variables will be reloaded from all the plots
+(including wind vectors), and this may have a serious impact on execution
+speed.
+
+<dt><h3>Axes</h3>
+<dd>The various plot types have different active axes.  (Inactive axes
+are in gray and cannot be selected.)
+<p>
+For the <b>time-series</b> plot, only the Y axis is valid, but you may
+select whether future variables you select will be labeled on the right
+or left side of the graph.
+<p>
+The <b>XY</b> plot has valid X and Y axes.  When the Y axis is selected,
+you may choose left or right.  The <b>XY</b> plot maps each X with a Y
+until one axis runs out of variables, then all remaining variables in
+the longer list will be mapped to the last variable in the shorter list.
+This allows for doing things like overlaying a GPS track plot on top of
+a INS track plot without getting "cross-product" traces drawn.
+<p>
+The <b>XYZ</b> plot only supports one variable on each axis; therefore, there
+is no "de-selecting" of variables; just select the new variables you want.
+
+<dt><h3>Panels</h3>
+<dd>Panels are for <b>time-series</b> and <b>XY</b> plots.  This
+allows you to have up to 4 strip-chart panels in one window for
+<b>time-series</b> or 4 vertical profile style panels for <b>XY</b> plots.
+Select which panel you want to add or delete variables from.  Use the
+<b>Add</b> and <b>Delete</b> buttons to add and remove panels.  The
+<b>Clear</b> button will remove all selected variables from the current panel.
+
+<dt><h3>Selecting and Deselecting Variables</h3>
+<dd>After you have selected which data file, plot type, panel, axis
+and location, just click on the variable you wish to <b>select</b>.
+<p>
+<dd>To <b>de-select</b> a variable, click on it again.  The file, axis, location and panel must all match from when the variable was selected.  This can get confusing if you are drawing data from multiple files.  When things get out of hand, you can can clear all variables from the current plot via the <b>Options</b> menu.
+
+<dt><h3>Options</h3>
+<dd>
+ <dl><dt><b>Black & White (on/off)</b>
+ <dd>Converts all color traces to black and white.  Dashed lines are used
+to differentiate variables in black and white.  This option is provided
+to let the user preview monochrome printing.
+<p>
+ <dt><b>UT seconds (on/off)</b>
+ <dd>Changes time format to seconds since midnight on <b>time-series</b> plots
+only.
+<p>
+ <dt><b>Grid (on/off)</b>
+ <dd>Turns grid on or off for <b>time-series, XY, and XYZ</b> plots.
+<p>
+ <dt><b>Tracking (on/off)</b>
+ <dd>Provides cross-hair target across all plots, displaying engineering values
+of the center of the cross hair.
+<p>
+ <dt><b>Line thickness</b>
+ <dd>Let's you select how thick the data traces will be.
+ </dl>
+
+<dt><h3>XY and XYZ additional options (separate window)</h3>
+
+
+<dd>Much of this window is oriented toward flight track plots.  This window
+is only effective for <b>XY</b> and <b>XYZ</b> plots.
+<p>
+<img src="http://raf.atd.ucar.edu/Software/xy.png" align=center>
+ <dl>
+ <dt><h4>Flight Tracks</h4>
+  <ul>
+  <li>The <b>INS Track</b> and <b>GPS Track</b> buttons are convienence
+functions to quickly load the variables from the respective instruments.  In
+the case of the <b>XYZ</b> plot, Pressure Altitude is loaded.  The variable
+names used are currently hard-coded into the software (LAT, LON, [PALT], and
+GLAT, GLON, [GALT]).  <b>ncplot</b> will load as many of the variables as
+it can find (e.g.  GALT is routinely not output, and therefore nothing will
+be loaded for the Z axis in the <b>XYZ</b> plot when <b>GPS Track</b> is
+pressed).
+<p>
+  <li>The <b>Landmarks</b> file is the same one used by <b>WINDS</b>
+(see the <b>Environment</b> section for details on location).  Below is
+the file from <b>ACE-1</b>:
+
+<div class="example">
+<pre class="CDL">
+-42.83 147.52 Hobart 1
+-43.05 147.08 Huonville 1
+-43.64 146.82 SEcape 1
+-43.57 146.04 SWcape 1
+-42.157 145.80 Strahan 1
+</pre>
+</div>
+
+The trailing value of zero or one is not used by <b>ncplot</b>, but is
+relevant to <b>WINDS</b>.
+<p>
+  <li>The <b>geo-political map</b> makes use of the
+<a href="http://gmt.soest.hawaii.edu">GMT</a> <b>pscoast</b> command.
+The <b>GMTHOME</b> environment variable must be defined for <b>ncplot</b> to
+engage mapping.  The <b>pscoast</b> command must be in your <b>PATH</b>, and
+the coast libraries <b>$GMTHOME/lib/binned_*.cdf</b> (~75Mb) must be installed.
+<p>
+  <li><b>Track scaling</b> is a convenience button to over-ride autoscaling and "square up" the track plot.  Degrees lat and lon are converted to a distance based on median lat, and then equal delta X and delta Y are computed.
+  </ul>
+ <dt><h4>Wind vectors</h4>
+ <dd><b>Wind vectors</b> may be added to the <b>XY</b> plot only. (We decided
+it would look too confusing on the <b>XYZ</b> plot.)  Select whether you
+would like <b>averaged</b> or <b>instantaneous</b> vectors, and the
+<b>interval</b> in seconds that you would like them displayed.  You may
+also change the variables you wish to be used.  If wind vectors are already
+turned on when you change the variables, you must turn them off and then
+back on to reload the new variables.
+<p>
+
+ <dt><h4>Miscellaneous options</h4>
+ <dd>
+  <dl>
+  <dt><b>Direction arrows</b>
+  <dd>Enter the number of direction arrows desired in the text box.
+<p>
+  <dt><b>Time stamps</b>
+  <dd>Enter the number of time-stamps desired in the text box.
+<p>
+  <dt><b>Scatter plot</b>
+  <dd>Changes line segments to dots, for <b>XY</b> only.
+<p>
+  <dt><b>Project to XY-plane</b>
+  <dd>Projects a trace of the XYZ plot onto the XY plane.
+<p>
+  <dt><b>Project to back plane</b>
+  <dd>Projects a trace of the XYZ plot onto the back and side planes.
+  </dl>
+ </dl>
+</dl>
+
+<a name="pc"></a>
+<a name="pc1"></a>
+<hr>
+<h1 align=CENTER>Canvas Features</h1>
+<dl>
+<dt><b>Annotate</b>
+<dd><b>ncplot</b> has the ability to <b>annotate</b> graphs.  In the upper
+right corner of the main <b>plot canvas</b> there are a couple of buttons,
+one with the letter "<b>A</b>".  Press the "<b>A</b>", and your pointer
+will turn into a text insertion style cursor.  Move the cursor to where
+you would like to start the annotation, and press the left mouse button.
+Start typing, and finish the annotation by pressing <b>return</b>.  Doing
+just about anything will clear all annotations (due to the difficulty of
+tracking their location as the user moves around in time, and rescales axes).
+They should be added as the final option before printing.
+<p>
+<dt><b>Resize</b>
+<dd>All plot canvas windows are fully <b>resizable</b>.  In the case of the
+<b>spectral</b> window, some buttons will get clipped off the screen.
+Resizing the screen will have <b>no</b> affect on sizing or proportion
+of your printout, this is controlled via the <b>Printer Setup</b> option.
+<p>
+<dt><b>Zoom</b>
+<dd>A <b>zoom</b> feature exists; place the mouse in the upper left corner
+of what you want to zoom in on, hold the left mouse button down, and drag the
+box over the segment you want to see.  Moving left or above the initial
+point will cancel the zoom when you let go.  Your mileage may vary if
+autoscaling is turned on.  There is one level of un-zoom located in the
+Options menu.
+<p>
+<dt><b>Menu accelerators</b>
+<dd>When looking through the various menus, one will notice <b>CTRL</b>
+sequences to the right of the menu option label.  These are called
+<b>menu accelerators</b>, in <b>ncplot</b> they only work while the
+cursor is located in the <b>plot canvas</b>.
+</dl>
+
+<a name="pc2"></a>
+<hr>
+<h1 align=CENTER>Guide to Menus</h1>
+<dl>
+<dt><h3>File Menu</h3>
+<dd>The items in the File menu allow opening of data files from disk,
+printer setup, and printing.  In the case of an operation that will
+overwrite an existing file, you will be prompted by an alert that allows
+you to abort the write if you don't want the file to be overwritten.
+<p>
+ <dl>
+ <dt><b>New Data File</b>.
+ <dd>This displays a File Selection Box to select a file to read.  There
+is no error checking to see if the input file is valid.  Invalid files
+tend to cause a segmentation fault.  New Data File will close out all
+previously-opened files.
+<p>
+ <dt><b>Add Data File</b>.
+ <dd>This displays a File Selection Box to select an additional file to open.
+<p>
+ <dt><b>Save Template</b>.
+ <dd>Save current plot to disk file for future retrieval.  Note, file names and
+time slices are not saved, this just saves the plot type, number of panels,
+and the current variables.
+<p>
+ <dt><b>Load Template</b>.
+ <dd>Load a previously saved template.  This will clear the current plot that
+matches the plot type in the template file.  You must already have a file
+open.
+<p>
+ <dt><b>Save PostScript</b>.
+ <dd>This displays a File Selection Box prompting for the name of the file
+where you want to write the PostScript output.
+<p>
+ <dt><b>Printer Setup</b>.
+ <dd>This pops up a window with options to change the 'lp' command, the size of
+plot to be printed, whether to print landscape or portrait, and color vs.
+black and white.
+<p>
+ <dt><b>Print</b>.
+ <dd>This opens a pipe and sends PostScript commands to <b>lp(1)</b>.
+<p>
+ <dt><b>Save <a href="http://www.libpng.org/pub/png/">PNG</a></b>.
+ <dd>This option allows you to save the plot image as a graphics file, which
+can then be used in web pages, etc.  You can adjust the size of the image
+saved by first sizing the plot canvas.
+<p>
+<b>Why not GIF or JPEG?</b><br>
+<b>JPEG</b> was rejected because it is a lossy algorithm.  I would have chosen
+<b>GIF</b> except <b>Unisys</b> owns the patent on the LZW compression
+algorithm required to produce a <b>GIF</b> image.  A new freeware image
+compression standard has emerged; <b>PNG</b>.  Both <b>netscape</b> and
+<b>Internet Explorer</b> support <b>PNG</b>.  Visit <a href="http://www.burnallgifs.org">http://www.burnallgifs.org</a> for more on the controversy.
+<p>
+ </dl>
+
+<dt><h3>Edit Menu</h3>
+<dd>The <b>Edit Parameter</b> windows allow the user to edit titles, labels,
+autoscaling, number of tic marks, log vs. linear, and scale inversion for
+each of the plots or windows.
+<p>
+<img src="http://raf.atd.ucar.edu/Software/eparm.png">
+<p>
+ <dl>
+ <dt><b>Time Series Parameters</b>.
+ <dd>This pops up a window showing all the parameters that are user modifiable
+for the main plot window (also contains ASCII options).
+<p>
+ <dt><b>XY Parameters</b>.
+ <dd>This pops up a window showing all the parameters that are user modifiable
+for the XY plot.
+<p>
+ <dt><b>XYZ Parameters</b>.
+ <dd>This pops up a window showing all the parameters that are user modifiable
+for the XYZ plot.
+<p>
+ <dt><b>Spectral Parameters</b>.
+ <dd>This pops up a window showing all the parameters that are user modifiable
+for the spectral window.
+<p>
+ </dl>
+<dd>Note: When displaying log scales and auto-scaling is off, the min's and
+max's you choose should be powers, not absolute values (i.e. the value you
+enter will become 10^x).
+
+<dt><h3>View Menu</h3>
+ <dl>
+ <dt><b>ASCII</b>.
+ <dd>This opens a window for viewing the data in ASCII format.  Some options
+pertaining to this are available in the 'Edit Plot Parameters' menu item.
+Note: Because it is possible so many points may be displayed on the graphs
+the ASCII window only displays the first 300 (by default) points.  Furthermore,
+only the first 60 points are printed.  However, the save button pops up a
+file selection window allowing you to save the entire time segment to a file
+of your choice.  If the <b>Spectral</b> window is open, then the ASCII window
+will display the frequency domain output.
+<p>
+ <dt><b>Variable Titles</b>.
+ <dd>This opens a window listing variables names and their titles.  The
+"Category" menu may be used to reduce the list to just variables that belong
+in a given category.  The category system is not perfect, our system allows a
+variable to exist in 1 category, even though some variables should belong in
+more than one category.
+<p>
+ <dt><b>netCDF Header</b>.
+ <dd>This opens a window with output from the <b>ncdump</b>(1) program.
+<p>
+ <dt><b>Statistics</b>.
+ <dd>This opens a window displaying statistics from all variables currently
+being used by ncplot.
+<p>
+ <dt><b>Spectrum</b>.
+ <dd>This opens a window with Log/Log plot, showing the Power Spectral Density
+of the first variable currently being displayed on the main plot window.
+<p>
+ <dt><b>Co-Spectra, Quadrature, Coherence, and Phase</b>.
+ <dd>This opens a window with Linear/Log plot, showing, whichever of the
+above four options, the first two variables currently being displayed
+in the main plot window.  Sample rates must match.
+ </dl>
+
+<dt><h3>Options Menu</h3>
+ <dl>
+ <dt><b>Un-zoom</b>.
+ <dd>The "box-zoom" has a stack supporting one level of Un-zoom.
+<p>
+ <dt><b>Clear current plot</b>.
+ <dd>Remove all variables from the currently visible plot (Time-series, XY,
+or XYZ).
+<p>
+ <dt><b>User Calculations</b>.
+ <dd>Pops up a window allowing the user to enter their own calculations.
+Upto 5 variables can be defined using complex algebraic expressions.  Variable
+names are case-sensitive and must be quoted.  The new variables show up at the
+bottom of the variable list in the control window (USER1, USER2, etc).  Only
+the variables defined will show up.
+<p>
+<img src="http://raf.atd.ucar.edu/Software/expar.png" align=center>
+<p>
+All of the standard arithmetic operators are available plus the following
+intrinsic functions:<p>
+
+<kbd class="att">sqrt()</kbd> = Square root.<br>
+<kbd class="att">ln()</kbd> = Natural log.<br>
+<kbd class="att">log()</kbd> = log base 10.<br>
+<kbd class="att">exp()</kbd> = Exponential.<br>
+<kbd class="att">sin()</kbd> = Sine.<br>
+<kbd class="att">cos()</kbd> = Cosine.<br>
+<kbd class="att">tan()</kbd> = Tangent.<br>
+<kbd class="att">abs()</kbd> = Absolute value.<br>
+<kbd class="att">^</kbd> = Power (e.g. 2^3 would be 2 cubed).<br>
+<p>
+
+ <dt><b>Clear regression</b>.
+ <dd>Remove all regresions being displayed.
+<p>
+ <dt><b>Linear regression</b>.
+ <dd>Perform a linear regression, and display the equation's line.  Statistics
+from the regression are output to the window ncplot was started from.
+Regressions currently only available on XY plot.
+<p>
+ <dt><b>Polynomial regression</b>.
+ <dd>Prompts user for polynomial order (2nd through 5th), then performs the
+regression, and displays the curve.  Statistics from the regression are
+output to the window ncplot was started from.  Regressions currently only
+available on XY plot.
+ </dl>
+</dl>
+
+<a name="sw"></a>
+<hr>
+<h1 align=CENTER>Spectral Window</h1>
+<a name="sw1"></a>
+<h3>Features</h3>
+A spectrum is computed from the first variable in the <b>time-series</b>
+window, using the same time segment.  Co-spectra, quadrature, coherence, and
+phase are computed from the first two variables being displayed in the
+<b>time-series</b> window.
+<p>
+Along the top row are three buttons, <b>Dismiss</b> and <b>Print</b> should
+be obvious.  Sizing, <b>lp</b> command, and orientation from the <b>Printer
+Setup</b> window will be effective.  The <b>Edit Parms</b> button is a
+convenient short cut to the <b>Edit</b> menu item of the same name.
+<p>
+The first group of "radio buttons" in the upper right corner are also
+short cuts to the items listed under the <b>View</b> menu of the same
+name, which allow you to conveniently toggle between the various spectral
+displays.
+<p>
+The next group, consists of three "option menus", and a recompute button.
+These items control some of the power spectrum density computations.
+The first menu is the <b>Segment length</b> to be used by the FFT, and
+indirectly determines how many segments will be averaged together.  The
+second menu is the <b>Windowing</b> function to be applied to each segment.
+The third menu determines what type of <b>Detrending</b> to apply to the
+entire time-series data.  (It is not applied to each segment.)  See <b>How
+is my spectrum being computed</b>, below, for more details.  You must press the
+<b>Recompute</b> button to have the changes in any of these menus take affect.
+<p>
+You will notice that two <b>variances</b> are shown at the bottom of the
+display.  <b>Total variance</b> is always displayed, and the sum includes
+the 0th point or DC component of the Pxx spectrum array.  The second
+variance listed is the <b>Band Limited Variance</b>.  By default this
+is just the total variance minus the DC component.  However you may change
+the <b>Start frequency</b> or <b>End frequency</b> to get the <b>variance</b>
+computed over a specified interval.  The <b>Start/End frequencies</b> will
+be truncated down to the nearest bin, no partitioning of these bins will occur.
+<p>
+<b>Time-shifting</b> for <b>co-spectrum</b> is supported.  While you
+may enter a value to the nearest millisecond, the data will only be
+shifted to the nearest sample.  For example, if you are doing spectra
+on 25sps data, the gap between samples is 40 milliseconds, anything less
+than 40 milliseconds that you enter will be truncated to 0, and anything
+between 40 and 79 will be truncated to 40 milliseconds or 1 sample.
+<p>
+<b>Equal-log interval averaging</b> may be turned on to reduce the noise
+being displayed.  You may choose how many points to display, however some
+number less than that will actually be displayed due to some bins having
+no values to average in.
+<p>
+<img src="http://raf.atd.ucar.edu/Software/spec.png">
+<p>
+<h3>Plot Options</h3>
+<ul>
+<li><b>Grid</b> - applies a grid to the plot.<br>
+<li><b>Multiply output by frequency</b> - does just that; only works for
+<b>spectrum</b> as it is the default for <b>co-spectrum</b>.<br>
+<li><b>Wave length scale</b> - may be added to the <b>top</b> of the plot
+ (TASX required).<br>
+<li><b>Wave number scale</b> - can replace the <b>bottom</b> frequency scale
+ (TASX required).<br>
+</ul>
+
+<a name="sw2"></a>
+<h3>How is my spectrum being computed?</h3>
+<menu>
+<menu>
+  M     = segment length divided by 2.
+<br>
+  K     = number of segments (nPoints / M) + 2.
+<br>
+  Pxx   = Output spectral array (length = M).
+<br>
+  Wss   = Window summed and squared.
+<br>
+  nPoints = Number of points in time series.
+</menu>
+Defaults:
+<menu>
+  Detrend = Linear regression.
+<br>
+  Segment Length = 1024 (M = 512).
+<br>
+  Window = Parzen.
+</menu>
+</menu>
+<p>
+The entire time series data shown in the main ncplot window is
+detrended with the user-selected detrend function, and padded
+with zeroes on each end, to bring the data length up to a 2 to
+the N power. (The FFT algorithm used requires this.)  K is incremented
+by 2 to make sure every real point is used twice.
+<p>
+The detrended data are then scaled by two different factors, one to
+compensate for the effect of zero padding, and the other to compensate
+for the effect of windowing.
+<p>
+The Welch peridiogram is then applied.  Data segments (of length 2M)
+are window'ed, FFT'ed, and summed into Pxx.  Each segment overlaps
+the previous segment by 50%.  Parzen, Welch, and Hanning are among
+the best windows to choose from.
+<p>
+Pxx is averaged by dividing by K * Wss * 2M.
+<p>
+
+<a name="cf"></a>
+<hr>
+<h1 align=center>Configuration File</h1>
+<b>ncplot</b> will read a file titled <b>.ncplotrc</b> in your home directory,
+if it exists.  The following options may be overridden:<p>
+<kbd class="att">Colors = </kbd>a list of seven colors space and/or comma seperated.<br>
+<kbd class="att">PrintCommand = </kbd>new print command (eg: lp -d color -o nobanner).<br>
+<kbd class="att">PrintColor = </kbd>Color (default is B&W).<br>
+<kbd class="att">LineWidth = </kbd># (default is 1).<br>
+<kbd class="att">TemplateDirectory = </kbd>Directory path<br>
+<kbd class="att">TrueAirspeed = </kbd>TAS variable name (default is TASX).<br>
+<kbd class="att">GpsLongitude = </kbd>GPS LON variable name (default is GLON).<br>
+<kbd class="att">GpsLatitude = </kbd>GPS LAT variable name (default is GLAT).<br>
+<kbd class="att">GpsAltitude = </kbd>GPS ALT variable name (default is GALT).<br>
+<kbd class="att">InertialLongitude = </kbd>INS LON variable name (default is LON).<br>
+<kbd class="att">InertialLatitude = </kbd>INS LAT variable name (default is LAT).<br>
+<kbd class="att">PressureAltitude = </kbd>Pressure ALT variable name (default is PALT).<br>
+
+<div class="example">
+<pre class="CDL">
+Colors = red,blue,green,yellow,maroon,orange,
+PrintCommand = lp -d color -o nobanner
+PrintColor = Color
+LineWidth = 2
+TemplateDirectory = /home/users/chris/.templates
+GpsLongitude = GGLON
+GpsLatitude = GGLAT
+GpsAltitude = GGALT
+</pre>
+</div>
+
+<p>
+The Unix command <b>showrgb(1)</b> can be used to view a list of all available
+color names (showrgb | more).  The <b>Colors</B> option allows you to override
+the plot trace colors.
+
+<a name="kp"></a>
+<hr>
+<h1>Known Problems</h1>
+<ul>
+<li>Invalid data files may cause a core dump.
+<li>No minor tic marks exist for Y axis on XYZ plot.
+</ul>
+<hr>
+<h1>Author</h1>
+Christopher J. Webster<br>
+National Center for Atmospheric Research<br>
+Research Aviation Facility.<br>
+(303) 497-1044
+<p>
+  <address><a href="/cgi-bin/mail_me1.pl/websterc+from_RAF_Web_Software_Page_ncplot">email</a></address>
+
+<hr>
+<font size=2>
+Last update:
+Thu Jan 22 16:20:25 MST 2004
+</body>
+</html>

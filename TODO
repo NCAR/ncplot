@@ -1,0 +1,56 @@
+- Realtime
+  x All PS needs set->head working.
+  x Freeze needs enabling while printing, computing diff & spec.
+  - Display NumberSeconds, and be able to modify.
+  - If hours of data, and just select variable, starts at ground zero.
+  - Whats up with Broadcast on C130???
+
+
+Bugs:
+------------------------------------------------------------------------
+- No minor tics on ZD.
+
+- TimeStamps get clipped.
+
+- Stats --> THDG averages instead of wraps.
+
+
+To Do:
+------------------------------------------------------------------------
+- Tool tips, var titles when over a name would be great.
+
+x Add LAT/GLAT, and other hard coded names to "Edit Preferences"
+
+- deal with circular variables.
+
+- Spectral stuff
+  - Roughly equal number decades X & Y axes.
+  - Be able to modify TAS variable, and if no TAS, then be able to
+		enter default speed.
+
+- Statistics window
+> - Selecting the variable....
+  - Move regression into outlier window.
+  - Regression output into a window, not the screen.
+  - Averaging built in.
+
+- XY
+  - Events.
+
+- Full plot, save/load
+
+
+Wish list:
+------------------------------------------------------------------------
+- Auto # of tic marks for Y axis & autoYlabels????.
+
+- XYZ plots:
+  - Add 4th variable on top of PALT (Projection or Color coding).
+  - Conical/spherical perspective.
+  - tie/untie time slice from mainPlot.
+  - wider line if showing whole flight, but !in TIME_SERIES.
+  - Terrain ????
+
+- Satellite images.
+
+- Time gaps.

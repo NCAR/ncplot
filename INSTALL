@@ -1,0 +1,23 @@
+Building and installing ncplot (Solaris/Linux).
+
+1) Edit Makefile to fit your needs.
+    - You need to define ${LOCAL}.
+    - Uncomment/comment section for your OS.
+    - ${INCLUDES} only needs to locate "netcdf.h" & X11/Xm .h files.
+    - If you want to use the "install" target, delete superfluous 'cp's.
+
+2) Type 'make'
+
+3) If you're installing for a system, put binary in appropriate place
+   (e.g.  /usr/local/bin).
+
+   If you are a lone user, put the binary wherever you want (e.g. $HOME/bin).
+
+4) Make sure all previous XmNCplot resource files have been deleted.  You
+   may create a resource file for over-riding fonts, colors, etc.
+
+
+Users manual: http://raf.atd.ucar.edu/Software/ncplot.html
+
+Chris Webster
+cjw@ucar.edu
