@@ -21,11 +21,7 @@ STATIC FNS:	findMinMax()
 
 DESCRIPTION:	
 
-INPUT:		none
-
-OUTPUT:		none
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 -------------------------------------------------------------------------
 */
 
@@ -167,10 +163,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 
   size_t indx = curFile->fileName.find_last_of('/');
   if (indx != std::string::npos)
-    {
-    DataPath = curFile->fileName.substr(0, indx+1);
-    DataPath += "*.nc";
-    }
+    DataPath = ExtractFileDialogFilter();
 
 
   /* See if file exists.

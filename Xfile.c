@@ -17,6 +17,7 @@ OUTPUT:		Error message in its own tidy little window.
 
 #include <Xm/Xm.h>
 #include <Xm/FileSB.h>
+#include <Xm/TextF.h>
 
 #include "define.h"
 
@@ -73,6 +74,16 @@ void CreateFileSelectionBox(Widget parent)
   XtAddCallback(fileBox, XmNcancelCallback, FileCancel, (XtPointer)False);
 
 }	/* END CREATEFILESELECTIONBOX */
+
+/* -------------------------------------------------------------------- */
+char *ExtractFileDialogFilter()
+{
+  Widget fltr = XmFileSelectionBoxGetChild(fileBox, XmDIALOG_FILTER_TEXT);
+
+  if (fltr)
+    return XmTextFieldGetString(fltr);
+
+}	/* END EXTRACTFILTER */
 
 /* -------------------------------------------------------------------- */
 void ExtractFileName(XmString str, char **text)

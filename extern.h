@@ -52,7 +52,7 @@ extern instanceRec	iv;
 
 
 /* Procedures	*/
-char	*get_legend();
+char	*get_legend(), *ExtractFileDialogFilter();
 void	*GetMemory(size_t nb), FreeMemory(void *p);
 int	DeleteVariable(DATASET_INFO *, size_t, int), isAverage(), whichSide(),
 	choosingXaxis(), choosingYaxis(), choosingZaxis(),
@@ -62,11 +62,14 @@ int	DeleteVariable(DATASET_INFO *, size_t, int), isAverage(), whichSide(),
 void	Initialize(), ProcessArgs(char **argv), ReadConfigFile();
 
 void	CreateErrorBox(Widget w), ShowError(char *);
-void	CreateWarningBox(Widget w), WarnUser(char *, XtCallbackProc, XtCallbackProc);
-void	CreateQueryBox(Widget w), QueryUser(char *, int, XtCallbackProc),
+void	CreateWarningBox(Widget w),
+	WarnUser(char *, XtCallbackProc, XtCallbackProc);
+void	CreateQueryBox(Widget w),
+	QueryUser(char *, int, XtCallbackProc),
 	ExtractAnswer(char *);
 void	CreateFileSelectionBox(Widget w),
-	QueryFile(char *, char *, XtCallbackProc), ExtractFileName(XmString, char **);
+	QueryFile(char *, char *, XtCallbackProc),
+	ExtractFileName(XmString, char **);
 
 void	QueryCancel(Widget, XtPointer, XtPointer),
 	FileCancel(Widget, XtPointer, XtPointer),
