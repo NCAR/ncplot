@@ -119,10 +119,8 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
   if (cb && cb->reason == XmCR_VALUE_CHANGED && cb->set == false)
     return;
 
-  if (NumberDataSets < 1) {
-    HandleError("PSD requires one data set.", Interactive, IRET);
+  if (NumberDataSets < 1)
     return;
-    }
 
   if ((int)client > 1 && NumberDataSets < 2)
     {

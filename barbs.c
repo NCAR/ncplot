@@ -78,7 +78,7 @@ void PlotWindBarbs(PLOT_INFO *plot, FILE *fp)
 
   nPts = std::max(xyXset[0].nPoints, xyYset[0].nPoints);
 
-  if (xyXset[0].varInfo->name.find_first_of("LON") != std::string::npos)
+  if (xyXset[0].varInfo->name.find_first_of("LON") == std::string::npos)
     xScale = 0;
 
   for (i = 0; i < nPts; ++i)
