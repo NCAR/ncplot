@@ -30,7 +30,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1998
 #include <Xm/RowColumn.h>
 #include <Xm/TextF.h>
 
-#define TOTAL_PARMS	2
+static const int TOTAL_PARMS = 2;
 
 extern Widget	AppShell;
 static Widget	StatsShell = NULL, StatsParmsWindow, parmsText[TOTAL_PARMS],
@@ -38,8 +38,7 @@ static Widget	StatsShell = NULL, StatsParmsWindow, parmsText[TOTAL_PARMS],
 
 void SetStatsDefaults();
 
-static void	CreateStatsParmsWindow(),
-		setOutlierList(Widget, XtPointer, XtPointer),
+static void	CreateStatsParmsWindow(), setOutlierList(),
 		setOutlierVar(Widget, XtPointer, XtPointer),
 		ApplyStatsParms(Widget, XtPointer, XtPointer);
 
@@ -119,17 +118,17 @@ static void setOutlierList()
   XmListDeleteAllItems(list);
  
   for (i = 0; i < NumberDataSets; ++i)
-    item[cnt++] = XmStringCreateLocalized(dataSet[i].varInfo->name);
+    item[cnt++] = XmStringCreateLocalized((char*)dataSet[i].varInfo->name.c_str());
 
   for (i = 0; i < NumberXYXsets; ++i)
-    item[cnt++] = XmStringCreateLocalized(xyXset[i].varInfo->name);
+    item[cnt++] = XmStringCreateLocalized((char*)xyXset[i].varInfo->name.c_str());
 
   for (i = 0; i < NumberXYYsets; ++i)
-    item[cnt++] = XmStringCreateLocalized(xyYset[i].varInfo->name);
+    item[cnt++] = XmStringCreateLocalized((char*)xyYset[i].varInfo->name.c_str());
 
   for (i = 0; i < 3; ++i)
     if (xyzSet[i].varInfo)
-      item[cnt++] = XmStringCreateLocalized(xyzSet[i].varInfo->name);
+      item[cnt++] = XmStringCreateLocalized((char*)xyzSet[i].varInfo->name.c_str());
 
   if (cnt > 0)
     XmListAddItems(list, item, cnt, 1);

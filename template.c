@@ -126,7 +126,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
     }
 
 
-  Freeze = True;
+  Freeze = true;
   WaitCursorAll();
 
 
@@ -141,7 +141,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 
       for (i = 0; i < NumberOfPanels; ++i)
         {
-        fprintf(fp, "Grid=%d, AutoScale=%d\n", mainPlot[i].grid,
+        fprintf(fp, "Grid=%d, AutoScale=%d, AutoTics=%d\n", mainPlot[i].grid,
 		mainPlot[i].autoScale, mainPlot[i].autoTics);
 
         fprintf(fp, "Yaxis - Invert=%d %d, log=%d %d, bounds=%e %e %e %e, xTics=%d %d, yTics=%d %d\n", 
@@ -160,7 +160,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
       for (i = 0; i < NumberDataSets; ++i)
         {
         fprintf(fp, "VarName=%s Panel#=%d, ScaleLoc=%d\n",
-		dataSet[i].varInfo->name, dataSet[i].panelIndex,
+		dataSet[i].varInfo->name.c_str(), dataSet[i].panelIndex,
 		dataSet[i].scaleLocation);
         }
 
@@ -201,12 +201,12 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
       for (i = 0; i < NumberXYXsets; ++i)
         fprintf(fp, "Panel#=%d, Axis=%d, ScaleLoc=%d, VarName=%s\n",
 		xyXset[i].panelIndex, X_AXIS, xyXset[i].scaleLocation,
-		xyXset[i].varInfo->name);
+		xyXset[i].varInfo->name.c_str());
 
       for (i = 0; i < NumberXYYsets; ++i)
         fprintf(fp, "Panel#=%d, Axis=%d, ScaleLoc=%d, VarName=%s\n",
 		xyYset[i].panelIndex, Y_AXIS, xyYset[i].scaleLocation,
-		xyYset[i].varInfo->name);
+		xyYset[i].varInfo->name.c_str());
 
       for (i = 0; i < NumberOfXYpanels; ++i)
         {
@@ -246,7 +246,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
       for (i = 0; i < 3; ++i)
         {
         if (xyzSet[i].varInfo)
-          fprintf(fp, "Axis=%d, VarName=%s\n", i, xyzSet[i].varInfo->name);
+          fprintf(fp, "Axis=%d, VarName=%s\n", i, xyzSet[i].varInfo->name.c_str());
         }
 
       fprintf(fp, "xLabel=%s\n", xyzPlot.Xaxis.label.c_str());
@@ -382,7 +382,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         name = XmStringCreateLocalized(s);
         if ((x2 = XmListItemPos(varList, name)) > 0)
           {
-          DataChanged = True;
+          DataChanged = true;
           AddVariable(&dataSet[NumberDataSets++], x2 - 1);
           mainPlot[CurrentPanel].Yaxis[x1].label =
 			dataSet[NumberDataSets-1].stats.units;
@@ -509,14 +509,14 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           {
           if (x3 == X_AXIS)
             {
-            DataChanged = True;
+            DataChanged = true;
             AddVariable(&xyXset[NumberXYXsets++], x2 - 1);
             xyyPlot[CurrentPanel].Xaxis.label =
 			xyXset[NumberXYXsets-1].stats.units;
             }
           else
             {
-            DataChanged = True;
+            DataChanged = true;
             AddVariable(&xyYset[NumberXYYsets++], x2 - 1);
             xyyPlot[CurrentPanel].Yaxis[x1].label =
 			xyYset[NumberXYYsets-1].stats.units;
@@ -648,26 +648,26 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         name = XmStringCreateLocalized(s);
         if ((x2 = XmListItemPos(varList, name)) > 0)
           {
-          DataChanged = True;
+          DataChanged = true;
           AddVariable(&xyzSet[x1], x2 - 1);
 
           switch (x1)
             {
             case X_AXIS >> 1:
               sprintf(buffer, "%s (%s)",
-		xyzSet[x1].varInfo->name, xyzSet[x1].stats.units.c_str());
+		xyzSet[x1].varInfo->name.c_str(), xyzSet[x1].stats.units.c_str());
               xyzPlot.Xaxis.label = buffer;
               break;
 
             case Y_AXIS >> 1:
               sprintf(buffer, "%s (%s)",
-		xyzSet[x1].varInfo->name, xyzSet[x1].stats.units.c_str());
+		xyzSet[x1].varInfo->name.c_str(), xyzSet[x1].stats.units.c_str());
               xyzPlot.Yaxis[0].label = buffer;
               break;
 
             case Z_AXIS >> 1:
               sprintf(buffer, "%s (%s)",
-		xyzSet[x1].varInfo->name, xyzSet[x1].stats.units.c_str());
+		xyzSet[x1].varInfo->name.c_str(), xyzSet[x1].stats.units.c_str());
               xyzPlot.Zaxis.label = buffer;
               break;
             }

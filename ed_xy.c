@@ -27,11 +27,13 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 #include <Xm/TextF.h>
 #include <Xm/ToggleB.h>
 
-#define TOTAL_PARMS	17
+static const size_t TOTAL_PARMS = 17;
 
 extern Widget	AppShell;
 static Widget	XYShell = NULL, XYParmsWindow, parmsText[TOTAL_PARMS],
-		panelB[MAX_PANELS], autoScaleButton, autoTicsButton;
+		autoScaleButton, autoTicsButton;
+
+static std::vector<Widget> panelB;
 
 static int      currentPanel = 0;
 
@@ -115,12 +117,10 @@ static void SetXYAutoTics(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void ApplyXYParms(Widget w, XtPointer client, XtPointer call)
 {
-  int	i;
-
   ApplyParms(parmsText, &xyyPlot[currentPanel]);
 //  ApplyLogInvert(parmsTB, &xyyPlot[currentPanel], X_AXIS | Y_AXIS);
 
-  for (i = 0; i < MAX_PANELS; ++i)
+  for (size_t i = 0; i < MAX_PANELS; ++i)
     {
     xyyPlot[i].title = xyyPlot[currentPanel].title;
     xyyPlot[i].subTitle = xyyPlot[currentPanel].subTitle;
@@ -141,7 +141,7 @@ static void SetXYPanel(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void CreateXYParmsWindow()
 {
-  int		i;
+  size_t	i;
   Widget	RC[6];
 
   XYShell = XtCreatePopupShell("editXYShell",

@@ -95,7 +95,7 @@ static Widget	CreateDropDownMenu(Widget parent, char menu_name[],
 /* -------------------------------------------------------------------- */
 void SpecWinDown(Widget w, XtPointer client, XtPointer call)
 {
-  specPlot.windowOpen = False;
+  specPlot.windowOpen = false;
 
   if (SpectrumWindow)
     {
@@ -112,11 +112,11 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
   bool	saveState = Freeze;
   XmToggleButtonCallbackStruct *cb = (XmToggleButtonCallbackStruct *)call;
 
-  static bool firstTime = True;
-//printf("SpecWinUp: %d\n", (int)client);
+  static bool firstTime = true;
+
   /* If this is 'unset' from one of the ToggleButtons, then bail.
    */
-  if (cb && cb->reason == XmCR_VALUE_CHANGED && cb->set == False)
+  if (cb && cb->reason == XmCR_VALUE_CHANGED && cb->set == false)
     return;
 
   if (NumberDataSets < 1) {
@@ -146,20 +146,20 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
 
   for (i = 0; i < 6; ++i)
     if (i == psd[0].display - 1)
-      XmToggleButtonSetState(typeButts[i], True, False);
+      XmToggleButtonSetState(typeButts[i], true, false);
     else
-      XmToggleButtonSetState(typeButts[i], False, False);
+      XmToggleButtonSetState(typeButts[i], false, false);
 
-  Freeze = True;
+  Freeze = true;
   psd[0].frequency = dataSet[0].nPoints / NumberSeconds;
   psd[0].freqPerBin = (double)psd[0].frequency / (psd[0].M << 1);
 
   switch (psd[0].display)
     {
     case SPECTRA:
-      XtSetSensitive(pmOptButt[1], True);
-      XtSetSensitive(pmOptButt[2], True);
-      XtSetSensitive(pmOptButt[3], True);
+      XtSetSensitive(pmOptButt[1], true);
+      XtSetSensitive(pmOptButt[2], true);
+      XtSetSensitive(pmOptButt[3], true);
 
       nSets = std::min(NumberDataSets, MAX_PSD);
 
@@ -175,17 +175,17 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
     case COSPECTRA:
     case QUADRATURE:
     case RATIO:
-      XtSetSensitive(pmOptButt[1], False);
-      XtSetSensitive(pmOptButt[2], True);
-      XtSetSensitive(pmOptButt[3], True);
+      XtSetSensitive(pmOptButt[1], false);
+      XtSetSensitive(pmOptButt[2], true);
+      XtSetSensitive(pmOptButt[3], true);
       ComputeCoSpectrum();
       break;
 
     case COHERENCE:
     case PHASE:
-      XtSetSensitive(pmOptButt[1], False);
-      XtSetSensitive(pmOptButt[2], False);
-      XtSetSensitive(pmOptButt[3], False);
+      XtSetSensitive(pmOptButt[1], false);
+      XtSetSensitive(pmOptButt[2], false);
+      XtSetSensitive(pmOptButt[3], false);
       ComputeCoSpectrum();
       break;
 
@@ -196,7 +196,7 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
 
   Freeze = saveState;
 
-  specPlot.windowOpen = True;
+  specPlot.windowOpen = true;
   XtManageChild(SpectrumWindow);
   XtPopup(XtParent(SpectrumWindow), XtGrabNone);
 
@@ -213,7 +213,7 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
     XtAddCallback(specPlot.canvas, XmNresizeCallback,
 				(XtCallbackProc)PlotSpectrum, NULL);
 
-    firstTime = False;
+    firstTime = false;
     }
 
   PlotSpectrum(NULL, NULL, NULL);
@@ -276,7 +276,7 @@ void ComputeSpectrum()
         psd[set].Pxx[i] *= i;
 
       sprintf(buffer, "f x PSD of %s (%s^2)",
-  	dataSet[0].varInfo->name, dataSet[0].stats.units.c_str());
+  	dataSet[0].varInfo->name.c_str(), dataSet[0].stats.units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
     else
@@ -286,7 +286,7 @@ void ComputeSpectrum()
         psd[set].Pxx[i] *= pow((double)i, 5.0/3.0);
 
       sprintf(buffer, "f^(5/3) x PSD of %s (%s^2)",
-  	dataSet[0].varInfo->name, dataSet[0].stats.units.c_str());
+  	dataSet[0].varInfo->name.c_str(), dataSet[0].stats.units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
     else
@@ -297,7 +297,7 @@ void ComputeSpectrum()
         psd[set].Pxx[i] *= cf;
 
       sprintf(buffer, "PSD of %s (%s^2 / Hz)",
-  	dataSet[0].varInfo->name, dataSet[0].stats.units.c_str());
+  	dataSet[0].varInfo->name.c_str(), dataSet[0].stats.units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
     }
@@ -480,7 +480,7 @@ void ToggleWaveNumberScale(Widget w, XtPointer client, XtPointer call)
         tas.data = NULL;
         }
  
-      if (LoadVariable(&tas, (char*)tasVarName.c_str()) == ERR)
+      if (LoadVariable(&tas, tasVarName) == ERR)
         {
         sprintf(buffer, "Can't locate True Airspeed variable %s.", tasVarName.c_str());
         ShowError(buffer);
@@ -519,9 +519,9 @@ void ToggleWaveLengthScale(Widget w, XtPointer client, XtPointer call)
         tas.data = NULL;
         }
  
-      if (LoadVariable(&tas, (char*)tasVarName.c_str()) == ERR)
+      if (LoadVariable(&tas, tasVarName) == ERR)
         {
-        XmToggleButtonSetState(pmOptButt[5], False, False);
+        XmToggleButtonSetState(pmOptButt[5], false, false);
         sprintf(buffer, "Can't locate True Airspeed variable %s.", tasVarName.c_str());
         ShowError(buffer);
         return;
@@ -544,14 +544,14 @@ void ToggleMultByFreq(Widget w, XtPointer client, XtPointer call)
   /* Only mult by freq or mult by freq^5/3 can be selected.  Grey out the other
    */
   if (multiplyByFreq())
-    XtSetSensitive(pmOptButt[3], False);
+    XtSetSensitive(pmOptButt[3], false);
   else
-    XtSetSensitive(pmOptButt[3], True);
+    XtSetSensitive(pmOptButt[3], true);
 
   if (multiplyByFreq53())
-    XtSetSensitive(pmOptButt[2], False);
+    XtSetSensitive(pmOptButt[2], false);
   else
-    XtSetSensitive(pmOptButt[2], True);
+    XtSetSensitive(pmOptButt[2], true);
 
 
   if (psd[0].display == SPECTRA)
@@ -583,7 +583,7 @@ bool multiplyByFreq53()	/* freq to the 5/3 power */
 bool plotWaveNumber()
 {
   if (SpectrumWindow == NULL)
-    return(False);
+    return(false);
 
   return(XmToggleButtonGetState(pmOptButt[4]));
 }
@@ -592,7 +592,7 @@ bool plotWaveNumber()
 bool plotWaveLength()
 {
   if (SpectrumWindow == NULL)
-    return(False);
+    return(false);
 
   return(XmToggleButtonGetState(pmOptButt[5]));
 }
@@ -800,7 +800,7 @@ static void CreateSpectrumWindow()
   XtAddCallback(pmOptButt[5], XmNvalueChangedCallback, ToggleWaveLengthScale, NULL);
   XtAddCallback(pmOptButt[5], XmNvalueChangedCallback, (XtCallbackProc)PlotSpectrum, NULL);
 
-  XmToggleButtonSetState(pmOptButt[1], True, False);
+  XmToggleButtonSetState(pmOptButt[1], true, false);
 
 
 

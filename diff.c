@@ -32,8 +32,6 @@ extern Widget	AppShell, DiffShell, DifferenceWindow;
 
 static void	CreateDifferenceWindow();
 
-float scanit(char *s);
-
 /* -------------------------------------------------------------------- */
 void ComputeDiff()
 {
@@ -57,8 +55,10 @@ void ComputeDiff()
   diffSet.missingValue = dataSet[0].missingValue;
   diffSet.data = new float[dataSet[0].nPoints];
 
-  sprintf(buffer, "(%s-%s) %s", dataSet[0].varInfo->name,
-            dataSet[1].varInfo->name, mainPlot[0].Yaxis[0].label.c_str());
+  sprintf(buffer, "(%s-%s) %s",
+	dataSet[0].varInfo->name.c_str(),
+        dataSet[1].varInfo->name.c_str(),
+	mainPlot[0].Yaxis[0].label.c_str());
   diffPlot.Yaxis[0].label = buffer;
 
   for (i = 0; i < dataSet[0].nPoints; ++i)

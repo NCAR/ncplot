@@ -110,7 +110,7 @@ publish: $(PROG)
 	scp ${PROG} ${IHOST}:$(BIN)
 
 clean:
-	rm -f core* ${OBJS} ${PROG}
+	rm -f core* ${OBJS} ${PROG} exp.tab.h exp.tab.c lex.yy.c
 
 print:
 	enscript -2Gr -b${PROG} ${HDRS} ${SRCS}

@@ -15,12 +15,12 @@ AUTHOR:		websterc@ncar
 -------------------------------------------------------------------------
 */
 
-#include <stdio.h>
+#include <cstdio>
 
 #include <Xm/Xm.h>
 #include <Xm/MessageB.h>
 
-#define nWarnings	3
+static const int nWarnings = 3;
 
 static Widget	warnBox[nWarnings];
 static int	inUse[nWarnings];

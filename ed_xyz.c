@@ -28,7 +28,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1998
 #include <Xm/TextF.h>
 #include <Xm/ToggleB.h>
 
-#define TOTAL_PARMS	17
+static const int TOTAL_PARMS = 17;
 
 extern Widget	AppShell;
 static Widget	TrackShell = NULL, TrackParmsWindow, parmsText[TOTAL_PARMS],

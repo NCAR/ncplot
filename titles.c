@@ -111,7 +111,7 @@ static void SetTitles()
     if (currentCategory == 0 ||
 	strcmp(dataFile[0].catName[currentCategory], category) == 0)
       {
-      sprintf(buffer, "%-16s %s\n", curFile->Variable[i]->name, title);
+      sprintf(buffer, "%-16s %s\n", curFile->Variable[i]->name.c_str(), title);
       XmTextInsert(titleText, XmTextGetLastPosition(titleText), buffer);
       }
     }

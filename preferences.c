@@ -59,12 +59,12 @@ char *GetTemplateDirectory(), *GetColorName(int indx);
 /* -------------------------------------------------------------------- */
 void EditPreferences(Widget w, XtPointer client, XtPointer call)
 {
-  static bool firstTime = True;
+  static bool firstTime = true;
 
   if (firstTime)
     {
     CreatePreferences();
-    firstTime = False;
+    firstTime = false;
     }
 
   XtManageChild(PreferWindow);
@@ -181,7 +181,7 @@ static void ApplyPreferences(Widget w, XtPointer client, XtPointer call)
 
   p = XmTextFieldGetString(prefText[3]);
   if (strncmp(p, "Color", 5) == 0)
-    printerSetup.color = True;
+    printerSetup.color = true;
   free(p);
 
   p = XmTextFieldGetString(prefText[4]);
@@ -363,7 +363,7 @@ void ReadConfigFile()
       }
     if (strncmp(buffer, "PrintColor", 10) == 0) {
       if (strncmp(p, "Color", 5) == 0)
-        printerSetup.color = True;
+        printerSetup.color = true;
       }
     if (strncmp(buffer, "LineWidth", 9) == 0) {
       if (atoi(p) > 1)

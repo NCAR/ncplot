@@ -293,7 +293,6 @@ void SetZminMax(Widget parmsText[], PLOT_INFO *plot)
 /* -------------------------------------------------------------------- */
 void SetSubtitles()
 {
-  int	i;
   char	tmp[256];
 
   if (dataFile[0].FlightDate.length() > 0)
@@ -310,7 +309,7 @@ void SetSubtitles()
 
   strcat(buffer, tmp);
 
-  for (i = 0; i < MAX_PANELS; ++i)
+  for (size_t i = 0; i < MAX_PANELS; ++i)
     {
     mainPlot[i].subTitle = buffer;
     xyyPlot[i].subTitle = buffer;

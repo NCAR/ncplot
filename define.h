@@ -33,15 +33,6 @@ DESCRIPTION:
  
 #define SecondsSinceMidnite(t)	(t[0] * 3600 + t[1] * 60 + t[2])
 
-
-#define BUFFSIZE	4096
-#define NAMELEN		20
-
-#define MAX_DATAFILES	4
-#define MAX_DATASETS	32
-#define MAX_PANELS	4
-#define MAX_VARIABLES	1000
-
 #define ALL_SETS	(-1)
 
 /* For backwards compatability reasons, do not change this to some other value. */
@@ -99,11 +90,11 @@ typedef struct _insRec
 
 typedef struct
 	{
-	char	name[NAMELEN];
+	std::string name;
 	int	inVarID;        /* netCDF variable ID       */
 	int	OutputRate;
 	float	MissingValue;
-	char	*expression;
+	std::string expression;	// For user calculations.
 	} VARTBL;
 
 typedef struct

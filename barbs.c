@@ -24,7 +24,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
 #include "ps.h"
 
 
-static char	*wbTitle = "Wind Vectors";
+static const char wbTitle[] = "Wind Vectors";
 static int	timeInterval, average;
 
 /* -------------------------------------------------------------------- */
@@ -34,18 +34,15 @@ void ToggleWindBarbs(Widget w, XtPointer client, XtPointer call)
  
   if (WindBarbs)
     {
-    char *p, *GetUI(), *GetVI(), *GetTI();
+    std::string GetUI(), GetVI(), GetTI();
 
-    if (LoadVariable(&ui, p = GetUI()) == ERR)
-      fprintf(stderr, "Can't find variable %s\n", p);
-    XtFree(p);
+    if (LoadVariable(&ui, GetUI()) == ERR)
+      fprintf(stderr, "Can't find variable %s\n", GetUI().c_str());
 
-    if (LoadVariable(&vi, p = GetVI()) == ERR)
-      fprintf(stderr, "Can't find variable %s\n", p);
-    XtFree(p);
+    if (LoadVariable(&vi, GetVI()) == ERR)
+      fprintf(stderr, "Can't find variable %s\n", GetUI().c_str());
 
-    timeInterval = atoi(p = GetTI());
-    XtFree(p);
+    timeInterval = atoi(GetTI().c_str());
 
     average = isAverage();
     }
@@ -81,7 +78,7 @@ void PlotWindBarbs(PLOT_INFO *plot, FILE *fp)
 
   nPts = std::max(xyXset[0].nPoints, xyYset[0].nPoints);
 
-  if (strstr(xyXset[0].varInfo->name, "LON") == 0)
+  if (xyXset[0].varInfo->name.find_first_of("LON") != std::string::npos)
     xScale = 0;
 
   for (i = 0; i < nPts; ++i)

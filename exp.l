@@ -3,7 +3,7 @@
 #define YYSTYPE double
 
 #include "exp.tab.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 int yyparse(void);
 

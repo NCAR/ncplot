@@ -94,7 +94,7 @@ void ToggleLabels(Widget w, XtPointer client, XtPointer call)
     if (allLabels)
       mainPlot[i].Xaxis.label = mainPlot[NumberOfPanels-1].Xaxis.label;
     else
-      mainPlot[i].Xaxis.label = "";
+      mainPlot[i].Xaxis.label.clear();
 
   for (i = 1; i < NumberOfXYpanels; ++i)
     if (allLabels)
@@ -104,8 +104,8 @@ void ToggleLabels(Widget w, XtPointer client, XtPointer call)
       }
     else
       {
-      xyyPlot[i].Yaxis[0].label = "";
-      xyyPlot[i].Yaxis[0].label = "";
+      xyyPlot[i].Yaxis[0].label.clear();
+      xyyPlot[i].Yaxis[0].label.clear();
       }
 
   if (Interactive)
@@ -126,10 +126,9 @@ void ToggleScatter(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void ToggleGrid(Widget w, XtPointer client, XtPointer call)
 {
-  int	i;
   XmToggleButtonCallbackStruct *cb = (XmToggleButtonCallbackStruct *)call;
 
-  for (i = 0; i < MAX_PANELS; ++i)
+  for (size_t i = 0; i < MAX_PANELS; ++i)
     mainPlot[i].grid = xyyPlot[i].grid = cb->set;
 
   xyzPlot.grid = False;		/* Grid not supported for XYZ */
@@ -229,7 +228,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
 
         AddVariable(&xyzSet[0], position);
         sprintf(buffer, "%s (%s)",
-		xyzSet[0].varInfo->name, xyzSet[0].stats.units.c_str());
+		xyzSet[0].varInfo->name.c_str(), xyzSet[0].stats.units.c_str());
         xyzPlot.Xaxis.label = buffer;
         }
 
@@ -240,7 +239,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
 
         AddVariable(&xyzSet[2], position);
         sprintf(buffer, "%s (%s)",
-		xyzSet[2].varInfo->name, xyzSet[2].stats.units.c_str());
+		xyzSet[2].varInfo->name.c_str(), xyzSet[2].stats.units.c_str());
         xyzPlot.Zaxis.label = buffer;
         }
 
@@ -251,7 +250,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
 
         AddVariable(&xyzSet[1], position);
         sprintf(buffer, "%s (%s)",
-                xyzSet[1].varInfo->name, xyzSet[1].stats.units.c_str());
+                xyzSet[1].varInfo->name.c_str(), xyzSet[1].stats.units.c_str());
         xyzPlot.Yaxis[0].label = buffer;
         }
 
@@ -286,8 +285,11 @@ void ClearPlot(Widget w, XtPointer client, XtPointer call)
  
     case XY_PLOT:
       for (i = 0; i < MAX_PANELS; ++i)
-        xyyPlot[i].Xaxis.label = xyyPlot[i].Yaxis[0].label =
-            xyyPlot[i].Yaxis[1].label = "";
+        {
+        xyyPlot[i].Xaxis.label.clear();
+        xyyPlot[i].Yaxis[0].label.clear();
+        xyyPlot[i].Yaxis[1].label.clear();
+        }
 
       for (set = 0; set < NumberXYXsets; ++set)
         if (xyXset[set].varInfo)
@@ -312,8 +314,9 @@ void ClearPlot(Widget w, XtPointer client, XtPointer call)
       break;
  
     case XYZ_PLOT:
-      xyzPlot.Xaxis.label = xyzPlot.Yaxis[0].label =
-            xyzPlot.Yaxis[1].label = "";
+      xyzPlot.Xaxis.label.clear();
+      xyzPlot.Yaxis[0].label.clear();
+      xyzPlot.Yaxis[1].label.clear();
 
       for (set = 0; set < 3; ++set)
         if (xyzSet[set].varInfo)

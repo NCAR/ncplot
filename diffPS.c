@@ -72,7 +72,13 @@ void diffPostScript(Widget w, XtPointer client, XtPointer call)
     return;
 
   PSheader(fp, &diffPlot);
-  PStitles(fp, &diffPlot, false);
+
+  bool warning = false;
+  if (dataFile[dataSet[0].fileIndex].ShowPrelimDataWarning ||
+      dataFile[dataSet[1].fileIndex].ShowPrelimDataWarning)
+    warning = true;
+
+  PStitles(fp, &diffPlot, warning);
   PSbox(fp, &diffPlot);
 
   /* Move origin to (0,0) of plot window.
@@ -102,7 +108,7 @@ static void doDiffGraph(FILE *fp, PLOT_INFO *plot)
   /* Print legend.
    */
   sprintf(buffer, "(%s-%s), %d s/sec",
-          dataSet[0].varInfo->name, dataSet[1].varInfo->name,
+          dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
           dataSet[0].varInfo->OutputRate);
 
   PSstatsLegend(fp, plot, buffer, 0, &diffSet);

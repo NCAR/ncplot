@@ -28,7 +28,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2002
 #include <Xm/RowColumn.h>
 #include <Xm/ToggleB.h>
 
-#define TOTAL_PARMS	17
+static const int TOTAL_PARMS = 17;
 
 extern Widget	AppShell;
 static Widget	SpecShell = NULL, SpecParmsWindow, parmsText[TOTAL_PARMS],

@@ -70,7 +70,7 @@ void PlotDifference(Widget w, XtPointer client,
   /* If there are more Expose Events on the queue, then ignore this
    * one.
    */
-  if (diffPlot.windowOpen == False ||
+  if (diffPlot.windowOpen == false ||
      (call && call->event && call->reason == XmCR_EXPOSE && ((XExposeEvent *)call->event)->count > 0))
     return;
 
@@ -84,7 +84,10 @@ void PlotDifference(Widget w, XtPointer client,
   XDrawRectangle( diffPlot.dpy, diffPlot.win, diffPlot.gc,
                   diffPlot.x.LV, diffPlot.x.TH, diffPlot.x.HD, diffPlot.x.VD);
 
-/*  plotTitlesX(&diffPlot, fontOffset); */
+  if (dataFile[dataSet[0].fileIndex].ShowPrelimDataWarning ||
+      dataFile[dataSet[1].fileIndex].ShowPrelimDataWarning)
+    plotWarningX(&diffPlot, fontOffset);
+
   plotLabelsX(&diffPlot, fontOffset);
 
   fontInfo = diffPlot.fontInfo[3+fontOffset];
@@ -92,8 +95,8 @@ void PlotDifference(Widget w, XtPointer client,
 
   if (NumberDataFiles > 0 && NumberDataSets >= 2)
     {
-    yTicsLabelsX(&diffPlot, fontInfo, LEFT_SIDE, True);
-    xTicsLabelsX(&diffPlot, fontInfo, True);
+    yTicsLabelsX(&diffPlot, fontInfo, LEFT_SIDE, true);
+    xTicsLabelsX(&diffPlot, fontInfo, true);
     plotDiffLines(&diffPlot);
     }
 

@@ -77,7 +77,14 @@ void specPostScript(Widget w, XtPointer client, XtPointer call)
     return;
 
   PSheader(fp, &specPlot);
-  PStitles(fp, &specPlot, false);
+
+  bool warning = false;
+  if (dataFile[dataSet[0].fileIndex].ShowPrelimDataWarning ||
+        (psd[0].display != SPECTRA &&
+        dataFile[dataSet[1].fileIndex].ShowPrelimDataWarning))
+    warning = true;
+
+  PStitles(fp, &specPlot, warning);
   PSbox(fp, &specPlot);
 
   numXpix = (float)specPlot.ps.HD / specPlot.Xaxis.nMajorTics;

@@ -35,7 +35,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1998
 
 void    SetInvertLogScale(Widget, XtPointer, XmToggleButtonCallbackStruct *);
 
-extern Widget	MainShell, MainWindow, panelB[];
+extern Widget	MainShell, MainWindow;
+extern std::vector<Widget> panelB;
 
 /* -------------------------------------------------------------------- */
 void SetPlotShape(PLOT_INFO *plot, int shape)
@@ -45,8 +46,8 @@ void SetPlotShape(PLOT_INFO *plot, int shape)
  
   if (shape == PORTRAIT)
     {
-    plot->x.windowWidth = 625;
-    plot->x.windowHeight = 800;
+    plot->x.windowWidth = 703;
+    plot->x.windowHeight = 900;
  
     n = 0;
     XtSetArg(args[n], XmNx, 10); ++n;
@@ -55,8 +56,8 @@ void SetPlotShape(PLOT_INFO *plot, int shape)
     }
   else
     {
-    plot->x.windowWidth = 800;
-    plot->x.windowHeight = 625;
+    plot->x.windowWidth = 900;
+    plot->x.windowHeight = 703;
  
     n = 0;
     XtSetArg(args[n], XmNx, 10); ++n;
@@ -84,9 +85,9 @@ void SetCurrentPanel(Widget w, XtPointer client, XmToggleButtonCallbackStruct *c
 }	/* END SETCURRENTPANEL */
 
 /* -------------------------------------------------------------------- */
-void SetActivePanels(int n)
+void SetActivePanels(size_t n)
 {
-  int	i;
+  size_t i;
 
   XmToggleButtonSetState(panelB[0], True, True);
 

@@ -13,6 +13,9 @@ AUTHOR:		cjw@ucar.edu
 #ifndef EXTERN_H
 #define EXTERN_H
 
+extern const size_t	BUFFSIZE, MAX_DATAFILES, MAX_DATASETS, MAX_PANELS,
+			MAX_VARIABLES;
+
 extern bool	Interactive, DataChanged, AsciiWinOpen, Statistics,
 		ScatterPlot, WindBarbs, UTCseconds, Color, StatsWinOpen,
 		LandMarks, ProjectToXY, ProjectToBack, RealTime,
@@ -54,7 +57,7 @@ void	*GetMemory(size_t nb), FreeMemory(void *p);
 int	DeleteVariable(DATASET_INFO *, size_t, int), isAverage(), whichSide(),
 	choosingXaxis(), choosingYaxis(), choosingZaxis(),
 	yLegendX(PLOT_INFO *, int row), yLegendPS(PLOT_INFO *, int row),
-	LoadVariable(DATASET_INFO *, char varName[]);
+	LoadVariable(DATASET_INFO *, std::string varName);
 
 void	Initialize(), ProcessArgs(char **argv), ReadConfigFile();
 
@@ -127,6 +130,7 @@ void	initPlotGC(PLOT_INFO *),
 	InitializeColors(PLOT_INFO *),
 	plotTitlesX(PLOT_INFO *, int sizeOffset, bool displayWarning),
 	plotLabelsX(PLOT_INFO *, int sizeOffset),
+	plotWarningX(PLOT_INFO *, int sizeOffset),
 	setClippingX(PLOT_INFO *),
 	yTicsLabelsX(PLOT_INFO *, XFontStruct *, int, bool),
 	xTicsLabelsX(PLOT_INFO *, XFontStruct *, bool),
@@ -154,7 +158,7 @@ void	ApplyParms(Widget *, PLOT_INFO *),
 void	SetYdialog(), SetYlabel(char *s), CreateParmsWindow(Widget parent),
 	SetSubtitles(), SetDiffDefaults(), SetSpecDefaults(), SetXYDefaults(),
 	SetTrackDefaults(), SetPrinterShape(int), SetXlabel(char *),
-	SetPlotShape(PLOT_INFO *, int), SetActivePanels(int);
+	SetPlotShape(PLOT_INFO *, int), SetActivePanels(size_t);
 
 void	PageForward(Widget, XtPointer, XtPointer),
 	PageBackward(Widget, XtPointer, XtPointer);
@@ -230,17 +234,17 @@ void	ValidateTime(Widget w, XtPointer client, XtPointer call),
 	ValidateFloat(Widget w, XtPointer client, XtPointer call),
 	ValidateInteger(Widget w, XtPointer client, XtPointer call);
 
-void	SetYlabels(PLOT_INFO *plot, DATASET_INFO *set, int nSets),
-	SetXlabels(PLOT_INFO *plot, DATASET_INFO *set, int nSets);
+void	SetYlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets),
+	SetXlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets);
 
 int	MakeTicLabel(char buffer[], float diff, int majorTics, double value),
 	MakeLogTicLabel(char buffer[], int value),
 	MakeTimeTicLabel(char buffer[], int indx, int nTics),
 	MakeXYlegendLabel(char buf[], DATASET_INFO *set);
 
-int	SearchTable(std::vector<VARTBL *> table, char target[]);
+int	SearchTable(std::vector<VARTBL *>& table, std::string target);
 
-void	createPanelButts(Widget, Widget *, XtCallbackProc);
+void	createPanelButts(Widget, std::vector<Widget>&, XtCallbackProc);
 Widget	createParamsTitles(Widget, Widget *),
 	createParamsLabels(Widget, Widget *, PLOT_INFO *),
 	createParamsMinMax(Widget, Widget *, PLOT_INFO *, Widget *),

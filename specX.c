@@ -91,7 +91,13 @@ void PlotSpectrum(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *call)
   XDrawRectangle(specPlot.dpy, specPlot.win, specPlot.gc,
                 specPlot.x.LV, specPlot.x.TH, specPlot.x.HD, specPlot.x.VD);
 
-  plotTitlesX(&specPlot, fontOffset, false);
+  bool warning = false;
+  if (dataFile[dataSet[0].fileIndex].ShowPrelimDataWarning ||
+	(psd[0].display != SPECTRA &&
+	dataFile[dataSet[1].fileIndex].ShowPrelimDataWarning))
+    warning = true;
+
+  plotTitlesX(&specPlot, fontOffset, warning);
   plotLabelsX(&specPlot, fontOffset);
 
   if (psd[0].display == SPECTRA)

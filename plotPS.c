@@ -47,7 +47,7 @@ static void ResizePSmainPlot()
     if (NumberOfPanels == 1)
       {
       mainPlot[i].ps.TH = (int)(mainPlot[0].ps.windowHeight * 0.2089);
-      mainPlot[i].ps.VD = (int)(mainPlot[0].ps.windowHeight * 0.5822); /* 5" */
+      mainPlot[i].ps.VD = (int)(mainPlot[0].ps.windowHeight * 0.59);	/* 5" */
       mainPlot[i].ps.TH += mainPlot[i].ps.VD;
       }
     else
@@ -180,7 +180,7 @@ static void doLineGraph(FILE *fp, PLOT_INFO *plot)
       fprintf(fp, lineto, (int)(x - (20 * printerSetup.widthRatio)), y);
 
       sprintf(buffer, "%s (%s), %d s/sec",
-		vp->name, set->stats.units.c_str(), vp->OutputRate);
+		vp->name.c_str(), set->stats.units.c_str(), vp->OutputRate);
       PSstatsLegend(fp, plot, buffer, CurrentDataSet, set);
       }
     else
@@ -197,7 +197,7 @@ static void doLineGraph(FILE *fp, PLOT_INFO *plot)
         fprintf(fp, "stroke\n0 0 0 setrgbcolor\n");
 
       fprintf(fp, moveto, x, y);
-      fprintf(fp, show, vp->name);
+      fprintf(fp, show, vp->name.c_str());
       }
 
 

@@ -27,9 +27,9 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 2001-02
 #include <Xm/TextF.h>
 
 
-#define MAX_EXPRESSIONS	5
-#define MAX_EXP_VARS	(MAX_DATASETS)
+static const size_t MAX_EXPRESSIONS = 5;
 
+#define MAX_EXP_VARS	(MAX_DATASETS)
 
 Widget		expText[MAX_EXPRESSIONS];
 extern Widget	AppShell, ExpShell, ExpWindow;
@@ -37,9 +37,8 @@ extern Widget	AppShell, ExpShell, ExpWindow;
 static void	CreateExpressionWindow();
 
 
-/* DataSets used by variaous expressions.  Export for dataIO.c */
-size_t		NumberExpSets = 0;
-DATASET_INFO	expSet[MAX_EXP_VARS];
+/* DataSets used by various expressions.  Export for dataIO.c */
+std::vector<DATASET_INFO> expSet;
 
 float	scanit(char *, int);
 
@@ -47,16 +46,13 @@ float	scanit(char *, int);
 /* -------------------------------------------------------------------- */
 void ComputeExp(DATASET_INFO *set)
 {
-  size_t i;
   bool	saveState = Freeze;
-  char	theExpression[256];
+  char  theExpression[BUFFSIZE];
 
   Freeze = True;
-  strcpy(theExpression, set->varInfo->expression);
+  strcpy(theExpression, set->varInfo->expression.c_str());
 
-printf("ComputeExp = %d, exp=%s", set->nPoints, theExpression);
-
-  for (i = 0; i < set->nPoints; ++i)
+  for (size_t i = 0; i < set->nPoints; ++i)
     set->data[i] = scanit(theExpression, i);
 
   Freeze = saveState;
@@ -85,7 +81,8 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
   int		indx;
   size_t	i, nExps, fileIndx;
   VARTBL	*vi;
-  char		exp[256], *e, *p, varName[NAMELEN], theExpression[256];
+  std::string	varName;
+  char		*p;
 
   if (NumberDataFiles == 0)
     return;
@@ -112,51 +109,52 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
     XtSetSensitive(expText[i], False);
 
 
-
-  /* Allocate memory for the new variables and/or add them to datafile zero.
+  /* Remove all expression varibles from dataFile[0].
    */
-  for (	indx = dataFile[0].Variable.size()-1;
-	strncmp(dataFile[0].Variable[indx]->name, "USER", 4) == 0; --indx)
-    delete [] dataFile[0].Variable[indx]->expression;
+  for (	indx = dataFile[0].Variable.size()-1; 
+	dataFile[0].Variable[indx]->name.find("USER") != std::string::npos;
+	--indx)
+    delete dataFile[0].Variable[indx];
 
+  dataFile[0].Variable.resize(indx+1);
 
+  /* Add expression variables to dataFile[0].
+   */
   for (i = 0; i < nExps; ++i)
-    if (++indx >= (int)dataFile[0].Variable.size())
-      {
-      vi = new VARTBL;
-      dataFile[0].Variable.push_back(vi);
+    {
+    char tmp[64];
+    vi = new VARTBL;
+    dataFile[0].Variable.push_back(vi);
 
-      sprintf(vi->name, "USER%d", i+1);
-      vi->OutputRate = 1;
-      vi->inVarID = COMPUTED;
-      }
-
-
+    sprintf(tmp, "USER%d", i+1);
+    vi->name = tmp;
+    vi->OutputRate = 1;
+    vi->inVarID = COMPUTED;
+    }
 
   /* Clean out all data sets required to compute previous expressions.
    */
-  for (i = 0; i < NumberExpSets; ++i) {
-    if (expSet[i].nPoints > 0) {
-      delete [] expSet[i].data;
-      expSet[i].nPoints = 0;
-      }
-    }
+  for (i = 0; i < expSet.size(); ++i)
+    delete [] expSet[i].data;
 
+  expSet.clear();
 
   /* Ok, parse and validate expressions.
    */
-  NumberExpSets = 0;
+  size_t NumberExpSets = 0;
 
   for (i = 0; i < nExps; ++i)
     {
+    char exp[BUFFSIZE], *e;
+
     p = XmTextFieldGetString(expText[i]);
     strcpy(exp, p);
     strcat(exp, "\n");
     free(p);
 
     e = exp;
-    theExpression[0] = '\0';
 
+    std::string theExpression;
 
     /* Scan expression for use of variables from netCDF file, and validate.
      * Variable names from the netCDF file will be replaced with letters [A-P],
@@ -165,9 +163,9 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
     for (; (p = strchr(e, '\"')); ++NumberExpSets)
       {
       *p++ = '\0';
-      strcat(theExpression, e);
+      theExpression += e;
       sprintf(buffer, "%c", 'A' + NumberExpSets);
-      strcat(theExpression, buffer);
+      theExpression += buffer;
 
       if ((e = strchr(p, '\"')) == NULL)
         {
@@ -175,44 +173,36 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
         return;
         }
 
-      if (NumberExpSets >= MAX_EXP_VARS)
-        {
-        HandleError("Parse error, too many variables used.", Interactive, IRET);
-        return;
-        }
-
       *e = '\0';
-      strcpy(varName, p);
+      varName = p;
       *e++ = '\"';
 
       fileIndx = CurrentDataFile;
 
       if ((indx = SearchTable(dataFile[fileIndx].Variable, varName)) == ERR)
         {
-        sprintf(buffer, "Parse error, undefined variable %s.", varName);
+        sprintf(buffer, "Parse error, undefined variable %s.", varName.c_str());
         HandleError(buffer, Interactive, IRET);
         return;
         }
 
-      expSet[NumberExpSets].fileIndex = fileIndx;
-      expSet[NumberExpSets].panelIndex = i;	/* Whic Exp this belongs to */
-      expSet[NumberExpSets].varInfo = dataFile[fileIndx].Variable[indx];
+      DATASET_INFO ds;
+      ds.fileIndex = fileIndx;
+      ds.panelIndex = i;
+      ds.varInfo = dataFile[fileIndx].Variable[indx];
+      ds.data = 0;
+      ds.nPoints = 0;
+      expSet.push_back(ds);
       }
 
-
-    strcat(theExpression, e);
-//printf("New exp = %s", theExpression);
-
+    theExpression += e;
 
     /* Add new variable to the *first* data file.
      */
     sprintf(buffer, "USER%d", i+1);
-//printf("  >> %d\n", SearchTable((char **)dataFile[0].Variable,dataFile[0].Variable.size(), buffer));
 
     vi = dataFile[0].Variable[SearchTable(dataFile[0].Variable, buffer)];
-
-    vi->expression = new char[256];
-    strcpy(vi->expression, theExpression);
+    vi->expression = theExpression;
     }
 
   SetList();
@@ -222,7 +212,6 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void CreateExpressionWindow()
 {
-  int           i;
   Cardinal	n;
   Arg		args[5];
   Widget        RC, frame, plRC, label;
@@ -240,7 +229,7 @@ static void CreateExpressionWindow()
   RC = XmCreateRowColumn(frame, "expRC", args, n);
 
 
-  for (i = 0; i < MAX_EXPRESSIONS; ++i)
+  for (size_t i = 0; i < MAX_EXPRESSIONS; ++i)
     {
     plRC = XmCreateRowColumn(RC, "plRC", args, n);
     XtManageChild(plRC);

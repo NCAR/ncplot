@@ -13,8 +13,6 @@
  * int linear_regression() - linear regression
  */
 
-#include <stdio.h>
-#include <math.h>
 #include "define.h"
 
 static const int MAXFIT = 12;

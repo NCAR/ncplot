@@ -42,9 +42,11 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2003
 #include <Xm/TextF.h>
 #include <Xm/ToggleB.h>
 
-Widget		panelB[MAX_PANELS];	/* For export to panel.c	*/
+std::vector<Widget> panelB;	/* For export to panel.c	*/
 
-static Widget	fileB[MAX_DATAFILES], plotType[3], invert, logScale,
+static std::vector<Widget> fileB;
+
+static Widget	plotType[3], invert, logScale,
 		whichAxis[3], scaleLocation[2], RC[9], frame[9],
 		optButton[5], timeText[2], realTime, rtText, lineThickTxt;
 
@@ -555,7 +557,7 @@ void CreateControlWindow(Widget parent)
   Widget	plRC[8], label, b[8], controlRC;
   Widget	form, title[9], brc, bkd, fwd;
   Arg		args[8];
-  int		i, n;
+  Cardinal	n;
 
   n = 0;
   ControlWindow = XmCreateForm(parent, "controlForm", args, n);
@@ -693,15 +695,15 @@ void CreateControlWindow(Widget parent)
 
     /* File Toggle Buttons.
      */
-    for (i = 0; i < MAX_DATAFILES; ++i)
+    for (size_t i = 0; i < MAX_DATAFILES; ++i)
       {
       n = 0;
-      fileB[i] = XmCreateToggleButton(RC[1], "none", NULL, 0);
+      fileB.push_back(XmCreateToggleButton(RC[1], "none", NULL, 0));
       XtAddCallback(fileB[i], XmNvalueChangedCallback,
                     (XtCallbackProc)SetDataFile, (XtPointer)i);
       }
 
-    XtManageChildren(fileB, MAX_DATAFILES);
+    XtManageChildren(&fileB[0], MAX_DATAFILES);
 
     if (NumberDataFiles > 0)
       XmToggleButtonSetState(fileB[0], True, False);
@@ -766,16 +768,16 @@ void CreateControlWindow(Widget parent)
   plRC[4] = XmCreateRadioBox(plRC[0], "pnRC", args, n);
   XtManageChild(plRC[4]);
 
-  for (i = 0; i < MAX_PANELS; ++i)
+  for (size_t i = 0; i < MAX_PANELS; ++i)
     {
     sprintf(buffer, "%d", i+1);
-    panelB[i] = XmCreateToggleButton(plRC[4], buffer, NULL, 0);
+    panelB.push_back(XmCreateToggleButton(plRC[4], buffer, NULL, 0));
     
     XtAddCallback(panelB[i], XmNvalueChangedCallback,
                   (XtCallbackProc)SetCurrentPanel, (XtPointer)i);
     }
 
-  XtManageChildren(panelB, MAX_PANELS);
+  XtManageChildren(&panelB[0], MAX_PANELS);
   XmToggleButtonSetState(panelB[0], True, False);
 
   n = 0;

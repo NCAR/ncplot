@@ -48,23 +48,32 @@ void	findMinMax();
 static void CreateTrackOptWin();
 
 /* -------------------------------------------------------------------- */
-char *GetUI()
+std::string GetUI()
 {
-  return(XmTextFieldGetString(wvText[0]));
+  char *p = XmTextFieldGetString(wvText[0]);
+  std::string s(p);
+  XtFree(p);
+  return(s);
 
 }	/* END GETUI */
 
 /* -------------------------------------------------------------------- */
-char *GetVI()
+std::string GetVI()
 {
-  return(XmTextFieldGetString(wvText[1]));
+  char *p = XmTextFieldGetString(wvText[0]);
+  std::string s(p);
+  XtFree(p);
+  return(s);
 
 }	/* END GETVI */
 
 /* -------------------------------------------------------------------- */
-char *GetTI()
+std::string GetTI()
 {
-  return(XmTextFieldGetString(tiText));
+  char *p = XmTextFieldGetString(tiText);
+  std::string s(p);
+  XtFree(p);
+  return(s);
 
 }	/* END GETTI */
 
@@ -129,7 +138,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
     else
       {
       sprintf(buffer, "%s (%s)",
-		xyXset[NumberXYXsets].varInfo->name,
+		xyXset[NumberXYXsets].varInfo->name.c_str(),
 		xyXset[NumberXYXsets].stats.units.c_str());
       xyyPlot[CurrentPanel].Xaxis.label = buffer;
 
@@ -145,7 +154,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
     else
       {
       sprintf(buffer, "%s (%s)",
-		xyYset[NumberXYYsets].varInfo->name,
+		xyYset[NumberXYYsets].varInfo->name.c_str(),
 		xyYset[NumberXYYsets].stats.units.c_str());
       xyyPlot[CurrentPanel].Yaxis[0].label = buffer;
 
@@ -171,7 +180,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
     else
       {
       sprintf(buffer, "%s (%s)",
-              xyzSet[0].varInfo->name, xyzSet[0].stats.units.c_str());
+              xyzSet[0].varInfo->name.c_str(), xyzSet[0].stats.units.c_str());
       xyzPlot.Xaxis.label = buffer;
       }
     if (LoadVariable(&xyzSet[1], posVar[2]) == ERR)
@@ -179,7 +188,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
     else
       {
       sprintf(buffer, "%s (%s)",
-              xyzSet[1].varInfo->name, xyzSet[1].stats.units.c_str());
+              xyzSet[1].varInfo->name.c_str(), xyzSet[1].stats.units.c_str());
       xyzPlot.Yaxis[0].label = buffer;
       }
     if (LoadVariable(&xyzSet[2], posVar[1]) == ERR)
@@ -187,14 +196,14 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
     else
       {
       sprintf(buffer, "%s (%s)",
-              xyzSet[2].varInfo->name, xyzSet[2].stats.units.c_str());
+              xyzSet[2].varInfo->name.c_str(), xyzSet[2].stats.units.c_str());
       xyzPlot.Zaxis.label = buffer;
       }
 
     findMinMax();
     }
 
-  DataChanged = True;
+  DataChanged = true;
   DrawMainWindow();
 
 }	/* END LOADTRACK */
@@ -202,7 +211,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void TrackOptWinControl()
 {
-  static bool firstTime = True;
+  static bool firstTime = true;
 
   if (firstTime)
     {
@@ -210,7 +219,7 @@ void TrackOptWinControl()
       return;
 
     CreateTrackOptWin();
-    firstTime = False;
+    firstTime = false;
     }
 
   switch (PlotType)
@@ -221,18 +230,18 @@ void TrackOptWinControl()
       break;
 
     case XY_PLOT:
-      XtSetSensitive(optButton[0], True);
-      XtSetSensitive(optButton[1], False);
-      XtSetSensitive(optButton[2], False);
+      XtSetSensitive(optButton[0], true);
+      XtSetSensitive(optButton[1], false);
+      XtSetSensitive(optButton[2], false);
       XtManageChild(TrackOptWindow);
       XtPopup(XtParent(TrackOptWindow), XtGrabNone);
       break;
 
 
     case XYZ_PLOT:
-      XtSetSensitive(optButton[0], False);
-      XtSetSensitive(optButton[1], True);
-      XtSetSensitive(optButton[2], True);
+      XtSetSensitive(optButton[0], false);
+      XtSetSensitive(optButton[1], true);
+      XtSetSensitive(optButton[2], true);
       XtManageChild(TrackOptWindow);
       XtPopup(XtParent(TrackOptWindow), XtGrabNone);
       break;
@@ -294,7 +303,7 @@ static void CreateTrackOptWin()
   XtAddCallback(b[5], XmNvalueChangedCallback, ToggleEqualScaling, NULL);
 
   if (getenv("GMTHOME") == NULL)
-    XtSetSensitive(b[3], False);
+    XtSetSensitive(b[3], false);
 
 
   /* Wind vector options.
@@ -315,7 +324,7 @@ static void CreateTrackOptWin()
   average[0] = XmCreateToggleButton(plRC[0], "Averaged", args, n);
   average[1] = XmCreateToggleButton(plRC[0], "Instant", args, n);
   XtManageChildren(average, 2);
-  XmToggleButtonSetState(average[0], True, False);
+  XmToggleButtonSetState(average[0], true, false);
 
   /* Time interval. */
   n = 0;

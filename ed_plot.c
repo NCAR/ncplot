@@ -31,13 +31,14 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 #include <Xm/TextF.h>
 #include <Xm/ToggleB.h>
 
-#define TOTAL_PARMS	17
+static const size_t TOTAL_PARMS = 17;
 
 extern Widget	AppShell;
 
-
 static Widget	MainParmsShell = NULL, MainParmsWindow, parmsText[TOTAL_PARMS],
-		asciiText[2], panelB[MAX_PANELS], autoScaleButton, autoTicsButton;
+		asciiText[2], autoScaleButton, autoTicsButton;
+
+static std::vector<Widget> panelB;
 
 static int	currentPanel = 0;
 
@@ -133,7 +134,6 @@ static void SetMainAutoTics(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void ApplyMainParms(Widget w, XtPointer client, XtPointer call)
 {
-  int	i;
   char	*p;
 
   ApplyParms(parmsText, &mainPlot[currentPanel]);
@@ -141,7 +141,7 @@ static void ApplyMainParms(Widget w, XtPointer client, XtPointer call)
 
   /* These are all tied to mainPlot[0].  Not indvidually setable.
   */
-  for (i = 0; i < MAX_PANELS; ++i)
+  for (size_t i = 0; i < MAX_PANELS; ++i)
     {
     mainPlot[i].title = mainPlot[currentPanel].title;
     mainPlot[i].subTitle = mainPlot[currentPanel].subTitle;
@@ -177,12 +177,11 @@ static void SetPlotPanel(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void CreateMainParmsWindow()
 {
-  int		i;
   Cardinal	n;
   Arg		args[2];
   Widget	RC[9], plRC, label;
 
-  for (i = 0; i < TOTAL_PARMS; ++i)
+  for (size_t i = 0; i < TOTAL_PARMS; ++i)
     parmsText[i] = NULL;
 
   MainParmsShell = XtCreatePopupShell("editParmsShell",
@@ -204,15 +203,15 @@ static void CreateMainParmsWindow()
   XtManageChild(label);
   XtManageChild(plRC);
 
-  for (i = 0; i < MAX_PANELS; ++i)
+  for (size_t i = 0; i < MAX_PANELS; ++i)
     {
     sprintf(buffer, "%d", i+1);
-    panelB[i] = XmCreateToggleButton(plRC, buffer, NULL, 0);
+    panelB.push_back(XmCreateToggleButton(plRC, buffer, NULL, 0));
 
     XtAddCallback(panelB[i], XmNvalueChangedCallback,SetPlotPanel,(XtPointer)i);
     }
 
-  XtManageChildren(panelB, MAX_PANELS);
+  XtManageChildren(&panelB[0], MAX_PANELS);
   XmToggleButtonSetState(panelB[0], True, False);
 
 
@@ -259,7 +258,7 @@ static void CreateMainParmsWindow()
   XtManageChild(RC[2]); XtManageChild(RC[3]);
   XtManageChild(RC[4]); XtManageChild(RC[5]);
 
-  for (i = 0; i < TOTAL_PARMS; ++i)
+  for (size_t i = 0; i < TOTAL_PARMS; ++i)
     if (parmsText[i])
       XtAddCallback(parmsText[i], XmNlosingFocusCallback, ApplyMainParms, NULL);
 

@@ -46,9 +46,7 @@ static bool VarCompareLT(const VARTBL *x, const VARTBL *y);
 
 
 /* Imported from exp.c */
-extern size_t		NumberExpSets;
-extern DATASET_INFO	expSet[];
-
+extern std::vector<DATASET_INFO> expSet;
 
 void	findMinMax();
 
@@ -144,7 +142,7 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
 void AddDataFile(Widget w, XtPointer client, XtPointer call)
 {
   int		i, InputFile, nVars, nDims, dimIDs[3], varID;
-  char		name[NAMELEN], *data_file;
+  char		name[100], *data_file;
   DATAFILE_INFO	*curFile;
   VARTBL	*vp;
 
@@ -267,7 +265,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     vp = new VARTBL;
     curFile->Variable.push_back(vp);
 
-    strcpy(vp->name, name);
+    vp->name = name;
     if (nDims == 1)
       vp->OutputRate = 1;
     else
@@ -312,7 +310,7 @@ void SetList()
   XmListDeleteAllItems(varList);
 
   for (i = 0; i < curFile->Variable.size(); ++i)
-    item[i] = XmStringCreateLocalized(curFile->Variable[i]->name);
+    item[i] = XmStringCreateLocalized((char *)curFile->Variable[i]->name.c_str());
 
   XmListAddItems(varList, item, curFile->Variable.size(), 1);
 
@@ -336,7 +334,7 @@ static void readSet(DATASET_INFO *set)
 
     set->nPoints = NumberSeconds;
 
-    for (i = 0; i < NumberExpSets; ++i) 
+    for (i = 0; i < expSet.size(); ++i) 
       if (expSet[i].panelIndex == whichExp && expSet[i].nPoints == 0)
         {
         readSet(&expSet[i]);
@@ -409,7 +407,6 @@ static void readSet(DATASET_INFO *set)
 
 bottom:
   ComputeStats(set);
-
   PointerCursorAll();
 
 }	/* END READSET */
@@ -444,7 +441,7 @@ void ReadData()
 
   freeDataSets(false);
 
-  for (i = 0; i < NumberExpSets; ++i)
+  for (i = 0; i < expSet.size(); ++i)
     readSet(&expSet[i]);
 
   for (i = 0; i < NumberDataSets; ++i)
@@ -554,7 +551,7 @@ void findMinMax()
 }	/* END FINDMINMAX */
 
 /* -------------------------------------------------------------------- */
-int LoadVariable(DATASET_INFO *set, char varName[])
+int LoadVariable(DATASET_INFO *set, std::string varName)
 {
   int	indx;
 
@@ -591,6 +588,7 @@ void AddVariable(DATASET_INFO *set, int indx)
   else
     {
     VARTBL	*vp;
+    char	tmp[32];
     static int	expCnt = 0;
 
     vp = new VARTBL;
@@ -599,7 +597,8 @@ void AddVariable(DATASET_INFO *set, int indx)
 
     set->varInfo = vp;
 
-    sprintf(set->varInfo->name, "USER%d", expCnt);
+    sprintf(tmp, "USER%d", expCnt);
+    set->varInfo->name = tmp;
     set->varInfo->OutputRate = 1;
     set->varInfo->inVarID = COMPUTED;
     }
@@ -632,7 +631,7 @@ void ReduceData(int start, int newNumberSeconds)
                 dataSet[set].nPoints * sizeof(NR_TYPE));
     }
 
-  for (set = 0; set < NumberExpSets; ++set)
+  for (set = 0; set < expSet.size(); ++set)
     {
     if (expSet[set].nPoints == 0)
       continue;
@@ -737,16 +736,14 @@ static void freeDataSets(int mode)
 {
   size_t set;
 
-  for (set = 0; set < NumberExpSets; ++set)
+  for (set = 0; set < expSet.size(); ++set)
     {
-    if (mode)
-      delete expSet[set].varInfo;
-
-    if (expSet[set].nPoints > 0)
-      delete [] expSet[set].data;
-
     expSet[set].nPoints = 0;
+    delete [] expSet[set].data;
     }
+
+  if (mode)
+    expSet.clear();
 
   for (set = 0; set < NumberDataSets; ++set)
     {
@@ -845,7 +842,7 @@ bool isMissingValue(float target, float fillValue)
 /* -------------------------------------------------------------------- */
 static bool VarCompareLT(const VARTBL *x, const VARTBL *y)
 {
-    return(strcmp(x->name, y->name) < 0);
+    return(x->name < y->name);
 }
 
 /* END DATAIO.C */

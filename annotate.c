@@ -34,7 +34,7 @@ static struct _annotations
 
 static int	currentAnot = 0;
 static short	plotWidth, plotHeight;
-static bool	pointSet = False;
+static bool	pointSet = false;
 
 /* -------------------------------------------------------------------- */
 void ClearAnnotations()
@@ -73,7 +73,7 @@ void SetCursorXY(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
   anot[currentAnot].x = (float)xk->x / plotWidth;
   anot[currentAnot].y = (float)xk->y / plotHeight;
 
-  pointSet = True;
+  pointSet = true;
 
 }	/* END SETCURSORXY */
 
@@ -82,7 +82,7 @@ void ProcessText(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
 {
   XKeyEvent	*xk = (XKeyEvent *)evt->event;
 
-  if (pointSet == False)
+  if (pointSet == false)
     return;
 
   buffer[XLookupString(xk, buffer, 80, NULL, NULL)] = '\0';
@@ -97,7 +97,7 @@ void ProcessText(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
     if (strlen(anot[currentAnot].text))
       ++currentAnot;
 
-    pointSet = False;
+    pointSet = false;
     PointerCursor(mainPlot[0].canvas);
     DrawMainWindow();
     }

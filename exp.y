@@ -4,14 +4,10 @@
 
 #include "define.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-
 float	yyanswer;
 int	yy_indx;
 
-extern DATASET_INFO    expSet[];
+extern std::vector<DATASET_INFO> expSet;
 
 
 int yyerror(char *s)

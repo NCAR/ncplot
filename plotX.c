@@ -49,7 +49,7 @@ void ResizeTimeSeries()
   mainPlot[0].x.titleOffset	= 45;
   mainPlot[0].x.subTitleOffset	= 65;
 
-  totalVD = mainPlot[0].x.windowHeight - 80;
+  totalVD = mainPlot[0].x.windowHeight - 100;
 
   for (i = 0; i < NumberOfPanels; ++i)
     {
@@ -69,7 +69,7 @@ void ResizeTimeSeries()
       }
     else
       {
-      mainPlot[i].x.TH = (int)(80 + totalVD / NumberOfPanels * i);
+      mainPlot[i].x.TH = (int)(100 + totalVD / NumberOfPanels * i);
       mainPlot[i].x.VD = (int)(totalVD / NumberOfPanels - 40);
       }
  
@@ -242,7 +242,7 @@ static void plotData(PLOT_INFO *plot)
         XSetForeground(plot->dpy, plot->gc, GetColor(0));
 
       XDrawString(plot->dpy, plot->win, plot->gc, pos + 40,
-                  ylegend+3, vp->name, strlen(vp->name));
+                  ylegend+3, vp->name.c_str(), vp->name.size());
       }
 
     if (!Color)

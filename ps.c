@@ -159,16 +159,23 @@ void PStitles(FILE *fp, PLOT_INFO *plot, bool showPrelimWarning)
     }
 
   if (showPrelimWarning)
-    {
-    fprintf(fp, "/Times-Roman findfont %d scalefont setfont\n",
-		(int)(printerSetup.fontRatio * 40));
-    fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
-		x, prelimWarning, plot->ps.subTitleOffset-35);
-
-    fprintf(fp, show, prelimWarning);
-    }
+    PSwarning(fp, plot);
 
 }	/* END PSTITLES */
+
+/* -------------------------------------------------------------------- */
+void PSwarning(FILE *fp, PLOT_INFO *plot)
+{
+  int	x = plot->ps.windowWidth >> 1;
+
+  fprintf(fp, "/Times-Roman findfont %d scalefont setfont\n",
+		(int)(printerSetup.fontRatio * 40));
+  fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
+		x, prelimWarning, plot->ps.subTitleOffset-50);
+
+  fprintf(fp, show, prelimWarning);
+
+}	/* END PSWARNING */
 
 /* -------------------------------------------------------------------- */
 void PSlabels(FILE *fp, PLOT_INFO *plot)

@@ -368,11 +368,11 @@ Widget createParamsTitles(Widget parent, Widget parmsText[])
 }	/* END CREATEPARAMSTITLES */
 
 /* -------------------------------------------------------------------- */
-void createPanelButts(Widget parent, Widget panelB[], XtCallbackProc set)
+void createPanelButts(Widget parent, std::vector<Widget>& panelB, XtCallbackProc set)
 {
   Widget	plRC, label;
   Arg		args[2];
-  int		n, i;
+  Cardinal	n;
 
   /* Panel stuff.
    */
@@ -385,15 +385,15 @@ void createPanelButts(Widget parent, Widget panelB[], XtCallbackProc set)
   XtManageChild(label);
   XtManageChild(plRC);
  
-  for (i = 0; i < MAX_PANELS; ++i)
+  for (size_t i = 0; i < MAX_PANELS; ++i)
     {
     sprintf(buffer, "%d", i+1);
-    panelB[i] = XmCreateToggleButton(plRC, buffer, NULL, 0);
+    panelB.push_back(XmCreateToggleButton(plRC, buffer, NULL, 0));
  
     XtAddCallback(panelB[i], XmNvalueChangedCallback, set, (XtPointer)i);
     }
  
-  XtManageChildren(panelB, MAX_PANELS);
+  XtManageChildren(&panelB[0], MAX_PANELS);
   XmToggleButtonSetState(panelB[0], True, False);
 
 }	/* END CREATEPANELBUTTS */

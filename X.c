@@ -65,7 +65,7 @@ void initPlotGC(PLOT_INFO *plot)
       (plot->fontInfo[2] = XLoadQueryFont(plot->dpy, iv.font14)) == NULL ||
       (plot->fontInfo[3] = XLoadQueryFont(plot->dpy, iv.font12)) == NULL ||
       (plot->fontInfo[4] = XLoadQueryFont(plot->dpy, iv.font10)) == NULL)
-    HandleError("X.c: can't load font", False, EXIT);
+    HandleError("X.c: can't load font", false, EXIT);
 
   if (Color)
     XSetForeground(plot->dpy, plot->gc, GetColor(0));
@@ -91,8 +91,6 @@ void copyGC(PLOT_INFO *dest, PLOT_INFO *src)
 /* -------------------------------------------------------------------- */
 void NewPixmap(PLOT_INFO *plot, int width, int height, int depth)
 {
-  int	i;
-
   if (plot->dpy == 0)
     {
     fprintf(stderr, "NewPixmap: display is NULL, leaving.\n");
@@ -109,7 +107,7 @@ void NewPixmap(PLOT_INFO *plot, int width, int height, int depth)
     {
     xyzPlot.win = mainPlot[0].win;
 
-    for (i = 0; i < MAX_PANELS; ++i)
+    for (size_t i = 0; i < MAX_PANELS; ++i)
       mainPlot[i].win = xyyPlot[i].win = plot->win;
     }
 
@@ -160,28 +158,37 @@ void plotTitlesX(PLOT_INFO *plot, int sizeOffset, bool showPrelimWarning)
     }
 
   if (showPrelimWarning)
-    {
-    len = strlen(prelimWarning);
-
-    XSetFont(plot->dpy, plot->gc, plot->fontInfo[2+sizeOffset]->fid);
-    offset = (plot->x.windowWidth >> 1) -
-      (XTextWidth(plot->fontInfo[2+sizeOffset], prelimWarning, len) >> 1);
-
-    XDrawString(plot->dpy, plot->win, plot->gc, offset,
-                plot->x.subTitleOffset+16, prelimWarning, len);
-    }
+    plotWarningX(plot, sizeOffset);
 
 }	/* END PLOTTITLESX */
 
 /* -------------------------------------------------------------------- */
-void plotLabelsX(PLOT_INFO *plot, int sizeOffset)	/* Plot labels.	*/
+void plotWarningX(PLOT_INFO *plot, int sizeOffset)
+{
+  /*
+   * Display message if this file is preliminary data (global attribute
+   * in the netCDF file.
+   */
+  int len = strlen(prelimWarning);
+
+  XSetFont(plot->dpy, plot->gc, plot->fontInfo[2+sizeOffset]->fid);
+  int offset = (plot->x.windowWidth >> 1) -
+	(XTextWidth(plot->fontInfo[2+sizeOffset], prelimWarning, len) >> 1);
+
+  XDrawString(plot->dpy, plot->win, plot->gc, offset,
+	plot->x.TH-14, prelimWarning, len);
+
+}	/* END PLOTWARNINGX */
+
+/* -------------------------------------------------------------------- */
+void plotLabelsX(PLOT_INFO *plot, int sizeOffset)
 {
   int		axis, len, xOffset, yOffset;
   int		ascent, charSize, pixLen;
   XFontStruct	*fontInfo = plot->fontInfo[1+sizeOffset];
   XImage	*im_in, *im_out;
 
-  static bool	firstTime = True;
+  static bool	firstTime = true;
   static Pixmap	in_pm, out_pm;
 
   ascent	= fontInfo->max_bounds.ascent;
@@ -200,7 +207,7 @@ void plotLabelsX(PLOT_INFO *plot, int sizeOffset)	/* Plot labels.	*/
     in_pm  = XCreatePixmap(plot->dpy, plot->win, width, height, depth);
     out_pm = XCreatePixmap(plot->dpy, plot->win, height, width, depth);
 
-    firstTime = False;
+    firstTime = false;
     }
 
   if ((len = plot->Xaxis.label.length()) > 0)

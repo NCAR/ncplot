@@ -24,10 +24,10 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 
 
 /* -------------------------------------------------------------------- */
-int SearchTable(std::vector<VARTBL*> table, char target[])
+int SearchTable(std::vector<VARTBL*>& table, std::string target)
 {
   for (size_t i = 0; i < table.size(); ++i)
-    if (strcmp(table[i]->name, target) == 0)
+    if (table[i]->name == target)
       return(i);
 
   return(-1);

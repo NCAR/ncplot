@@ -114,8 +114,8 @@ static void ResizePSxyyPlot()
 
   if (NumberOfXYpanels == 1)
     {
-    xyyPlot[0].ps.titleOffset    = (int)(xyyPlot[0].ps.windowHeight * 0.82);
-    xyyPlot[0].ps.subTitleOffset = (int)(xyyPlot[0].ps.windowHeight * 0.78);
+    xyyPlot[0].ps.titleOffset    = (int)(xyyPlot[0].ps.windowHeight * 0.85);
+    xyyPlot[0].ps.subTitleOffset = (int)(xyyPlot[0].ps.windowHeight * 0.8);
     }
 
   totalHD = xyyPlot[0].ps.windowWidth - (int)(200 * printerSetup.widthRatio);
@@ -125,9 +125,9 @@ static void ResizePSxyyPlot()
     if (NumberOfXYpanels == 1)
       {
       xyyPlot[i].ps.LV = (int)(xyyPlot[0].ps.windowWidth * 0.2);
-      xyyPlot[i].ps.HD = (int)(xyyPlot[0].ps.windowWidth * 0.6);
+      xyyPlot[i].ps.HD = (int)(xyyPlot[0].ps.windowWidth * 0.61);
  
-      xyyPlot[i].ps.TH = (int)(xyyPlot[0].ps.windowHeight * 0.71);
+      xyyPlot[i].ps.TH = (int)(xyyPlot[0].ps.windowHeight * 0.75);
       xyyPlot[i].ps.VD = (int)(xyyPlot[0].ps.windowHeight * 0.4735);
 
       xyyPlot[i].ps.xLabelOffset = (int)(-160 * printerSetup.fontRatio);
@@ -426,9 +426,9 @@ static void PSplotRegression(FILE *fp, PLOT_INFO *plot, DATASET_INFO *x, DATASET
   void fitcurve(DATASET_INFO *x, DATASET_INFO *y, int ideg);
  
   printf("X axis variable: %s from %s\n",
-		x->varInfo->name, dataFile[x->fileIndex].fileName.c_str());
+		x->varInfo->name.c_str(), dataFile[x->fileIndex].fileName.c_str());
   printf("Y axis variable: %s from %s\n",
-		y->varInfo->name, dataFile[y->fileIndex].fileName.c_str());
+		y->varInfo->name.c_str(), dataFile[y->fileIndex].fileName.c_str());
 
   fitcurve(x, y, ShowRegression);
 
@@ -510,13 +510,13 @@ static void doLegendLineItemPS(FILE *fp, PLOT_INFO *plot, DATASET_INFO *set, int
       }
 
     sprintf(buffer, "%s (%s), %d s/sec",
-	set->varInfo->name, set->stats.units.c_str(), set->varInfo->OutputRate);
+	set->varInfo->name.c_str(), set->stats.units.c_str(), set->varInfo->OutputRate);
 
     PSstatsLegend(fp, plot, buffer, CurrentDataSet+2, set);
     }
   else
     {
-    sprintf(buffer, "%s (%s)", set->varInfo->name, set->stats.units.c_str());
+    sprintf(buffer, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
 
     if (showLine)
       {
@@ -533,7 +533,7 @@ static void doLegendLineItemPS(FILE *fp, PLOT_INFO *plot, DATASET_INFO *set, int
     if (printerSetup.color)
       fprintf(fp, "stroke\n0 0 0 setrgbcolor\n");
  
-    sprintf(buffer, "%s (%s)", set->varInfo->name, set->stats.units.c_str());
+    sprintf(buffer, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
 
     fprintf(fp, moveto, plot->ps.xLegendText, y);
     fprintf(fp, show, buffer);

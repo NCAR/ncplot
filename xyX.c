@@ -285,9 +285,9 @@ static void plotRegression(PLOT_INFO *plot, DATASET_INFO *x, DATASET_INFO *y)
   void fitcurve(DATASET_INFO *x, DATASET_INFO *y, int ideg);
 
   printf("X axis variable: %s from %s\n",
-		x->varInfo->name, dataFile[x->fileIndex].fileName.c_str());
+		x->varInfo->name.c_str(), dataFile[x->fileIndex].fileName.c_str());
   printf("Y axis variable: %s from %s\n",
-		y->varInfo->name, dataFile[y->fileIndex].fileName.c_str());
+		y->varInfo->name.c_str(), dataFile[y->fileIndex].fileName.c_str());
 
   fitcurve(x, y, ShowRegression);
 

@@ -100,7 +100,7 @@ int MakeLegendLabel(char buf[], DATASET_INFO *set)
   if (Statistics)
     {
     sprintf(buf, "%s (%s), %d s/sec",
-                set->varInfo->name,
+                set->varInfo->name.c_str(),
                 set->stats.units.c_str(),
                 set->varInfo->OutputRate);
 
@@ -113,7 +113,7 @@ int MakeLegendLabel(char buf[], DATASET_INFO *set)
   else
     {
     sprintf(buf, "%s (%s)",
-                set->varInfo->name, set->stats.units.c_str());
+                set->varInfo->name.c_str(), set->stats.units.c_str());
     }
 
   return(strlen(buf));
@@ -121,45 +121,41 @@ int MakeLegendLabel(char buf[], DATASET_INFO *set)
 }	/* END MAKEXYLEGENDLABEL */
 
 /* -------------------------------------------------------------------- */
-void SetXlabels(PLOT_INFO *plot, DATASET_INFO *set, int nSets)
+void SetXlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets)
 {
-  int   i;
- 
   /* Clean out unused X labels, and set to first active variable.
    */
-  for (i = 0; i < MAX_PANELS; ++i)
+  for (size_t i = 0; i < MAX_PANELS; ++i)
     plot[i].Xaxis.label = "";
  
-  for (i = nSets-1; i >= 0; --i)
+  for (int i = nSets-1; i >= 0; --i)
     if (PlotType == TIME_SERIES)
       plot[set[i].panelIndex].Xaxis.label = set[i].stats.units.c_str();
     else
       {
-      sprintf(buffer, "%s (%s)", set[i].varInfo->name, set[i].stats.units.c_str());
+      sprintf(buffer, "%s (%s)", set[i].varInfo->name.c_str(), set[i].stats.units.c_str());
       plot[set[i].panelIndex].Xaxis.label = buffer;
       }
  
 }       /* END SETXLABELS */
  
 /* -------------------------------------------------------------------- */
-void SetYlabels(PLOT_INFO *plot, DATASET_INFO *set, int nSets)
+void SetYlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets)
 {
-  int   i, j;
- 
   /* Clean out unused Y labels, and set to first active variable.
    */
-  for (i = 0; i < MAX_PANELS; ++i)
-    for (j = 0; j < 2; ++j)
+  for (size_t i = 0; i < MAX_PANELS; ++i)
+    for (int j = 0; j < 2; ++j)
       plot[i].Yaxis[j].label = "";
  
-  for (i = nSets-1; i >= 0; --i)
+  for (int i = nSets-1; i >= 0; --i)
     if (PlotType == TIME_SERIES)
       plot[set[i].panelIndex].Yaxis[set[i].scaleLocation].label =
                 set[i].stats.units.c_str();
     else
       if (allLabels || set[i].panelIndex == 0)
         {
-        sprintf(buffer, "%s (%s)", set[i].varInfo->name, set[i].stats.units.c_str());
+        sprintf(buffer, "%s (%s)", set[i].varInfo->name.c_str(), set[i].stats.units.c_str());
         plot[set[i].panelIndex].Yaxis[set[i].scaleLocation].label = buffer;
         }
  

@@ -21,7 +21,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
 
 #include "define.h"
 
-static int	unZoom = False;
+static int	unZoom = false;
 static int	saveStartTime[4], saveEndTime[4];
 static float	xMin, xMax, yMin[2], yMax[2];
 
@@ -64,7 +64,7 @@ static void DoTheBox(Widget w, XtPointer client, XMotionEvent *evt, Boolean cont
 void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
 {
   XButtonEvent	*xb = (XButtonEvent *)evt->event;
-  static bool	cancel = False;
+  static bool	cancel = false;
 
   if (xb->button != Button1)
     return;
@@ -75,7 +75,7 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
   if ((xb->state & Button1MotionMask) == 0x100)
     {
     XSetFunction(mainPlot[0].dpy, mainPlot[0].gc, GXcopy);
-    XtRemoveEventHandler(mainPlot[0].canvas, Button1MotionMask, False,
+    XtRemoveEventHandler(mainPlot[0].canvas, Button1MotionMask, false,
                          (XtEventHandler)DoTheBox, NULL);
     }
 
@@ -83,7 +83,7 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
       xb->y < mainPlot[0].x.TH || xb->y > mainPlot[0].x.BH)
     {
     if ((xb->state & Button1MotionMask) == 0)
-      cancel = True;
+      cancel = true;
 
     return;
     }
@@ -95,13 +95,13 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
 
   if ((xb->state & Button1MotionMask) == 0)
     {
-    cancel = False;
+    cancel = false;
 
     startX = xb->x;
     startY = xb->y;
 
     XSetFunction(mainPlot[0].dpy, mainPlot[0].gc, GXxor);
-    XtAddEventHandler(mainPlot[0].canvas, Button1MotionMask, False,
+    XtAddEventHandler(mainPlot[0].canvas, Button1MotionMask, false,
                       (XtEventHandler)DoTheBox, NULL);
     }
   else if ((xb->state & Button1MotionMask) == 0x100)
@@ -186,7 +186,7 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
       }
 
 
-    unZoom = True;
+    unZoom = true;
     DrawMainWindow();
     }
   else

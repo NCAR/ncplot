@@ -91,7 +91,7 @@ void UpdateDataRT(XtPointer client, XtIntervalId *id)
   SetSubtitles();
   SetTimeText();
 
-  DataChanged = True;
+  DataChanged = true;
   DrawMainWindow();
 
 reset:

@@ -23,6 +23,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-9
 #include "ps.h"
 #include "spec.h"
 
+static const int NAMELEN = 32;
+
 static void initPlot(PLOT_INFO *);
 
 char *insVariables[3], *gpsVariables[3], *gpsCorrected[3], *windVariables[3];
@@ -63,6 +65,7 @@ void Initialize()
   CurrentPanel		= 0;
   NumberDataFiles	= 0;
   NumberDataSets	= 0;
+  NumberXYXsets		= 0;
   NumberXYYsets		= 0;
   NumberOfPanels	= 1;
   NumberOfXYpanels	= 1;
@@ -98,9 +101,8 @@ void Initialize()
 
     initPlot(&xyyPlot[i]);
     xyyPlot[i].plotType		= XY_PLOT;
-    xyyPlot[i].x.windowWidth	= 625;
-    xyyPlot[i].x.windowHeight	= 800;
-    xyyPlot[i].Xaxis.label	= "";
+    xyyPlot[i].x.windowWidth	= 703;
+    xyyPlot[i].x.windowHeight	= 900;
     xyyPlot[i].Yaxis[0].nMajorTics = xyyPlot[i].Yaxis[1].nMajorTics =
 			xyyPlot[i].Xaxis.nMajorTics;
     }
@@ -114,11 +116,10 @@ void Initialize()
 
 
   xyzPlot.plotType		= XYZ_PLOT;
-  xyzPlot.x.windowWidth		= 800;
-  xyzPlot.x.windowHeight	= 625;
+  xyzPlot.x.windowWidth		= 900;
+  xyzPlot.x.windowHeight	= 703;
   xyzPlot.Xaxis.nMinorTics	= 0;
   xyzPlot.Yaxis[0].nMinorTics	= 0;
-  xyzPlot.Xaxis.label = "";
 
 
   specPlot.plotType		= XY_PLOT;

@@ -41,7 +41,7 @@ static String fallback_resources[] =
   "*topLevelShell.x:			0",
   "*topLevelShell.y:			50",
   "*controlShell.title:			Variable Selection",
-  "*controlShell.x:			825",
+  "*controlShell.x:			925",
   "*controlShell.y:			50",
   "*buttonFrame.shadowType:		SHADOW_IN",
   "*buttonRC.XmPushButton.recomputeSize:	False",
@@ -55,8 +55,8 @@ static String fallback_resources[] =
   "*drawForm.XmPushButton.height:	32",
 
   "*canvas.background:			grey",
-  "*canvas.height:			625",
-  "*canvas.width:			800",
+  "*canvas.height:			703",
+  "*canvas.width:			900",
 
   "*specCanvas.background:		grey",
   "*specCanvas.height:			600",
@@ -230,8 +230,8 @@ static String fallback_resources[] =
    * Track Option Window
    */
   "*trackOptShell.title:		Track Plot Options",
-  "*trackOptShell.x:			525",
-  "*trackOptShell.y:			715",
+  "*trackOptShell.x:			600",
+  "*trackOptShell.y:			750",
   "*trackOptRC.orientation:		HORIZONTAL",
   "*trackOptRC.XmFrame.shadowType:	SHADOW_IN",
 

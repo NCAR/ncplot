@@ -348,7 +348,7 @@ static char *formatTitle(char buff[])
     vp = dataSet[i].varInfo;
 
     if (dataSet[i].nPoints == dataSet[0].nPoints)
-      memcpy(&buff[lrOffset+(14*varCnt++)], vp->name, strlen(vp->name));
+      memcpy(&buff[lrOffset+(14*varCnt++)], vp->name.c_str(), vp->name.size());
     }
  
   strcpy(&buff[lrOffset+(varCnt*14)], "\n");

@@ -313,7 +313,7 @@ static char *formatLine(char buff[], DATASET_INFO *set)
 
   memset(buff, ' ', 256);
 
-  sprintf(temp, "%s (%s)", set->varInfo->name, set->stats.units.c_str());
+  sprintf(temp, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
   memcpy(buff, temp, strlen(temp));
 
   sprintf(temp, "%5ld/%ld", (long)set->stats.nPoints, (long)set->nPoints);

@@ -32,6 +32,7 @@ FILE	*openPSfile(char *outFile);
 void	PSheader(FILE *, PLOT_INFO *),
 	PStitles(FILE *, PLOT_INFO *, bool),
 	PSlabels(FILE *, PLOT_INFO *),
+	PSwarning(FILE *, PLOT_INFO *),
 	PSbox(FILE *, PLOT_INFO *),
 	PSxTics(FILE *, PLOT_INFO *, bool),
 	PSyTics(FILE *, PLOT_INFO *, int, bool),
