@@ -29,7 +29,7 @@ LIB_DIRS= -L/usr/X11R6/lib -L${JLOCAL}/lib
 LIBS    = -lXm -lXp -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
 BIN	= /net/local_lnx/bin
 IHOST	= syrah
-ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RedHat9.0
+ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Fedora2
 
 # HP
 #
