@@ -29,8 +29,11 @@ void ToggleTimeStamps(Widget w, XtPointer client, XtPointer call)
 {
   char  *p = XmTextFieldGetString(w);
  
-  nTimeStamps = atoi(p) - 1;
+  nTimeStamps = atoi(p);
   XtFree(p);
+
+  if (nTimeStamps > 0)
+    --nTimeStamps;
 
   DrawMainWindow();
  
