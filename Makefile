@@ -17,7 +17,7 @@ DEFINES	= -DPNG
 INCLUDES= ${JLOCAL}/include -I/usr/X11R6/include
 LIB_DIRS= -L/usr/X11R6/lib -L${JLOCAL}/lib
 LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
-BIN	= /net/local_lnx/bin
+BIN	= ${LOCAL}/bin
 IHOST	= syrah
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RedHat9.0
 
@@ -101,7 +101,10 @@ lex.yy.c: exp.l
 	${LEX} exp.l
 
 install: ${PROG}
+	test -d $(BIN) || mkdir $(BIN)
 	cp ${PROG} $(BIN)
+
+publish: $(PROG)
 	cp ${PROG} $(ANONFTP)
 	cp ${PROG}.html $(WWW)
 	scp ${PROG} ${IHOST}:$(BIN)
