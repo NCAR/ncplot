@@ -24,11 +24,11 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Redhat9.0
 # Mac OS X
 #
 #DEFINES	= -DPNG
-INCLUDES= -I/usr/include -I/usr/X11R6/include -I/sw/include
-LIB_DIRS= -L/sw/lib -L/usr/X11R6/lib -L/usr/lib
-LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
-LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpthread
-BIN	= /sw/bin
+#INCLUDES= -I/usr/include -I/usr/X11R6/include -I/sw/include
+#LIB_DIRS= -L/sw/lib -L/usr/X11R6/lib -L/usr/lib
+#LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
+#LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpthread
+#BIN	= /sw/bin
 
 # Solaris
 #
