@@ -29,9 +29,9 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 2000-2001
 #include <X11/Xlib.h>
 
 
-int	NumberOfColors(), GetColorIndex(ulong);
+int	NumberOfColors(), GetColorIndex(unsigned long);
 void	CheckByteSwap(XImage *image);
-ushort	*GetColorRGB_X(int);
+unsigned short	*GetColorRGB_X(int);
 static	void _SavePNG(char file_name[], XImage *image);
 
 static char	pngDirectory[256] = "*.png";
@@ -151,7 +151,7 @@ static void _SavePNG(char file_name[], XImage *image)
 {
   int		i, j;
   FILE		*outFP;
-  ushort	*s;
+  unsigned short *s;
   png_structp	png_ptr;
   png_infop	info_ptr;
   png_bytep	row_pointers[2000];
@@ -229,13 +229,13 @@ static void _SavePNG(char file_name[], XImage *image)
 
       case 16:
         for (j = 0; j < image->width; ++j)
-          row_pointers[i][j] = (png_byte)GetColorIndex(((ushort *)p)[j]);
+          row_pointers[i][j] = (png_byte)GetColorIndex(((unsigned short *)p)[j]);
 
         break;
 
       case 24: case 32:
         for (j = 0; j < image->width; ++j)
-          row_pointers[i][j] = (png_byte)GetColorIndex(((ulong *)p)[j]);
+          row_pointers[i][j] = (png_byte)GetColorIndex(((unsigned long *)p)[j]);
 
         break;
       }

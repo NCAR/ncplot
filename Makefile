@@ -11,16 +11,6 @@ YFLAGS	= -d
 
 # ${LOCAL}/include needs to locate netcdf.h
 
-# Solaris
-#
-DEFINES	= -DSVR4 -DPNG
-INCLUDES= ${LOCAL}/include -I/usr/openwin/include -I/usr/dt/include
-LIBS	= -Wl,-Bstatic -lpng -lz -Wl,-Bdynamic -R /usr/dt/lib -lXm -lXt -lX11 -lnetcdf -ll -lm -lpthread
-LIB_DIRS= -L/net/lcal_sol/lib
-BIN	= /net/local_sol/bin
-IHOST	= mead
-ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Solaris2.9
-
 # Linux
 #
 DEFINES	= -DPNG
@@ -30,6 +20,25 @@ LIBS    = -lXm -lXp -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
 BIN	= /home/local/bin
 IHOST	= syrah
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Redhat9.0
+
+# Mac OS X
+#
+#DEFINES	= -DPNG
+INCLUDES= -I/usr/include -I/usr/X11R6/include -I/sw/include
+LIB_DIRS= -L/sw/lib -L/usr/X11R6/lib -L/usr/lib
+LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
+LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpthread
+BIN	= /sw/bin
+
+# Solaris
+#
+#DEFINES	= -DSVR4 -DPNG
+#INCLUDES= ${LOCAL}/include -I/usr/openwin/include -I/usr/dt/include
+#LIBS	= -Wl,-Bstatic -lpng -lz -Wl,-Bdynamic -R /usr/dt/lib -lXm -lXt -lX11 -lnetcdf -ll -lm -lpthread
+#LIB_DIRS= -L/net/lcal_sol/lib
+#BIN	= /net/local_sol/bin
+#IHOST	= mead
+#ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Solaris2.9
 
 # HP
 #

@@ -75,7 +75,7 @@ void CheckByteSwap(XImage *image)
 {
   int	i;
   bool	prog_byte_order;
-  ulong	pixel, x;
+  unsigned long	pixel, x;
 
   static bool firstTime = True;
 
@@ -115,7 +115,7 @@ void CheckByteSwap(XImage *image)
 }
 
 /* -------------------------------------------------------------------- */
-int GetColorIndex(ulong pixel)
+int GetColorIndex(unsigned long pixel)
 {
   int	i;
 
@@ -285,9 +285,9 @@ void InitializeColors(PLOT_INFO *plot)
   for (i = 0; i < numberColors; ++i)
     {
     if (image->depth == 16)
-      colorInfo[i].cpixel = ((ushort *)image->data)[i];
+      colorInfo[i].cpixel = ((unsigned short *)image->data)[i];
     if (image->depth > 16)
-      colorInfo[i].cpixel = ((ulong *)image->data)[i];
+      colorInfo[i].cpixel = ((unsigned long *)image->data)[i];
     }
 
 }
