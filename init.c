@@ -30,11 +30,27 @@ static void initPlot(PLOT_INFO *);
 char *insVariables[3], *gpsVariables[3], *gpsCorrected[3], *windVariables[3];
 
 
+/* -------------------------------------------------------------------- */
+void GetDataDirectory(char buff[])
+{
+  buff[0] = 0;
+
+  char *p;
+
+  if ( (p = getenv("DATA_FILTER")) )
+    strcpy(buff, p);
+  else
+  if ( (p = getenv("DATA_DIR")) )
+  {
+    strcpy(buff, p);
+    strcat(buff, "/");
+  }
+}
+
 /* --------------------------------------------------------------------- */
 void Initialize()
 {
   size_t	i;
-  char		*p;
   pthread_t	tid;
 
   char *insVar[] = { "LON", "LAT", "PALT" };
@@ -141,13 +157,9 @@ void Initialize()
     }
 
 
-  if ((p = (char *)getenv("DATA_DIR")) != NULL)
-    {
-    DataPath = p;
-    DataPath += "/*.nc";
-    }
-  else
-    DataPath = "/*";
+  GetDataDirectory(buffer);
+  DataPath = buffer;
+  DataPath += "*.nc";
 
 #ifdef SVR4
   printerSetup.lpCommand = "lp -o nobanner";
