@@ -17,9 +17,9 @@ DEFINES	= -DPNG
 INCLUDES= ${JLOCAL}/include -I/usr/X11R6/include
 LIB_DIRS= -L/usr/X11R6/lib -L${JLOCAL}/lib
 LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
-BIN	= /home/local/bin
+BIN	= /net/local_lnx/bin
 IHOST	= syrah
-ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Redhat9.0
+ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RedHat9.0
 
 # Mac OS X
 #
