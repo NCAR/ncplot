@@ -116,8 +116,8 @@ void PSheader(FILE *fp, PLOT_INFO *plot)
 
   if (printerSetup.shape == LANDSCAPE)
     {
-    fprintf(fp, "%d %d translate\n", 0, 3168);
-    fprintf(fp, "-90 rotate\n");
+    fprintf(fp, "%d %d translate\n", 2448, 0);
+    fprintf(fp, "90 rotate\n");
 
     fprintf(fp, moveto, 2750, 2350);
     }
