@@ -143,7 +143,8 @@ void ComputeStats(DATASET_INFO *set)
 						"units", (size_t *)&len);
     nc_get_att_text(dataFile[set->fileIndex].ncid, set->varInfo->inVarID,
 						"units", buffer);
-    if (strcmp(buffer, "C") == 0)
+    if (strcmp(buffer, "C") == 0 ||
+        strcmp(buffer, "deg_C") == 0)
       {
       buffer[0] = 0xb0;
       buffer[1] = 'C';
@@ -151,7 +152,7 @@ void ComputeStats(DATASET_INFO *set)
       }
     }
   else
-    strcpy(buffer, "Unk");
+    strcpy(buffer, "Unknown");
 
   strncpy(set->stats.units, buffer, UNITS_LEN);
 
