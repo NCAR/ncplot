@@ -40,9 +40,10 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 2000-2004
 #include <Xm/RowColumn.h>
 #include <Xm/TextF.h>
 
-#define TOTAL_PREFERS	12
+#define TOTAL_PREFERS	15
 
-extern char *insVariables[], *gpsVariables[], *gpsCorrected[];
+extern char	*insVariables[], *gpsVariables[], *gpsCorrected[],
+		*windVariables[];
 
 extern Widget	AppShell;
 static Widget	PreferShell = NULL, PreferWindow, prefText[TOTAL_PREFERS];
@@ -109,7 +110,9 @@ void SetPreferences()
   XmTextFieldSetString(prefText[9], insVariables[1]);
   XmTextFieldSetString(prefText[10], insVariables[0]);
   XmTextFieldSetString(prefText[11], insVariables[2]);
-
+  XmTextFieldSetString(prefText[12], windVariables[0]);
+  XmTextFieldSetString(prefText[13], windVariables[1]);
+  XmTextFieldSetString(prefText[14], windVariables[2]);
 
 }	/* END SETPREFERENCES */
 
@@ -150,6 +153,9 @@ printf("Save Preferences: Writing ~/.ncplotrc\n");
   fprintf(fp, "InertialLongitude = %s\n", insVariables[0]);
   fprintf(fp, "InertialLatitude = %s\n", insVariables[1]);
   fprintf(fp, "PressureAltitude = %s\n", insVariables[2]);
+  fprintf(fp, "WindU = %s\n", windVariables[0]);
+  fprintf(fp, "WindV = %s\n", windVariables[1]);
+  fprintf(fp, "WindInterval = %s\n", windVariables[2]);
 
   fclose(fp);
 
@@ -208,6 +214,18 @@ static void ApplyPreferences(Widget w, XtPointer client, XtPointer call)
 
   p = XmTextFieldGetString(prefText[11]);
   strcpy(insVariables[2], p);
+  free(p);
+
+  p = XmTextFieldGetString(prefText[12]);
+  strcpy(windVariables[0], p);
+  free(p);
+
+  p = XmTextFieldGetString(prefText[13]);
+  strcpy(windVariables[1], p);
+  free(p);
+
+  p = XmTextFieldGetString(prefText[14]);
+  strcpy(windVariables[2], p);
   free(p);
 
   DrawMainWindow();
@@ -307,7 +325,6 @@ void ReadConfigFile()
     if (strncmp(buffer, "Colors", 6) == 0) {
       SetColorNames(p);
       }
-    else
     if (strncmp(buffer, "TrueAirspeed", 12) == 0) {
       strcpy(tasVarName, p);
       }
@@ -329,20 +346,25 @@ void ReadConfigFile()
     if (strncmp(buffer, "PressureAltitude", 16) == 0) {
       strcpy(insVariables[2], p);
       }
-    else
+    if (strncmp(buffer, "WindU", 5) == 0) {
+      strcpy(windVariables[0], p);
+      }
+    if (strncmp(buffer, "WindV", 5) == 0) {
+      strcpy(windVariables[1], p);
+      }
+    if (strncmp(buffer, "WindInterval", 12) == 0) {
+      strcpy(windVariables[2], p);
+      }
     if (strncmp(buffer, "PrintCommand", 12) == 0) {
       strcpy(printerSetup.lpCommand, p);
       }
-    else
     if (strncmp(buffer, "TemplateDir", 11) == 0) {
       SetTemplateDirectory(p);
       }
-    else
     if (strncmp(buffer, "PrintColor", 10) == 0) {
       if (strncmp(p, "Color", 5) == 0)
         printerSetup.color = True;
       }
-    else
     if (strncmp(buffer, "LineWidth", 9) == 0) {
       if (atoi(p) > 1)
         LineThickness = atoi(p);

@@ -264,6 +264,9 @@ static String fallback_resources[] =
   "*prefRC*prefer9.labelString:		INS Latitude Variable",
   "*prefRC*prefer10.labelString:	INS Longitude Variable",
   "*prefRC*prefer11.labelString:	Pressure Altitude",
+  "*prefRC*prefer12.labelString:	Wind U Variable",
+  "*prefRC*prefer13.labelString:	Wind V Variable",
+  "*prefRC*prefer14.labelString:	Wind Interval",
   "*prefRC*prefText.columns:		50",
   "*prefRC*prefText.maxLength:		50",
   /*

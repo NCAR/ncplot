@@ -26,7 +26,7 @@ static struct
   {
   float	lat, lon;
   char	*tag;
-  } landMark[32];
+  } landMark[128];
 
 static int nMarks;
 

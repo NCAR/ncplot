@@ -34,14 +34,15 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
 #define GPS	2
 #define CORRECTED	3
 
-extern char *insVariables[], *gpsVariables[], *gpsCorrected[];
+extern char	*insVariables[], *gpsVariables[], *gpsCorrected[],
+		*windVariables[];
 
 extern Widget   AppShell;
 static Widget   TrackOptShell = NULL;
 Widget   TrackOptWindow = NULL;	// Exported to dataIO.c for Cursor Control
 static Widget	wvText[2], tiText, average[2], optButton[8], dirText, tsText;
 
-static char *defaultUI = "UIC", *defaultVI = "VIC", *defaultTI = "300";
+/* static char *defaultUI = "UIC", *defaultVI = "VIC", *defaultTI = "300"; */
 
 void	findMinMax();
 static void CreateTrackOptWin();
@@ -313,15 +314,15 @@ static void CreateTrackOptWin()
   tiText = XmCreateTextField(plRC[1], "tiText", args, n);
   XtManageChild(label);
   XtManageChild(tiText);
-  XmTextFieldSetString(tiText, defaultTI);
+  XmTextFieldSetString(tiText, windVariables[2]);
 
   /* UI & VI Text widgets. */
   n = 0;
   wvText[0] = XmCreateTextField(plRC[2], "uiText", args, n);
   wvText[1] = XmCreateTextField(plRC[2], "uiText", args, n);
   XtManageChildren(wvText, 2);
-  XmTextFieldSetString(wvText[0], defaultUI);
-  XmTextFieldSetString(wvText[1], defaultVI);
+  XmTextFieldSetString(wvText[0], windVariables[0]);
+  XmTextFieldSetString(wvText[1], windVariables[1]);
 
 
   /* Other Options. */

@@ -294,7 +294,7 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
    */
   scale = sqrt((xAxis->max - xAxis->min) * (yAxis->max - yAxis->min));
 
-  sprintf(buf, "pscoast -R%d/%d/%d/%d -M -Na -W", xMin, xMax, yMin, yMax);
+  sprintf(buf, "pscoast -R%d/%d/%d/%d -M -Na -W ", xMin, xMax, yMin, yMax);
 
   if (scale > 60)	strcat(buf, "-Dc");	else
   if (scale > 40)	strcat(buf, "-Dl");	else

@@ -25,7 +25,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-9
 
 static void initPlot(PLOT_INFO *);
 
-char *insVariables[3], *gpsVariables[3], *gpsCorrected[3];
+char *insVariables[3], *gpsVariables[3], *gpsCorrected[3], *windVariables[3];
 
 
 /* --------------------------------------------------------------------- */
@@ -38,6 +38,7 @@ void Initialize()
   char *insVar[] = { "LON", "LAT", "PALT" };
   char *gpsVar[] = { "GGLON", "GGLAT", "GGALT" };
   char *gpsCor[] = { "LONC", "LATC", "ALTX" };
+  char *windVar[] = { "UIC", "VIC", "300" };
 
 
   pthread_create(&tid, NULL, GetPrinterList, NULL);
@@ -175,10 +176,12 @@ void Initialize()
     insVariables[i] = (char *)malloc(NAMELEN);
     gpsVariables[i] = (char *)malloc(NAMELEN);
     gpsCorrected[i] = (char *)malloc(NAMELEN);
+    windVariables[i] = (char *)malloc(NAMELEN);
 
     strcpy(insVariables[i], insVar[i]);
     strcpy(gpsVariables[i], gpsVar[i]);
     strcpy(gpsCorrected[i], gpsCor[i]);
+    strcpy(windVariables[i], windVar[i]);
     }
 
 }	/* END INITIALIZE */
