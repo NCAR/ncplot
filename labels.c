@@ -137,7 +137,7 @@ void SetXlabels(PLOT_INFO *plot, DATASET_INFO *set, int nSets)
       sprintf(  plot[set[i].panelIndex].Xaxis.label, "%s (%s)",
                 set[i].varInfo->name, set[i].stats.units);
  
-}       /* END SETYLABELS */
+}       /* END SETXLABELS */
  
 /* -------------------------------------------------------------------- */
 void SetYlabels(PLOT_INFO *plot, DATASET_INFO *set, int nSets)

@@ -117,10 +117,12 @@ void UpdateAnnotationsX(PLOT_INFO *plot)
 
   for (i = 0; i < currentAnot; ++i)
     if (PlotType == anot[i].whichPlot)
+      {
       XDrawString(plot->dpy, plot->win, plot->gc,
                  (int)(anot[i].x * plot->x.windowWidth),
                  (int)(anot[i].y * plot->x.windowHeight),
                  anot[i].text, strlen(anot[i].text));
+      }
 
 }	/* UPDATEANNOTATIONS */
 

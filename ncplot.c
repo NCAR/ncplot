@@ -98,9 +98,9 @@ int main(int argc, char *argv[])
     if (NumberDataFiles > 0)
       NewDataFile((Widget)NULL, (XtPointer)NULL, (XtPointer)NULL);
 
+    OpenControlWindow(NULL, NULL, NULL);
     XtManageChild(MainWindow);
     XtPopup(XtParent(MainWindow), XtGrabNone);
-    OpenControlWindow(NULL, NULL, NULL);
 
     if (RealTime)
       XtAppAddTimeOut(appContext, 1000, UpdateDataRT, NULL);
