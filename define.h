@@ -17,6 +17,7 @@ DESCRIPTION:
 #include <cstdio>
 #include <float.h>
 #include <cstring>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -91,6 +92,9 @@ typedef struct _insRec
 typedef struct
 	{
 	std::string name;
+	std::string units;
+	std::string long_name;
+	std::set<std::string> categories;
 	int	inVarID;        /* netCDF variable ID       */
 	int	OutputRate;
 	float	MissingValue;
@@ -127,7 +131,7 @@ typedef struct
 
 	bool	ShowPrelimDataWarning;
 
-	char	*catName[32];	/* Category list		*/
+	std::set<std::string> categories;	// Master list.
 	} DATAFILE_INFO;
 
 typedef struct

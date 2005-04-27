@@ -64,10 +64,8 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
     for (j = 0; j < curFile->Variable.size(); ++j)
       delete curFile->Variable[j];
 
-    for (j = 1; curFile->catName[j]; ++j)	/* [0] was not malloced	*/
-      delete [] curFile->catName[j];
-
     curFile->Variable.clear();
+    curFile->categories.clear();
     }
 
   freeDataSets(true);
@@ -200,33 +198,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   else
     curFile->ShowPrelimDataWarning = false;
 
-
   GetTimeInterval(InputFile, curFile);
-
-
-  /* Get Category list.
-   */
-  curFile->catName[0] = "All variables";
-  curFile->catName[1] = NULL;
-
-  if (nc_get_att_text(InputFile, NC_GLOBAL, "Categories", buffer) == NC_NOERR)
-    {
-    char *p;
-    int	nCats;
-
-    p = strtok(buffer, ",");
- 
-    for (nCats = 1; p; ++nCats)
-      {
-      curFile->catName[nCats] = new char[strlen(p)+1];
-      strcpy(curFile->catName[nCats], p);
- 
-      p = strtok(NULL, ",");
-      }
-
-    curFile->catName[nCats] = NULL;
-    }
-
 
   /* Find which file has min start time, and max end time.
    */
@@ -240,6 +212,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   /* Read in the variables.
    */
   curFile->Variable.clear();
+  curFile->categories.clear();
   for (i = 0; i < nVars; ++i)
     {
     nc_inq_var(InputFile, i, name, NULL, &nDims, dimIDs, NULL);
@@ -264,6 +237,21 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
       if (nc_get_att_float(InputFile, i, "missing_value", &vp->MissingValue) != NC_NOERR)
         if (nc_get_att_float(InputFile, i, "MissingValue", &vp->MissingValue) != NC_NOERR)
           vp->MissingValue = DEFAULT_MISSING_VALUE;
+
+    if (nc_get_att_text(InputFile, i, "units", buffer) == NC_NOERR)
+      vp->units = buffer;
+
+    if (nc_get_att_text(InputFile, i, "long_name", buffer) == NC_NOERR)
+      vp->long_name = buffer;
+
+    if (nc_get_att_text(InputFile, i, "Category", buffer) == NC_NOERR)
+      {
+      for (char *p = strtok(buffer, ","); p; p = strtok(NULL, ","))
+        {
+        vp->categories.insert(p);
+        curFile->categories.insert(p);
+        }
+      }
 
     vp->inVarID	= i;
     }

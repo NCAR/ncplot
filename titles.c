@@ -14,11 +14,7 @@ STATIC FNS:	CreateTitleWindow()
 DESCRIPTION:	Currently hardwired to only use the Category list from
 		file[0].
 
-REFERENCES:	none
-
-REFERENCED BY:	Menu button.
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1998
+COPYRIGHT:	University Corporation for Atmospheric Research, 1998-05
 -------------------------------------------------------------------------
 */
 
@@ -84,34 +80,32 @@ static void SetCategory(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void SetTitles()
 {
-  size_t	i, len;
-  char		title[80], category[40];
   DATAFILE_INFO	*curFile = &dataFile[CurrentDataFile];
 
   XmTextSetString(titleText, (char *)curFile->fileName.c_str());
   XmTextInsert(titleText, XmTextGetLastPosition(titleText), "\n\n");
 
-  for (i = 0; i < curFile->Variable.size(); ++i)
+  for (size_t i = 0; i < curFile->Variable.size(); ++i)
     {
-    nc_inq_attlen(curFile->ncid, curFile->Variable[i]->inVarID,
-			"long_name", (size_t *)&len);
-    nc_get_att_text(curFile->ncid, curFile->Variable[i]->inVarID,
-			"long_name", title);
-    title[len] = '\0';
+    VARTBL *vp = curFile->Variable[i];
+    bool ok = false;
 
-    if (nc_inq_attlen(curFile->ncid, curFile->Variable[i]->inVarID,
-			"Category", (size_t *)&len) == NC_NOERR)
+    if (currentCategory == 0)
+       ok = true;
+    else
       {
-      nc_get_att_text(curFile->ncid, curFile->Variable[i]->inVarID,
-			"Category", category);
-      category[len] = '\0';
+      std::set<std::string>::iterator it = curFile->categories.begin();
+      std::advance (it, currentCategory - 1); 
+
+      if (find(vp->categories.begin(), vp->categories.end(), *it) != vp->categories.end())
+        ok = true;
       }
 
-
-    if (currentCategory == 0 ||
-	strcmp(dataFile[0].catName[currentCategory], category) == 0)
+    if (ok)
       {
-      sprintf(buffer, "%-16s %s\n", curFile->Variable[i]->name.c_str(), title);
+      sprintf(buffer, "%-16s %s\n",
+		curFile->Variable[i]->name.c_str(),
+		curFile->Variable[i]->long_name.c_str());
       XmTextInsert(titleText, XmTextGetLastPosition(titleText), buffer);
       }
     }
@@ -166,9 +160,18 @@ static void CreateTitleWindow()
   catOpMenu = XmCreateOptionMenu(drRC, "catOpMenu", args, n);
   XtManageChild(catOpMenu);
  
-  for (i = 0; dataFile[0].catName[i]; ++i)
+  name = XmStringCreateLocalized("All Variables");
+  n = 0;
+  XtSetArg(args[n], XmNlabelString, name); ++n;
+  catButts[0] = XmCreatePushButton(catPD, "opMenB", args, n);
+  XtAddCallback(catButts[0], XmNactivateCallback, SetCategory, (XtPointer)0);
+ 
+  XmStringFree(name);
+  
+  std::set<std::string>::iterator it = dataFile[0].categories.begin();
+  for (i = 1; it != dataFile[0].categories.end(); ++it, ++i)
     {
-    name = XmStringCreateLocalized(dataFile[0].catName[i]);
+    name = XmStringCreateLocalized((char*)(*it).c_str());
  
     n = 0;
     XtSetArg(args[n], XmNlabelString, name); ++n;
