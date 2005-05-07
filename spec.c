@@ -21,7 +21,7 @@ REFERENCES:	spctrm.c
 
 REFERENCED BY:	Callbacks, control.c
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2001
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-05
 -------------------------------------------------------------------------
 */
 
@@ -228,13 +228,11 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void ComputeSpectrum()
 {
-  size_t	i, pos, KxM, set, nSets;
-  double	cf;
-  float		*detrendedData = 0;
+  float *detrendedData = 0;
   
-  nSets = std::min(NumberDataSets, MAX_PSD);
+  size_t nSets = std::min(NumberDataSets, MAX_PSD);
 
-  for (set = 0; set < nSets; ++set)
+  for (size_t set = 0; set < nSets; ++set)
     {
     delete [] psd[set].Pxx;
     delete [] psd[set].Qxx;
@@ -248,7 +246,7 @@ void ComputeSpectrum()
       psd[0].K = 1;
 
     psd[0].K += 2;
-    KxM = (psd[0].K + 1) * psd[0].M;
+    size_t KxM = (psd[0].K + 1) * psd[0].M;
 
     detrendedData = new float[KxM];
     psd[set].Pxx = new double[psd[0].M+1];
@@ -256,7 +254,7 @@ void ComputeSpectrum()
 
     /* This computation of i, is to center the data in the zero padding.
      */
-    pos = (KxM - dataSet[set].nPoints) / 2;
+    size_t pos = (KxM - dataSet[set].nPoints) / 2;
     memset((char *)detrendedData, 0, sizeof(float) * KxM);
     CleanAndCopyData(&dataSet[set], &detrendedData[pos]);
     (*psd[0].detrendFn)(&dataSet[set], &detrendedData[pos]);
@@ -270,7 +268,7 @@ void ComputeSpectrum()
 
     if (multiplyByFreq())
       {
-      for (i = 1; i <= psd[0].M; ++i)
+      for (size_t i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= i;
 
       sprintf(buffer, "f x PSD of %s (%s^2)",
@@ -280,7 +278,7 @@ void ComputeSpectrum()
     else
     if (multiplyByFreq53())
       {
-      for (i = 1; i <= psd[0].M; ++i)
+      for (size_t i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= pow((double)i, 5.0/3.0);
 
       sprintf(buffer, "f^(5/3) x PSD of %s (%s^2)",
@@ -289,9 +287,9 @@ void ComputeSpectrum()
       }
     else
       {
-      cf = (double)(psd[0].M << 1) / psd[set].frequency;
+      double cf = (double)(psd[0].M << 1) / psd[set].frequency;
 
-      for (i = 1; i <= psd[0].M; ++i)
+      for (size_t i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= cf;
 
       sprintf(buffer, "PSD of %s (%s^2 / Hz)",
@@ -307,7 +305,6 @@ void ComputeSpectrum()
 /* -------------------------------------------------------------------- */
 void AutoScaleSpectralWindow()
 {
-  size_t i;
   struct axisInfo *Yaxis = &specPlot.Yaxis[0];
  
   if (specPlot.autoTics)
@@ -377,16 +374,19 @@ void AutoScaleSpectralWindow()
   Yaxis->smallestValue = FLT_MAX;
   Yaxis->biggestValue = -FLT_MAX;
 
-if (psd[0].display == SPECTRA && NumberDataSets > 1)
-  printf("spec.c:379: Autoscaling not accurate for multiple spectra.\n");
 
-  for (i = 1; i <= psd[0].M; ++i)
+  size_t nSets = std::min(NumberDataSets, MAX_PSD);
+
+  for (size_t set = 0; set < nSets; ++set)
     {
-    if (psd[0].Pxx[i] < 0.0)
-      continue;
+    for (size_t i = 1; i <= psd[set].M; ++i)
+      {
+      if (psd[set].Pxx[i] < 0.0)
+        continue;
  
-    Yaxis->smallestValue = std::min(Yaxis->smallestValue, psd[0].Pxx[i]);
-    Yaxis->biggestValue = std::max(Yaxis->biggestValue, psd[0].Pxx[i]);
+      Yaxis->smallestValue = std::min(Yaxis->smallestValue, psd[set].Pxx[i]);
+      Yaxis->biggestValue = std::max(Yaxis->biggestValue, psd[set].Pxx[i]);
+      }
     }
  
   if (specPlot.autoTics)
@@ -402,19 +402,22 @@ if (psd[0].display == SPECTRA && NumberDataSets > 1)
 /* -------------------------------------------------------------------- */
 void SetSegLen(Widget w, XtPointer client, XtPointer call)
 {
-  psd[0].M = (int)client;
+  for (size_t i = 0; i < MAX_PSD; ++i)
+    psd[i].M = (int)client;
 }
 
 /* -------------------------------------------------------------------- */
 void SetWindow(Widget w, XtPointer client, XtPointer call)
 {
-  psd[0].windowFn = (double(*)(int, int))client;
+  for (size_t i = 0; i < MAX_PSD; ++i)
+    psd[i].windowFn = (double(*)(int, int))client;
 }
 
 /* -------------------------------------------------------------------- */
 void SetDetrend(Widget w, XtPointer client, XtPointer call)
 {
-  psd[0].detrendFn = (void(*)(DATASET_INFO *, float *))client;
+  for (size_t i = 0; i < MAX_PSD; ++i)
+    psd[i].detrendFn = (void(*)(DATASET_INFO *, float *))client;
 }
 
 /* -------------------------------------------------------------------- */
