@@ -23,7 +23,7 @@ COPYRIGHT:	Public Domain
 -------------------------------------------------------------------------
 */
 
-#include <math.h>
+#include <cmath>
 
 
 static void Shuffle2Arr(double *a, double *b, int bitLength);

@@ -36,7 +36,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1995-8
 
 #include <sys/types.h>
 #include <unistd.h>
-#include <time.h>
+#include <ctime>
 #include <pwd.h>
 
 const char	*show   = "(%s) s\n",

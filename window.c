@@ -28,8 +28,6 @@ COPYRIGHT:	Public Domain
 -------------------------------------------------------------------------
 */
 
-#include <math.h>
-
 #include "define.h"
 #include "spec.h"
 
