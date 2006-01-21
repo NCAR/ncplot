@@ -9,14 +9,11 @@ ENTRY POINTS:	DrawGeoPolMapXY()
 		ToggleGeoPolMap()
 
 STATIC FNS:	createCoastCommand()
+		setColor()
 
 DESCRIPTION:	
 
-REFERENCES:	
-
-REFERENCED BY:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2004
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
 -------------------------------------------------------------------------
 */
 
@@ -28,6 +25,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2004
 static bool	GeoPolMap = False;
 
 static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisInfo *yAxis);
+static void setColor(PLOT_INFO * plot, char str[]);
 
 /* -------------------------------------------------------------------- */
 void ToggleGeoPolMap(Widget w, XtPointer client, XtPointer call)
@@ -102,7 +100,10 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
   while (fgets(buffer, 1024, in) > 0)
     {
     if (buffer[0] == '#' || buffer[0] == '>')
+    {
+      setColor(plot, buffer);
       continue;
+    }
 
     cnt = 0;
 
@@ -127,6 +128,8 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
       ++cnt;
       }
     while (fgets(buffer, 1024, in) > 0 && buffer[0] != '>');
+
+    setColor(plot, buffer);
 
     if (fp)
       {
@@ -219,7 +222,10 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
   while (fgets(buffer, 1024, in) > 0)
     {
     if (buffer[0] == '#' || buffer[0] == '>')
+    {
+      setColor(plot, buffer);
       continue;
+    }
 
     cnt = 0;
 
@@ -255,6 +261,8 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
       ++cnt;
       }
     while (fgets(buffer, 1024, in) > 0 && buffer[0] != '>');
+
+    setColor(plot, buffer);
 
     if (fp)
       {
@@ -303,5 +311,20 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
 			strcat(buf, "-Ia -Df");
 
 }	/* END CREATECOASTCOMMAND */
+
+/* -------------------------------------------------------------------- */
+static void setColor(PLOT_INFO * plot, char str[])
+{
+  if (buffer[0] == '>')
+  {
+    if (strstr(str, "Border"))
+      XSetForeground(plot->dpy, plot->gc, GetColor(13)); // grey	
+    if (strstr(str, "River"))
+      XSetForeground(plot->dpy, plot->gc, GetColor(9));	// light blue
+    if (strstr(str, "Shore"))
+      XSetForeground(plot->dpy, plot->gc, GetColor(2));	// blue
+  } 
+
+}	/* END SETCOLOR */
 
 /* END GEOPOLMAP.C */

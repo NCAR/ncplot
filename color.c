@@ -12,19 +12,11 @@ ENTRY POINTS:	InitializeColors()
 		SetColorNames()
 		GetColorName()
 
-STATIC FNS:		
+STATIC FNS:	none
 
 DESCRIPTION:	
 
-INPUT:		
-
-OUTPUT:		
-
-REFERENCES:	
-
-REFERENCED BY:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
 -------------------------------------------------------------------------
 */
 
@@ -65,6 +57,7 @@ struct {
 	{ "bisque",	{ 1.0, 0.8941, 0.7686 },	{ 0, 0, 0}, 0, 0 },
 	{ "dark green",	{ 0.0, 0.3922, 0.0 },	{ 0, 0, 0}, 0, 0 },
 	{ "grey",	{ 0.0, 0.0, 0.0 },	{ 0, 0, 0}, 0, 0 },
+	{ "darkgrey",	{ 0.1, 0.1, 0.1 },	{ 0, 0, 0}, 0, 0 },
 	{ "",		{ 0.0, 0.0, 0.0 },	{ 0, 0, 0}, 0, 0 } };
 
 static int		colorIndex, numberColors, saveColor;
