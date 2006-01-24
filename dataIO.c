@@ -70,6 +70,8 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
 
   freeDataSets(true);
   DataChanged = true;
+  void ClearLandmarks();
+  ClearLandmarks();
   CurrentDataFile = NumberDataFiles = NumberDataSets = NumberXYXsets =
 	NumberXYYsets = 0;
   curFile = &dataFile[CurrentDataFile];
@@ -197,6 +199,16 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     curFile->ShowPrelimDataWarning = true;
   else
     curFile->ShowPrelimDataWarning = false;
+
+  std::string landmarks;
+  getNCattr(InputFile, "landmarks", landmarks);
+
+  if (landmarks.size() > 0)
+  {
+    void setLandmarks(const std::string);
+    setLandmarks(landmarks);
+  }
+
 
   GetTimeInterval(InputFile, curFile);
 

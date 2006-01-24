@@ -28,10 +28,19 @@ static struct
   char	*tag;
   } landMark[128];
 
-static int nMarks;
+static size_t nMarks = 0;
 
 static void	readLandMarksFile();
 
+
+/* -------------------------------------------------------------------- */
+void ClearLandmarks()
+{
+  for (size_t i = 0; i < nMarks; ++i)
+    delete landMark[i].tag;
+
+  nMarks = 0;
+}
 
 /* -------------------------------------------------------------------- */
 void ToggleLandMarks(Widget w, XtPointer client, XtPointer call)
@@ -71,7 +80,7 @@ static void plotLMps(FILE *fp, int x, int y, int i)
 /* -------------------------------------------------------------------- */
 void PlotLandMarksXY(PLOT_INFO *plot, FILE *fp)
 {
-  int	i, x, y;
+  int	x, y;
   float	xScale, yScale, xMin, yMin, xMax, yMax;
   struct plot_offset *plotInfo;
 
@@ -88,7 +97,7 @@ void PlotLandMarksXY(PLOT_INFO *plot, FILE *fp)
   xScale = (NR_TYPE)plotInfo->HD / (xMax - xMin);
   yScale = (NR_TYPE)plotInfo->VD / (yMax - yMin);
 
-  for (i = 0; i < nMarks; ++i)
+  for (size_t i = 0; i < nMarks; ++i)
     {
     if (landMark[i].lat < yMin || landMark[i].lat > yMax ||
         landMark[i].lon < xMin || landMark[i].lon > xMax)
@@ -109,7 +118,6 @@ void PlotLandMarksXY(PLOT_INFO *plot, FILE *fp)
       plotLMx(plot, x, y, i);
       }
     }
-
 }	/* END PLOTLANDMARKSXY */
 
 /* -------------------------------------------------------------------- */
@@ -119,7 +127,7 @@ void PlotLandMarks3D(
   float cosFac, float sinFac,
   FILE *fp)			/* PostScript or Xwin	*/
 {
-  int   i, x, y;
+  int   x, y;
   float xScale, yScale, zScale, xMin, zMin, xMax, zMax;
   struct plot_offset *plotInfo;
 
@@ -137,7 +145,7 @@ void PlotLandMarks3D(
   yScale = (float)plotInfo->VD / (plot->Yaxis[0].max - plot->Yaxis[0].min);
   zScale = (float)ZD / (zMax - zMin);
 
-  for (i = 0; i < nMarks; ++i)
+  for (size_t i = 0; i < nMarks; ++i)
     {
     if (landMark[i].lat < zMin || landMark[i].lat > zMax ||
         landMark[i].lon < xMin || landMark[i].lon > xMax)
@@ -164,14 +172,25 @@ void PlotLandMarks3D(
       plotLMx(plot, x, y, i);
       }
     }
- 
 }   /* END PLOTLANDMARKS3D */
+
+/* -------------------------------------------------------------------- */
+static void addLandmark(const char str[])
+{
+  char tempTag[64];
+
+  sscanf(str, "%f %f %s\n", &landMark[nMarks].lat, &landMark[nMarks].lon,
+				tempTag);
+  landMark[nMarks].tag = new char[strlen(tempTag)+1];
+  strcpy(landMark[nMarks].tag, tempTag);
+  ++nMarks;
+}
 
 /* -------------------------------------------------------------------- */
 static void readLandMarksFile()
 {
   FILE *fp;
-  char *projDir, tempTag[64];
+  char *projDir;
 
   if (NumberDataFiles == 0)
     {
@@ -181,7 +200,7 @@ static void readLandMarksFile()
 
   if ((projDir = getenv("PROJ_DIR")) == NULL)
     {
-    HandleError("env variable PROJ_DIR undefined.\n", Interactive, IRET);
+    fprintf(stderr, "readLandmarksFile: env variable $PROJ_DIR undefined.\n");
     return;
     }
 
@@ -189,20 +208,36 @@ static void readLandMarksFile()
 
   if ((fp = fopen(buffer, "r")) == NULL)
     {
-    HandleError("Can't open landmarks file.\n", Interactive, IRET);
+    fprintf(stderr, "Can't open landmarks file %s\n", buffer);
     return;
     }
 
-  for (nMarks = 0; fgets(buffer, 80, fp) != NULL; ++nMarks)
-    {
-    sscanf(buffer, "%f %f %s\n", &landMark[nMarks].lat, &landMark[nMarks].lon,
-				tempTag);
-    landMark[nMarks].tag = new char[strlen(tempTag)+1];
-    strcpy(landMark[nMarks].tag, tempTag);
-    }
+  while (fgets(buffer, 80, fp) != NULL)
+    addLandmark(buffer);
 
   fclose(fp);
 
 }	/* END READLANDMARKSFILE */
+
+/* -------------------------------------------------------------------- */
+void
+setLandmarks(const std::string lm_str)
+{
+  std::string rest = lm_str;
+  std::string current;
+
+  while (rest.size() > 0)
+  {
+    size_t pos = rest.find(',');
+
+    current = rest.substr(0, pos);
+    if (pos == std::string::npos)
+      rest.clear();
+    else
+      rest = rest.substr(pos+1);
+
+    addLandmark(current.c_str());
+  }
+}	/* END SETLANDMARKS */
 
 /* END LANDMARKS.C */
