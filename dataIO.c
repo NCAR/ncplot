@@ -273,6 +273,9 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     {
     size_t start[2], count[2];
     float tf[2];
+    int dimids[3];
+    size_t recs;
+    int days;
 
     start[0] = 0; start[1] = 0;
     count[0] = 2; count[1] = 1;
@@ -280,6 +283,11 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     nc_get_vara_float(InputFile, varID, start, count, tf);
 
     curFile->baseDataRate = (int)(tf[1] - tf[0]);
+    nc_inq_vardimid( InputFile, varID, dimids );
+    nc_inq_dimlen( InputFile, dimids[0], &recs );
+    days = (recs*curFile->baseDataRate) / 86400;
+    curFile->FileEndTime[0] += days*24;
+    curFile->FileEndTime[3] += days*86400;
     }
   else
     curFile->baseDataRate = 1;
@@ -794,6 +802,11 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
    */
   curFile->FileStartTime[3] = SecondsSinceMidnite(curFile->FileStartTime);
   curFile->FileEndTime[3] = SecondsSinceMidnite(curFile->FileEndTime);
+  if ( curFile->FileStartTime[3] > curFile->FileEndTime[3] )
+  {
+    curFile->FileEndTime[0] += 24;
+    curFile->FileEndTime[3] += 86400;
+  }
 
 }	/* END GETTIMEINTERVAL */
 
