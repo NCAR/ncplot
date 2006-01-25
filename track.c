@@ -364,10 +364,24 @@ static void CreateTrackOptWin()
   XtAddCallback(optButton[1], XmNvalueChangedCallback, ToggleProject, NULL);
   XtAddCallback(optButton[2], XmNvalueChangedCallback, ToggleProject, (XtPointer)1);
 
+  /* Test y position to see if it places this window off the screen, if
+   * so, then adjust so it stays on the screen.
+   */
+  Position trackOptY;
+  const Dimension trackOptHeight = 260;
   n = 0;
-  XtSetArg(args[n], XmNy,
-	HeightOfScreen(XtScreen(xyyPlot[0].canvas)) - 250); ++n;
-  XtSetValues(TrackOptShell, args, n);
+  XtSetArg(args[n], XtNy, &trackOptY); ++n;
+  XtGetValues(TrackOptShell, args, n);
+
+  int screenHeight = HeightOfScreen(XtScreen(xyyPlot[0].canvas));
+
+  if (trackOptY + trackOptHeight > screenHeight)
+  {
+    trackOptY = screenHeight - trackOptHeight;
+    n = 0;
+    XtSetArg(args[n], XmNy, trackOptY); ++n;
+    XtSetValues(TrackOptShell, args, n);
+  }
 
 }  /* END CREATETRACKOPTWIN */
 

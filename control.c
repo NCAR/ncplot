@@ -821,6 +821,26 @@ void CreateControlWindow(Widget parent)
   XtAddCallback(optButton[3], XmNvalueChangedCallback, ToggleTracking, NULL);
   XtAddCallback(lineThickTxt, XmNvalueChangedCallback, ChangeLineThickness, lineThickTxt);
 
+  /* Check positioning and keep it on the screen (laptops).
+   */
+  Position controlY, controlX;
+  const Dimension controlWidth = 400;
+  n = 0;
+  XtSetArg(args[n], XtNx, &controlX); ++n;
+  XtSetArg(args[n], XtNy, &controlY); ++n;
+  XtGetValues(parent, args, n);
+
+  int screenHeight = HeightOfScreen(XtScreen(parent));
+  int screenWidth = WidthOfScreen(XtScreen(parent));
+
+  if (controlX + controlWidth > screenWidth)
+  {
+    controlX = screenWidth - controlWidth;
+    n = 0;
+    XtSetArg(args[n], XmNx, controlX); ++n;
+    XtSetValues(parent, args, n);
+  }
+
 }	/* END CREATECONTROLWINDOW */
 
 /* END CONTROL.C */
