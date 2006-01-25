@@ -364,6 +364,11 @@ static void CreateTrackOptWin()
   XtAddCallback(optButton[1], XmNvalueChangedCallback, ToggleProject, NULL);
   XtAddCallback(optButton[2], XmNvalueChangedCallback, ToggleProject, (XtPointer)1);
 
+  n = 0;
+  XtSetArg(args[n], XmNy,
+	HeightOfScreen(XtScreen(xyyPlot[0].canvas)) - 250); ++n;
+  XtSetValues(TrackOptShell, args, n);
+
 }  /* END CREATETRACKOPTWIN */
 
 /* END TRACK.C */
