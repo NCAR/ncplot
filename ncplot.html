@@ -112,7 +112,7 @@ span.comment { background-color: #88FF88; font-style: italic; }
 Motif 1.2.  <b>ncplot</b> allows the user to view time-series data stored in
 <a href="http://www.unidata.ucar.edu/packages/netcdf/index.html">netCDF</a>
 files that conform to the
-<a href="http://raf.atd.ucar.edu/Software/netCDF.html">NCAR-RAF/nimbus</a>
+<a href="http://www.eol.ucar.edu/Software/netCDF.html">NCAR-RAF/nimbus</a>
 
 conventions.  Both Low-rate and Mixed-rate files are supported, as well as
 files where the data have been reduced below 1 sps (sample per second), e.g.,
@@ -128,18 +128,18 @@ A few of its features are:
 <li>XYZ plot.
 <li>ASCII window.
 <li>Spectra, Co-spectra, Quadrature, Coherence, and Phase.
-<li>Allows user-defined titles, labels, scaling, and major & minor tic marks.
+<li>Allows user-defined titles, labels, scaling, and major &amp; minor tic marks.
 <li>Annotations.
 <li>Publication quality [Encapsulated] [color] PostScript printouts.
 <li>Optional realtime/on-board mode.
 </ul>
 <b>ncplot</b> is NOT for contouring, image or vector data.
 <p>
-<b>ncplot</b> was written at the <a href="http://raf.atd.ucar.edu/">Research
+<b>ncplot</b> was written at the <a href="http://www.eol.ucar.edu/">Research
 Aviation Facility</a> of <a href="http://www.ncar.ucar.edu/">The National
 Center for Atmospheric Research</a> to view and analyze our aircraft data
 (and NOAA's GIV).  The
-<a href="http://raf.atd.ucar.edu/Software/netCDF.html">NCAR-RAF/nimbus</a>
+<a href="http://www.eol.ucar.edu/raf/Software/netCDF.html">NCAR-RAF/nimbus</a>
 conventions were designed to store multi-rate data, i.e., variable A may be
 stored at 5sps and variable B at 25sps.  <b>ncplot</b> will plot variables of
 differing rates (and from different files) next to each other.  Every effort
@@ -152,7 +152,7 @@ and printouts.
 
 <dl>
 <dt><h3>Acquiring</h3>
-<dd><b>ncplot</b> is available via anonymous ftp from <b>raf.atd.ucar.edu</b>.
+<dd><b>ncplot</b> is available via anonymous ftp from <b>www.eol.ucar.edu</b>.
 For Solaris binaries, <b>cd pub/src/bin.Solaris2.?</b> (or <b>bin.RedHat6.?</b>
 for linux), and retrieve <b>ncplot</b>, and <b>ncplot.html</b> (optional).
 
@@ -187,7 +187,7 @@ looks great on Solaris looks like crap on Linux or an HP.  You can modify
 the fonts for the screen in the <b>XmNCplot</b> file.  All font references
 are at the top.  The <b>X</b> programs <b>xfontsel</b> and <b>xlsfonts</b>
 can help you locate a font that looks good on your machine (you'll need
-10, 12, 14, 18, and 24 point sizes for the font you do locate, with 12 &
+10, 12, 14, 18, and 24 point sizes for the font you do locate, with 12 &amp;
 14 being the most heavely used).
 
 <dt><h3>Command Line Options</h3>
@@ -227,7 +227,7 @@ Run ncplot in real-time mode for onboard use (file is currently hard coded to be
 <hr>
 <h1 align=CENTER>Variable Selection Window</h1>
 
-<img src="http://raf.atd.ucar.edu/Software/ctrl.png" align=right>
+<img src="http://www.eol.ucar.edu/raf/Software/ctrl.png" align=right>
 
 <dl>
 <dt><h3>Moving around in Time</h3>
@@ -294,7 +294,7 @@ and location, just click on the variable you wish to <b>select</b>.
 
 <dt><h3>Options</h3>
 <dd>
- <dl><dt><b>Black & White (on/off)</b>
+ <dl><dt><b>Black &amp; White (on/off)</b>
  <dd>Converts all color traces to black and white.  Dashed lines are used
 to differentiate variables in black and white.  This option is provided
 to let the user preview monochrome printing.
@@ -320,7 +320,7 @@ of the center of the cross hair.
 <dd>Much of this window is oriented toward flight track plots.  This window
 is only effective for <b>XY</b> and <b>XYZ</b> plots.
 <p>
-<img src="http://raf.atd.ucar.edu/Software/xy.png" align=center>
+<img src="http://www.eol.ucar.edu/raf/Software/xy.png" align=center>
  <dl>
  <dt><h4>Flight Tracks</h4>
   <ul>
@@ -487,7 +487,7 @@ compression standard has emerged; <b>PNG</b>.  Both <b>netscape</b> and
 autoscaling, number of tic marks, log vs. linear, and scale inversion for
 each of the plots or windows.
 <p>
-<img src="http://raf.atd.ucar.edu/Software/eparm.png">
+<img src="http://www.eol.ucar.edu/raf/Software/eparm.png">
 <p>
  <dl>
  <dt><b>Time Series Parameters</b>.
@@ -563,7 +563,7 @@ names are case-sensitive and must be quoted.  The new variables show up at the
 bottom of the variable list in the control window (USER1, USER2, etc).  Only
 the variables defined will show up.
 <p>
-<img src="http://raf.atd.ucar.edu/Software/expar.png" align=center>
+<img src="http://www.eol.ucar.edu/raf/Software/expar.png" align=center>
 <p>
 All of the standard arithmetic operators are available plus the following
 intrinsic functions:<p>
@@ -646,7 +646,7 @@ being displayed.  You may choose how many points to display, however some
 number less than that will actually be displayed due to some bins having
 no values to average in.
 <p>
-<img src="http://raf.atd.ucar.edu/Software/spec.png">
+<img src="http://www.eol.ucar.edu/raf/Software/spec.png">
 <p>
 <h3>Plot Options</h3>
 <ul>
@@ -708,7 +708,7 @@ Pxx is averaged by dividing by K * Wss * 2M.
 if it exists.  The following options may be overridden:<p>
 <kbd class="att">Colors = </kbd>a list of seven colors space and/or comma seperated.<br>
 <kbd class="att">PrintCommand = </kbd>new print command (eg: lp -d color -o nobanner).<br>
-<kbd class="att">PrintColor = </kbd>Color (default is B&W).<br>
+<kbd class="att">PrintColor = </kbd>Color (default is B&amp;W).<br>
 <kbd class="att">LineWidth = </kbd># (default is 1).<br>
 <kbd class="att">TemplateDirectory = </kbd>Directory path<br>
 <kbd class="att">TrueAirspeed = </kbd>TAS variable name (default is TASX).<br>
