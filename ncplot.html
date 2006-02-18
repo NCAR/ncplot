@@ -29,7 +29,7 @@ span.comment { background-color: #88FF88; font-style: italic; }
 <body>
 
 <h1 align=CENTER>NCPLOT User's Guide</h1>
-<h1 align=CENTER>Version 4.6.3</h1>
+<h1 align=CENTER>Version 4.8.2</h1>
 <hr>
 <h1 align=CENTER>Table Of Contents</h1>
 <ol type=A>
@@ -152,9 +152,8 @@ and printouts.
 
 <dl>
 <dt><h3>Acquiring</h3>
-<dd><b>ncplot</b> is available via anonymous ftp from <b>www.eol.ucar.edu</b>.
-For Solaris binaries, <b>cd pub/src/bin.Solaris2.?</b> (or <b>bin.RedHat6.?</b>
-for linux), and retrieve <b>ncplot</b>, and <b>ncplot.html</b> (optional).
+<dd><b>ncplot</b> is available via anonymous ftp from
+<a href="http://www.eol.ucar.edu/raf/Software">RAF Software download page</a>.
 
 <dt><h3>Installing</h3>
 <dd>For system use, the binary may be placed in something like
@@ -164,9 +163,9 @@ For single user, place the binary in ~/bin (Make sure ~/bin is in your
 <b>PATH</b>).
 
 <dt><h3>Environment</h3>
-<dd><b>ncplot</b> is written in C, requiring X11/R5 and Motif 1.2 (or later),
+<dd><b>ncplot</b> is written in C, requiring X11/R6 and Motif 1.2 (or later),
 and the <b>netCDF</b> library 3.0 or later.  Specifically it is developed
-on Sun Microsystems, under Solaris 2.7, using the GNU compiler (<a href="http://gcc.gnu.org/">gcc</a> 2.95.2).
+on Redhat Linux, under Fedora 3, using the GNU compiler (<a href="http://gcc.gnu.org/">gcc</a> 3.4).
 <p>
 <b>ncplot</b> uses, though it is not required, a shell environment variable
 called <b>DATA_DIR</b> as the default directory to locate data files.
@@ -180,25 +179,25 @@ number is stored in the header of the netCDF file and can be viewed from
 the <b>netCDF Header</b> option under the <b>View</b> menu, or with the
 netCDF utility program <b>ncdump</b>.
 <p>
+As of 2006 we have started to embed landmarks in the netCDF file as a global
+attribute.
 
 <dt><h3>Fonts</h3>
-<dd>Fonts (on screen) have been a source of irritation from the start.  What
-looks great on Solaris looks like crap on Linux or an HP.  You can modify
-the fonts for the screen in the <b>XmNCplot</b> file.  All font references
-are at the top.  The <b>X</b> programs <b>xfontsel</b> and <b>xlsfonts</b>
-can help you locate a font that looks good on your machine (you'll need
-10, 12, 14, 18, and 24 point sizes for the font you do locate, with 12 &amp;
-14 being the most heavely used).
+<dd>Fonts can be over-ridden in the file <b>fbr.h</b>.
 
 <dt><h3>Command Line Options</h3>
-<dd><kbd class="att">-r</kbd> Run in realtime "onboard" mode.
+<dd>
+<!-- Not supported.
+<kbd class="att">-r</kbd> Run in realtime "onboard" mode.
+-->
 <p>
 <kbd class="att">-t hh:mm:ss-hh:mm:ss</kbd>, allows time segment to be entered on command line.
 <p>
 <kbd class="att">-s template_file</kbd>, load a template file at startup.
 <p>
 <kbd class="att">data_file</kbd>, a netCDF data file that conforms to the
-<b>NCAR-RAF/nimbus</b> conventions.
+<a href="http://www.eol.ucar.edu/raf/Software/netCDF.html">NCAR-RAF/nimbus</a>
+conventions.
 
 <dt><h3>Examples</h3>
 <dd>Run with no command line parameters:
@@ -215,12 +214,14 @@ Using everything:
 <ul>
 <pre class="CDL">1025% ncplot -s ~/sounding -t 02:00:00-03:00:00 /home/data/181rf15.cdf</pre>
 </ul>
+<!--
 <p>
 Run ncplot in real-time mode for onboard use (file is currently hard coded to be
 /home/tmp/RealTime.cdf):
 <ul>
 <pre class="CDL">1026% ncplot -r</pre>
 </ul>
+-->
 </dl>
 
 <a name="vsw"></a>
@@ -755,6 +756,6 @@ Research Aviation Facility.<br>
 <hr>
 <font size=2>
 Last update:
-Wed Feb  1 21:37:17 MST 2006
+Sat Feb 18 13:45:34 MST 2006
 </body>
 </html>
