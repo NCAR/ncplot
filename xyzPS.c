@@ -31,7 +31,6 @@ static void	PScube(FILE *fp, PLOT_INFO *plot),
 
 static int	ZD;
 
-extern float *NextColorRGB_PS();
 extern float cosFactor, sinFactor;
 
 
@@ -68,10 +67,10 @@ void PrintXYZ()
   fprintf(fp, "newpath\n");
   fprintf(fp, "[] 0 setdash\n");
 
-  PSplot3dTrack(fp, &xyzPlot);
-
   DrawGeoPolMapXYZ(&xyzPlot, ZD, cosFactor, sinFactor, fp);
   PlotLandMarks3D(&xyzPlot, ZD, cosFactor, sinFactor, fp);
+
+  PSplot3dTrack(fp, &xyzPlot);
 
   fprintf(fp, "%d %d translate\n", -xyzPlot.ps.LV, -xyzPlot.ps.BH);
   UpdateAnnotationsPS(&xyzPlot, fp);

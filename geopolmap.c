@@ -25,7 +25,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
 static bool	GeoPolMap = False;
 
 static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisInfo *yAxis);
-static void setColor(PLOT_INFO * plot, char str[]);
+static void setColor(PLOT_INFO * plot, char str[], FILE *fp);
 
 /* -------------------------------------------------------------------- */
 void ToggleGeoPolMap(Widget w, XtPointer client, XtPointer call)
@@ -101,7 +101,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
     {
     if (buffer[0] == '#' || buffer[0] == '>')
     {
-      setColor(plot, buffer);
+      setColor(plot, buffer, fp);
       continue;
     }
 
@@ -129,7 +129,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
       }
     while (fgets(buffer, 1024, in) > 0 && buffer[0] != '>');
 
-    setColor(plot, buffer);
+    setColor(plot, buffer, fp);
 
     if (fp)
       {
@@ -223,7 +223,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
     {
     if (buffer[0] == '#' || buffer[0] == '>')
     {
-      setColor(plot, buffer);
+      setColor(plot, buffer, fp);
       continue;
     }
 
@@ -262,7 +262,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
       }
     while (fgets(buffer, 1024, in) > 0 && buffer[0] != '>');
 
-    setColor(plot, buffer);
+    setColor(plot, buffer, fp);
 
     if (fp)
       {
@@ -313,18 +313,29 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
 }	/* END CREATECOASTCOMMAND */
 
 /* -------------------------------------------------------------------- */
-static void setColor(PLOT_INFO * plot, char str[])
+static void setColor(PLOT_INFO * plot, char str[], FILE *fp)
 {
   if (buffer[0] == '>')
   {
-    if (strstr(str, "Border"))
-      XSetForeground(plot->dpy, plot->gc, GetColor(13)); // grey	
-    if (strstr(str, "River"))
-      XSetForeground(plot->dpy, plot->gc, GetColor(9));	// light blue
-    if (strstr(str, "Shore"))
-      XSetForeground(plot->dpy, plot->gc, GetColor(2));	// blue
-  } 
+    int color_idx;
 
+    if (strstr(str, "Border"))
+      color_idx = 13;	// grey
+
+    if (strstr(str, "River"))
+      color_idx = 9;	//light blue
+
+    if (strstr(str, "Shore"))
+      color_idx = 2;	// blue
+
+    if (fp)
+    {
+      float *rgb = GetColorRGB_PS(color_idx);
+      fprintf(fp, "stroke %f %f %f setrgbcolor\n", rgb[0],rgb[1],rgb[2]);
+    }
+    else
+      XSetForeground(plot->dpy, plot->gc, GetColor(color_idx));
+  } 
 }	/* END SETCOLOR */
 
 /* END GEOPOLMAP.C */

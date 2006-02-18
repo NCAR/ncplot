@@ -77,6 +77,7 @@ void	QueryCancel(Widget, XtPointer, XtPointer),
 	ErrorOK(Widget, XtPointer, XtPointer);
 
 unsigned long	GetColor(int), NextColor(), CurrentColor();
+float	*GetColorRGB_PS(int), *NextColorRGB_PS(), *CurrentColorRGB_PS();
 void	PushColor(), PopColor();
 
 void	NewDataFile(Widget, XtPointer, XtPointer),

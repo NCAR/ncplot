@@ -32,8 +32,6 @@ static void PSplotRegression(FILE *fp, PLOT_INFO *plot,
 static void doLegendLineItemPS(FILE *fp, PLOT_INFO *plot, DATASET_INFO *set,
 				int ylegend, int color);
 
-extern float	*NextColorRGB_PS(), *GetColorRGB_PS(int);
-
 
 /* -------------------------------------------------------------------- */
 void PrintXY()
@@ -84,13 +82,13 @@ void PrintXY()
 
     fprintf(fp, "stroke 0 0 moveto\n");
 
+    DrawGeoPolMapXY(&xyyPlot[currentPanel], fp);
+    PlotLandMarksXY(&xyyPlot[currentPanel], fp);
+
     PSplotXY(fp, &xyyPlot[currentPanel]);
 
     if (WindBarbs)
       PlotWindBarbs(&xyyPlot[currentPanel], fp);
-
-    DrawGeoPolMapXY(&xyyPlot[currentPanel], fp);
-    PlotLandMarksXY(&xyyPlot[currentPanel], fp);
 
     fprintf(fp, "%d %d translate\n",
 		-xyyPlot[currentPanel].ps.LV, -xyyPlot[currentPanel].ps.BH);

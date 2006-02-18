@@ -180,15 +180,15 @@ void DrawXY()
     if (NumberXYXsets == 0 || NumberXYYsets == 0)
       continue;
 
+    DrawGeoPolMapXY(&xyyPlot[currentPanel], NULL);
+    PlotLandMarksXY(&xyyPlot[currentPanel], NULL);
+
     plotXYdata(&xyyPlot[currentPanel]);
 
     XSetLineAttributes(xyyPlot[0].dpy, xyyPlot[0].gc, 1,
 					LineSolid, CapButt, JoinMiter);
     if (WindBarbs)
       PlotWindBarbs(&xyyPlot[currentPanel], NULL);
-
-    DrawGeoPolMapXY(&xyyPlot[currentPanel], NULL);
-    PlotLandMarksXY(&xyyPlot[currentPanel], NULL);
     }
 
   UpdateAnnotationsX(&xyyPlot[0]);

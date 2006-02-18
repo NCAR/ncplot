@@ -139,7 +139,7 @@ static void doLineGraph(FILE *fp, PLOT_INFO *plot)
 {
   char		*p = 0;
   size_t	i;
-  float		halfSecond, *rgb, *NextColorRGB_PS(), yMin, yMax;
+  float		halfSecond, *rgb, yMin, yMax;
   int		x = 0, y = 0, prevX = 0, prevY = 0, pCnt, lCnt, rCnt;
   double	xScale, yScale, datumY;
   VARTBL	*vp;

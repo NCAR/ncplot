@@ -107,6 +107,10 @@ void DrawXYZ()
   yTicsLabelsX(&xyzPlot, fontInfo, LEFT_SIDE, True);
   zTicsLabelsX(&xyzPlot, fontInfo);
 
+  DrawGeoPolMapXYZ(&xyzPlot, ZD, cosFactor, sinFactor, NULL);
+  XSetForeground(xyzPlot.dpy, xyzPlot.gc, 0);
+  PlotLandMarks3D(&xyzPlot, ZD, cosFactor, sinFactor, NULL);
+
   if (xyzSet[0].varInfo && xyzSet[1].varInfo && xyzSet[2].varInfo)
     {
     XSetLineAttributes(xyzPlot.dpy, xyzPlot.gc, LineThickness,
@@ -115,10 +119,6 @@ void DrawXYZ()
     XSetLineAttributes(xyzPlot.dpy, xyzPlot.gc, 1,
                       LineSolid, CapButt, JoinMiter);
     }
-
-  DrawGeoPolMapXYZ(&xyzPlot, ZD, cosFactor, sinFactor, NULL);
-  XSetForeground(xyzPlot.dpy, xyzPlot.gc, 0);
-  PlotLandMarks3D(&xyzPlot, ZD, cosFactor, sinFactor, NULL);
 
   UpdateAnnotationsX(&xyzPlot);
 
