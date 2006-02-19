@@ -75,7 +75,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
   /* Open pipe to pscoast
    */
   createCoastCommand(buffer, xAxis, yAxis);
-//printf("%s\n", buffer);
+
   if ((in = popen(buffer, "r")) == NULL)
     {
     fprintf(stderr, "pscoast command failed.\n");
@@ -302,7 +302,8 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
    */
   scale = sqrt((xAxis->max - xAxis->min) * (yAxis->max - yAxis->min));
 
-  sprintf(buf, "pscoast -R%d/%d/%d/%d -M -Na -W ", xMin, xMax, yMin, yMax);
+  sprintf(buf, "%s/bin/pscoast -R%d/%d/%d/%d -M -Na -W ",
+	getenv("GMTHOME"), xMin, xMax, yMin, yMax);
 
   if (scale > 60)	strcat(buf, "-Dc");	else
   if (scale > 40)	strcat(buf, "-Dl");	else
@@ -317,7 +318,7 @@ static void setColor(PLOT_INFO * plot, char str[], FILE *fp)
 {
   if (buffer[0] == '>')
   {
-    int color_idx;
+    int color_idx = 0;	// Default black.
 
     if (strstr(str, "Border"))
       color_idx = 13;	// grey
