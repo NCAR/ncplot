@@ -60,7 +60,7 @@ std::string GetUI()
 /* -------------------------------------------------------------------- */
 std::string GetVI()
 {
-  char *p = XmTextFieldGetString(wvText[0]);
+  char *p = XmTextFieldGetString(wvText[1]);
   std::string s(p);
   XtFree(p);
   return(s);

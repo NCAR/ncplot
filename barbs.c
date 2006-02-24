@@ -40,7 +40,7 @@ void ToggleWindBarbs(Widget w, XtPointer client, XtPointer call)
       fprintf(stderr, "Can't find variable %s\n", GetUI().c_str());
 
     if (LoadVariable(&vi, GetVI()) == ERR)
-      fprintf(stderr, "Can't find variable %s\n", GetUI().c_str());
+      fprintf(stderr, "Can't find variable %s\n", GetVI().c_str());
 
     timeInterval = atoi(GetTI().c_str());
 
