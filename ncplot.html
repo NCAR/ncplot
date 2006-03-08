@@ -742,6 +742,9 @@ the plot trace colors.
 <hr>
 <h1>Known Problems</h1>
 <ul>
+<li>Time gaps in the netCDF file.  Time gaps should be filled with _FillValue or
+missing_value.  ncplot uses the TimeInterval global attribute to determine how many
+records are in the file.
 <li>Invalid data files may cause a core dump.
 <li>No minor tic marks exist for Y axis on XYZ plot.
 </ul>
