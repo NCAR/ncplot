@@ -253,7 +253,7 @@ static void timeDomainASCII(FILE *fp, int nPoints)
   msec = 0;
 
   if (hour > 23)
-    hour = 0;
+    hour -= 24;
 
   if (dataSet[0].nPoints < NumberSeconds)
     msecCnt = 1000;
