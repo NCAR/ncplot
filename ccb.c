@@ -411,17 +411,17 @@ void ForkNetscape(Widget w, XtPointer client, XtPointer call)
     switch ((int)client)
       {
       case 1:
-        execlp("netscape", "netscape", "http://raf.atd.ucar.edu", NULL);
+        execlp("firefox", "firefox", "http://www.eol.ucar.edu/raf", NULL);
         break;
       case 2:
-        execlp("netscape", "netscape", "http://raf.atd.ucar.edu/Software", NULL);
+        execlp("firefox", "firefox", "http://www.eol.ucar.edu/raf/Software", NULL);
         break;
       case 3:
-        execlp("netscape", "netscape", "http://raf.atd.ucar.edu/Software/ncplot.html", NULL);
+        execlp("firefox", "firefox", "http://www.eol.ucar.edu/raf/Software/ncplot.html", NULL);
         break;
       }
 
-    printf("exec of netscape failed, errno = %d\n", errno);
+    printf("exec of firefox failed, errno = %d\n", errno);
     exit(0);
     }
 
