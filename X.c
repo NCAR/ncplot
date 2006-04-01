@@ -667,7 +667,7 @@ void plotXY(PLOT_INFO *plot, DATASET_INFO *Xset, DATASET_INFO *Yset, int color)
       if (nTimeStamps && ((segCnt == 0 && cnt == 0) ||
 			 (i+1) % (nPts / nTimeStamps) == 0))
         {
-        printf ("(i+1)=%d, nPts=%d/nTimeStamps=%d = %d\n",i+1,nPts,nTimeStamps,nPts/nTimeStamps);
+//        printf ("(i+1)=%d, nPts=%d/nTimeStamps=%d = %d\n",i+1,nPts,nTimeStamps,nPts/nTimeStamps);
         PlotTimeStamps(plot, pts[cnt].x, pts[cnt].y, (i+1) / (nPts / nTimeStamps), NULL);
         }
 

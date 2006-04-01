@@ -100,7 +100,7 @@ void specPostScript(Widget w, XtPointer client, XtPointer call)
   PSyTics(fp, &specPlot, 0, True);
   PSxTics(fp, &specPlot, True);
 
-printf("specPS.c:  No multiple spec print, when added, makesure psd[0] -> psd[set]\n");
+printf("specPS.c:  No multiple spec print, when added, make sure psd[0] -> psd[set]\n");
 
   if (psd[0].display == SPECTRA || psd[0].display == COSPECTRA)
     PlotVariancePS(&specPlot, fp);
