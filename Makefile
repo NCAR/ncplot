@@ -25,6 +25,15 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Fedora3
 
 # Mac OS X
 #
+# Requires Mac OS SDK and Fink project be installed first.  netCDF needs
+# to be installed, and I put it in the Fink (/sw) directories.  I didn't
+# find the libpng and zlib libraries, so may need those or comment out
+# the 'DEFINES=-DPNG' below.
+#
+# As of Apr 2006 there is a bug with compiling 'isnan(3)'.  Edit dataIO.c
+# and comment out the if() statment, but leave the else part behind:
+# if (fillValue == target) ....   Should remain.
+#
 #DEFINES	= -DPNG
 #INCLUDES= -I/usr/include -I/usr/X11R6/include -I/sw/include
 #LIB_DIRS= -L/sw/lib -L/usr/X11R6/lib -L/usr/lib
