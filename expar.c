@@ -103,7 +103,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
     free(p);
     }
 
-  for (i = 0; i <= nExps; ++i)
+  for (i = 0; i < MAX_EXPRESSIONS && i <= nExps; ++i)
     XtSetSensitive(expText[i], True);
   for (; i < MAX_EXPRESSIONS; ++i)
     XtSetSensitive(expText[i], False);
