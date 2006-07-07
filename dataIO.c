@@ -111,7 +111,7 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
   if (UserEndTime[3] > curFile->FileEndTime[3] && !RealTime)
     memcpy((char *)UserEndTime, (char *)curFile->FileEndTime, 4*sizeof(int));
 
-  NumberSeconds = UserEndTime[3] - UserStartTime[3];
+  NumberSeconds = UserEndTime[3] - UserStartTime[3] + 1;
 
   /* Set up titles & subtitles.
    */
@@ -433,7 +433,7 @@ void ReadData()
     if (UserEndTime[3] > MaxEndTime[3])
       memcpy((char *)UserEndTime, (char *)MaxEndTime, 4*sizeof(int));
  
-    NumberSeconds = UserEndTime[3] - UserStartTime[3];
+    NumberSeconds = UserEndTime[3] - UserStartTime[3] + 1;
     }
 
   freeDataSets(false);
@@ -808,6 +808,20 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
     curFile->FileEndTime[3] += 86400;
   }
 
+  // Perform a sanity check.
+  int id;
+  if (nc_inq_dimid(InputFile, "Time", &id) == NC_NOERR)
+  {
+    size_t length;
+    size_t deltaT = (size_t)(curFile->FileEndTime[3] - curFile->FileStartTime[3]) + 1;
+    nc_inq_dimlen(InputFile, id, &length);
+    if (length != deltaT)
+    {
+      fprintf(stderr, "dataIO.c::GetTimeInterval(): Sanity check failure.");
+      fprintf(stderr, " %d records vs. %d computed.\n", length, deltaT);
+      exit(1);
+    }
+  }
 }	/* END GETTIMEINTERVAL */
 
 /* -------------------------------------------------------------------- */
