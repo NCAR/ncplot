@@ -226,7 +226,7 @@ static void plotXYZ(PLOT_INFO *plot, XFontStruct *fontInfo)
 
       /* Throw out duplicate points.
        */
-      if (pts[cnt].x == pts[cnt-1].x && pts[cnt].y == pts[cnt-1].y)
+      if (cnt > 0 && pts[cnt].x == pts[cnt-1].x && pts[cnt].y == pts[cnt-1].y)
         --cnt;
 
       if (ProjectToXY && ptsXY[cntXY].x == ptsXY[cntXY-1].x &&

@@ -6,7 +6,7 @@ FULL NAME:	NetCDF plot.
 
 TYPE:		X11/R5 Motif 1.2 application
 
-DESCRIPTION:	http://raf.atd.ucar.edu/Software/ncplot.html
+DESCRIPTION:	http://www.eol.ucar.edu/raf/Software/ncplot.html
 
 INPUT:		Command line options
 

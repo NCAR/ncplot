@@ -532,7 +532,7 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
 
       /* Throw out duplicate points.
        */
-      if (pts[cnt].x == pts[cnt-1].x && pts[cnt].y == pts[cnt-1].y)
+      if (cnt > 0 && pts[cnt].x == pts[cnt-1].x && pts[cnt].y == pts[cnt-1].y)
         --cnt;
 
       /* Get next data value */
@@ -673,7 +673,7 @@ void plotXY(PLOT_INFO *plot, DATASET_INFO *Xset, DATASET_INFO *Yset, int color)
 
       /* Throw out duplicate points.
        */
-      if (pts[cnt].x == pts[cnt-1].x && pts[cnt].y == pts[cnt-1].y)
+      if (cnt > 0 && pts[cnt].x == pts[cnt-1].x && pts[cnt].y == pts[cnt-1].y)
         --cnt;
 
       /* Get next data values.

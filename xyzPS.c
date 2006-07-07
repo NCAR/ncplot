@@ -296,7 +296,7 @@ void PSplot3dTrack(FILE *fp, PLOT_INFO *plot)
 
     /* Throw out duplicate points.
      */
-    if (pts[cnt-2].x == pts[cnt-1].x && pts[cnt-2].y == pts[cnt-1].y)
+    if (cnt > 1 && pts[cnt-2].x == pts[cnt-1].x && pts[cnt-2].y == pts[cnt-1].y)
       --cnt;
 
     if (ProjectToXY && ptsXY[cntXY-2].x == ptsXY[cntXY-1].x &&
