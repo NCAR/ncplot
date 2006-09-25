@@ -37,7 +37,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
 #define BACKGROUND	8
 
 
-struct {
+struct colorinfo_struct {
 	char		name[20];
 	float		ps_rgb[3];	/* For PostScript	*/
 	unsigned short	x_rgb[3];	/* For X (save PNG)	*/
