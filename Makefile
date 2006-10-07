@@ -20,7 +20,6 @@ LIB_DIRS= -L/usr/X11R6/lib -L${JLOCAL}/lib
 #LIBS    = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lXmu -lXp -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
 LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
 BIN	= ${LOCAL}/bin
-IHOST	= syrah
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Fedora3
 
 # Mac OS X
@@ -48,7 +47,6 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Fedora3
 #LIBS	= -Wl,-Bstatic -lpng -lz -Wl,-Bdynamic -R /usr/dt/lib -lXm -lXt -lX11 -lnetcdf -ll -lm -lpthread
 #LIB_DIRS= -L/net/lcal_sol/lib
 #BIN	= /net/local_sol/bin
-#IHOST	= mead
 #ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Solaris2.9
 
 # HP
@@ -118,7 +116,6 @@ install: ${PROG}
 publish: $(PROG)
 	cp ${PROG} $(ANONFTP)
 	cp ${PROG}.html $(WWW)
-	scp ${PROG} ${IHOST}:$(BIN)
 
 clean:
 	rm -f core* ${OBJS} ${PROG} exp.tab.h exp.tab.c lex.yy.c
