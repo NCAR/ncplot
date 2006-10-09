@@ -76,7 +76,7 @@ SRCS=	ncplot.c global.c init.c X.c Xwin.c annotate.c arrows.c ascii.c\
 	regret1.c rt.c search.c spctrm.c spec.c specPS.c specX.c\
 	stats.c template.c timestamps.c titles.c track.c validate.c\
 	variance.c window.c xyPS.c xyX.c xyzPS.c xyzX.c zoom.c Xquery.c\
-	Xerror.c Xfile.c Xwarn.c
+	Xerror.c Xfile.c Xwarn.c sanity.c
 
 OBJS=	ncplot.o global.o init.o X.o Xwin.o annotate.o arrows.o ascii.o\
 	autoscale.o barbs.o ccb.o color.o control.o cospec.o crosshair.o\
@@ -88,7 +88,7 @@ OBJS=	ncplot.o global.o init.o X.o Xwin.o annotate.o arrows.o ascii.o\
 	regret1.o rt.o search.o spctrm.o spec.o specPS.o specX.o\
 	stats.o template.o timestamps.o titles.o track.o validate.o\
 	variance.o window.o xyPS.o xyX.o xyzPS.o xyzX.o zoom.o Xquery.o\
-	Xerror.o Xfile.o Xwarn.o
+	Xerror.o Xfile.o Xwarn.o sanity.o
 
 SPECOBJ=cospec.o detrend.o ed_spec.o global.o init.o spctrm.o spec.o\
 	specPS.o specX.o variance.o window.o dataIO.o ascii.o

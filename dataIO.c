@@ -44,6 +44,7 @@ static bool VarCompareLT(const VARTBL *x, const VARTBL *y);
 /* Imported from exp.c */
 extern std::vector<DATASET_INFO> expSet;
 
+void	performSanityChecks(int InputFile, DATAFILE_INFO * curFile);
 void	findMinMax();
 
 /* -------------------------------------------------------------------- */
@@ -808,20 +809,8 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
     curFile->FileEndTime[3] += 86400;
   }
 
-  // Perform a sanity check.
-  int id;
-  if (nc_inq_dimid(InputFile, "Time", &id) == NC_NOERR)
-  {
-    size_t length;
-    size_t deltaT = (size_t)(curFile->FileEndTime[3] - curFile->FileStartTime[3]) + 1;
-    nc_inq_dimlen(InputFile, id, &length);
-    if (length != deltaT)
-    {
-      fprintf(stderr, "dataIO.c::GetTimeInterval(): Sanity check failure.");
-      fprintf(stderr, " %d records vs. %d computed.\n", length, deltaT);
-      exit(1);
-    }
-  }
+  performSanityChecks(InputFile, curFile);
+
 }	/* END GETTIMEINTERVAL */
 
 /* -------------------------------------------------------------------- */
