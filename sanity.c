@@ -47,7 +47,11 @@ void checkStarts(int fd)
 
   edge[0] = edge[1] = edge[2] = 0;
 
-  nc_get_att_text(fd, NC_GLOBAL, "FlightDate", buffer);
+  // We can't do checks without FlightDate.  Some asc2cdf files don't
+  // have it.
+  if (nc_get_att_text(fd, NC_GLOBAL, "FlightDate", buffer) != NC_NOERR)
+    return;
+
   sscanf(buffer, "%d/%d/%d",    &StartFlight.tm_mon,
                                 &StartFlight.tm_mday,
                                 &StartFlight.tm_year);
