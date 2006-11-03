@@ -52,7 +52,7 @@ static Widget	plotType[3], invert, logScale,
 
 static int	currentAxis = Y_AXIS;
 
-static char *helpURL = "http://raf.atd.ucar.edu/Software/ncplot.html";
+static char *helpURL = "http://www.eol.ucar.edu/raf/Software/ncplot.html";
 
 void	ChangePlotType(Widget, XtPointer, XtPointer);
 void	CheckForTemplateFile();
