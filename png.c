@@ -208,7 +208,6 @@ static void _SavePNG(char file_name[], XImage *image)
   palette[i-1].red = palette[i-1].green = palette[i-1].blue = 0xffff;
 
   png_set_PLTE(png_ptr, info_ptr, palette, NumberOfColors());
-//  png_set_bKGD(png_ptr, info_ptr, NumberOfColors()-1);
 
 
   /* Write header info to PNG file. */
@@ -216,7 +215,7 @@ static void _SavePNG(char file_name[], XImage *image)
 
   for (i = 0; i < image->height; ++i)
     {
-    char	*p = &(image->data[i * image->bytes_per_line]);
+    char *p = &(image->data[i * image->bytes_per_line]);
 
     row_pointers[i] = new png_byte[image->width];
 

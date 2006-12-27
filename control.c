@@ -830,7 +830,6 @@ void CreateControlWindow(Widget parent)
   XtSetArg(args[n], XtNy, &controlY); ++n;
   XtGetValues(parent, args, n);
 
-  int screenHeight = HeightOfScreen(XtScreen(parent));
   int screenWidth = WidthOfScreen(XtScreen(parent));
 
   if (controlX + controlWidth > screenWidth)

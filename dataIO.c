@@ -37,7 +37,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 
 #include "netcdf.h"
 
-static void freeDataSets(int), getNCattr(int ncid, char attr[], std::string& dest);
+static void freeDataSets(int);
+bool getNCattr(int ncid, char attr[], std::string& dest);
 static bool VarCompareLT(const VARTBL *x, const VARTBL *y);
 
 
@@ -789,8 +790,10 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
 {
   /* Perform time computations.
    */
-  nc_get_att_text(InputFile, NC_GLOBAL, "TimeInterval", buffer);
-  sscanf(buffer, "%02d:%02d:%02d-%02d:%02d:%02d",
+  std::string tmpS;
+  getNCattr(InputFile, "TimeInterval", tmpS);
+
+  sscanf(tmpS.c_str(), "%02d:%02d:%02d-%02d:%02d:%02d",
          &curFile->FileStartTime[0], &curFile->FileStartTime[1],
          &curFile->FileStartTime[2],
          &curFile->FileEndTime[0], &curFile->FileEndTime[1],
@@ -814,20 +817,26 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
 }	/* END GETTIMEINTERVAL */
 
 /* -------------------------------------------------------------------- */
-static void getNCattr(int ncid, char attr[], std::string& dest)
+bool getNCattr(int ncid, char attr[], std::string& dest)
 {
   size_t len;
 
   if (nc_inq_attlen(ncid, NC_GLOBAL, attr, &len) == NC_NOERR)
-    {
-    nc_get_att_text(ncid, NC_GLOBAL, attr, buffer);
+  {
+    if (nc_get_att_text(ncid, NC_GLOBAL, attr, buffer) != NC_NOERR)
+      return false;
+
     buffer[len] = '\0';
 
     while (buffer[--len] < 0x20)	/* Remove extraneous CR/LF, etc */
       buffer[len] = '\0';
 
     dest = buffer;
-    }
+  }
+  else
+    return false;
+
+  return true;
 
 }	/* END GETNCATTR */
 

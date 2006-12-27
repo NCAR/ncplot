@@ -15,6 +15,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 2006
 #include "define.h"
 #include <netcdf.h>
 
+bool getNCattr(int ncid, char attr[], std::string& dest);
+
 
 /* -------------------------------------------------------------------- */
 static void checkNumberRecords(int InputFile, DATAFILE_INFO * curFile)
@@ -44,23 +46,26 @@ void checkStarts(int fd)
   time_t        oldBaseTime, BaseTime;
   struct tm     StartFlight;
   bool		fileGood = true;
+  std::string	tmpS;
 
   edge[0] = edge[1] = edge[2] = 0;
 
   // We can't do checks without FlightDate.  Some asc2cdf files don't
   // have it.
-  if (nc_get_att_text(fd, NC_GLOBAL, "FlightDate", buffer) != NC_NOERR)
+  if (getNCattr(fd, "FlightDate", tmpS) == false)
     return;
 
-  sscanf(buffer, "%d/%d/%d",    &StartFlight.tm_mon,
-                                &StartFlight.tm_mday,
-                                &StartFlight.tm_year);
+  sscanf(tmpS.c_str(), "%2d/%2d/%4d",	&StartFlight.tm_mon,
+				&StartFlight.tm_mday,
+				&StartFlight.tm_year);
 
-  nc_get_att_text(fd, NC_GLOBAL, "TimeInterval", buffer);
+  if (getNCattr(fd, "TimeInterval", tmpS) == false)
+    return;
 
-  sscanf(buffer, "%02d:%02d:%02d",&StartFlight.tm_hour,
-                                &StartFlight.tm_min,
-                                &StartFlight.tm_sec);
+  sscanf(tmpS.c_str(), "%02d:%02d:%02d",
+				&StartFlight.tm_hour,
+				&StartFlight.tm_min,
+				&StartFlight.tm_sec);
 
   StartFlight.tm_mon--;
   StartFlight.tm_year -= 1900;
