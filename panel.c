@@ -232,8 +232,10 @@ void DeletePanel(Widget w, XtPointer client, XtPointer call)
   switch (PlotType)
     {
     case TIME_SERIES:
-      plot = mainPlot;
       nPanels = NumberOfPanels;
+      if (nPanels < 2)
+        return;
+      plot = mainPlot;
       plot[nPanels-2].Xaxis.label = plot[nPanels-1].Xaxis.label;
       NumberDataSets = clearSet(dataSet, NumberDataSets, CurrentPanel);
 
@@ -244,8 +246,10 @@ void DeletePanel(Widget w, XtPointer client, XtPointer call)
       break;
 
     case XY_PLOT:
-      plot = xyyPlot;
       nPanels = NumberOfXYpanels;
+      if (nPanels < 2)
+        return;
+      plot = xyyPlot;
       NumberXYXsets = clearSet(xyXset, NumberXYXsets, CurrentPanel);
       NumberXYYsets = clearSet(xyYset, NumberXYYsets, CurrentPanel);
 
@@ -259,9 +263,6 @@ void DeletePanel(Widget w, XtPointer client, XtPointer call)
 
       break;
     }
-
-  if (nPanels < 2)
-    return;
 
   ClearAnnotations();
 
