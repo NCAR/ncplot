@@ -38,7 +38,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 #include "netcdf.h"
 
 static void freeDataSets(int);
-bool getNCattr(int ncid, char attr[], std::string& dest);
+bool getNCattr(int ncid, int varID, char attr[], std::string & dest);
 static bool VarCompareLT(const VARTBL *x, const VARTBL *y);
 
 
@@ -189,13 +189,13 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   nc_inq_nvars(InputFile, &nVars);
 
 
-  getNCattr(InputFile, "ProjectName", curFile->ProjectName);
-  getNCattr(InputFile, "ProjectNumber", curFile->ProjectNumber);
-  getNCattr(InputFile, "FlightNumber", curFile->FlightNumber);
-  getNCattr(InputFile, "FlightDate", curFile->FlightDate);
+  getNCattr(InputFile, NC_GLOBAL, "ProjectName", curFile->ProjectName);
+  getNCattr(InputFile, NC_GLOBAL, "ProjectNumber", curFile->ProjectNumber);
+  getNCattr(InputFile, NC_GLOBAL, "FlightNumber", curFile->FlightNumber);
+  getNCattr(InputFile, NC_GLOBAL, "FlightDate", curFile->FlightDate);
 
   std::string warning;
-  getNCattr(InputFile, "WARNING", warning);
+  getNCattr(InputFile, NC_GLOBAL, "WARNING", warning);
 
   if (warning.size() > 0)
     curFile->ShowPrelimDataWarning = true;
@@ -203,7 +203,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     curFile->ShowPrelimDataWarning = false;
 
   std::string landmarks;
-  getNCattr(InputFile, "landmarks", landmarks);
+  getNCattr(InputFile, NC_GLOBAL, "landmarks", landmarks);
 
   if (landmarks.size() > 0)
   {
@@ -252,11 +252,8 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
         if (nc_get_att_float(InputFile, i, "MissingValue", &vp->MissingValue) != NC_NOERR)
           vp->MissingValue = DEFAULT_MISSING_VALUE;
 
-    if (nc_get_att_text(InputFile, i, "units", buffer) == NC_NOERR)
-      vp->units = buffer;
-
-    if (nc_get_att_text(InputFile, i, "long_name", buffer) == NC_NOERR)
-      vp->long_name = buffer;
+    getNCattr(InputFile, i, "units", vp->units);
+    getNCattr(InputFile, i, "long_name", vp->long_name);
 
     if (nc_get_att_text(InputFile, i, "Category", buffer) == NC_NOERR)
       {
@@ -791,7 +788,7 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
   /* Perform time computations.
    */
   std::string tmpS;
-  getNCattr(InputFile, "TimeInterval", tmpS);
+  getNCattr(InputFile, NC_GLOBAL, "TimeInterval", tmpS);
 
   sscanf(tmpS.c_str(), "%02d:%02d:%02d-%02d:%02d:%02d",
          &curFile->FileStartTime[0], &curFile->FileStartTime[1],
@@ -817,14 +814,17 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
 }	/* END GETTIMEINTERVAL */
 
 /* -------------------------------------------------------------------- */
-bool getNCattr(int ncid, char attr[], std::string& dest)
+bool getNCattr(int ncid, int varID, char attr[], std::string& dest)
 {
   size_t len;
+  bool rc = false;
 
-  if (nc_inq_attlen(ncid, NC_GLOBAL, attr, &len) == NC_NOERR)
+  /* Return attribute is in global buff space "buffer".
+   */
+  if (nc_inq_attlen(ncid, varID, attr, &len) == NC_NOERR)
   {
-    if (nc_get_att_text(ncid, NC_GLOBAL, attr, buffer) != NC_NOERR)
-      return false;
+    if (nc_get_att_text(ncid, varID, attr, buffer) != NC_NOERR)
+      return rc;
 
     buffer[len] = '\0';
 
@@ -832,11 +832,10 @@ bool getNCattr(int ncid, char attr[], std::string& dest)
       buffer[len] = '\0';
 
     dest = buffer;
+    rc = true;
   }
-  else
-    return false;
 
-  return true;
+  return rc;
 
 }	/* END GETNCATTR */
 

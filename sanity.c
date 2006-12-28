@@ -15,7 +15,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 2006
 #include "define.h"
 #include <netcdf.h>
 
-bool getNCattr(int ncid, char attr[], std::string& dest);
+bool getNCattr(int ncid, int varID, char attr[], std::string & dest);
 
 
 /* -------------------------------------------------------------------- */
@@ -52,14 +52,14 @@ void checkStarts(int fd)
 
   // We can't do checks without FlightDate.  Some asc2cdf files don't
   // have it.
-  if (getNCattr(fd, "FlightDate", tmpS) == false)
+  if (getNCattr(fd, NC_GLOBAL, "FlightDate", tmpS) == false)
     return;
 
   sscanf(tmpS.c_str(), "%2d/%2d/%4d",	&StartFlight.tm_mon,
 				&StartFlight.tm_mday,
 				&StartFlight.tm_year);
 
-  if (getNCattr(fd, "TimeInterval", tmpS) == false)
+  if (getNCattr(fd, NC_GLOBAL, "TimeInterval", tmpS) == false)
     return;
 
   sscanf(tmpS.c_str(), "%02d:%02d:%02d",
@@ -110,8 +110,12 @@ void checkStarts(int fd)
 /* -------------------------------------------------------------------- */
 void performSanityChecks(int InputFile, DATAFILE_INFO * curFile)
 {
-  nc_get_att_text(InputFile, NC_GLOBAL, "TimeInterval", buffer);
-  if (strcmp(buffer, "00:00:00-00:00:00") == 0)
+  std::string tmpS;
+
+  if (getNCattr(InputFile, NC_GLOBAL, "TimeInterval", tmpS) == false)
+    return;
+
+  if (strcmp(tmpS.c_str(), "00:00:00-00:00:00") == 0)
   {
     fprintf(stderr, "\nSanity check failure: TimeInterval of 00:00:00-00:00:00, no data in this file?\n");
     nc_close(InputFile);
