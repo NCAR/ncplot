@@ -125,6 +125,7 @@ typedef struct
 	std::string	ProjectName;
 	std::string	FlightNumber;
 	std::string	FlightDate;
+	std::string	TailNumber;
 
 	int	FileStartTime[4], FileEndTime[4];
 	int	baseDataRate;	/* Most files are 1, this is to handle ncav */

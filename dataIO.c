@@ -193,6 +193,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   getNCattr(InputFile, NC_GLOBAL, "ProjectNumber", curFile->ProjectNumber);
   getNCattr(InputFile, NC_GLOBAL, "FlightNumber", curFile->FlightNumber);
   getNCattr(InputFile, NC_GLOBAL, "FlightDate", curFile->FlightDate);
+  getNCattr(InputFile, NC_GLOBAL, "Aircraft", curFile->TailNumber);
 
   std::string warning;
   getNCattr(InputFile, NC_GLOBAL, "WARNING", warning);

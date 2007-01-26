@@ -190,7 +190,7 @@ static void addLandmark(const char str[])
 static void readLandMarksFile()
 {
   FILE *fp;
-  char *projDir;
+  char *projDir, platform[128];
 
   if (NumberDataFiles == 0)
     {
@@ -204,7 +204,16 @@ static void readLandMarksFile()
     return;
     }
 
-  sprintf(buffer, "%s/%s/landmarks", projDir,dataFile[0].ProjectNumber.c_str());
+  platform[0] = '\0';
+
+  if (dataFile[0].TailNumber.compare("N130AR") == 0)
+    sprintf(platform, "C130_%s", dataFile[0].TailNumber.c_str());
+
+  if (dataFile[0].TailNumber.compare("N677F") == 0)
+    sprintf(platform, "GV_%s", dataFile[0].TailNumber.c_str());
+
+  sprintf(buffer, "%s/%s/%s/landmarks", projDir,
+	dataFile[0].ProjectNumber.c_str(), platform);
 
   if ((fp = fopen(buffer, "r")) == NULL)
     {
