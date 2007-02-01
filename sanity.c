@@ -86,8 +86,11 @@ void checkStarts(int fd)
   if (nc_inq_varid(fd, "Time", &id) == NC_NOERR)
   {
     char att[128], oldAtt[128];
+    size_t len;
 
     nc_get_att_text(fd, id, "units", oldAtt);
+    nc_inq_attlen(fd, id, "units", &len);
+    oldAtt[len] = '\0';
 
     strftime(att, 128, "seconds since %F %T %z", &StartFlight);
 

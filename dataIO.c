@@ -258,6 +258,10 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 
     if (nc_get_att_text(InputFile, i, "Category", buffer) == NC_NOERR)
       {
+      size_t len;
+      nc_inq_attlen(InputFile, i, "Category", (size_t *)&len);
+      buffer[len] = '\0';
+
       for (char *p = strtok(buffer, ","); p; p = strtok(NULL, ","))
         {
         vp->categories.insert(p);
@@ -820,8 +824,6 @@ bool getNCattr(int ncid, int varID, char attr[], std::string& dest)
   size_t len;
   bool rc = false;
 
-  /* Return attribute is in global buff space "buffer".
-   */
   if (nc_inq_attlen(ncid, varID, attr, &len) == NC_NOERR)
   {
     if (nc_get_att_text(ncid, varID, attr, buffer) != NC_NOERR)
