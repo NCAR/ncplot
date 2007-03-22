@@ -273,7 +273,11 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     }
 
 
-  if (nc_inq_varid(InputFile, "time_offset", &varID) == NC_NOERR)
+  if (nc_inq_varid(InputFile, "Time", &varID) != NC_NOERR)
+    if (nc_inq_varid(InputFile, "time_offset", &varID) != NC_NOERR)
+      varID = -1;
+
+  if (varID != -1)
     {
     size_t start[2], count[2];
     float tf[2];
