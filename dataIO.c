@@ -835,7 +835,7 @@ bool getNCattr(int ncid, int varID, char attr[], std::string& dest)
 
     buffer[len] = '\0';
 
-    while (buffer[--len] < 0x20)	/* Remove extraneous CR/LF, etc */
+    while (len > 0 && buffer[--len] < 0x20)	/* Remove extraneous CR/LF, etc */
       buffer[len] = '\0';
 
     dest = buffer;
