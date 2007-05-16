@@ -105,7 +105,7 @@ void PlotWindBarbs(PLOT_INFO *plot, FILE *fp)
       vi_sum = vi.data[i];
       }
 
-    if (fp)
+    if (fp)	// PostScript
       {
       barbScale = 75.0 / 10.0;
       x1 = (int)(xScale * (xyXset[0].data[i] - plot->Xaxis.min));
@@ -126,7 +126,7 @@ void PlotWindBarbs(PLOT_INFO *plot, FILE *fp)
       fprintf(fp, moveto, x1, y1);
       fprintf(fp, lineto, x2, y2);
       }
-    else
+    else	// X11 - Screen.
       {
       barbScale = 25.0 / 10.0;
       x1 = (int)(plotInfo->LV + (xScale * (xyXset[0].data[i] - plot->Xaxis.min)));
@@ -152,7 +152,9 @@ void PlotWindBarbs(PLOT_INFO *plot, FILE *fp)
   x2 = (int)(x1 + (barbScale * 10.0));
   strcpy(buffer, "10 m/s");
 
-  if (fp)
+  /* Display WindBarb Scale.
+   */
+  if (fp)	// PostScript
     {
     y1 = y2 = yLegendPS(plot, CurrentDataSet+3);
     fprintf(fp, moveto, x1, y1);
@@ -165,7 +167,7 @@ void PlotWindBarbs(PLOT_INFO *plot, FILE *fp)
 		yLegendPS(plot, CurrentDataSet+4));
     fprintf(fp, show, wbTitle);
     }
-  else
+  else	// X11 - Screen.
     {
     y1 = y2 = yLegendX(plot, CurrentDataSet+1);
     XDrawLine(plot->dpy, plot->win, plot->gc, x1, y1, x2, y2);
