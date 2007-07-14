@@ -23,7 +23,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
 
 #include "define.h"
 #include "ps.h"
-#include "netcdf.h"
+#include <netcdf.h>
 
 #include <Xm/Form.h>
 #include <Xm/Frame.h>

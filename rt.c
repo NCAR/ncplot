@@ -21,7 +21,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
 #define NO_NETCDF_2
 
 #include "define.h"
-#include "netcdf.h"
+#include <netcdf.h>
 
 
 static int	InputFile;

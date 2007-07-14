@@ -22,11 +22,7 @@ STATIC FNS:	ApplyTimeChange()
 		ApplyLogScale()
 		changeAxis()
 
-DESCRIPTION:	
-
-MODIFIES:	CurrentDataFile, NumberOfPanels
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2003
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2007
 -------------------------------------------------------------------------
 */
 

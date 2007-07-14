@@ -124,7 +124,7 @@ void performSanityChecks(int InputFile, DATAFILE_INFO * curFile)
     nc_close(InputFile);
     exit(1);
   }
-
+return;
   // Check that # records in file matches deltaT of GLOBAL_ATTTR:TimeInterval
   checkNumberRecords(InputFile, curFile);
 

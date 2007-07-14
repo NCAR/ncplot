@@ -19,9 +19,7 @@ STATIC FNS:	findMinMax()
 		getNCattr()
 		readSet()
 
-DESCRIPTION:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2007
 -------------------------------------------------------------------------
 */
 
@@ -35,7 +33,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
 
 #define NO_NETCDF_2
 
-#include "netcdf.h"
+#include <netcdf.h>
 
 static void freeDataSets(int);
 bool getNCattr(int ncid, int varID, char attr[], std::string & dest);
@@ -308,18 +306,23 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void SetList()
 {
-  size_t	i;
+  size_t	nVars;
   XmString	item[MAX_VARIABLES];
   DATAFILE_INFO	*curFile = &dataFile[CurrentDataFile];
 
+  extern std::string varFilter;
+
   XmListDeleteAllItems(varList);
 
-  for (i = 0; i < curFile->Variable.size(); ++i)
-    item[i] = XmStringCreateLocalized((char *)curFile->Variable[i]->name.c_str());
+  nVars = 0;
+  for (size_t i = 0; i < curFile->Variable.size(); ++i)
+    if (varFilter.length() == 0 ||
+	curFile->Variable[i]->name.find(varFilter, 0) != std::string::npos)
+      item[nVars++] = XmStringCreateLocalized((char *)curFile->Variable[i]->name.c_str());
 
-  XmListAddItems(varList, item, curFile->Variable.size(), 1);
+  XmListAddItems(varList, item, nVars, 1);
 
-  for (i = 0; i < curFile->Variable.size(); ++i)
+  for (size_t i = 0; i < nVars; ++i)
     XmStringFree(item[i]);
 
 }	/* END SETLIST */

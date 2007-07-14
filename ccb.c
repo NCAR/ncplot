@@ -2,7 +2,7 @@
 -------------------------------------------------------------------------
 OBJECT NAME:	ccb.c
 
-FULL NAME:	Misc menu callbacks
+FULL NAME:	Misc X menu callbacks
 
 ENTRY POINTS:	ChangeLineThickness()
 		ClearPlot()
@@ -25,13 +25,7 @@ ENTRY POINTS:	ChangeLineThickness()
 
 STATIC FNS:	none
 
-DESCRIPTION:	
-
-REFERENCES:	
-
-REFERENCED BY:	XtAppMainLoop()
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1994-2001
+COPYRIGHT:	University Corporation for Atmospheric Research, 1994-2007
 -------------------------------------------------------------------------
 */
 
@@ -158,6 +152,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
   int	position;
 
   position = ((XmListCallbackStruct *)call)->item_position - 1;
+
 
   DataChanged = True;
 
