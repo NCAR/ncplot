@@ -128,5 +128,5 @@ ${SPECOBJ}:	spec.h
 ${PSOBJ}:	ps.h
 
 ncplot.o:	fbr.h
-dataIO.o rt.o stats.o:	${LOCAL}/include/netcdf.h
+dataIO.o rt.o stats.o:	${JLOCAL}/include/netcdf.h
 lex.yy.o:	lex.yy.c exp.tab.h
