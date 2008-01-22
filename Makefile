@@ -17,8 +17,8 @@ DEFINES	= -DPNG
 INCLUDES= ${JLOCAL}/include -I/usr/X11R6/include
 LIB_DIRS= -L/usr/X11R6/lib -L${JLOCAL}/lib
 # This line is for static linking Motif
-#LIBS    = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lXmu -lXp -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
-LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
+#LIBS    = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lXmu -lXp -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
+LIBS    = -lXm -lXt -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
 BIN	= ${JLOCAL}/bin
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Fedora3
 
@@ -36,15 +36,15 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Fedora3
 #DEFINES	= -DPNG
 #INCLUDES= -I/usr/include -I/usr/X11R6/include -I/sw/include
 #LIB_DIRS= -L/sw/lib -L/usr/X11R6/lib -L/usr/lib
-#LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
-#LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpthread
+#LIBS    = -lXm -lXt -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
+#LIBS    = -lXm -lXt -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpthread
 #BIN	= /sw/bin
 
 # Solaris
 #
 #DEFINES	= -DSVR4 -DPNG
 #INCLUDES= ${JLOCAL}/include -I/usr/openwin/include -I/usr/dt/include
-#LIBS	= -Wl,-Bstatic -lpng -lz -Wl,-Bdynamic -R /usr/dt/lib -lXm -lXt -lX11 -lnetcdf -ll -lm -lpthread
+#LIBS	= -Wl,-Bstatic -lpng -lz -Wl,-Bdynamic -R /usr/dt/lib -lXm -lXt -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -ll -lm -lpthread
 #LIB_DIRS= -L/net/lcal_sol/lib
 #BIN	= /net/local_sol/bin
 #ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Solaris2.9
@@ -54,12 +54,12 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Fedora3
 #DEFINES	= -DSVR4 -DPNG
 #INCLUDES= ${JLOCAL}/include -I/usr/include/X11R6 -I/usr/include/Motif1.2
 #LIB_DIRS= -L${JLOCAL}/lib
-#LIBS    = -lXm -lXt -lX11 -lnetcdf -ll -lm -L/usr/lib/Motif1.2 -L/usr/lib/X11R6 -L/lib/pa1.1
+#LIBS    = -lXm -lXt -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -ll -lm -L/usr/lib/Motif1.2 -L/usr/lib/X11R6 -L/lib/pa1.1
 
 # Irix
 #
 #INCLUDES= ${JLOCAL}/include
-#LIBS	= -lXm -lXt -lX11 -lnetcdf -lm
+#LIBS	= -lXm -lXt -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lm
 
 CFLAGS	= -Wall -g -O2 -I${INCLUDES} ${DEFINES}
 
