@@ -111,7 +111,7 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
   if (UserEndTime[3] > curFile->FileEndTime[3] && !RealTime)
     memcpy((char *)UserEndTime, (char *)curFile->FileEndTime, 4*sizeof(int));
 
-  NumberSeconds = UserEndTime[3] - UserStartTime[3] + 1;
+  NumberSeconds = UserEndTime[3] - UserStartTime[3];
 
   /* Set up titles & subtitles.
    */
@@ -444,7 +444,7 @@ void ReadData()
     if (UserEndTime[3] > MaxEndTime[3])
       memcpy((char *)UserEndTime, (char *)MaxEndTime, 4*sizeof(int));
  
-    NumberSeconds = UserEndTime[3] - UserStartTime[3] + 1;
+    NumberSeconds = UserEndTime[3] - UserStartTime[3];
     }
 
   freeDataSets(false);
