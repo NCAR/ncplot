@@ -78,7 +78,7 @@ void SetPlotShape(PLOT_INFO *plot, int shape)
 void SetCurrentPanel(Widget w, XtPointer client, XmToggleButtonCallbackStruct *call)
 {
   if (call == NULL || call->set)
-    CurrentPanel = (int)client;
+    CurrentPanel = (long)client;
 
   SetInvertLogScale(NULL, NULL, NULL);
 

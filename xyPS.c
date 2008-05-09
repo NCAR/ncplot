@@ -218,7 +218,7 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
     ++CurrentDataSet;
 
     if (!printerSetup.color)
-        fprintf(fp, "stroke [%d] 0 setdash\n", (plotNum+1) << 3);
+        fprintf(fp, "stroke [%ld] 0 setdash\n", (plotNum+1) << 3);
     }
 
   fprintf(fp, "stroke 0 0 0 setrgbcolor\n");
@@ -253,7 +253,7 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
     }
 
   ResetColors();
-  fprintf(fp, "%d setlinewidth\n", LineThickness<<1);
+  fprintf(fp, "%ld setlinewidth\n", LineThickness<<1);
 
   xScale = plot->ps.HD / (xMax - xMin);
 
@@ -396,7 +396,7 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
       PSplotRegression(fp, plot, xSet, ySet);
 
     if (!printerSetup.color)
-      fprintf(fp, "stroke [%d] 0 setdash\n", (plotNum+1) << 3);
+      fprintf(fp, "stroke [%ld] 0 setdash\n", (plotNum+1) << 3);
     }
 
 

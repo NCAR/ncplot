@@ -137,7 +137,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
   switch (PlotType)
     {
     case TIME_SERIES:
-      fprintf(fp, "nPanels=%d\n", NumberOfPanels);
+      fprintf(fp, "nPanels=%ld\n", NumberOfPanels);
 
       for (i = 0; i < NumberOfPanels; ++i)
         {
@@ -155,7 +155,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 		mainPlot[i].Yaxis[0].nMajorTics, mainPlot[i].Yaxis[0].nMinorTics);
         }
 
-      fprintf(fp, "nSets=%d\n", NumberDataSets);
+      fprintf(fp, "nSets=%ld\n", NumberDataSets);
 
       for (i = 0; i < NumberDataSets; ++i)
         {
@@ -166,16 +166,16 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 
       for (i = 0; i < NumberOfPanels; ++i)
         {
-        fprintf(fp, "xLabel%d=%s\n", i, mainPlot[i].Xaxis.label.c_str());
-        fprintf(fp, "yLabel%dL=%s\n", i, mainPlot[i].Yaxis[0].label.c_str());
-        fprintf(fp, "yLabel%dR=%s\n", i, mainPlot[i].Yaxis[1].label.c_str());
+        fprintf(fp, "xLabel%ld=%s\n", i, mainPlot[i].Xaxis.label.c_str());
+        fprintf(fp, "yLabel%ldL=%s\n", i, mainPlot[i].Yaxis[0].label.c_str());
+        fprintf(fp, "yLabel%ldR=%s\n", i, mainPlot[i].Yaxis[1].label.c_str());
         }
 
       break;
 
 
     case XY_PLOT:
-      fprintf(fp, "nPanels=%d\n", NumberOfXYpanels);
+      fprintf(fp, "nPanels=%ld\n", NumberOfXYpanels);
 
       for (i = 0; i < NumberOfXYpanels; ++i)
         {
@@ -196,7 +196,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 
         }
 
-      fprintf(fp, "nSets=%d\n", NumberXYXsets + NumberXYYsets);
+      fprintf(fp, "nSets=%ld\n", NumberXYXsets + NumberXYYsets);
 
       for (i = 0; i < NumberXYXsets; ++i)
         fprintf(fp, "Panel#=%d, Axis=%d, ScaleLoc=%d, VarName=%s\n",
@@ -210,9 +210,9 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 
       for (i = 0; i < NumberOfXYpanels; ++i)
         {
-        fprintf(fp, "xLabel%d=%s\n", i, xyyPlot[i].Xaxis.label.c_str());
-        fprintf(fp, "yLabel%dL=%s\n", i, xyyPlot[i].Yaxis[0].label.c_str());
-        fprintf(fp, "yLabel%dR=%s\n", i, xyyPlot[i].Yaxis[1].label.c_str());
+        fprintf(fp, "xLabel%ld=%s\n", i, xyyPlot[i].Xaxis.label.c_str());
+        fprintf(fp, "yLabel%ldL=%s\n", i, xyyPlot[i].Yaxis[0].label.c_str());
+        fprintf(fp, "yLabel%ldR=%s\n", i, xyyPlot[i].Yaxis[1].label.c_str());
         }
 
       break;
@@ -241,12 +241,12 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
         if (xyzSet[i].varInfo)
           ++x;
 
-      fprintf(fp, "nSets=%d\n", x);
+      fprintf(fp, "nSets=%ld\n", x);
 
       for (i = 0; i < 3; ++i)
         {
         if (xyzSet[i].varInfo)
-          fprintf(fp, "Axis=%d, VarName=%s\n", i, xyzSet[i].varInfo->name.c_str());
+          fprintf(fp, "Axis=%ld, VarName=%s\n", i, xyzSet[i].varInfo->name.c_str());
         }
 
       fprintf(fp, "xLabel=%s\n", xyzPlot.Xaxis.label.c_str());
@@ -309,10 +309,10 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
 
 
   fgets(buffer, 512, fp);
-  sscanf(buffer, "Version=%d", &version);
+  sscanf(buffer, "Version=%ld", &version);
 
   fgets(buffer, 512, fp);
-  sscanf(buffer, "PlotType=%d", &x);
+  sscanf(buffer, "PlotType=%ld", &x);
 
   ChangePlotType(NULL, (XtPointer)x, NULL);
   ClearPlot(NULL, NULL, NULL);
@@ -321,7 +321,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
     {
     case TIME_SERIES:
       fgets(buffer, 512, fp);
-      sscanf(buffer, "nPanels=%d", &x);
+      sscanf(buffer, "nPanels=%ld", &x);
 
       while (x > NumberOfPanels)
         AddPanel(NULL, NULL, NULL);
@@ -332,20 +332,20 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
       for (i = 0; i < NumberOfPanels; ++i)
         {
         fgets(buffer, 512, fp);
-        sscanf(buffer, "Grid=%d, AutoScale=%d, AutoTics=%d", &x1, &x2, &x3);
+        sscanf(buffer, "Grid=%ld, AutoScale=%ld, AutoTics=%ld", &x1, &x2, &x3);
         mainPlot[i].grid = x1;
         mainPlot[i].autoScale = x2;
         mainPlot[i].autoTics = x3;
 
         fgets(buffer, 512, fp);
         if (version < 2)
-          sscanf(buffer, "Yaxis - Invert=%d %d, log=%d %d", &x1, &x2, &x3, &x4);
+          sscanf(buffer, "Yaxis - Invert=%ld %ld, log=%ld %ld", &x1, &x2, &x3, &x4);
         else
         if (version == 3)
-          sscanf(buffer, "Yaxis - Invert=%d %d, log=%d %d, bounds=%e %e %e %e",
+          sscanf(buffer, "Yaxis - Invert=%ld %ld, log=%ld %ld, bounds=%e %e %e %e",
 		&x1, &x2, &x3, &x4, &min0, &max0, &min1, &max1);
         else
-          sscanf(buffer, "Yaxis - Invert=%d %d, log=%d %d, bounds=%e %e %e %e, xTics=%d %d, yTics=%d %d",
+          sscanf(buffer, "Yaxis - Invert=%ld %ld, log=%ld %ld, bounds=%e %e %e %e, xTics=%ld %ld, yTics=%ld %ld",
 		&x1, &x2, &x3, &x4, &min0, &max0, &min1, &max1, &x5, &x6, &x7, &x8);
 
         mainPlot[i].Yaxis[0].invertAxis = x1;
@@ -373,12 +373,12 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         }
 
       fgets(buffer, 512, fp);
-      sscanf(buffer, "nSets=%d", &x);
+      sscanf(buffer, "nSets=%ld", &x);
 
       for (i = 0; i < x; ++i)
         {
         fgets(buffer, 512, fp);
-        sscanf(buffer, "VarName=%s Panel#=%d, ScaleLoc=%d", s, &CurrentPanel, &x1);
+        sscanf(buffer, "VarName=%s Panel#=%ld, ScaleLoc=%ld", s, &CurrentPanel, &x1);
         name = XmStringCreateLocalized(s);
         if ((x2 = XmListItemPos(varList, name)) > 0)
           {
@@ -421,7 +421,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
 
     case XY_PLOT:
       fgets(buffer, 512, fp);
-      sscanf(buffer, "nPanels=%d", &x);
+      sscanf(buffer, "nPanels=%ld", &x);
 
       while (x > NumberOfXYpanels)
         AddPanel(NULL, NULL, NULL);
@@ -432,19 +432,19 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
       for (i = 0; i < NumberOfXYpanels; ++i)
         {
         fgets(buffer, 512, fp);
-        sscanf(buffer, "Grid=%d, AutoScale=%d", &x1, &x2);
+        sscanf(buffer, "Grid=%ld, AutoScale=%ld", &x1, &x2);
         xyyPlot[i].grid = x1;
         xyyPlot[i].autoScale = x2;
  
         fgets(buffer, 512, fp);
         if (version < 2)
-          sscanf(buffer, "Xaxis - Invert=%d, log=%d", &x1, &x2);
+          sscanf(buffer, "Xaxis - Invert=%ld, log=%ld", &x1, &x2);
         else
         if (version == 3)
-          sscanf(buffer, "Xaxis - Invert=%d, log=%d, bounds=%e %e",
+          sscanf(buffer, "Xaxis - Invert=%ld, log=%ld, bounds=%e %e",
                 &x1, &x2, &min0, &max0);
         else
-          sscanf(buffer, "Xaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d",
+          sscanf(buffer, "Xaxis - Invert=%ld, log=%ld, bounds=%e %e, tics=%ld %ld",
                 &x1, &x2, &min0, &max0, &x3, &x4);
 
         xyyPlot[i].Xaxis.invertAxis = x1;
@@ -464,13 +464,13 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
 
         fgets(buffer, 512, fp);
         if (version < 2)
-          sscanf(buffer, "Yaxis - Invert=%d %d, log=%d %d", &x1, &x2, &x3, &x4);
+          sscanf(buffer, "Yaxis - Invert=%ld %ld, log=%ld %ld", &x1, &x2, &x3, &x4);
         else
         if (version == 3)
-          sscanf(buffer, "Yaxis - Invert=%d %d, log=%d %d, bounds=%e %e %e %e",
+          sscanf(buffer, "Yaxis - Invert=%ld %ld, log=%ld %ld, bounds=%e %e %e %e",
                 &x1, &x2, &x3, &x4, &min0, &max0, &min1, &max1);
         else
-          sscanf(buffer, "Yaxis - Invert=%d %d, log=%d %d, bounds=%e %e %e %e, tics=%d %d",
+          sscanf(buffer, "Yaxis - Invert=%ld %ld, log=%ld %ld, bounds=%e %e %e %e, tics=%ld %ld",
                 &x1, &x2, &x3, &x4, &min0, &max0, &min1, &max1, &x5, &x6);
 
         xyyPlot[i].Yaxis[0].invertAxis = x1;
@@ -496,12 +496,12 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         }
 
       fgets(buffer, 512, fp);
-      sscanf(buffer, "nSets=%d", &x);
+      sscanf(buffer, "nSets=%ld", &x);
 
       for (i = 0; i < x; ++i)
         {
         fgets(buffer, 512, fp);
-        sscanf(buffer, "Panel#=%d, Axis=%d, ScaleLoc=%d, VarName=%s",
+        sscanf(buffer, "Panel#=%ld, Axis=%ld, ScaleLoc=%ld, VarName=%s",
 			&CurrentPanel, &x3, &x1, s);
 
         name = XmStringCreateLocalized(s);
@@ -556,18 +556,18 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
     case XYZ_PLOT:
       fgets(buffer, 512, fp);
       fgets(buffer, 512, fp);
-      sscanf(buffer, "AutoScale=%d", &x1);
+      sscanf(buffer, "AutoScale=%ld", &x1);
       xyzPlot.autoScale = x1;
 
       fgets(buffer, 512, fp);
       if (version < 2)
-        sscanf(buffer, "Xaxis - Invert=%d, log=%d", &x1, &x2);
+        sscanf(buffer, "Xaxis - Invert=%ld, log=%ld", &x1, &x2);
       else
       if (version == 3)
-        sscanf(buffer, "Xaxis - Invert=%d, log=%d, bounds=%e %e",
+        sscanf(buffer, "Xaxis - Invert=%ld, log=%ld, bounds=%e %e",
                 &x1, &x2, &min0, &max0);
       else
-        sscanf(buffer, "Xaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d",
+        sscanf(buffer, "Xaxis - Invert=%ld, log=%ld, bounds=%e %e, tics=%ld %ld",
                 &x1, &x2, &min0, &max0, &x3, &x4);
 
       xyzPlot.Xaxis.invertAxis = x1;
@@ -587,13 +587,13 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
 
       fgets(buffer, 512, fp);
       if (version < 2)
-        sscanf(buffer, "Yaxis - Invert=%d, log=%d", &x1, &x2);
+        sscanf(buffer, "Yaxis - Invert=%ld, log=%ld", &x1, &x2);
       else
       if (version == 3)
-        sscanf(buffer, "Yaxis - Invert=%d, log=%d, bounds=%e %e",
+        sscanf(buffer, "Yaxis - Invert=%ld, log=%ld, bounds=%e %e",
                 &x1, &x2, &min0, &max0);
       else
-        sscanf(buffer, "Yaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d",
+        sscanf(buffer, "Yaxis - Invert=%ld, log=%ld, bounds=%e %e, tics=%ld %ld",
                 &x1, &x2, &min0, &max0, &x5, &x6);
 
       xyzPlot.Yaxis[0].invertAxis = x1;
@@ -613,13 +613,13 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
 
       fgets(buffer, 512, fp);
       if (version < 2)
-        sscanf(buffer, "Zaxis - Invert=%d, log=%d", &x1, &x2);
+        sscanf(buffer, "Zaxis - Invert=%ld, log=%ld", &x1, &x2);
       else
       if (version == 3)
-        sscanf(buffer, "Zaxis - Invert=%d, log=%d, bounds=%e %e",
+        sscanf(buffer, "Zaxis - Invert=%ld, log=%ld, bounds=%e %e",
                 &x1, &x2, &min0, &max0);
       else
-        sscanf(buffer, "Zaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d",
+        sscanf(buffer, "Zaxis - Invert=%ld, log=%ld, bounds=%e %e, tics=%ld %ld",
                 &x1, &x2, &min0, &max0, &x3, &x4);
 
       xyzPlot.Zaxis.invertAxis = x1;
@@ -638,12 +638,12 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         }
 
       fgets(buffer, 512, fp);
-      sscanf(buffer, "nSets=%d", &x);
+      sscanf(buffer, "nSets=%ld", &x);
 
       for (i = 0; i < x; ++i)
         {
         fgets(buffer, 512, fp);
-        sscanf(buffer, "Axis=%d, VarName=%s", &x1, s);
+        sscanf(buffer, "Axis=%ld, VarName=%s", &x1, s);
 
         name = XmStringCreateLocalized(s);
         if ((x2 = XmListItemPos(varList, name)) > 0)

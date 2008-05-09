@@ -71,9 +71,9 @@ void WarnUser(char str[], XtCallbackProc okCB, XtCallbackProc cancelCB)
 /* -------------------------------------------------------------------- */
 void CancelWarning(Widget w, XtPointer clientData, XtPointer callData)
 {
-  XtUnmanageChild(warnBox[(int)clientData]);
-  XtPopdown(XtParent(warnBox[(int)clientData]));
-  inUse[(int)clientData] = False;
+  XtUnmanageChild(warnBox[(long)clientData]);
+  XtPopdown(XtParent(warnBox[(long)clientData]));
+  inUse[(long)clientData] = False;
 
 }	/* END CANCELWARNING */
 

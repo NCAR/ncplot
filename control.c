@@ -215,7 +215,7 @@ void OpenControlWindow(Widget w, XtPointer client, XtPointer call)
     }
   else
     {
-    sprintf(buffer, "%d", NumberSeconds);
+    sprintf(buffer, "%ld", NumberSeconds);
     XmTextFieldSetString(rtText, buffer);
     }
 
@@ -269,7 +269,7 @@ static void ApplyTimeChange(Widget w, XtPointer client, XtPointer call)
     }
   else
     {
-    if ((unsigned)client == 0xFFFF)	// Load whole flight
+    if ((unsigned long)client == 0xFFFF)	// Load whole flight
       {
       int	*l = dataFile[CurrentDataFile].FileStartTime;
 
@@ -317,7 +317,7 @@ void ChangePlotType(Widget w, XtPointer client, XtPointer call)
   ClearAnnotations();
 
   n = 0;
-  switch ( (PlotType = (int)client) )
+  switch ( (PlotType = (long)client) )
     {
     case TIME_SERIES:
       XtSetArg(args[n], XmNwidth, mainPlot[0].x.windowWidth); ++n;
@@ -404,7 +404,7 @@ static void changeAxis(Widget w, XtPointer client, XtPointer call)
   if (!((XmToggleButtonCallbackStruct *)call)->set)
     return;
 
-  currentAxis = (int)client;
+  currentAxis = (long)client;
 
   if (currentAxis == Y_AXIS && PlotType != XYZ_PLOT)
     {
@@ -541,7 +541,7 @@ void SetDataFile(Widget w, XtPointer client, XmToggleButtonCallbackStruct *call)
 {
   if (call == NULL || call->set)
     {
-    CurrentDataFile = (int)client;
+    CurrentDataFile = (long)client;
     SetList();
     }
  
@@ -766,7 +766,7 @@ void CreateControlWindow(Widget parent)
 
   for (size_t i = 0; i < MAX_PANELS; ++i)
     {
-    sprintf(buffer, "%d", i+1);
+    sprintf(buffer, "%ld", i+1);
     panelB.push_back(XmCreateToggleButton(plRC[4], buffer, NULL, 0));
     
     XtAddCallback(panelB[i], XmNvalueChangedCallback,
@@ -807,7 +807,7 @@ void CreateControlWindow(Widget parent)
   label = XmCreateLabel(plRC[0], "Line Thickness", args, n);
   XtManageChild(label);
 
-  sprintf(buffer, "%d", LineThickness);
+  sprintf(buffer, "%ld", LineThickness);
   XmTextFieldSetString(lineThickTxt, buffer);
 
 

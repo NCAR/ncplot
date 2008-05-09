@@ -219,11 +219,11 @@ static void CreatePrintWindow()
     plRC[i] = XmCreateRowColumn(RC[0], "plRC", args, n);
 
     n = 0;
-    sprintf(buffer, "lbl%d", cnt);
+    sprintf(buffer, "lbl%ld", cnt);
     label = XmCreateLabel(plRC[i], buffer, args, n);
 
     n = 0;
-    sprintf(buffer, "txt%d", cnt);
+    sprintf(buffer, "txt%ld", cnt);
     parmsText[cnt] = XmCreateTextField(plRC[i], buffer, args, n);
 
     XtManageChild(label);

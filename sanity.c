@@ -31,7 +31,7 @@ static void checkNumberRecords(int InputFile, DATAFILE_INFO * curFile)
     if (length != deltaT)
     {
       fprintf(stderr, "dataIO.c::GetTimeInterval(): Sanity check failure.");
-      fprintf(stderr, " %d records vs. %d computed.\n", length, deltaT);
+      fprintf(stderr, " %ld records vs. %ld computed.\n", length, deltaT);
       nc_close(InputFile);
       exit(1);
     }

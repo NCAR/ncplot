@@ -122,7 +122,7 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
   if (NumberDataSets < 1)
     return;
 
-  if ((int)client > 1 && NumberDataSets < 2)
+  if ((long)client > 1 && NumberDataSets < 2)
     {
     HandleError("Co-PSD requires two data sets.", Interactive, IRET);
     return;
@@ -132,7 +132,7 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
   WaitCursor(ControlWindow);
 
   if (client > 0)
-    psd[0].display = (int)client;
+    psd[0].display = (long)client;
 
   if (firstTime)
     {
@@ -403,7 +403,7 @@ void AutoScaleSpectralWindow()
 void SetSegLen(Widget w, XtPointer client, XtPointer call)
 {
   for (size_t i = 0; i < MAX_PSD; ++i)
-    psd[i].M = (int)client;
+    psd[i].M = (long)client;
 }
 
 /* -------------------------------------------------------------------- */
@@ -876,7 +876,7 @@ static void setDefaults()
   XmStringFree(name);
  
   for (x = i = 0; windowInfo[i].name; ++i)
-    if ((int)windowInfo[i].client == (int)psd[0].windowFn)
+    if ((long)windowInfo[i].client == (long)psd[0].windowFn)
       x = i;
 
   name = XmStringCreateLocalized(windowInfo[x].name);
@@ -885,7 +885,7 @@ static void setDefaults()
   XmStringFree(name);
  
   for (x = i = 0; detrendInfo[i].name; ++i)
-    if ((int)detrendInfo[i].client == (int)psd[0].detrendFn)
+    if ((long)detrendInfo[i].client == (long)psd[0].detrendFn)
       x = i;
  
   name = XmStringCreateLocalized(detrendInfo[x].name);

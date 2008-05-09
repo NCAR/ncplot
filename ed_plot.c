@@ -101,7 +101,7 @@ void SetMainDefaults()
   for (i = 11; i < 15; ++i)
     XtSetSensitive(parmsText[i], 1-mainPlot[currentPanel].autoTics);
 
-  sprintf(buffer, "%d", nASCIIpoints);
+  sprintf(buffer, "%ld", nASCIIpoints);
   XmTextFieldSetString(asciiText[0], buffer);
   XmTextFieldSetString(asciiText[1], asciiFormat);
 
@@ -169,7 +169,7 @@ static void ApplyMainParms(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void SetPlotPanel(Widget w, XtPointer client, XtPointer call)
 {
-  currentPanel = (int)client;
+  currentPanel = (long)client;
   EditMainParms(NULL, NULL, NULL);
 
 }	/* END SETPLOTPANEL */
@@ -205,7 +205,7 @@ static void CreateMainParmsWindow()
 
   for (size_t i = 0; i < MAX_PANELS; ++i)
     {
-    sprintf(buffer, "%d", i+1);
+    sprintf(buffer, "%ld", i+1);
     panelB.push_back(XmCreateToggleButton(plRC, buffer, NULL, 0));
 
     XtAddCallback(panelB[i], XmNvalueChangedCallback,SetPlotPanel,(XtPointer)i);

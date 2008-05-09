@@ -72,7 +72,7 @@ static void DismissTitles(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void SetCategory(Widget w, XtPointer client, XtPointer call)
 {
-  currentCategory = (int)client;
+  currentCategory = (long)client;
   SetTitles();
 
 }	/* END SETCATEGORY */

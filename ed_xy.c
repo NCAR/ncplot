@@ -133,7 +133,7 @@ static void ApplyXYParms(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static void SetXYPanel(Widget w, XtPointer client, XtPointer call)
 {
-  currentPanel = (int)client;
+  currentPanel = (long)client;
   EditXYParms(NULL, NULL, NULL);
  
 }       /* END SETPLOTPANEL */

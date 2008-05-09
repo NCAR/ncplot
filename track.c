@@ -117,10 +117,10 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
     return;
     }
 
-  if ((int)client == INS)
+  if ((long)client == INS)
     posVar = insVariables;
   else
-  if ((int)client == GPS)
+  if ((long)client == GPS)
     posVar = gpsVariables;
   else
     posVar = gpsCorrected;

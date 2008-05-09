@@ -126,7 +126,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
     vi = new VARTBL;
     dataFile[0].Variable.push_back(vi);
 
-    sprintf(tmp, "USER%d", i+1);
+    sprintf(tmp, "USER%ld", i+1);
     vi->name = tmp;
     vi->OutputRate = 1;
     vi->inVarID = COMPUTED;
@@ -199,7 +199,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
 
     /* Add new variable to the *first* data file.
      */
-    sprintf(buffer, "USER%d", i+1);
+    sprintf(buffer, "USER%ld", i+1);
 
     vi = dataFile[0].Variable[SearchTable(dataFile[0].Variable, buffer)];
     vi->expression = theExpression;
@@ -234,7 +234,7 @@ static void CreateExpressionWindow()
     plRC = XmCreateRowColumn(RC, "plRC", args, n);
     XtManageChild(plRC);
 
-    sprintf(buffer, "USER%d = ", i+1);
+    sprintf(buffer, "USER%ld = ", i+1);
     label = XmCreateLabel(plRC, buffer, args, n);
     XtManageChild(label);
 

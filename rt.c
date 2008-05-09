@@ -133,7 +133,7 @@ static void updateSet(DATASET_INFO *set)
  
   if (set->head > NumberSeconds * ncount[1])
     {
-    printf("circBuff index superceeded max count, you shouldn't see this message = %d.\n", set->head);
+    printf("circBuff index superceeded max count, you shouldn't see this message = %ld.\n", set->head);
     set->head = 0;
     }
 
