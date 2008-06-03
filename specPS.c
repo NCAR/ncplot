@@ -389,7 +389,7 @@ static void doWaveLengthPS(FILE *fp, PLOT_INFO *plot)
   xMantissa = log10(tas.stats.mean);
   xDecade = (int)xMantissa;
   xMantissa -= xDecade;
-  nXdecades = (int)(xDecade - log10(plot->Xaxis.min)) + 1;
+  nXdecades = (int)(xDecade - log10(plot->Xaxis.min));
  
   x = (int)(xMantissa * numXpix);
  
@@ -398,7 +398,7 @@ static void doWaveLengthPS(FILE *fp, PLOT_INFO *plot)
     fprintf(fp, moveto, x, plot->ps.VD);
     fprintf(fp, lineto, x, plot->ps.VD + plot->ps.ticLength);
  
-    MakeLogTicLabel(buffer, nXdecades);
+    MakeLogTicLabel(buffer, nXdecades - 3);
     fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
             x, buffer, plot->ps.VD + plot->ps.ticLength+5);
     fprintf(fp, show, buffer);
@@ -407,7 +407,7 @@ static void doWaveLengthPS(FILE *fp, PLOT_INFO *plot)
     --nXdecades;
     }
 
-  strcpy(buffer, "Wave length (M)");
+  strcpy(buffer, "Wave length (km)");
   fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
         plot->ps.HD >> 1, buffer,
         plot->ps.VD + plot->ps.ticLength + (int)(50 * printerSetup.fontRatio));

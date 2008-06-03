@@ -176,7 +176,7 @@ void plotWarningX(PLOT_INFO *plot, int sizeOffset)
 	(XTextWidth(plot->fontInfo[2+sizeOffset], prelimWarning, len) >> 1);
 
   int yOffset =
-	PlotType == XYZ_PLOT ? plot->x.subTitleOffset+20 : plot->x.TH-14;
+	PlotType == XYZ_PLOT ? plot->x.subTitleOffset+20 : plot->x.TH-35;
 
   XDrawString(	plot->dpy, plot->win, plot->gc, xOffset,
 		yOffset, prelimWarning, len);

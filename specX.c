@@ -403,7 +403,7 @@ void doWaveLengthX(PLOT_INFO *plot)
   xMantissa = log10(tas.stats.mean);
   xDecade = (int)xMantissa;
   xMantissa -= xDecade;
-  nXdecades = (int)(xDecade - log10(plot->Xaxis.min)) + 1;
+  nXdecades = (int)(xDecade - log10(plot->Xaxis.min));
 
   x = plot->x.LV + (int)(xMantissa * xScale);
 
@@ -412,7 +412,7 @@ void doWaveLengthX(PLOT_INFO *plot)
     XDrawLine(plot->dpy,plot->win,plot->gc, x, plot->x.TH,
               x, plot->x.TH - plot->x.ticLength);
 
-    MakeLogTicLabel(buffer, nXdecades);
+    MakeLogTicLabel(buffer, nXdecades - 3);
     XDrawString(plot->dpy, plot->win, plot->gc,
              x - 18, plot->x.TH - 12, buffer, strlen(buffer));
 
@@ -423,7 +423,7 @@ void doWaveLengthX(PLOT_INFO *plot)
   XDrawString(plot->dpy, plot->win, plot->gc,
               plot->x.LV + (plot->x.HD >> 1) - 50,
               plot->x.TH - 25,
-              "Wave length (M)", 15);;
+              "Wave length (km)", 16);;
 
 }	/* END DOWAVELENGTH */
 
