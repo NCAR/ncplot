@@ -332,6 +332,7 @@ static void readSet(DATASET_INFO *set)
 {
   size_t	start[3], count[3];
   size_t	i, frontPad, endPad;
+  int		rc;
   DATAFILE_INFO *file;
 
   WaitCursorAll();
@@ -401,8 +402,17 @@ static void readSet(DATASET_INFO *set)
 
   set->missingValue = set->varInfo->MissingValue;
 
-  nc_get_vara_float(file->ncid, set->varInfo->inVarID, start, count,
+  rc = nc_get_vara_float(file->ncid, set->varInfo->inVarID, start, count,
            &set->data[frontPad]);
+
+  if (rc != NC_NOERR)
+    {
+    char msg[80];
+    sprintf(msg, "dataIO.c::readSet: Failed to read data for variable %s.\n",
+	set->varInfo->name.c_str());
+    HandleError(msg, Interactive, IRET);
+    return;
+    }
 
   for (i = 0; i < frontPad; ++i)
     set->data[i] = set->missingValue;
