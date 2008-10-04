@@ -323,7 +323,7 @@ static char *formatLine(char buff[], DATASET_INFO *set)
   sprintf(temp, "%5ld/%ld", (long)set->stats.nPoints, (long)set->nPoints);
   memcpy(&buff[20], temp, strlen(temp));
 
-  sprintf(&buff[32], "%11.3e %11.3e %11.3e %11.3e %11.3e\n",
+  sprintf(&buff[32], "%12.6e %12.6e %12.6e %12.6e %12.6e\n",
       set->stats.min,
       set->stats.max,
       set->stats.mean,
