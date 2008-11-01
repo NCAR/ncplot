@@ -47,7 +47,7 @@ void CleanAndCopyData(DATASET_INFO *set, float out[])
           break;
 
       for (; i < e; ++i)
-        out[i] = (d1 - out[i-1]) / (e - i + 1);
+        out[i] = out[i-1] + ((d1 - out[i-1]) / (e - i + 1));
 
       if (i > 0) --i;
       }
