@@ -61,14 +61,14 @@ int	DeleteVariable(DATASET_INFO *, size_t, int), isAverage(), whichSide(),
 
 void	Initialize(), ProcessArgs(char **argv), ReadConfigFile();
 
-void	CreateErrorBox(Widget w), ShowError(char *);
+void	CreateErrorBox(Widget w), ShowError(const char *);
 void	CreateWarningBox(Widget w),
-	WarnUser(char *, XtCallbackProc, XtCallbackProc);
+	WarnUser(const char *, XtCallbackProc, XtCallbackProc);
 void	CreateQueryBox(Widget w),
-	QueryUser(char *, int, XtCallbackProc),
+	QueryUser(const char *, int, XtCallbackProc),
 	ExtractAnswer(char *);
 void	CreateFileSelectionBox(Widget w),
-	QueryFile(char *, char *, XtCallbackProc),
+	QueryFile(const char *, const char *, XtCallbackProc),
 	ExtractFileName(XmString, char **);
 
 void	QueryCancel(Widget, XtPointer, XtPointer),
@@ -159,9 +159,9 @@ void	ApplyParms(Widget *, PLOT_INFO *),
 	SetDefaults(Widget *, PLOT_INFO *),
 	SetLogInvert(Widget *, PLOT_INFO *, int);
 		
-void	SetYdialog(), SetYlabel(char *s), CreateParmsWindow(Widget parent),
+void	SetYdialog(), SetYlabel(const char *s), CreateParmsWindow(Widget parent),
 	SetSubtitles(), SetDiffDefaults(), SetSpecDefaults(), SetXYDefaults(),
-	SetTrackDefaults(), SetPrinterShape(int), SetXlabel(char *),
+	SetTrackDefaults(), SetPrinterShape(int), SetXlabel(const char *),
 	SetPlotShape(PLOT_INFO *, int), SetActivePanels(size_t);
 
 void	PageForward(Widget, XtPointer, XtPointer),
@@ -230,7 +230,7 @@ void	ResizeTimeSeries(), ResizeXY(), ResizeXYZ(), DrawTimeSeries(),
 void	WaitCursor(Widget), TextCursor(Widget), CrossHairCursor(Widget),
 	GrabCursor(Widget), PointerCursor(Widget);
 
-void	HandleError(char s[], bool interactiv, char status);
+void	HandleError(const char s[], bool interactiv, char status);
 void	FreeDataSets(void);
 void	SortTable(char **table, int beg, int end);
 

@@ -27,7 +27,7 @@ static Widget	queryBox;
 
 
 /* -------------------------------------------------------------------- */
-void QueryUser(char str[], int maxlen, XtCallbackProc callBack)
+void QueryUser(const char str[], int maxlen, XtCallbackProc callBack)
 {
   Widget	w;
   Arg		args[5];
@@ -36,7 +36,7 @@ void QueryUser(char str[], int maxlen, XtCallbackProc callBack)
 
   n = 0;
   w = XmSelectionBoxGetChild(queryBox, XmDIALOG_SELECTION_LABEL);
-  xStr = XmStringCreateLtoR(str, XmSTRING_DEFAULT_CHARSET);
+  xStr = XmStringCreateLtoR((char *)str, XmSTRING_DEFAULT_CHARSET);
   XtSetArg(args[n], XmNlabelString, xStr); ++n;
   XtSetValues(w, args, n);
   XmStringFree(xStr);

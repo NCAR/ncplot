@@ -25,22 +25,22 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 #include "define.h"
 
 /* -------------------------------------------------------------------- */
-void HandleError(char s[], bool interactiv, char status)
+void HandleError(const char s[], bool interactiv, char status)
 {
   if (!interactiv)
-    {
+  {
     fprintf(stderr, "%s\n", s);
 
     if (status == IRET)
       status = EXIT;
-    }
+  }
   else
-    {
+  {
     ShowError(s);
 
     if (status == IRET)
       status = RETURN;
-    }
+  }
 
   if (status == RETURN)
     return;

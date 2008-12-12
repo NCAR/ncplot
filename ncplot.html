@@ -29,7 +29,7 @@ span.comment { background-color: #88FF88; font-style: italic; }
 <body>
 
 <h1 align=CENTER>NCPLOT User's Guide</h1>
-<h1 align=CENTER>Version 4.8.7</h1>
+<h1 align=CENTER>Version 4.8.11</h1>
 <hr>
 <h1 align=CENTER>Table Of Contents</h1>
 <ol type=A>
@@ -743,6 +743,9 @@ the plot trace colors.
 <h1>Known Problems</h1>
 <ul>
 <li> Fedora Core 5 : setenv XKEYSYMDB /usr/share/X11/XKeysymDB
+<li>If the menu and button text shows up as squares, then some fonts are missing.
+'yum install "xorg-x11-fonts*"' should solve the problem.  We have noticed this on
+Fedora 9 and 10.
 <li>Time gaps in the netCDF file.  Time gaps should be filled with _FillValue or
 missing_value.  ncplot uses the TimeInterval global attribute to determine how many
 records are in the file.

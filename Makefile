@@ -20,7 +20,7 @@ LIB_DIRS= -L/usr/X11R6/lib -L${JLOCAL}/lib
 #LIBS    = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lXmu -lXp -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
 LIBS    = -lXm -lXt -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
 BIN	= ${JLOCAL}/bin
-ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL5
+ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Fedora10
 
 # Mac OS X
 #
