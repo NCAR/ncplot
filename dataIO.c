@@ -138,6 +138,7 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
 void AddDataFile(Widget w, XtPointer client, XtPointer call)
 {
   int		i, InputFile, nVars, nDims, dimIDs[3], varID;
+  int		rc;
   char		name[100], *data_file;
   DATAFILE_INFO	*curFile;
   VARTBL	*vp;
@@ -174,9 +175,10 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 
   /* Open Input File
    */
-  if (nc_open(curFile->fileName.c_str(), NC_NOWRITE, &curFile->ncid) != NC_NOERR)
+  rc = nc_open(curFile->fileName.c_str(), NC_NOWRITE, &curFile->ncid);
+  if (rc != NC_NOERR)
     {
-    sprintf(buffer, "Can't open %s.", curFile->fileName.c_str());
+    sprintf(buffer, "Can't open %s.\n\n%s", curFile->fileName.c_str(), nc_strerror(rc));
     HandleError(buffer, Interactive, IRET);
     return;
     }
@@ -408,8 +410,8 @@ static void readSet(DATASET_INFO *set)
   if (rc != NC_NOERR)
     {
     char msg[80];
-    sprintf(msg, "dataIO.c::readSet: Failed to read data for variable %s.\n",
-	set->varInfo->name.c_str());
+    sprintf(msg, "dataIO.c::readSet: Failed to read data for variable %s.\n\n%s",
+	set->varInfo->name.c_str(), nc_strerror(rc));
     HandleError(msg, Interactive, IRET);
     return;
     }
