@@ -38,6 +38,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2007
 static void freeDataSets(int);
 bool getNCattr(int ncid, int varID, char attr[], std::string & dest);
 static bool VarCompareLT(const VARTBL *x, const VARTBL *y);
+static int baseRate(const float tf[], int n);
 
 
 /* Imported from exp.c */
@@ -277,28 +278,28 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     if (nc_inq_varid(InputFile, "time_offset", &varID) != NC_NOERR)
       varID = -1;
 
+  curFile->baseDataRate = 1;
   if (varID != -1)
     {
+    const int max_read = 120;
     size_t start[2], count[2];
-    float tf[2];
+    float tf[max_read];
     int dimids[3];
     size_t recs;
     int days;
 
     start[0] = 0; start[1] = 0;
-    count[0] = 2; count[1] = 1;
+    count[0] = max_read; count[1] = 1;
 
     nc_get_vara_float(InputFile, varID, start, count, tf);
 
-    curFile->baseDataRate = (int)(tf[1] - tf[0]);
+    curFile->baseDataRate = baseRate(tf, max_read);
     nc_inq_vardimid( InputFile, varID, dimids );
     nc_inq_dimlen( InputFile, dimids[0], &recs );
     days = (recs*curFile->baseDataRate) / 86400;
     curFile->FileEndTime[0] += days*24;
     curFile->FileEndTime[3] += days*86400;
     }
-  else
-    curFile->baseDataRate = 1;
 
   std::sort(curFile->Variable.begin(), curFile->Variable.end(), VarCompareLT);
   OpenControlWindow(NULL, NULL, NULL);
@@ -873,6 +874,34 @@ bool isMissingValue(float target, float fillValue)
   return(false);
 
 }	/* END ISMISSINGVALUE */
+
+/* -------------------------------------------------------------------- */
+static int baseRate(const float tf[], int n)
+{
+  int i, si = 0;
+  float fv[2];
+
+  /* Given the first n values of Time from the netCDF file, find the first
+   * two which are not missing values, subtract and divide by distance of
+   * indices.
+   */
+  for (i = 0; i < n && isMissingValue(tf[i], DEFAULT_MISSING_VALUE); ++i)
+    ;
+
+  fv[0] = tf[i];
+  si = i++;
+
+  for (; i < n && isMissingValue(tf[i], DEFAULT_MISSING_VALUE); ++i)
+    ;
+
+  if (i < n)
+    {
+      fv[1] = tf[i];
+      return (fv[1] - fv[0]) / (i - si);
+    }
+
+  return 1;	// and hope for the best.
+}
 
 /* -------------------------------------------------------------------- */
 static bool VarCompareLT(const VARTBL *x, const VARTBL *y)
