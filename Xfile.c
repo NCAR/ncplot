@@ -33,7 +33,7 @@ void QueryFile(const char *prompt, const char *directory, XtCallbackProc callBac
 
   if (prompt)
     {
-    xmprompt = XmStringCreate((char *)prompt, XmSTRING_DEFAULT_CHARSET);
+    xmprompt = XmStringCreate(const_cast<char *>(prompt), XmSTRING_DEFAULT_CHARSET);
  
     XtSetArg(args[n], XmNselectionLabelString, xmprompt); ++n;
     XtSetValues(fileBox, args, n);
@@ -42,7 +42,7 @@ void QueryFile(const char *prompt, const char *directory, XtCallbackProc callBac
  
   if (directory)
     {
-    xmdir = XmStringCreate((char *)directory, XmSTRING_DEFAULT_CHARSET);
+    xmdir = XmStringCreate(const_cast<char *>(directory), XmSTRING_DEFAULT_CHARSET);
     XmFileSelectionDoSearch(fileBox, xmdir);
     XmStringFree(xmdir);
     }

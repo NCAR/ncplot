@@ -47,7 +47,7 @@ void WarnUser(const char str[], XtCallbackProc okCB, XtCallbackProc cancelCB)
   inUse[i] = True;
 
   label = XmMessageBoxGetChild(warnBox[i], XmDIALOG_MESSAGE_LABEL);
-  xStr = XmStringCreateLtoR((char *)str, XmSTRING_DEFAULT_CHARSET);
+  xStr = XmStringCreateLtoR(const_cast<char *>(str), XmSTRING_DEFAULT_CHARSET);
   XtSetArg(args[0], XmNlabelString, xStr);
   XtSetValues(label, args, 1);
   XmStringFree(xStr);

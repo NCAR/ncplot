@@ -101,9 +101,9 @@ void SetPreferences()
   else
     XmTextFieldSetString(prefText[3], "B&W");
 
-  XmTextFieldSetString(prefText[4], (char *)printerSetup.lpCommand.c_str());
+  XmTextFieldSetString(prefText[4], const_cast<char *>(printerSetup.lpCommand.c_str()));
 
-  XmTextFieldSetString(prefText[5], (char *)tasVarName.c_str());
+  XmTextFieldSetString(prefText[5], const_cast<char *>(tasVarName.c_str()));
   XmTextFieldSetString(prefText[6], gpsVariables[1]);
   XmTextFieldSetString(prefText[7], gpsVariables[0]);
   XmTextFieldSetString(prefText[8], gpsVariables[2]);

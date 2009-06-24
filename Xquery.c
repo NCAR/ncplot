@@ -36,7 +36,7 @@ void QueryUser(const char str[], int maxlen, XtCallbackProc callBack)
 
   n = 0;
   w = XmSelectionBoxGetChild(queryBox, XmDIALOG_SELECTION_LABEL);
-  xStr = XmStringCreateLtoR((char *)str, XmSTRING_DEFAULT_CHARSET);
+  xStr = XmStringCreateLtoR(const_cast<char *>(str), XmSTRING_DEFAULT_CHARSET);
   XtSetArg(args[n], XmNlabelString, xStr); ++n;
   XtSetValues(w, args, n);
   XmStringFree(xStr);

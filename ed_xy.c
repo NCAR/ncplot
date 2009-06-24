@@ -70,8 +70,8 @@ void SetXYDefaults()
   SetDefaults(parmsText, &xyyPlot[currentPanel]);
 //  SetLogInvert(parmsTB, &xyyPlot[currentPanel], X_AXIS | Y_AXIS);
 
-  XmTextFieldSetString(parmsText[0], (char *)xyyPlot[0].title.c_str());
-  XmTextFieldSetString(parmsText[1], (char *)xyyPlot[0].subTitle.c_str());
+  XmTextFieldSetString(parmsText[0], const_cast<char *>(xyyPlot[0].title.c_str()));
+  XmTextFieldSetString(parmsText[1], const_cast<char *>(xyyPlot[0].subTitle.c_str()));
  
   for (i = 0; i < NumberOfXYpanels; ++i)
     XtSetSensitive(panelB[i], True);

@@ -175,10 +175,10 @@ void ApplyLogInvert(Widget parms[], PLOT_INFO *plot, int axies)
 /* -------------------------------------------------------------------- */
 void SetDefaults(Widget parmsText[], PLOT_INFO *plot)
 {
-  XmTextFieldSetString(parmsText[0], (char *)plot->title.c_str());
-  XmTextFieldSetString(parmsText[1], (char *)plot->subTitle.c_str());
-  XmTextFieldSetString(parmsText[2], (char *)plot->Xaxis.label.c_str());
-  XmTextFieldSetString(parmsText[3], (char *)plot->Yaxis[0].label.c_str());
+  XmTextFieldSetString(parmsText[0], const_cast<char *>(plot->title.c_str()));
+  XmTextFieldSetString(parmsText[1], const_cast<char *>(plot->subTitle.c_str()));
+  XmTextFieldSetString(parmsText[2], const_cast<char *>(plot->Xaxis.label.c_str()));
+  XmTextFieldSetString(parmsText[3], const_cast<char *>(plot->Yaxis[0].label.c_str()));
 
   SetXminMax(parmsText, plot);
   SetYminMax(parmsText, plot);
@@ -192,8 +192,8 @@ void SetDefaults(Widget parmsText[], PLOT_INFO *plot)
 
   if (plot->plotType == XYZ_PLOT)
     {
-    XmTextFieldSetString(parmsText[3], (char *)plot->Zaxis.label.c_str());
-    XmTextFieldSetString(parmsText[4], (char *)plot->Yaxis[0].label.c_str());
+    XmTextFieldSetString(parmsText[3], const_cast<char *>(plot->Zaxis.label.c_str()));
+    XmTextFieldSetString(parmsText[4], const_cast<char *>(plot->Yaxis[0].label.c_str()));
     SetZminMax(parmsText, plot);
 
     sprintf(buffer, "%d", plot->Zaxis.nMajorTics);
@@ -210,8 +210,8 @@ void SetDefaults(Widget parmsText[], PLOT_INFO *plot)
     }
   else
     {
-    XmTextFieldSetString(parmsText[3], (char *)plot->Yaxis[0].label.c_str());
-    XmTextFieldSetString(parmsText[4], (char *)plot->Yaxis[1].label.c_str());
+    XmTextFieldSetString(parmsText[3], const_cast<char *>(plot->Yaxis[0].label.c_str()));
+    XmTextFieldSetString(parmsText[4], const_cast<char *>(plot->Yaxis[1].label.c_str()));
 
     sprintf(buffer, "%d", plot->Yaxis[0].nMajorTics);
     XmTextFieldSetString(parmsText[13], buffer);

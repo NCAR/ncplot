@@ -76,7 +76,7 @@ static void SetHeaderData()
 {
   FILE	*pp;
 
-  XmTextSetString(headerText, (char *)dataFile[CurrentDataFile].fileName.c_str());
+  XmTextSetString(headerText, const_cast<char *>(dataFile[CurrentDataFile].fileName.c_str()));
   XmTextInsert(headerText, XmTextGetLastPosition(headerText), "\n\n");
 
   sprintf(buffer, "ncdump -h %s", dataFile[CurrentDataFile].fileName.c_str());

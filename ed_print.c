@@ -59,7 +59,7 @@ void EditPrintParms(Widget w, XtPointer clientData, XtPointer callData)
     firstTime = False;
     }
 
-  XmTextFieldSetString(parmsText[0], (char *)printerSetup.lpCommand.c_str());
+  XmTextFieldSetString(parmsText[0], const_cast<char *>(printerSetup.lpCommand.c_str()));
   sprintf(buffer, "%.3f", printerSetup.width);
   XmTextFieldSetString(parmsText[1], buffer);
   sprintf(buffer, "%.3f", printerSetup.height);
@@ -130,9 +130,9 @@ void SetPrinter(Widget w, XtPointer client, XtPointer call)
   char	*p;
 
 #ifdef SVR4
-  p = strstr(printerSetup.lpCommand.c_str(), "-d");
+  p = strstr(const_cast<char *>(printerSetup.lpCommand.c_str()), "-d");
 #else
-  p = strstr(printerSetup.lpCommand.c_str(), "-P");
+  p = strstr(const_cast<char *>(printerSetup.lpCommand.c_str()), "-P");
 #endif
 
   if (p)
@@ -197,7 +197,7 @@ static void CreatePrintWindow()
 
   for (i = 0; i < printerList.size(); ++i)
     {
-    name = XmStringCreateLocalized((char *)printerList[i].c_str());
+    name = XmStringCreateLocalized(const_cast<char *>(printerList[i].c_str()));
 
     n = 0;
     XtSetArg(args[n], XmNlabelString, name); ++n;

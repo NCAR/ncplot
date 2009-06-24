@@ -118,17 +118,17 @@ static void setOutlierList()
   XmListDeleteAllItems(list);
  
   for (i = 0; i < NumberDataSets; ++i)
-    item[cnt++] = XmStringCreateLocalized((char*)dataSet[i].varInfo->name.c_str());
+    item[cnt++] = XmStringCreateLocalized(const_cast<char*>(dataSet[i].varInfo->name.c_str()));
 
   for (i = 0; i < NumberXYXsets; ++i)
-    item[cnt++] = XmStringCreateLocalized((char*)xyXset[i].varInfo->name.c_str());
+    item[cnt++] = XmStringCreateLocalized(const_cast<char*>(xyXset[i].varInfo->name.c_str()));
 
   for (i = 0; i < NumberXYYsets; ++i)
-    item[cnt++] = XmStringCreateLocalized((char*)xyYset[i].varInfo->name.c_str());
+    item[cnt++] = XmStringCreateLocalized(const_cast<char*>(xyYset[i].varInfo->name.c_str()));
 
   for (i = 0; i < 3; ++i)
     if (xyzSet[i].varInfo)
-      item[cnt++] = XmStringCreateLocalized((char*)xyzSet[i].varInfo->name.c_str());
+      item[cnt++] = XmStringCreateLocalized(const_cast<char*>(xyzSet[i].varInfo->name.c_str()));
 
   if (cnt > 0)
     XmListAddItems(list, item, cnt, 1);

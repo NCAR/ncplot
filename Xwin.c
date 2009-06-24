@@ -279,14 +279,14 @@ Widget CreateMainWindow(Widget parent)
 }	/* END CREATEMAINWINDOW */
 
 /* -------------------------------------------------------------------- */
-static Widget createLineItem(Widget parent, Widget *parmsText, char lab[], char txt[])
+static Widget createLineItem(Widget parent, Widget *parmsText, const char lab[], const char txt[])
 {
   Widget	RC, label;
 
   RC = XmCreateRowColumn(parent, "plRC", NULL, 0);
 
-  label = XmCreateLabel(RC, lab, NULL, 0);
-  *parmsText = XmCreateTextField(RC, txt, NULL, 0);
+  label = XmCreateLabel(RC, const_cast<char *>(lab), NULL, 0);
+  *parmsText = XmCreateTextField(RC, const_cast<char *>(txt), NULL, 0);
   XtManageChild(label);
   XtManageChild(*parmsText);
 

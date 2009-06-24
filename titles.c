@@ -82,7 +82,7 @@ static void SetTitles()
 {
   DATAFILE_INFO	*curFile = &dataFile[CurrentDataFile];
 
-  XmTextSetString(titleText, (char *)curFile->fileName.c_str());
+  XmTextSetString(titleText, const_cast<char *>(curFile->fileName.c_str()));
   XmTextInsert(titleText, XmTextGetLastPosition(titleText), "\n\n");
 
   for (size_t i = 0; i < curFile->Variable.size(); ++i)
@@ -171,7 +171,7 @@ static void CreateTitleWindow()
   std::set<std::string>::iterator it = dataFile[0].categories.begin();
   for (i = 1; it != dataFile[0].categories.end(); ++it, ++i)
     {
-    name = XmStringCreateLocalized((char*)(*it).c_str());
+    name = XmStringCreateLocalized(const_cast<char *>((*it).c_str()));
  
     n = 0;
     XtSetArg(args[n], XmNlabelString, name); ++n;
@@ -205,7 +205,7 @@ static void PrintTitles(Widget w, XtPointer client, XtPointer call)
   if ((p = getenv("LPDEST")) != NULL)
     printf("Output being sent to %s.\n", p);
 
-  if ((fp = popen(printerSetup.lpCommand.c_str(), "w")) == NULL)
+  if ((fp = popen(const_cast<char *>(printerSetup.lpCommand.c_str()), "w")) == NULL)
     {
     ShowError("PrintTitles: can't open pipe to 'lp'");
     return;

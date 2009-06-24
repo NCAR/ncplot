@@ -82,9 +82,9 @@ void SetMainDefaults()
   /* For main plot the following are all tied together,
    * override current plot.
    */
-  XmTextFieldSetString(parmsText[0], (char *)mainPlot[0].title.c_str());
-  XmTextFieldSetString(parmsText[1], (char *)mainPlot[0].subTitle.c_str());
-  XmTextFieldSetString(parmsText[2], (char *)mainPlot[0].Xaxis.label.c_str());
+  XmTextFieldSetString(parmsText[0], const_cast<char *>(mainPlot[0].title.c_str()));
+  XmTextFieldSetString(parmsText[1], const_cast<char *>(mainPlot[0].subTitle.c_str()));
+  XmTextFieldSetString(parmsText[2], const_cast<char *>(mainPlot[0].Xaxis.label.c_str()));
 
   for (i = 0; i < NumberOfPanels; ++i)
     XtSetSensitive(panelB[i], True);

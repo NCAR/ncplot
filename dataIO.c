@@ -321,7 +321,7 @@ void SetList()
   for (size_t i = 0; i < curFile->Variable.size(); ++i)
     if (varFilter.length() == 0 ||
 	curFile->Variable[i]->name.find(varFilter, 0) != std::string::npos)
-      item[nVars++] = XmStringCreateLocalized((char *)curFile->Variable[i]->name.c_str());
+      item[nVars++] = XmStringCreateLocalized(const_cast<char *>(curFile->Variable[i]->name.c_str()));
 
   XmListAddItems(varList, item, nVars, 1);
 

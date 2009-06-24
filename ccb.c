@@ -43,7 +43,7 @@ void findMinMax();
 /* -------------------------------------------------------------------- */
 void GetDataFileName(Widget w, XtPointer client, XtPointer call)
 {
-  QueryFile("Enter Data file to read:", (char *)DataPath.c_str(),
+  QueryFile("Enter Data file to read:", const_cast<char *>(DataPath.c_str()),
 	(XtCallbackProc)client);
 }
 

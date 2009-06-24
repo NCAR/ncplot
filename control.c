@@ -194,7 +194,7 @@ void OpenControlWindow(Widget w, XtPointer client, XtPointer call)
       {
       XtSetSensitive(fileB[i], True);
 
-      label = XmStringCreate((char *)dataFile[i].fileName.c_str(), XmFONTLIST_DEFAULT_TAG);
+      label = XmStringCreate(const_cast<char *>(dataFile[i].fileName.c_str()), XmFONTLIST_DEFAULT_TAG);
       XtSetArg(args[0], XmNlabelString, label);
       XtSetValues(fileB[i], args, 1);
       XmStringFree(label);
