@@ -1,0 +1,42 @@
+Summary: Spec file for ncplot
+Name: ncplot
+Version: 4.8
+Release: 11
+License: GPL
+Group: System Environment/Daemons
+Url: http://www.eol.ucar.edu/
+Packager: Chris Webster <cjw@ucar.edu>
+# becomes RPM_BUILD_ROOT
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Vendor: UCAR
+BuildArch: i386
+Requires: openmotif
+Source: ftp://ftp.eol.ucar.edu/pub/archive/RAF-src/%{name}.tar.gz
+
+%description
+Configuration for NCAR-EOL ncplot aircraft netCDF plotting tool.
+
+%prep
+%setup -n %{name}
+
+%build
+make
+
+%install
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_bindir}
+cp ncplot %{buildroot}%{_bindir}
+
+%post
+
+
+%clean
+rm -rf %{buildroot}
+
+%files
+%defattr(-,root,root)
+%{_bindir}/ncplot
+
+%changelog
+* Thu Sep 3 2009 Chris Webster <cjw@ucar.edu> - 1.0-1
+- initial version
