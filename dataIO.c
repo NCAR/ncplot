@@ -26,7 +26,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2007
 #include "define.h"
 #include "spec.h"
 
-#include <time.h>
+#include <ctime>
 #include <unistd.h>
 #include <Xm/FileSB.h>
 #include <Xm/List.h>
@@ -281,12 +281,14 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   curFile->baseDataRate = 1;
   if (varID != -1)
     {
-    const int max_read = 120;
+    int max_read;
     size_t start[2], count[2];
     float tf[max_read];
     int dimids[3];
     size_t recs;
     int days;
+
+    max_read = std::min((size_t)120, NumberSeconds);
 
     start[0] = 0; start[1] = 0;
     count[0] = max_read; count[1] = 1;
