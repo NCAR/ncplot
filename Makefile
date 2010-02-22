@@ -14,8 +14,8 @@ YFLAGS	= -d
 # Linux
 #
 DEFINES	= -DPNG
-INCLUDES= ${JLOCAL}/include -I/usr/X11R6/include
-LIB_DIRS= -L/usr/X11R6/lib -L${JLOCAL}/lib
+INCLUDES= -I/usr/include/netcdf
+LIB_DIRS= 
 # This line is for static linking Motif
 #LIBS    = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lXmu -lXp -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
 LIBS    = -lXm -lXt -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
@@ -43,7 +43,7 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL5
 # Solaris
 #
 #DEFINES	= -DSVR4 -DPNG
-#INCLUDES= ${JLOCAL}/include -I/usr/openwin/include -I/usr/dt/include
+#INCLUDES= -I${JLOCAL}/include -I/usr/openwin/include -I/usr/dt/include
 #LIBS	= -Wl,-Bstatic -lpng -lz -Wl,-Bdynamic -R /usr/dt/lib -lXm -lXt -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -ll -lm -lpthread
 #LIB_DIRS= -L/net/lcal_sol/lib
 #BIN	= /net/local_sol/bin
@@ -52,16 +52,16 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL5
 # HP
 #
 #DEFINES	= -DSVR4 -DPNG
-#INCLUDES= ${JLOCAL}/include -I/usr/include/X11R6 -I/usr/include/Motif1.2
+#INCLUDES= -I${JLOCAL}/include -I/usr/include/X11R6 -I/usr/include/Motif1.2
 #LIB_DIRS= -L${JLOCAL}/lib
 #LIBS    = -lXm -lXt -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -ll -lm -L/usr/lib/Motif1.2 -L/usr/lib/X11R6 -L/lib/pa1.1
 
 # Irix
 #
-#INCLUDES= ${JLOCAL}/include
+#INCLUDES= -I${JLOCAL}/include
 #LIBS	= -lXm -lXt -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lm
 
-CFLAGS	= -Wall -g -O2 -I${INCLUDES} ${DEFINES}
+CFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES}
 
 PROG	= ncplot
 HDRS	= define.h extern.h
@@ -128,5 +128,5 @@ ${SPECOBJ}:	spec.h
 ${PSOBJ}:	ps.h
 
 ncplot.o:	fbr.h
-dataIO.o rt.o stats.o:	${JLOCAL}/include/netcdf.h
+dataIO.o rt.o stats.o:	/usr/include/netcdf/netcdf.h
 lex.yy.o:	lex.yy.c exp.tab.h
