@@ -281,7 +281,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   curFile->baseDataRate = 1;
   if (varID != -1)
     {
-    int max_read;
+    int max_read = 120;
     size_t start[2], count[2];
     float tf[max_read];
     int dimids[3];
