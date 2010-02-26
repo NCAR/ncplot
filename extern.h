@@ -13,8 +13,7 @@ AUTHOR:		cjw@ucar.edu
 #ifndef EXTERN_H
 #define EXTERN_H
 
-extern const size_t	BUFFSIZE, MAX_DATAFILES, MAX_DATASETS, MAX_PANELS,
-			MAX_VARIABLES;
+extern const size_t	BUFFSIZE, MAX_DATAFILES, MAX_DATASETS, MAX_PANELS;
 
 extern bool	Interactive, DataChanged, AsciiWinOpen, Statistics,
 		ScatterPlot, WindBarbs, UTCseconds, Color, StatsWinOpen,

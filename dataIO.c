@@ -312,8 +312,8 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 void SetList()
 {
   size_t	nVars;
-  XmString	item[MAX_VARIABLES];
   DATAFILE_INFO	*curFile = &dataFile[CurrentDataFile];
+  XmString	item[curFile->Variable.size()];
 
   extern std::string varFilter;
 

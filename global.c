@@ -16,7 +16,6 @@ const size_t BUFFSIZE = 4096;
 const size_t MAX_DATAFILES = 4;
 const size_t MAX_DATASETS = 32;
 const size_t MAX_PANELS = 4;
-const size_t MAX_VARIABLES = 1000;
 
 bool	Interactive;	/* Interactive or batch mode			*/
 bool	RealTime;	/* Onboard realtime reading of netCDF		*/
