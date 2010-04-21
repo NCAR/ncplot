@@ -14,11 +14,11 @@ YFLAGS	= -d
 # Linux
 #
 DEFINES	= -DPNG
-INCLUDES= -I/usr/include/netcdf
+INCLUDES= 
 LIB_DIRS= 
 # This line is for static linking Motif
 #LIBS    = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lXmu -lXp -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
-LIBS    = -lXm -lXt -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
+LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lm -lpng -lz -lpthread
 BIN	= ${JLOCAL}/bin
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL5
 
@@ -128,5 +128,5 @@ ${SPECOBJ}:	spec.h
 ${PSOBJ}:	ps.h
 
 ncplot.o:	fbr.h
-dataIO.o rt.o stats.o:	/usr/include/netcdf/netcdf.h
+dataIO.o rt.o stats.o:	/usr/include/netcdf.h
 lex.yy.o:	lex.yy.c exp.tab.h
