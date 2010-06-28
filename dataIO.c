@@ -190,7 +190,9 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   nc_inq_nvars(InputFile, &nVars);
 
 
-  getNCattr(InputFile, NC_GLOBAL, "ProjectName", curFile->ProjectName);
+  if (getNCattr(InputFile, NC_GLOBAL, "ProjectName", curFile->ProjectName) == false)
+    getNCattr(InputFile, NC_GLOBAL, "project", curFile->ProjectName);	// Unidata DataDiscovery name.
+
   getNCattr(InputFile, NC_GLOBAL, "ProjectNumber", curFile->ProjectNumber);
   getNCattr(InputFile, NC_GLOBAL, "FlightNumber", curFile->FlightNumber);
   getNCattr(InputFile, NC_GLOBAL, "FlightDate", curFile->FlightDate);
