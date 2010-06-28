@@ -8,15 +8,11 @@ ENTRY POINTS:	ToggleLandMarks()
 		PlotLandMarksXY()
 		PlotLandMarks3D()
 
-STATIC FNS:	readLandMarksFile()
+STATIC FNS:	none.
 
 DESCRIPTION:	
 
-REFERENCES:	
-
-REFERENCED BY:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2010
 -------------------------------------------------------------------------
 */
 
@@ -29,8 +25,6 @@ static struct
   } landMark[128];
 
 static size_t nMarks = 0;
-
-static void	readLandMarksFile();
 
 
 /* -------------------------------------------------------------------- */
@@ -47,9 +41,6 @@ void ToggleLandMarks(Widget w, XtPointer client, XtPointer call)
 {
   LandMarks = !LandMarks;
 
-  if (LandMarks)
-    readLandMarksFile();
- 
   if (Interactive)
     DrawMainWindow();
  
@@ -185,48 +176,6 @@ static void addLandmark(const char str[])
   strcpy(landMark[nMarks].tag, tempTag);
   ++nMarks;
 }
-
-/* -------------------------------------------------------------------- */
-static void readLandMarksFile()
-{
-  FILE *fp;
-  char *projDir, platform[128];
-
-  if (NumberDataFiles == 0)
-    {
-    HandleError("No data file open.\n", Interactive, IRET);
-    return;
-    }
-
-  if ((projDir = getenv("PROJ_DIR")) == NULL)
-    {
-    fprintf(stderr, "readLandmarksFile: env variable $PROJ_DIR undefined.\n");
-    return;
-    }
-
-  platform[0] = '\0';
-
-  if (dataFile[0].TailNumber.compare("N130AR") == 0)
-    sprintf(platform, "C130_%s", dataFile[0].TailNumber.c_str());
-
-  if (dataFile[0].TailNumber.compare("N677F") == 0)
-    sprintf(platform, "GV_%s", dataFile[0].TailNumber.c_str());
-
-  sprintf(buffer, "%s/%s/%s/landmarks", projDir,
-	dataFile[0].ProjectNumber.c_str(), platform);
-
-  if ((fp = fopen(buffer, "r")) == NULL)
-    {
-    fprintf(stderr, "Can't open landmarks file %s\n", buffer);
-    return;
-    }
-
-  while (fgets(buffer, 80, fp) != NULL)
-    addLandmark(buffer);
-
-  fclose(fp);
-
-}	/* END READLANDMARKSFILE */
 
 /* -------------------------------------------------------------------- */
 void
