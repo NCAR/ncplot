@@ -371,6 +371,8 @@ void ReadConfigFile()
       }
     }
 
+  fclose(fp);
+
 }	/* END READCONFIGFILE */
 
 /* END PREFERENCES.C */
