@@ -68,9 +68,6 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
   xScale = (float)offsets->HD / (xAxis->max - xMin);
   yScale = (float)offsets->VD / (yAxis->max - yMin);
  
-  reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
-  pts = new XPoint[reqSize];
-
 
   /* Open pipe to pscoast
    */
@@ -96,6 +93,9 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
     setClippingX(plot);
     }
  
+
+  reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
+  pts = new XPoint[reqSize];
 
   while (fgets(buffer, 1024, in) > 0)
     {
@@ -195,9 +195,6 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
   yScale = (float)offsets->VD / (yAxis->max - yAxis->min);
   zScale = (float)ZD / (zMax - zMin);
  
-  reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
-  pts = new XPoint[reqSize];
-
 
   /* Open pipe to pscoast
    */
@@ -218,6 +215,9 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
   else
     XSetForeground(plot->dpy, plot->gc, GetColor(0));
  
+
+  reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
+  pts = new XPoint[reqSize];
 
   while (fgets(buffer, 1024, in) > 0)
     {
