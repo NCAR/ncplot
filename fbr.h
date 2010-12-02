@@ -69,7 +69,7 @@ static String fallback_resources[] =
   "*varList.background:			black",
   "*varList.foreground:			green",
   "*varList.scrollBarDisplayPolicy:	STATIC",
-  "*varList.width:			85",
+  "*varList.width:			100",
 
   "*pgButtRC.entryAlignment:		ALIGNMENT_CENTER",
   "*pageFwd.labelString:		Pg Fwd",
