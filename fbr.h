@@ -42,6 +42,13 @@ static String fallback_resources[] =
   "*controlShell.title:			Variable Selection",
   "*controlShell.x:			925",
   "*controlShell.y:			50",
+  "*buttonFrame.shadowType:		SHADOW_IN",
+  "*buttonRC.XmPushButton.recomputeSize: False",
+  "*buttonRC.XmPushButton.width:	125",
+  "*buttonRC.entryAlignment:		ALIGNMENT_CENTER",
+  "*buttonRC.isAligned:			True",
+  "*buttonRC.orientation:		HORIZONTAL",
+
   "*varFilterFrame.shadowType:		SHADOW_IN",
   "*varFilterTitle.labelString:		Variable Filter",
 
