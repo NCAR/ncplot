@@ -37,7 +37,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2007
 #include <netcdf.h>
 
 static void freeDataSets(int);
-bool getNCattr(int ncid, int varID, char attr[], std::string & dest);
+bool getNCattr(int ncid, int varID, const char attr[], std::string & dest);
 static bool VarCompareLT(const VARTBL *x, const VARTBL *y);
 static int baseRate(const float tf[], int n);
 
@@ -194,7 +194,6 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   if (getNCattr(InputFile, NC_GLOBAL, "ProjectName", curFile->ProjectName) == false)
     getNCattr(InputFile, NC_GLOBAL, "project", curFile->ProjectName);	// Unidata DataDiscovery name.
 
-  getNCattr(InputFile, NC_GLOBAL, "ProjectNumber", curFile->ProjectNumber);
   getNCattr(InputFile, NC_GLOBAL, "FlightNumber", curFile->FlightNumber);
   getNCattr(InputFile, NC_GLOBAL, "FlightDate", curFile->FlightDate);
   if (getNCattr(InputFile, NC_GLOBAL, "Platform", curFile->TailNumber) == false)
@@ -848,7 +847,7 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
 }	/* END GETTIMEINTERVAL */
 
 /* -------------------------------------------------------------------- */
-bool getNCattr(int ncid, int varID, char attr[], std::string& dest)
+bool getNCattr(int ncid, int varID, const char attr[], std::string& dest)
 {
   size_t len;
   bool rc = false;
@@ -906,7 +905,7 @@ static int baseRate(const float tf[], int n)
   if (i < n)
     {
       fv[1] = tf[i];
-      return (fv[1] - fv[0]) / (i - si);
+      return (int)(fv[1] - fv[0]) / (i - si);
     }
 
   return 1;	// and hope for the best.
