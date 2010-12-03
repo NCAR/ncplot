@@ -205,7 +205,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
     vi->expression = theExpression;
     }
 
-  SetList();
+  SetList(NULL, NULL, NULL);
 
 }	/* END ACCEPTNEWEXPRESSION */
 

@@ -35,7 +35,7 @@ bool	WindBarbs;	/* Show wind barbs on XY			*/
 bool	LandMarks;	/* Show hl proj/###/landmarks on XY or XYZ	*/
 int	ShowRegression;	/* Show regression on XY			*/
 
-std::string DataPath, tasVarName, varFilter;
+std::string DataPath, tasVarName;
 char	buffer[BUFFSIZE], *parmsFile, *outFile, *timeSeg;
 
 DATAFILE_INFO	dataFile[MAX_DATAFILES];
@@ -80,7 +80,7 @@ int	MinStartTime[4], MaxEndTime[4];		/* since midnight.	*/
 char	asciiFormat[10];
 
 /* X vars	*/
-Widget	varList;
+Widget	varList, varFilterText;
 
 instanceRec	iv;
 

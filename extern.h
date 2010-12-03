@@ -214,7 +214,8 @@ void	ViewASCII(Widget w, XtPointer client, XtPointer call),
 	ViewStats(Widget w, XtPointer client, XtPointer call),
 	SetASCIIdata(Widget w, XtPointer client, XtPointer call);
 
-void	ComputeStats(DATASET_INFO *), SetStatsData(), SetList(), ComputeDiff(),
+void	ComputeStats(DATASET_INFO *), SetStatsData(), ComputeDiff(),
+	SetList(Widget w, XtPointer client, XtPointer call),
 	SetSegLen(Widget w, XtPointer client, XtPointer call),
 	SetWindow(Widget w, XtPointer client, XtPointer call),
 	SetDetrend(Widget w, XtPointer client, XtPointer call);

@@ -58,7 +58,7 @@ static void	ApplyTimeChange(Widget, XtPointer, XtPointer),
 		changeAxis(Widget, XtPointer, XtPointer);
 
 
-extern Widget	ControlWindow;
+extern Widget	ControlWindow, varFilterText;
 
 
 /* -------------------------------------------------------------------- */
@@ -542,7 +542,7 @@ void SetDataFile(Widget w, XtPointer client, XmToggleButtonCallbackStruct *call)
   if (call == NULL || call->set)
     {
     CurrentDataFile = (long)client;
-    SetList();
+    SetList(NULL, NULL, NULL);
     }
  
 }   /* END SETDATAFILE */
@@ -571,22 +571,21 @@ void CreateControlWindow(Widget parent)
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
-  frame[0] = XmCreateFrame(form, "buttonFrame", args, n);
+  frame[0] = XmCreateFrame(form, "varFilterFrame", args, n);
   XtManageChild(frame[0]);
 
   n = 0;
-  brc = XmCreateRowColumn(frame[0], "pgButtRC", args, n);
+  title[0] = XmCreateLabel(frame[0], "varFilterTitle", args, 0);
+  XtManageChild(title[0]);
+
+  n = 0;
+  brc = XmCreateRowColumn(frame[0], "plRC", args, n);
   XtManageChild(brc);
 
   n = 0;
-  bkd = XmCreatePushButton(brc, "pageBkd", args, n);
-  XtAddCallback(bkd, XmNactivateCallback, PageBackward, NULL);
-  XtManageChild(bkd);
-
-  n = 0;
-  fwd = XmCreatePushButton(brc, "pageFwd", args, n);
-  XtAddCallback(fwd, XmNactivateCallback, PageForward, NULL);
-  XtManageChild(fwd);
+  varFilterText = XmCreateTextField(brc, "varFilter", args, n);
+  XtManageChild(varFilterText);
+  XtAddCallback(varFilterText, XmNvalueChangedCallback, SetList, NULL);
 
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); n++;
@@ -631,7 +630,7 @@ void CreateControlWindow(Widget parent)
   XtManageChild(title[4]); XtManageChild(title[5]);
 
   n = 0;
-  RC[0] = XmCreateRowColumn(frame[0], "plRC", args, n);
+  RC[0] = XmCreateRowColumn(frame[0], "timeRC", args, n);
   RC[2] = XmCreateRadioBox(frame[2], "plotRC", args, 0);
   plRC[0] = XmCreateRowColumn(frame[3], "plRC", args, n);
   RC[3] = XmCreateRadioBox(plRC[0], "axisRC", args, 0);
@@ -639,7 +638,7 @@ void CreateControlWindow(Widget parent)
   RC[5] = XmCreateRowColumn(plRC[0], "axoptRC", args, 0);
   RC[6] = XmCreateRowColumn(frame[4], "panelRC", args, 0);
   RC[7] = XmCreateRowColumn(frame[5], "trackRC", args, 0);
-  XtManageChild(plRC[0]); //XtManageChild(plRC[1]);
+  XtManageChild(plRC[0]);
   XtManageChild(RC[0]);
   XtManageChild(RC[2]); XtManageChild(RC[3]);
   XtManageChild(RC[4]); XtManageChild(RC[5]);
@@ -648,19 +647,32 @@ void CreateControlWindow(Widget parent)
 
   /* Start & End Time widgets.
    */
+  plRC[0] = XmCreateRowColumn(RC[0], "plRC", args, n);
+  plRC[1] = XmCreateRowColumn(RC[0], "pgButtRC", args, n);
+  XtManageChildren(plRC, 2);
   n = 0;
-  timeText[0] = XmCreateTextField(RC[0], "timeText", args, n);
-  timeText[1] = XmCreateTextField(RC[0], "timeText", args, n);
+  timeText[0] = XmCreateTextField(plRC[0], "timeText", args, n);
+  timeText[1] = XmCreateTextField(plRC[0], "timeText", args, n);
   XtManageChildren(timeText, 2);
   XtAddCallback(timeText[0], XmNlosingFocusCallback, ValidateTime, NULL);
   XtAddCallback(timeText[1], XmNlosingFocusCallback, ValidateTime, NULL);
 
   n = 0;
-  b[0] = XmCreatePushButton(RC[0], "applyButton", args, n);
-  b[1] = XmCreatePushButton(RC[0], "All", args, n);
+  b[0] = XmCreatePushButton(plRC[0], "applyButton", args, n);
+  b[1] = XmCreatePushButton(plRC[0], "All", args, n);
   XtManageChildren(b, 2);
   XtAddCallback(b[0], XmNactivateCallback, ApplyTimeChange, NULL);
   XtAddCallback(b[1], XmNactivateCallback, ApplyTimeChange, (XtPointer)0xFFFF);
+
+  n = 0;
+  bkd = XmCreatePushButton(plRC[1], "pageBkd", args, n);
+  XtAddCallback(bkd, XmNactivateCallback, PageBackward, NULL);
+  XtManageChild(bkd);
+
+  n = 0;
+  fwd = XmCreatePushButton(plRC[1], "pageFwd", args, n);
+  XtAddCallback(fwd, XmNactivateCallback, PageForward, NULL);
+  XtManageChild(fwd);
 
 
   if (RealTime)

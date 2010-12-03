@@ -30,6 +30,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2007
 #include <unistd.h>
 #include <Xm/FileSB.h>
 #include <Xm/List.h>
+#include <Xm/TextF.h>
 
 #define NO_NETCDF_2
 
@@ -312,15 +313,18 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 }	/* END ADDDATAFILE */
 
 /* -------------------------------------------------------------------- */
-void SetList()
+void SetList(Widget w, XtPointer client, XtPointer call)
 {
   size_t	nVars;
   DATAFILE_INFO	*curFile = &dataFile[CurrentDataFile];
   XmString	item[curFile->Variable.size()];
 
-  extern std::string varFilter;
+  std::string varFilter;
+  extern Widget varFilterText;
 
   XmListDeleteAllItems(varList);
+
+  varFilter = XmTextFieldGetString(varFilterText);
 
   nVars = 0;
   for (size_t i = 0; i < curFile->Variable.size(); ++i)
@@ -619,7 +623,7 @@ void AddVariable(DATASET_INFO *set, int indx)
 
     vp = new VARTBL;
     dataFile[CurrentDataFile].Variable.push_back(vp);
-    SetList();
+    SetList(NULL, NULL, NULL);
 
     set->varInfo = vp;
 
