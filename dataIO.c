@@ -324,12 +324,17 @@ void SetList(Widget w, XtPointer client, XtPointer call)
   XmListDeleteAllItems(varList);
 
   varFilter = XmTextFieldGetString(varFilterText);
+  std::transform(varFilter.begin(), varFilter.end(), varFilter.begin(), (int(*)(int)) std::toupper);
 
   nVars = 0;
   for (size_t i = 0; i < curFile->Variable.size(); ++i)
-    if (varFilter.length() == 0 ||
-	curFile->Variable[i]->name.find(varFilter, 0) != std::string::npos)
+  {
+    std::string tv = curFile->Variable[i]->name;
+    std::transform(tv.begin(), tv.end(), tv.begin(), (int(*)(int)) std::toupper);
+
+    if (varFilter.length() == 0 || tv.find(varFilter, 0) != std::string::npos)
       item[nVars++] = XmStringCreateLocalized(const_cast<char *>(curFile->Variable[i]->name.c_str()));
+  }
 
   XmListAddItems(varList, item, nVars, 1);
 
