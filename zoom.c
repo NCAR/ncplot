@@ -21,12 +21,21 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
 
 #include "define.h"
 
-static int	unZoom = false;
-static int	saveStartTime[4], saveEndTime[4];
-static float	xMin, xMax, yMin[2], yMax[2];
+#include <stack>
 
-static int	startX = 0, startY = 0;
-static int	endX = 0, endY = 0;
+struct zoom_info
+{
+  int	saveStartTime[4], saveEndTime[4];
+  float	xMin, xMax, yMin[2], yMax[2];
+
+};
+
+// Corner points from drawing the box.
+static int startX = 0, startY = 0;
+static int endX = 0, endY = 0;
+
+static std::stack<struct zoom_info> zoom_stack;
+struct zoom_info this_zoom;
 
 
 /* -------------------------------------------------------------------- */
@@ -79,14 +88,11 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
                          (XtEventHandler)DoTheBox, NULL);
     }
 
-  if (xb->x < mainPlot[0].x.LV || xb->x > mainPlot[0].x.RV ||
-      xb->y < mainPlot[0].x.TH || xb->y > mainPlot[0].x.BH)
-    {
-    if ((xb->state & Button1MotionMask) == 0)
-      cancel = true;
-
-    return;
-    }
+  // Keep it bounds.
+  if (xb->x < mainPlot[0].x.LV) xb->x = mainPlot[0].x.LV;
+  if (xb->x > mainPlot[0].x.RV) xb->x = mainPlot[0].x.RV;
+  if (xb->y < mainPlot[0].x.TH) xb->y = mainPlot[0].x.TH;
+  if (xb->y > mainPlot[0].x.BH) xb->y = mainPlot[0].x.BH;
 
   if ((xb->state & Button1MotionMask) != 0)
     if (cancel || endX < startX || endY < startY)
@@ -115,20 +121,20 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
 
     /* Save off current values for unzoom.
      */
-    memcpy((char *)saveStartTime, (char *)UserStartTime, 4*sizeof(int));
-    memcpy((char *)saveEndTime, (char *)UserEndTime, 4*sizeof(int));
+    memcpy((void *)this_zoom.saveStartTime, (void *)UserStartTime, 4*sizeof(int));
+    memcpy((void *)this_zoom.saveEndTime, (void *)UserEndTime, 4*sizeof(int));
 
     if (PlotType == TIME_SERIES)
       {
       int	stpe, etpe;
       float	pixPerSec;
 
-      xMin = mainPlot[0].Xaxis.min;
-      xMax = mainPlot[0].Xaxis.max;
-      yMin[0] = mainPlot[0].Yaxis[0].min;
-      yMax[0] = mainPlot[0].Yaxis[0].max;
-      yMin[1] = mainPlot[0].Yaxis[1].min;
-      yMax[1] = mainPlot[0].Yaxis[1].max;
+      this_zoom.xMin = mainPlot[0].Xaxis.min;
+      this_zoom.xMax = mainPlot[0].Xaxis.max;
+      this_zoom.yMin[0] = mainPlot[0].Yaxis[0].min;
+      this_zoom.yMax[0] = mainPlot[0].Yaxis[0].max;
+      this_zoom.yMin[1] = mainPlot[0].Yaxis[1].min;
+      this_zoom.yMax[1] = mainPlot[0].Yaxis[1].max;
 
       pixPerSec = (float)mainPlot[0].x.HD / NumberSeconds;
       stpe = (int)((startX - mainPlot[0].x.LV) / pixPerSec);
@@ -144,49 +150,48 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
 
       if (NumberOfPanels == 1)
         {
-        mainPlot[0].Yaxis[0].min += ((yMax[0] - yMin[0]) *
+        mainPlot[0].Yaxis[0].min += ((this_zoom.yMax[0] - this_zoom.yMin[0]) *
                 ((float)(mainPlot[0].x.BH - endY) / mainPlot[0].x.VD));
 
-        mainPlot[0].Yaxis[0].max -= ((yMax[0] - yMin[0]) *
+        mainPlot[0].Yaxis[0].max -= ((this_zoom.yMax[0] - this_zoom.yMin[0]) *
                 ((float)(startY - mainPlot[0].x.TH) / mainPlot[0].x.VD));
 
-        mainPlot[0].Yaxis[1].min += ((yMax[1] - yMin[1]) *
+        mainPlot[0].Yaxis[1].min += ((this_zoom.yMax[1] - this_zoom.yMin[1]) *
                 ((float)(mainPlot[0].x.BH - endY) / mainPlot[0].x.VD));
 
-        mainPlot[0].Yaxis[1].max -= ((yMax[1] - yMin[1]) *
+        mainPlot[0].Yaxis[1].max -= ((this_zoom.yMax[1] - this_zoom.yMin[1]) *
                 ((float)(startY - mainPlot[0].x.TH) / mainPlot[0].x.VD));
         }
       }
     else
       {
-      xMin = xyyPlot[0].Xaxis.min;
-      xMax = xyyPlot[0].Xaxis.max;
-      yMin[0] = xyyPlot[0].Yaxis[0].min;
-      yMax[0] = xyyPlot[0].Yaxis[0].max;
-      yMin[1] = xyyPlot[0].Yaxis[1].min;
-      yMax[1] = xyyPlot[0].Yaxis[1].max;
+      this_zoom.xMin = xyyPlot[0].Xaxis.min;
+      this_zoom.xMax = xyyPlot[0].Xaxis.max;
+      this_zoom.yMin[0] = xyyPlot[0].Yaxis[0].min;
+      this_zoom.yMax[0] = xyyPlot[0].Yaxis[0].max;
+      this_zoom.yMin[1] = xyyPlot[0].Yaxis[1].min;
+      this_zoom.yMax[1] = xyyPlot[0].Yaxis[1].max;
 
-      xyyPlot[0].Xaxis.min += ((xMax - xMin) *
+      xyyPlot[0].Xaxis.min += ((this_zoom.xMax - this_zoom.xMin) *
           ((float)(startX - xyyPlot[0].x.LV) / xyyPlot[0].x.HD));
 
-      xyyPlot[0].Xaxis.max -= ((xMax - xMin) *
+      xyyPlot[0].Xaxis.max -= ((this_zoom.xMax - this_zoom.xMin) *
           ((float)(xyyPlot[0].x.RV - endX) / xyyPlot[0].x.HD));
 
-      xyyPlot[0].Yaxis[0].min += ((yMax[0] - yMin[0]) *
+      xyyPlot[0].Yaxis[0].min += ((this_zoom.yMax[0] - this_zoom.yMin[0]) *
           ((float)(xyyPlot[0].x.BH - endY) / xyyPlot[0].x.VD));
 
-      xyyPlot[0].Yaxis[0].max -= ((yMax[0] - yMin[0]) *
+      xyyPlot[0].Yaxis[0].max -= ((this_zoom.yMax[0] - this_zoom.yMin[0]) *
               ((float)(startY - xyyPlot[0].x.TH) / xyyPlot[0].x.VD));
 
-      xyyPlot[0].Yaxis[1].min += ((yMax[1] - yMin[1]) *
+      xyyPlot[0].Yaxis[1].min += ((this_zoom.yMax[1] - this_zoom.yMin[1]) *
           ((float)(xyyPlot[0].x.BH - endY) / xyyPlot[0].x.VD));
 
-      xyyPlot[0].Yaxis[1].max -= ((yMax[1] - yMin[1]) *
+      xyyPlot[0].Yaxis[1].max -= ((this_zoom.yMax[1] - this_zoom.yMin[1]) *
               ((float)(startY - xyyPlot[0].x.TH) / xyyPlot[0].x.VD));
       }
 
-
-    unZoom = true;
+    zoom_stack.push(this_zoom);
     DrawMainWindow();
     }
   else
@@ -197,25 +202,28 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
 /* -------------------------------------------------------------------- */
 void UnZoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
 {
-  if (!unZoom)
+  if (zoom_stack.empty())
     return;
 
-  mainPlot[0].Xaxis.min = xMin;
-  mainPlot[0].Xaxis.max = xMax;
-  mainPlot[0].Yaxis[0].min = yMin[0];
-  mainPlot[0].Yaxis[0].max = yMax[0];
-  mainPlot[0].Yaxis[1].min = yMin[1];
-  mainPlot[0].Yaxis[1].max = yMax[1];
+  struct zoom_info top = zoom_stack.top();
 
-  if (memcmp((char *)saveStartTime, (char *)UserStartTime, 4*sizeof(int)) ||
-    memcmp((char *)saveStartTime, (char *)UserStartTime, 4*sizeof(int)))
+  mainPlot[0].Xaxis.min = top.xMin;
+  mainPlot[0].Xaxis.max = top.xMax;
+  mainPlot[0].Yaxis[0].min = top.yMin[0];
+  mainPlot[0].Yaxis[0].max = top.yMax[0];
+  mainPlot[0].Yaxis[1].min = top.yMin[1];
+  mainPlot[0].Yaxis[1].max = top.yMax[1];
+
+  if (memcmp((void *)top.saveStartTime, (void *)UserStartTime, 4*sizeof(int)) ||
+    memcmp((void *)top.saveStartTime, (void *)UserStartTime, 4*sizeof(int)))
     {
-    memcpy((char *)UserStartTime, (char *)saveStartTime, 4*sizeof(int));
-    memcpy((char *)UserEndTime, (char *)saveEndTime, 4*sizeof(int));
+    memcpy((void *)UserStartTime, (void *)top.saveStartTime, 4*sizeof(int));
+    memcpy((void *)UserEndTime, (void *)top.saveEndTime, 4*sizeof(int));
 
     ReadData();
     }
 
+  zoom_stack.pop();
   DrawMainWindow();
 
 }	/* END UNZOOM */
