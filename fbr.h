@@ -50,7 +50,7 @@ static String fallback_resources[] =
   "*buttonRC.orientation:		HORIZONTAL",
 
   "*varFilterFrame.shadowType:		SHADOW_IN",
-  "*varFilterTitle.labelString:		Variable Filter",
+  "*varFilterTitle.labelString:		Variable Search",
 
   "*drawForm.XmPushButton.recomputeSize:	False",
   "*drawForm.XmPushButton.width:	32",

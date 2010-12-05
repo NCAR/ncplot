@@ -29,7 +29,7 @@ span.comment { background-color: #88FF88; font-style: italic; }
 <body>
 
 <h1 align=CENTER>NCPLOT User's Guide</h1>
-<h1 align=CENTER>Version 4.8.11</h1>
+<h1 align=CENTER>Version 4.9.0</h1>
 <hr>
 <h1 align=CENTER>Table Of Contents</h1>
 <ol type=A>
@@ -165,7 +165,7 @@ For single user, place the binary in ~/bin (Make sure ~/bin is in your
 <dt><h3>Environment</h3>
 <dd><b>ncplot</b> is written in C, requiring X11/R6 and Motif 1.2 (or later),
 and the <b>netCDF</b> library 3.0 or later.  Specifically it is developed
-on Redhat Linux, under Fedora 3, using the GNU compiler (<a href="http://gcc.gnu.org/">gcc</a> 3.4).
+and maintained on Redhat Enterprise Linux 5, using the GNU compiler (<a href="http://gcc.gnu.org/">gcc</a> 3.4).
 <p>
 <b>ncplot</b> uses, though it is not required, a shell environment variable
 called <b>DATA_DIR</b> as the default directory to locate data files.
@@ -292,6 +292,8 @@ Select which panel you want to add or delete variables from.  Use the
 and location, just click on the variable you wish to <b>select</b>.
 <p>
 <dd>To <b>de-select</b> a variable, click on it again.  The file, axis, location and panel must all match from when the variable was selected.  This can get confusing if you are drawing data from multiple files.  When things get out of hand, you can can clear all variables from the current plot via the <b>Options</b> menu.
+<p>
+The <b>Variable Search</b> allows the user to quickly subset the visible list of variables based on the text typed into this box.
 
 <dt><h3>Options</h3>
 <dd>
@@ -417,7 +419,7 @@ of your printout, this is controlled via the <b>Printer Setup</b> option.
 of what you want to zoom in on, hold the left mouse button down, and drag the
 box over the segment you want to see.  Moving left or above the initial
 point will cancel the zoom when you let go.  Your mileage may vary if
-autoscaling is turned on.  There is one level of un-zoom located in the
+autoscaling is turned on.  There is a un-zoom located in the
 Options menu.
 <p>
 <dt><b>Menu accelerators</b>
@@ -551,7 +553,7 @@ in the main plot window.  Sample rates must match.
 <dt><h3>Options Menu</h3>
  <dl>
  <dt><b>Un-zoom</b>.
- <dd>The "box-zoom" has a stack supporting one level of Un-zoom.
+ <dd>The drag-zoom has a stack, choose Un-zoom repeatedly to back out.
 <p>
  <dt><b>Clear current plot</b>.
  <dd>Remove all variables from the currently visible plot (Time-series, XY,
@@ -763,6 +765,6 @@ Research Aviation Facility.<br>
 <hr>
 <font size=2>
 Last update:
-Sat Feb  1 07:11:34 MST 2007
+Sun Dec  5 10:45:00 MST 2010
 </body>
 </html>
