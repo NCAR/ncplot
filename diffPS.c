@@ -78,6 +78,8 @@ void diffPostScript(Widget w, XtPointer client, XtPointer call)
       dataFile[dataSet[1].fileIndex].ShowPrelimDataWarning)
     warning = true;
 
+  diffPlot.title = mainPlot[0].title;
+  diffPlot.subTitle = mainPlot[0].subTitle;
   PStitles(fp, &diffPlot, warning);
   PSbox(fp, &diffPlot);
 
