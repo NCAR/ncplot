@@ -611,31 +611,21 @@ int LoadVariable(DATASET_INFO *set, std::string varName)
 }	/* END LOADVARIABLE */
 
 /* -------------------------------------------------------------------- */
-void AddVariable(DATASET_INFO *set, int indx)
+void AddVariable(DATASET_INFO *set, const char *var)
 {
+  int indx;
+
   set->fileIndex = CurrentDataFile;
   set->panelIndex = CurrentPanel;
   set->scaleLocation = whichSide();
 
-  if (indx != COMPUTED)
-    set->varInfo = dataFile[CurrentDataFile].Variable[indx];
-  else
+  if ((indx = SearchTable(dataFile[CurrentDataFile].Variable, var)) == ERR)
     {
-    VARTBL	*vp;
-    char	tmp[32];
-    static int	expCnt = 0;
-
-    vp = new VARTBL;
-    dataFile[CurrentDataFile].Variable.push_back(vp);
-    SetList(NULL, NULL, NULL);
-
-    set->varInfo = vp;
-
-    sprintf(tmp, "USER%d", expCnt);
-    set->varInfo->name = tmp;
-    set->varInfo->OutputRate = 1;
-    set->varInfo->inVarID = COMPUTED;
+    fprintf(stderr, "AddVariable: Variable %s not found, should not happen!\n", var);
+    return;
     }
+
+  set->varInfo = dataFile[CurrentDataFile].Variable[indx];
 
   set->data = NULL;
   set->head = 0;
@@ -650,12 +640,9 @@ void AddVariable(DATASET_INFO *set, int indx)
 /* -------------------------------------------------------------------- */
 void ReduceData(int start, int newNumberSeconds)
 {
-  size_t i, rate, set;
-  int	hours, mins, sex;
-
-  for (set = 0; set < NumberDataSets; ++set)
+  for (size_t set = 0; set < NumberDataSets; ++set)
     {
-    rate = dataSet[set].nPoints / NumberSeconds;
+    size_t rate = dataSet[set].nPoints / NumberSeconds;
     dataSet[set].nPoints = newNumberSeconds * rate;
 
     memcpy((char *)dataSet[set].data, (char *)&dataSet[set].data[start*rate],
@@ -665,12 +652,12 @@ void ReduceData(int start, int newNumberSeconds)
                 dataSet[set].nPoints * sizeof(NR_TYPE));
     }
 
-  for (set = 0; set < expSet.size(); ++set)
+  for (size_t set = 0; set < expSet.size(); ++set)
     {
     if (expSet[set].nPoints == 0)
       continue;
 
-    rate = expSet[set].nPoints / NumberSeconds;
+    size_t rate = expSet[set].nPoints / NumberSeconds;
     expSet[set].nPoints = newNumberSeconds * rate;
 
     memcpy((char *)expSet[set].data, (char *)&expSet[set].data[start*rate],
@@ -685,11 +672,11 @@ void ReduceData(int start, int newNumberSeconds)
 
   /* Increment User Start Time accordingly.
    */
-  hours = start / 3600; start -= hours * 3600;
-  mins = start / 60; start -= mins * 60;
-  sex = start;
+  int hours = start / 3600; start -= hours * 3600;
+  int mins = start / 60; start -= mins * 60;
+  int secs = start;
 
-  if ((UserStartTime[2] += sex) > 59) {
+  if ((UserStartTime[2] += secs) > 59) {
     UserStartTime[2] -= 60;
     ++UserStartTime[1];
     }
@@ -706,11 +693,11 @@ void ReduceData(int start, int newNumberSeconds)
    */
   hours = newNumberSeconds / 3600; newNumberSeconds -= hours * 3600;
   mins = newNumberSeconds / 60; newNumberSeconds -= mins * 60;
-  sex = newNumberSeconds;
+  secs = newNumberSeconds;
 
   UserEndTime[0] = UserStartTime[0] + hours;
   UserEndTime[1] = UserStartTime[1] + mins;
-  UserEndTime[2] = UserStartTime[2] + sex;
+  UserEndTime[2] = UserStartTime[2] + secs;
 
   if (UserEndTime[2] > 59) {
     UserEndTime[2] -= 60;
@@ -729,7 +716,7 @@ void ReduceData(int start, int newNumberSeconds)
   SetTimeText();
   DataChanged = true;
 
-  for (i = 0; i < NumberDataSets; ++i)
+  for (size_t i = 0; i < NumberDataSets; ++i)
     ComputeStats(&dataSet[i]);
 
   findMinMax();
@@ -737,12 +724,18 @@ void ReduceData(int start, int newNumberSeconds)
 }	/* END REDUCEDATA */
 
 /* -------------------------------------------------------------------- */
-int DeleteVariable(DATASET_INFO *sets, size_t nSets, int indx)
+int DeleteVariable(DATASET_INFO *sets, size_t nSets, const char *var)
 {
-  size_t set;
+  int indx;
   bool rc = false;
 
-  for (set = 0; set < nSets; ++set)
+  if ((indx = SearchTable(dataFile[CurrentDataFile].Variable, var)) == ERR)
+    {
+    fprintf(stderr, "DeleteVariable: Variable %s not found, should not happen!\n", var);
+    return rc;
+    }
+
+  for (size_t set = 0; set < nSets; ++set)
     if (sets[set].fileIndex == CurrentDataFile &&
         sets[set].panelIndex == CurrentPanel &&
         sets[set].varInfo == dataFile[sets[set].fileIndex].Variable[indx])

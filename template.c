@@ -383,7 +383,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         if ((x2 = XmListItemPos(varList, name)) > 0)
           {
           DataChanged = true;
-          AddVariable(&dataSet[NumberDataSets++], x2 - 1);
+          AddVariable(&dataSet[NumberDataSets++], s);
           mainPlot[CurrentPanel].Yaxis[x1].label =
 			dataSet[NumberDataSets-1].stats.units;
 
@@ -510,14 +510,14 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           if (x3 == X_AXIS)
             {
             DataChanged = true;
-            AddVariable(&xyXset[NumberXYXsets++], x2 - 1);
+            AddVariable(&xyXset[NumberXYXsets++], s);
             xyyPlot[CurrentPanel].Xaxis.label =
 			xyXset[NumberXYXsets-1].stats.units;
             }
           else
             {
             DataChanged = true;
-            AddVariable(&xyYset[NumberXYYsets++], x2 - 1);
+            AddVariable(&xyYset[NumberXYYsets++], s);
             xyyPlot[CurrentPanel].Yaxis[x1].label =
 			xyYset[NumberXYYsets-1].stats.units;
             xyYset[NumberXYYsets].scaleLocation = x1;
@@ -649,7 +649,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         if ((x2 = XmListItemPos(varList, name)) > 0)
           {
           DataChanged = true;
-          AddVariable(&xyzSet[x1], x2 - 1);
+          AddVariable(&xyzSet[x1], s);
 
           switch (x1)
             {

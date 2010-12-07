@@ -149,10 +149,10 @@ void ToggleTracking(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
 {
-  int	position;
-
-  position = ((XmListCallbackStruct *)call)->item_position - 1;
-
+  char *selectedVariable;
+  int  position = ((XmListCallbackStruct *)call)->item_position - 1;
+  XmString item = ((XmListCallbackStruct *)call)->item;
+  XmStringGetLtoR(item, XmSTRING_DEFAULT_CHARSET, &selectedVariable);
 
   DataChanged = True;
 
@@ -161,7 +161,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
     case TIME_SERIES:
       /* Try to delete variable first, if no match, then add it.
        */
-      if (DeleteVariable(dataSet, NumberDataSets, position) == False)
+      if (DeleteVariable(dataSet, NumberDataSets, selectedVariable) == False)
         {
         if (NumberDataSets == MAX_DATASETS)
           {
@@ -169,7 +169,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
           return;
           }
 
-        AddVariable(&dataSet[NumberDataSets++], position);
+        AddVariable(&dataSet[NumberDataSets++], selectedVariable);
         }
       else
         --NumberDataSets;
@@ -180,7 +180,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
     case XY_PLOT:
       if (choosingXaxis())
         {
-        if (DeleteVariable(xyXset, NumberXYXsets, position) == False)
+        if (DeleteVariable(xyXset, NumberXYXsets, selectedVariable) == False)
           {
           if (NumberXYXsets == MAX_DATASETS)
             {
@@ -188,7 +188,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
             return;
             }
 
-          AddVariable(&xyXset[NumberXYXsets++], position);
+          AddVariable(&xyXset[NumberXYXsets++], selectedVariable);
           }
         else
           --NumberXYXsets;
@@ -197,7 +197,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
         }
       else
         {
-        if (DeleteVariable(xyYset, NumberXYYsets, position) == False)
+        if (DeleteVariable(xyYset, NumberXYYsets, selectedVariable) == False)
           {
           if (NumberXYYsets == MAX_DATASETS)
             {
@@ -205,7 +205,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
             return;
             }
 
-          AddVariable(&xyYset[NumberXYYsets++], position);
+          AddVariable(&xyYset[NumberXYYsets++], selectedVariable);
           }
         else
           --NumberXYYsets;
@@ -221,7 +221,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
         if (xyzSet[0].varInfo)
           delete [] xyzSet[0].data;
 
-        AddVariable(&xyzSet[0], position);
+        AddVariable(&xyzSet[0], selectedVariable);
         sprintf(buffer, "%s (%s)",
 		xyzSet[0].varInfo->name.c_str(), xyzSet[0].stats.units.c_str());
         xyzPlot.Xaxis.label = buffer;
@@ -232,7 +232,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
         if (xyzSet[2].varInfo)
           delete [] xyzSet[2].data;
 
-        AddVariable(&xyzSet[2], position);
+        AddVariable(&xyzSet[2], selectedVariable);
         sprintf(buffer, "%s (%s)",
 		xyzSet[2].varInfo->name.c_str(), xyzSet[2].stats.units.c_str());
         xyzPlot.Zaxis.label = buffer;
@@ -243,7 +243,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
         if (xyzSet[1].varInfo)
           delete [] xyzSet[1].data;
 
-        AddVariable(&xyzSet[1], position);
+        AddVariable(&xyzSet[1], selectedVariable);
         sprintf(buffer, "%s (%s)",
                 xyzSet[1].varInfo->name.c_str(), xyzSet[1].stats.units.c_str());
         xyzPlot.Yaxis[0].label = buffer;
@@ -252,6 +252,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
       break;
     }
 
+  XtFree(selectedVariable);
   findMinMax();
   DrawMainWindow();
 

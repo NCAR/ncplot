@@ -53,8 +53,8 @@ extern instanceRec	iv;
 /* Procedures	*/
 char	*get_legend(), *ExtractFileDialogFilter();
 void	*GetMemory(size_t nb), FreeMemory(void *p);
-int	DeleteVariable(DATASET_INFO *, size_t, int), isAverage(), whichSide(),
-	choosingXaxis(), choosingYaxis(), choosingZaxis(),
+int	DeleteVariable(DATASET_INFO *, size_t, const char *), isAverage(),
+	whichSide(), choosingXaxis(), choosingYaxis(), choosingZaxis(),
 	yLegendX(PLOT_INFO *, int row), yLegendPS(PLOT_INFO *, int row),
 	LoadVariable(DATASET_INFO *, std::string varName);
 
@@ -84,7 +84,7 @@ void	NewDataFile(Widget, XtPointer, XtPointer),
 	SetDataFile(Widget, XtPointer, XmToggleButtonCallbackStruct *),
 	SaveTemplate(Widget, XtPointer, XtPointer),
 	LoadTemplate(Widget, XtPointer, XtPointer),
-	AddVariable(DATASET_INFO *, int), SetTimeText(),
+	AddVariable(DATASET_INFO *, const char *), SetTimeText(),
 	FromSecondsSinceMidnite(int timeSeg[]),
 	GetTimeInterval(int InputFile, DATAFILE_INFO *),
 	ReadData(), ReduceData(int start, int newNumberSeconds);
