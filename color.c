@@ -26,6 +26,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 
+#include <stdint.h>
+
 #ifdef PNG
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -40,9 +42,9 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
 struct colorinfo_struct {
 	char		name[20];
 	float		ps_rgb[3];	/* For PostScript	*/
-	unsigned short	x_rgb[3];	/* For X (save PNG)	*/
-	unsigned long	pixel;
-	unsigned long	cpixel;		/* Xserver byte order of 'pixel' */
+	uint16_t	x_rgb[3];	/* For X (save PNG)	*/
+	uint32_t	pixel;
+	uint32_t	cpixel;		/* Xserver byte order of 'pixel' */
 } colorInfo[] = {
 	{ "Black",	{ 0.0, 0.0, 0.0 },	{ 0, 0, 0}, 0, 0 },
 	{ "red",	{ 1.0, 0.0, 0.0 },	{ 0, 0, 0}, 0, 0 },
@@ -108,7 +110,7 @@ void CheckByteSwap(XImage *image)
 }
 
 /* -------------------------------------------------------------------- */
-int GetColorIndex(unsigned long pixel)
+int GetColorIndex(uint32_t pixel)
 {
   int	i;
 
@@ -134,7 +136,7 @@ int NumberOfColors()
 }
 
 /* -------------------------------------------------------------------- */
-unsigned long GetColor(int indx)
+uint32_t GetColor(int indx)
 {
   return(colorInfo[indx].pixel);
 }
@@ -146,13 +148,13 @@ void ResetColors()
 }
  
 /* -------------------------------------------------------------------- */
-unsigned long NextColor()
+uint32_t NextColor()
 {
   return(GetColor(++colorIndex));
 }
 
 /* -------------------------------------------------------------------- */
-unsigned long CurrentColor()
+uint32_t CurrentColor()
 {
   return(GetColor(colorIndex));
 }
@@ -188,19 +190,19 @@ float *CurrentColorRGB_PS()
 }
  
 /* -------------------------------------------------------------------- */
-unsigned short *GetColorRGB_X(int indx)
+uint16_t *GetColorRGB_X(int indx)
 {
   return(colorInfo[indx].x_rgb);
 }
 
 /* -------------------------------------------------------------------- */
-unsigned short *NextColorRGB_X()
+uint16_t *NextColorRGB_X()
 {
   return(GetColorRGB_X(++colorIndex));
 }
 
 /* -------------------------------------------------------------------- */
-unsigned short *CurrentColorRGB_X()
+uint16_t *CurrentColorRGB_X()
 {
   return(GetColorRGB_X(colorIndex));
 }
@@ -278,9 +280,9 @@ void InitializeColors(PLOT_INFO *plot)
   for (i = 0; i < numberColors; ++i)
     {
     if (image->depth == 16)
-      colorInfo[i].cpixel = ((unsigned short *)image->data)[i];
+      colorInfo[i].cpixel = ((uint16_t *)image->data)[i];
     if (image->depth > 16)
-      colorInfo[i].cpixel = ((unsigned long *)image->data)[i];
+      colorInfo[i].cpixel = ((uint32_t *)image->data)[i];
     }
 
 }

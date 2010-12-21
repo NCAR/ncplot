@@ -75,7 +75,7 @@ void	QueryCancel(Widget, XtPointer, XtPointer),
 	CancelWarning(Widget, XtPointer, XtPointer),
 	ErrorOK(Widget, XtPointer, XtPointer);
 
-unsigned long	GetColor(int), NextColor(), CurrentColor();
+uint32_t	GetColor(int), NextColor(), CurrentColor();
 float	*GetColorRGB_PS(int), *NextColorRGB_PS(), *CurrentColorRGB_PS();
 void	PushColor(), PopColor();
 

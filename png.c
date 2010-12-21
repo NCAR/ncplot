@@ -29,7 +29,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 2000-2001
 #include <X11/Xlib.h>
 
 
-int	NumberOfColors(), GetColorIndex(unsigned long);
+int	NumberOfColors(), GetColorIndex(uint32_t);
 void	CheckByteSwap(XImage *image);
 unsigned short	*GetColorRGB_X(int);
 static	void _SavePNG(char file_name[], XImage *image);
@@ -231,13 +231,13 @@ static void _SavePNG(char file_name[], XImage *image)
 
       case 16:
         for (j = 0; j < image->width; ++j)
-          row_pointers[i][j] = (png_byte)GetColorIndex(((unsigned short *)p)[j]);
+          row_pointers[i][j] = (png_byte)GetColorIndex(((uint16_t *)p)[j]);
 
         break;
 
       case 24: case 32:
         for (j = 0; j < image->width; ++j)
-          row_pointers[i][j] = (png_byte)GetColorIndex(((unsigned long *)p)[j]);
+          row_pointers[i][j] = (png_byte)GetColorIndex(((uint32_t *)p)[j]);
 
         break;
       }
