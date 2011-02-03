@@ -230,18 +230,16 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 
   /* Read in the variables.
    */
+  int time_dim;
+  nc_inq_dimid(InputFile, "Time", &time_dim);
   curFile->Variable.clear();
   curFile->categories.clear();
   for (i = 0; i < nVars; ++i)
     {
     nc_inq_var(InputFile, i, name, NULL, &nDims, dimIDs, NULL);
 
-    if (strcmp(name, "base_time") == 0 || strcmp(name, "time_offset") == 0)
+    if (dimIDs[0] != time_dim || nDims > 2 || strcmp(name, "time_offset") == 0)
       continue;
-
-    if (nDims > 2)
-      continue;
-
 
     vp = new VARTBL;
     curFile->Variable.push_back(vp);
