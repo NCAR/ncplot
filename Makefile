@@ -16,8 +16,6 @@ YFLAGS	= -d
 DEFINES	= -DPNG
 INCLUDES= 
 LIB_DIRS= 
-# This line is for static linking Motif
-#LIBS    = -Wl,-Bstatic -lXm -Wl,-Bdynamic -lXt -lXmu -lXp -lXext -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lfl -lm -lpng -lz -lpthread
 LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lm -lpng -lz -lpthread
 BIN	= ${JLOCAL}/bin
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL5
@@ -28,32 +26,14 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL5
 # and get OpenMotif from here (OpenMotif from Macports was not working for us):
 #  http://www.ist-inc.com/downloads/motif_download.html
 #
+# setenv LOCAL /opt/local
+# setenv JLOCAL /usr/local
+#
 #DEFINES	= -DPNG
-#INCLUDES= -I/usr/OpenMotif/include -I/opt/local/include
-#LIB_DIRS= -L/usr/OpenMotif/lib -L/usr/X11R6/lib -L/opt/local/lib
+#INCLUDES= -I/usr/OpenMotif/include -I${LOCAL}/include
+#LIB_DIRS= -L/usr/OpenMotif/lib -L/usr/X11R6/lib -L${LOCAL}/lib
 #LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
 #BIN	= /usr/local/bin
-
-# Solaris
-#
-#DEFINES	= -DSVR4 -DPNG
-#INCLUDES= -I${JLOCAL}/include -I/usr/openwin/include -I/usr/dt/include
-#LIBS	= -Wl,-Bstatic -lpng -lz -Wl,-Bdynamic -R /usr/dt/lib -lXm -lXt -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -ll -lm -lpthread
-#LIB_DIRS= -L/net/lcal_sol/lib
-#BIN	= /net/local_sol/bin
-#ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.Solaris2.9
-
-# HP
-#
-#DEFINES	= -DSVR4 -DPNG
-#INCLUDES= -I${JLOCAL}/include -I/usr/include/X11R6 -I/usr/include/Motif1.2
-#LIB_DIRS= -L${JLOCAL}/lib
-#LIBS    = -lXm -lXt -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -ll -lm -L/usr/lib/Motif1.2 -L/usr/lib/X11R6 -L/lib/pa1.1
-
-# Irix
-#
-#INCLUDES= -I${JLOCAL}/include
-#LIBS	= -lXm -lXt -lX11 -Wl,-Bstatic -lnetcdf -Wl,-Bdynamic -lm
 
 CFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES}
 
