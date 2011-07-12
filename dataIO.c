@@ -869,7 +869,7 @@ bool getNCattr(int ncid, int varID, const char attr[], std::string& dest)
 /* -------------------------------------------------------------------- */
 bool isMissingValue(float target, float fillValue)
 {
-  if (isnan(fillValue) && isnan(target))
+  if (std::isnan(fillValue) && std::isnan(target))
     return(true);
   else
     if (fillValue == target)
