@@ -25,7 +25,7 @@ make
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir}
-cp ncplot %{buildroot}%{_bindir}
+cp %{name} %{buildroot}%{_bindir}
 
 %post
 
@@ -35,8 +35,10 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%{_bindir}/ncplot
+%{_bindir}/%{name}
 
 %changelog
+* Thu Jul 13 2011 Chris Webster <cjw@ucar.edu> - 1.0-2
+- updates for 4.9.1
 * Thu Sep 3 2009 Chris Webster <cjw@ucar.edu> - 1.0-1
 - initial version
