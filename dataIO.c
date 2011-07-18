@@ -231,7 +231,9 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   /* Read in the variables.
    */
   int time_dim;
-  nc_inq_dimid(InputFile, "Time", &time_dim);
+  if (nc_inq_dimid(InputFile, "Time", &time_dim) != NC_NOERR)
+      nc_inq_dimid(InputFile, "time", &time_dim);
+
   curFile->Variable.clear();
   curFile->categories.clear();
   for (i = 0; i < nVars; ++i)
