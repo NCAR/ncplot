@@ -139,7 +139,7 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void AddDataFile(Widget w, XtPointer client, XtPointer call)
 {
-  int		i, InputFile, nVars, nDims, dimIDs[3], varID;
+  int		i, InputFile, nVars, nDims, dimIDs[3];
   int		rc;
   char		name[100], *data_file;
   DATAFILE_INFO	*curFile;
@@ -167,17 +167,17 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 
   /* See if file exists.
    */
+  curFile->ncid = 0;
   if (access(curFile->fileName.c_str(), R_OK) != 0)
     {
     sprintf(buffer, "Can't open %s.", curFile->fileName.c_str());
     HandleError(buffer, Interactive, IRET);
-    curFile->ncid = 0;
     return;
     }
 
   /* Open Input File
    */
-  rc = nc_open(curFile->fileName.c_str(), NC_NOWRITE, &curFile->ncid);
+  rc = nc_open(curFile->fileName.c_str(), NC_NOWRITE, &InputFile);
   if (rc != NC_NOERR)
     {
     sprintf(buffer, "Can't open %s.\n\n%s", curFile->fileName.c_str(), nc_strerror(rc));
@@ -185,7 +185,33 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     return;
     }
 
-  InputFile = curFile->ncid;
+  /* Get Time dimension.
+   */
+  int time_dim;
+  if (nc_inq_dimid(InputFile, "Time", &time_dim) != NC_NOERR)
+    {
+    if (nc_inq_dimid(InputFile, "time", &time_dim) != NC_NOERR)
+      {
+      HandleError("File does not contain the Time dimension.", Interactive, IRET);
+      nc_close(InputFile);
+      return;
+      }
+    }
+
+  /* Get Time dimension.
+   */
+  int timeVarID;
+  if (nc_inq_varid(InputFile, "Time", &timeVarID) != NC_NOERR)
+    if (nc_inq_varid(InputFile, "time", &timeVarID) != NC_NOERR)
+      if (nc_inq_varid(InputFile, "time_offset", &timeVarID) != NC_NOERR)
+        {
+        HandleError("File does not contain the Time variable.", Interactive, IRET);
+        nc_close(InputFile);
+        return;
+        }
+
+
+  curFile->ncid = InputFile;
   ++NumberDataFiles;
 
   nc_inq_nvars(InputFile, &nVars);
@@ -230,10 +256,6 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
 
   /* Read in the variables.
    */
-  int time_dim;
-  if (nc_inq_dimid(InputFile, "Time", &time_dim) != NC_NOERR)
-      nc_inq_dimid(InputFile, "time", &time_dim);
-
   curFile->Variable.clear();
   curFile->categories.clear();
   for (i = 0; i < nVars; ++i)
@@ -277,12 +299,12 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     }
 
 
-  if (nc_inq_varid(InputFile, "Time", &varID) != NC_NOERR)
-    if (nc_inq_varid(InputFile, "time_offset", &varID) != NC_NOERR)
-      varID = -1;
-
+  /* Compute what I call the base data rate.  Most files will be 1 second files,
+   * including high-rate files.  This is for files with slow data, say every 5
+   * or 10 seconds.
+   */
   curFile->baseDataRate = 1;
-  if (varID != -1)
+  if (timeVarID != -1)
     {
     int max_read = 120;
     size_t start[2], count[2];
@@ -296,10 +318,10 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     start[0] = 0; start[1] = 0;
     count[0] = max_read; count[1] = 1;
 
-    nc_get_vara_float(InputFile, varID, start, count, tf);
+    nc_get_vara_float(InputFile, timeVarID, start, count, tf);
 
     curFile->baseDataRate = baseRate(tf, max_read);
-    nc_inq_vardimid( InputFile, varID, dimids );
+    nc_inq_vardimid( InputFile, timeVarID, dimids );
     nc_inq_dimlen( InputFile, dimids[0], &recs );
     days = (recs*curFile->baseDataRate) / 86400;
     curFile->FileEndTime[0] += days*24;
