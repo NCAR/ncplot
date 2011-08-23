@@ -5,7 +5,7 @@ OBJECT NAME:	init.c
 FULL NAME:	Initialize Procedures
 
 ENTRY POINTS:	Initialize()
-		processArgs()
+		ProcessArgs()
 
 STATIC FNS:	initPlot()
 
