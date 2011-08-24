@@ -303,7 +303,7 @@ static void CreateTrackOptWin()
   XtAddCallback(b[5], XmNvalueChangedCallback, ToggleEqualScaling, NULL);
 
   if (getenv("GMTHOME") == NULL)
-    XtSetSensitive(b[3], false);
+    XtSetSensitive(b[4], false);
 
 
   /* Wind vector options.
