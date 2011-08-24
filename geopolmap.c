@@ -302,7 +302,7 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
    */
   scale = sqrt((xAxis->max - xAxis->min) * (yAxis->max - yAxis->min));
 
-  sprintf(buf, "%s/bin/pscoast -R%d/%d/%d/%d -M -Na -W ",
+  sprintf(buf, "%s/bin/pscoast -R%d/%d/%d/%d -M -Na -W -Jx1d ",
 	getenv("GMTHOME"), xMin, xMax, yMin, yMax);
 
   if (scale > 60)	strcat(buf, "-Dc");	else
