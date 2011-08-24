@@ -302,7 +302,10 @@ static void CreateTrackOptWin()
   XtAddCallback(b[4], XmNvalueChangedCallback, ToggleGeoPolMap, NULL);
   XtAddCallback(b[5], XmNvalueChangedCallback, ToggleEqualScaling, NULL);
 
-  if (getenv("GMTHOME") == NULL)
+  /* GMTHOME is used by in-house builds of GMT (deprecating).
+   * GMT_SHAREDIR is used by RPM installations.
+   */
+  if (getenv("GMTHOME") == NULL && getenv("GMT_SHAREDIR") == NULL)
     XtSetSensitive(b[4], false);
 
 

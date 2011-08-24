@@ -292,6 +292,7 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
 {
   float	scale;
   int	xMin, xMax, yMin, yMax;
+  char	*env;
 
   xMin = (xAxis->min < 0.0) ? (int)xAxis->min-1 : (int)xAxis->min;
   yMin = (yAxis->min < 0.0) ? (int)yAxis->min-1 : (int)yAxis->min;
@@ -302,8 +303,12 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
    */
   scale = sqrt((xAxis->max - xAxis->min) * (yAxis->max - yAxis->min));
 
-  sprintf(buf, "%s/bin/pscoast -R%d/%d/%d/%d -M -Na -W -Jx1d ",
-	getenv("GMTHOME"), xMin, xMax, yMin, yMax);
+  if ( (env = getenv("GMTHOME")) )	// home built GMT
+    sprintf(buf, "%s/bin/pscoast -R%d/%d/%d/%d -M -Na -W -Jx1d ",
+	env, xMin, xMax, yMin, yMax);
+  else					// RPM GMT
+    sprintf(buf, "/usr/bin/pscoast -R%d/%d/%d/%d -M -Na -W -Jx1d ",
+	xMin, xMax, yMin, yMax);
 
   if (scale > 60)	strcat(buf, "-Dc");	else
   if (scale > 40)	strcat(buf, "-Dl");	else
