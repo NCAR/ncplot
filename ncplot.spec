@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
 Version: 4.9
-Release: 1
+Release: 2
 License: GPL
 Group: System Environment/Daemons
 Url: http://www.eol.ucar.edu/
@@ -28,6 +28,10 @@ mkdir -p %{buildroot}%{_bindir}
 cp %{name} %{buildroot}%{_bindir}
 
 %post
+
+echo
+echo Optionally \"yum install GMT GMT-coastlines-all\" and \"setenv GMT_SHAREDIR /usr/share/GMT\" for geo-political boundaries database.
+echo
 
 
 %clean
