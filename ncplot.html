@@ -29,7 +29,7 @@ span.comment { background-color: #88FF88; font-style: italic; }
 <body>
 
 <h1 align=CENTER>NCPLOT User's Guide</h1>
-<h1 align=CENTER>Version 4.9.0</h1>
+<h1 align=CENTER>Version 4.9.2</h1>
 <hr>
 <h1 align=CENTER>Table Of Contents</h1>
 <ol type=A>
@@ -102,6 +102,7 @@ span.comment { background-color: #88FF88; font-style: italic; }
   <li><a href="#sw2">How is my Spectrum being computed?</a>
  </ol>
  <li><a href="#cf">Configuration File</a>
+ <li><a href="#gmt">GMT Geo-Political Map Installation</a>
  <li><a href="#kp">Known problems</a>
 </ol>
  
@@ -353,11 +354,8 @@ the file from <b>ACE-1</b>:
 The trailing value of zero or one is not used by <b>ncplot</b>, but is
 relevant to <b>WINDS</b>.
 <p>
-  <li>The <b>geo-political map</b> makes use of the
-<a href="http://gmt.soest.hawaii.edu">GMT</a> <b>pscoast</b> command.
-The <b>GMTHOME</b> environment variable must be defined for <b>ncplot</b> to
-engage mapping.  The <b>pscoast</b> command must be in your <b>PATH</b>, and
-the coast libraries <b>$GMTHOME/lib/binned_*.cdf</b> (~75Mb) must be installed.
+  <li>The <b>geo-political map</b> makes use of the GMT coastline and
+geo-political maps.  See appendix on GMT Installation.
 <p>
   <li><b>Track scaling</b> is a convenience button to over-ride autoscaling and "square up" the track plot.  Degrees lat and lon are converted to a distance based on median lat, and then equal delta X and delta Y are computed.
   </ul>
@@ -740,6 +738,22 @@ The Unix command <b>showrgb(1)</b> can be used to view a list of all available
 color names (showrgb | more).  The <b>Colors</B> option allows you to override
 the plot trace colors.
 
+<a name="gmt"></a>
+<hr>
+<h1>GMT Geo-Political Map Installation</h1>
+
+The geo-political map makes use of the
+<a href="http://gmt.soest.hawaii.edu">GMT</a> <b>pscoast</b> command.
+<p>
+For GMT installation from source the <b>GMTHOME</b> environment variable must
+be defined for <b>ncplot</b> to engage mapping.  The <b>pscoast</b> command
+must be in your <b>$GMTHOME/bin</b>, and the coast libraries
+<b>$GMTHOME/lib/binned_*.cdf</b> (~75Mb) must be installed.
+<p>
+For GMT installation via Redhat RPMs the <b>GMT_SHAREDIR</b> environment variable
+must be defined (/usr/share/GMT most likely).
+<p>
+
 <a name="kp"></a>
 <hr>
 <h1>Known Problems</h1>
@@ -747,7 +761,7 @@ the plot trace colors.
 <li> Fedora Core 5 : setenv XKEYSYMDB /usr/share/X11/XKeysymDB
 <li>If the menu and button text shows up as squares, then some fonts are missing.
 'yum install "xorg-x11-fonts*"' should solve the problem.  We have noticed this on
-Fedora 9 and 10.
+Fedora 9 and up, and RHEL 6.
 <li>Time gaps in the netCDF file.  Time gaps should be filled with _FillValue or
 missing_value.  ncplot uses the TimeInterval global attribute to determine how many
 records are in the file.
@@ -765,6 +779,6 @@ Research Aviation Facility.<br>
 <hr>
 <font size=2>
 Last update:
-Sun Dec  5 10:45:00 MST 2010
+Sat Aug 27 14:09:29 MDT 2011
 </body>
 </html>
