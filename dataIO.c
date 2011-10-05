@@ -19,7 +19,7 @@ STATIC FNS:	findMinMax()
 		getNCattr()
 		readSet()
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2007
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2011
 -------------------------------------------------------------------------
 */
 
@@ -262,7 +262,8 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     {
     nc_inq_var(InputFile, i, name, NULL, &nDims, dimIDs, NULL);
 
-    if (dimIDs[0] != time_dim || nDims > 2 || strcmp(name, "time_offset") == 0)
+    if (nDims < 1 || nDims > 2 ||
+        dimIDs[0] != time_dim || strcmp(name, "time_offset") == 0)
       continue;
 
     vp = new VARTBL;
