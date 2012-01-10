@@ -34,7 +34,7 @@ static String fallback_resources[] =
   "*XmTextField.foreground:		black",
   "*XmForm.horizontalSpacing:		4",
   "*XmForm.verticalSpacing:		4",
-  "*topLevelShell.title:		ncplot 4.9.2",
+  "*topLevelShell.title:		ncplot 4.9.3",
   "*topLevelShell.iconName:		ncplot",
   "*topLevelShell.allowShellResize:	True",
   "*topLevelShell.x:			0",

@@ -82,7 +82,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
   size_t	i, nExps, fileIndx;
   VARTBL	*vi;
   std::string	varName;
-  char		*p;
+  char		*p, *s, *dot;
 
   if (NumberDataFiles == 0)
     return;
@@ -98,8 +98,36 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
       continue;
       }
 
-    XmTextFieldSetString(expText[nExps-1], p);
-    XmTextFieldSetString(expText[i], "");
+    XmTextFieldSetString(expText[nExps-1], buffer);
+    XmTextFieldSetString(expText[i], (char *)"");
+    free(p);
+    }
+
+  /* Check for .## and replace with 0.##.  i.e. all fractional numerics must
+   * have a leading 0.
+   */
+  for (i = 0; i < nExps; ++i)
+    {
+    p = s = XmTextFieldGetString(expText[i]);
+
+    dot = strchr(s, '.');
+    if (dot)
+    {
+      buffer[0] = '\0';
+      do
+      {
+        strncat(buffer, s, (size_t)dot-(size_t)s);
+        if (!isdigit(dot[-1]))
+          strcat(buffer, "0");
+        s = dot;
+      }
+      while ( (dot = strchr(dot+1, '.')) );
+      strncat(buffer, s, (size_t)dot-(size_t)s);
+    }
+    else
+      strcpy(buffer, s);
+
+    XmTextFieldSetString(expText[i], buffer);
     free(p);
     }
 
@@ -219,26 +247,26 @@ static void CreateExpressionWindow()
   ExpShell = XtCreatePopupShell("expShell",
                   topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  ExpWindow = XmCreateRowColumn(ExpShell, "expParRC", NULL, 0);
+  ExpWindow = XmCreateRowColumn(ExpShell, (char *)"expParRC", NULL, 0);
 
   n = 0; 
-  frame = XmCreateFrame(ExpWindow, "expFrame", args, n);
+  frame = XmCreateFrame(ExpWindow, (char *)"expFrame", args, n);
   XtManageChild(frame);
   
   n = 0; 
-  RC = XmCreateRowColumn(frame, "expRC", args, n);
+  RC = XmCreateRowColumn(frame, (char *)"expRC", args, n);
 
 
   for (size_t i = 0; i < MAX_EXPRESSIONS; ++i)
     {
-    plRC = XmCreateRowColumn(RC, "plRC", args, n);
+    plRC = XmCreateRowColumn(RC, (char *)"plRC", args, n);
     XtManageChild(plRC);
 
     sprintf(buffer, "USER%ld = ", i+1);
     label = XmCreateLabel(plRC, buffer, args, n);
     XtManageChild(label);
 
-    expText[i] = XmCreateTextField(plRC, "expText", args, n);
+    expText[i] = XmCreateTextField(plRC, (char *)"expText", args, n);
     XtManageChild(expText[i]);
     XtAddCallback(expText[i], XmNlosingFocusCallback, AcceptExpressions, NULL);
 
