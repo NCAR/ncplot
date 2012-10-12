@@ -314,7 +314,10 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     size_t recs;
     int days;
 
-    max_read = std::min((size_t)120, NumberSeconds);
+    nc_inq_vardimid( InputFile, timeVarID, dimids );
+    nc_inq_dimlen( InputFile, dimids[0], &recs );
+
+    max_read = std::min((size_t)120, recs);
 
     start[0] = 0; start[1] = 0;
     count[0] = max_read; count[1] = 1;
@@ -322,8 +325,6 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     nc_get_vara_float(InputFile, timeVarID, start, count, tf);
 
     curFile->baseDataRate = baseRate(tf, max_read);
-    nc_inq_vardimid( InputFile, timeVarID, dimids );
-    nc_inq_dimlen( InputFile, dimids[0], &recs );
     days = (recs*curFile->baseDataRate) / 86400;
     curFile->FileEndTime[0] += days*24;
     curFile->FileEndTime[3] += days*86400;
