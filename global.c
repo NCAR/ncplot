@@ -57,7 +57,8 @@ size_t	CurrentDataFile, CurrentDataSet, CurrentPanel,
 	NumberDataFiles, NumberDataSets, NumberXYYsets, NumberXYXsets,
 	NumberOfPanels, NumberOfXYpanels, nASCIIpoints;
 
-size_t	NumberSeconds, nDirectionArrows, nTimeStamps, LineThickness;
+size_t	NumberSeconds,			/* Number seconds being displayed */
+	nDirectionArrows, nTimeStamps, LineThickness;
 
 
 /* Regression coeffs	*/
