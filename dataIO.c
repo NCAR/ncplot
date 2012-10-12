@@ -915,13 +915,13 @@ static int baseRate(const float tf[], int n)
    * two which are not missing values, subtract and divide by distance of
    * indices.
    */
-  for (i = 0; i < n && isMissingValue(tf[i], DEFAULT_MISSING_VALUE); ++i)
+  for (i = 0; i < n && (isMissingValue(tf[i], DEFAULT_MISSING_VALUE) || isnan(tf[i])); ++i)
     ;
 
   fv[0] = tf[i];
   si = i++;
 
-  for (; i < n && isMissingValue(tf[i], DEFAULT_MISSING_VALUE); ++i)
+  for (; i < n && (isMissingValue(tf[i], DEFAULT_MISSING_VALUE) || isnan(tf[i])); ++i)
     ;
 
   if (i < n)
