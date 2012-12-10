@@ -39,7 +39,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2011
 static void freeDataSets(int);
 bool getNCattr(int ncid, int varID, const char attr[], std::string & dest);
 static bool VarCompareLT(const VARTBL *x, const VARTBL *y);
-static int baseRate(const float tf[], int n);
+static int baseRate(const double tf[], int n);
 
 
 /* Imported from exp.c */
@@ -309,7 +309,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     {
     int max_read = 120;
     size_t start[2], count[2];
-    float tf[max_read];
+    double tf[max_read];
     int dimids[3];
     size_t recs;
     int days;
@@ -322,7 +322,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     start[0] = 0; start[1] = 0;
     count[0] = max_read; count[1] = 1;
 
-    nc_get_vara_float(InputFile, timeVarID, start, count, tf);
+    nc_get_vara_double(InputFile, timeVarID, start, count, tf);
 
     curFile->baseDataRate = baseRate(tf, max_read);
     days = (recs*curFile->baseDataRate) / 86400;
@@ -906,10 +906,10 @@ bool isMissingValue(float target, float fillValue)
 }	/* END ISMISSINGVALUE */
 
 /* -------------------------------------------------------------------- */
-static int baseRate(const float tf[], int n)
+static int baseRate(const double tf[], int n)
 {
   int i, si = 0;
-  float fv[2];
+  double fv[2];
 
   /* Given the first n values of Time from the netCDF file, find the first
    * two which are not missing values, subtract and divide by distance of
