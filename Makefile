@@ -18,7 +18,7 @@ INCLUDES=
 LIB_DIRS= 
 LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lm -lpng -lz -lpthread
 BIN	= ${JLOCAL}/bin
-ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL5
+ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL6
 
 # Mac OS X
 #

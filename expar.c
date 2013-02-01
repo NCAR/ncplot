@@ -27,7 +27,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 2001-02
 #include <Xm/TextF.h>
 
 
-static const size_t MAX_EXPRESSIONS = 5;
+const size_t MAX_EXPRESSIONS = 5;
 
 #define MAX_EXP_VARS	(MAX_DATASETS)
 
@@ -62,13 +62,8 @@ void ComputeExp(DATASET_INFO *set)
 /* -------------------------------------------------------------------- */
 void GetExpression(Widget w, XtPointer client, XtPointer call)
 {
-  static bool	firstTime = True;
-
-  if (firstTime)
-    {
+  if (ExpWindow == 0)
     CreateExpressionWindow();
-    firstTime = False;
-    }
 
   XtManageChild(ExpWindow);
   XtPopup(XtParent(ExpWindow), XtGrabNone);
