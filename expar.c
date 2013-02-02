@@ -34,7 +34,7 @@ const size_t MAX_EXPRESSIONS = 5;
 Widget		expText[MAX_EXPRESSIONS];
 extern Widget	AppShell, ExpShell, ExpWindow;
 
-static void	CreateExpressionWindow();
+void	CreateExpressionWindow();
 
 
 /* DataSets used by various expressions.  Export for dataIO.c */
@@ -62,9 +62,7 @@ void ComputeExp(DATASET_INFO *set)
 /* -------------------------------------------------------------------- */
 void GetExpression(Widget w, XtPointer client, XtPointer call)
 {
-  if (ExpWindow == 0)
-    CreateExpressionWindow();
-
+  CreateExpressionWindow();
   XtManageChild(ExpWindow);
   XtPopup(XtParent(ExpWindow), XtGrabNone);
 
@@ -233,11 +231,14 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
 }	/* END ACCEPTNEWEXPRESSION */
 
 /* -------------------------------------------------------------------- */
-static void CreateExpressionWindow()
+void CreateExpressionWindow()
 {
   Cardinal	n;
   Arg		args[5];
   Widget        RC, frame, plRC, label;
+
+  if (ExpWindow)
+    return;
 
   ExpShell = XtCreatePopupShell("expShell",
                   topLevelShellWidgetClass, AppShell, NULL, 0);
@@ -254,11 +255,12 @@ static void CreateExpressionWindow()
 
   for (size_t i = 0; i < MAX_EXPRESSIONS; ++i)
     {
+    char labelStr[64];
     plRC = XmCreateRowColumn(RC, (char *)"plRC", args, n);
     XtManageChild(plRC);
 
-    sprintf(buffer, "USER%ld = ", i+1);
-    label = XmCreateLabel(plRC, buffer, args, n);
+    sprintf(labelStr, "USER%ld = ", i+1);
+    label = XmCreateLabel(plRC, labelStr, args, n);
     XtManageChild(label);
 
     expText[i] = XmCreateTextField(plRC, (char *)"expText", args, n);

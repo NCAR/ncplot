@@ -15,11 +15,7 @@ STATIC FNS:	load_CB2()
 
 DESCRIPTION:	
 
-REFERENCES:	
-
-REFERENCED BY:	XtAppMainLoop()
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2001
+COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2013
 -------------------------------------------------------------------------
 */
 
@@ -27,6 +23,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2001
 #include <unistd.h>
 
 #include <Xm/List.h>
+#include <Xm/TextF.h>
 
 static char	templateDir[256] = "";
 static char	templateFile[256] = "";
@@ -39,6 +36,9 @@ void    ChangePlotType(Widget, XtPointer, XtPointer),
 	AddPanel(Widget, XtPointer, XtPointer),
 	DeletePanel(Widget, XtPointer, XtPointer),
 	findMinMax();
+
+extern const size_t MAX_EXPRESSIONS;
+extern Widget ExpWindow, expText[];
 
 /* -------------------------------------------------------------------- */
 char *GetTemplateDirectory()
@@ -159,7 +159,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 
       for (i = 0; i < NumberDataSets; ++i)
         {
-        fprintf(fp, "VarName=%s Panel#=%d, ScaleLoc=%d\n",
+        fprintf(fp, "VarName=%s Panel#=%zu, ScaleLoc=%d\n",
 		dataSet[i].varInfo->name.c_str(), dataSet[i].panelIndex,
 		dataSet[i].scaleLocation);
         }
@@ -199,12 +199,12 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
       fprintf(fp, "nSets=%ld\n", NumberXYXsets + NumberXYYsets);
 
       for (i = 0; i < NumberXYXsets; ++i)
-        fprintf(fp, "Panel#=%d, Axis=%d, ScaleLoc=%d, VarName=%s\n",
+        fprintf(fp, "Panel#=%zu, Axis=%d, ScaleLoc=%d, VarName=%s\n",
 		xyXset[i].panelIndex, X_AXIS, xyXset[i].scaleLocation,
 		xyXset[i].varInfo->name.c_str());
 
       for (i = 0; i < NumberXYYsets; ++i)
-        fprintf(fp, "Panel#=%d, Axis=%d, ScaleLoc=%d, VarName=%s\n",
+        fprintf(fp, "Panel#=%zu, Axis=%d, ScaleLoc=%d, VarName=%s\n",
 		xyYset[i].panelIndex, Y_AXIS, xyYset[i].scaleLocation,
 		xyYset[i].varInfo->name.c_str());
 
@@ -256,6 +256,19 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
       break;
     }
 
+  if (ExpWindow)
+    {
+    char *p;
+    for (i = 0; i < 5; ++i)
+      {
+      p = XmTextFieldGetString(expText[i]);
+
+      if (strlen(p))
+        fprintf(fp, "userCalc=%s\n", p);
+
+      free(p);
+      }
+    }
 
   fclose(fp);
 
@@ -697,6 +710,24 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         }
 
       break;
+    }
+
+  void CreateExpressionWindow();
+  for (int calcCnt = 0; fgets(buffer, 512, fp); )
+    {
+    if (strncmp(buffer, "userCalc", 8) == 0)
+      {
+      CreateExpressionWindow();
+
+      char *p = strchr(buffer, '=')+1;
+      if (p)
+        {
+        p[strlen(p)-1] = '\0';
+        XmTextFieldSetString(expText[calcCnt++], p);
+        }
+
+      AcceptExpressions(NULL, NULL, NULL);
+      }
     }
 
   fclose(fp);
