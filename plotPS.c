@@ -202,7 +202,7 @@ static void doLineGraph(FILE *fp, PLOT_INFO *plot)
 
 
     if (!printerSetup.color)
-      fprintf(fp, "stroke [%d] 0 setdash\n", (CurrentDataSet+1) << 3);
+      fprintf(fp, "stroke [%zu] 0 setdash\n", (CurrentDataSet+1) << 3);
     }
 
   fprintf(fp, "stroke 0 0 0 setrgbcolor\n");
@@ -211,7 +211,7 @@ static void doLineGraph(FILE *fp, PLOT_INFO *plot)
     PSstatsTitle(fp, plot, CurrentDataSet+1);
 
 
-  fprintf(fp, "%d setlinewidth\n", LineThickness<<1);
+  fprintf(fp, "%zu setlinewidth\n", LineThickness<<1);
   fprintf(fp, "[] 0 setdash\n");
   PSclip(fp, plot);
 
@@ -314,7 +314,7 @@ static void doLineGraph(FILE *fp, PLOT_INFO *plot)
       }
 
     if (!printerSetup.color)
-      fprintf(fp, "stroke [%d] 0 setdash\n", (CurrentDataSet + 1) << 3);
+      fprintf(fp, "stroke [%zu] 0 setdash\n", (CurrentDataSet + 1) << 3);
     }
 
   PSclearClip(fp);

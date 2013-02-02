@@ -187,7 +187,7 @@ static void CreateMainParmsWindow()
   MainParmsShell = XtCreatePopupShell("editParmsShell",
                    topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  MainParmsWindow = XmCreateRowColumn(MainParmsShell, "parmsRC", NULL, 0);
+  MainParmsWindow = XmCreateRowColumn(MainParmsShell, (char *)"parmsRC", NULL, 0);
 
   RC[0] = createParamsTitles(MainParmsWindow, parmsText);
 
@@ -195,11 +195,11 @@ static void CreateMainParmsWindow()
   /* Panel stuff.
    */
   n = 0;
-  plRC = XmCreateRowColumn(RC[0], "plRC", args, n);
+  plRC = XmCreateRowColumn(RC[0], (char *)"plRC", args, n);
   XtManageChild(plRC);
 
-  label = XmCreateLabel(plRC, "Panel", args, n);
-  plRC = XmCreateRadioBox(plRC, "pnRC", args, n);
+  label = XmCreateLabel(plRC, (char *)"Panel", args, n);
+  plRC = XmCreateRadioBox(plRC, (char *)"pnRC", args, n);
   XtManageChild(label);
   XtManageChild(plRC);
 
@@ -232,23 +232,23 @@ static void CreateMainParmsWindow()
   /* ASCII parameters.
    */
   n = 0;
-  RC[4] = XmCreateFrame(MainParmsWindow, "ASCIIframe", args, n);
+  RC[4] = XmCreateFrame(MainParmsWindow, (char *)"ASCIIframe", args, n);
 
-  label = XmCreateLabel(RC[4], "ASCIIparms", args, n);
+  label = XmCreateLabel(RC[4], (char *)"ASCIIparms", args, n);
   XtManageChild(label);
 
-  plRC = XmCreateRowColumn(RC[4], "plRC", args, n);
+  plRC = XmCreateRowColumn(RC[4], (char *)"plRC", args, n);
   XtManageChild(plRC);
 
 
-  label = XmCreateLabel(plRC, "asciiNPlbl", args, n);
+  label = XmCreateLabel(plRC, (char *)"asciiNPlbl", args, n);
   XtManageChild(label);
-  asciiText[0] = XmCreateTextField(plRC, "asciiNPtxt", args, n);
+  asciiText[0] = XmCreateTextField(plRC, (char *)"asciiNPtxt", args, n);
   XtAddCallback(asciiText[0], XmNlosingFocusCallback, ApplyMainParms, NULL);
 
-  label = XmCreateLabel(plRC, "asciiFlbl", args, n);
+  label = XmCreateLabel(plRC, (char *)"asciiFlbl", args, n);
   XtManageChild(label);
-  asciiText[1] = XmCreateTextField(plRC, "asciiFtxt", args, n);
+  asciiText[1] = XmCreateTextField(plRC, (char *)"asciiFtxt", args, n);
   XtAddCallback(asciiText[1], XmNlosingFocusCallback, ApplyMainParms, NULL);
 
   XtManageChildren(asciiText, 2);

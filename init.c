@@ -53,10 +53,10 @@ void Initialize()
   size_t	i;
   pthread_t	tid;
 
-  char *insVar[] = { "LON", "LAT", "PALT" };
-  char *gpsVar[] = { "GGLON", "GGLAT", "GGALT" };
-  char *gpsCor[] = { "LONC", "LATC", "ALTX" };
-  char *windVar[] = { "UIC", "VIC", "300" };
+  const char *insVar[] = { "LON", "LAT", "PALT" };
+  const char *gpsVar[] = { "GGLON", "GGLAT", "GGALT" };
+  const char *gpsCor[] = { "LONC", "LATC", "ALTX" };
+  const char *windVar[] = { "UIC", "VIC", "300" };
 
 
   pthread_create(&tid, NULL, GetPrinterList, NULL);

@@ -129,7 +129,7 @@ void CreateSpecParmsWindow()
                 topLevelShellWidgetClass, AppShell, args, n);
 
   n = 0;
-  SpecParmsWindow = XmCreateRowColumn(SpecShell, "parmsRC", args, n);
+  SpecParmsWindow = XmCreateRowColumn(SpecShell, (char *)"parmsRC", args, n);
 
   for (i = 0; i < TOTAL_PARMS; ++i)
     parmsText[i] = NULL;

@@ -48,7 +48,7 @@ static Widget	plotType[3], invert, logScale,
 
 static int	currentAxis = Y_AXIS;
 
-static char *helpURL = "http://www.eol.ucar.edu/raf/Software/ncplot.html";
+static const char *helpURL = "http://www.eol.ucar.edu/raf/Software/ncplot.html";
 
 void	ChangePlotType(Widget, XtPointer, XtPointer);
 void	CheckForTemplateFile();
@@ -207,7 +207,7 @@ void OpenControlWindow(Widget w, XtPointer client, XtPointer call)
       {
       XtSetSensitive(fileB[i], False);
 
-      label = XmStringCreate("none", XmFONTLIST_DEFAULT_TAG);
+      label = XmStringCreate((char *)"none", XmFONTLIST_DEFAULT_TAG);
       XtSetArg(args[0], XmNlabelString, label);
       XtSetValues(fileB[i], args, 1);
       XmStringFree(label);
@@ -556,7 +556,7 @@ void CreateControlWindow(Widget parent)
   Cardinal	n;
 
   n = 0;
-  ControlWindow = XmCreateForm(parent, "controlForm", args, n);
+  ControlWindow = XmCreateForm(parent, (char *)"controlForm", args, n);
 
   /* Page Fwd & Bkwd buttons, and variable list.
    */
@@ -564,26 +564,26 @@ void CreateControlWindow(Widget parent)
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
-  form = XmCreateForm(ControlWindow, "form", args, n);
+  form = XmCreateForm(ControlWindow, (char *)"form", args, n);
   XtManageChild(form);
 
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
-  frame[0] = XmCreateFrame(form, "varFilterFrame", args, n);
+  frame[0] = XmCreateFrame(form, (char *)"varFilterFrame", args, n);
   XtManageChild(frame[0]);
 
   n = 0;
-  title[0] = XmCreateLabel(frame[0], "varFilterTitle", args, 0);
+  title[0] = XmCreateLabel(frame[0], (char *)"varFilterTitle", args, 0);
   XtManageChild(title[0]);
 
   n = 0;
-  brc = XmCreateRowColumn(frame[0], "plRC", args, n);
+  brc = XmCreateRowColumn(frame[0], (char *)"plRC", args, n);
   XtManageChild(brc);
 
   n = 0;
-  varFilterText = XmCreateTextField(brc, "varFilter", args, n);
+  varFilterText = XmCreateTextField(brc, (char *)"varFilter", args, n);
   XtManageChild(varFilterText);
   XtAddCallback(varFilterText, XmNvalueChangedCallback, SetList, NULL);
 
@@ -593,7 +593,7 @@ void CreateControlWindow(Widget parent)
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
-  varList = XmCreateScrolledList(form, "varList", args, n);
+  varList = XmCreateScrolledList(form, (char *)"varList", args, n);
   XtAddCallback(varList, XmNbrowseSelectionCallback, ModifyActiveVars, NULL);
   XtManageChild(varList);
 
@@ -606,38 +606,38 @@ void CreateControlWindow(Widget parent)
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); n++;
   XtSetArg(args[n], XmNleftWidget, form); n++;
-  controlRC = XmCreateRowColumn(ControlWindow, "controlRC", args, n);
+  controlRC = XmCreateRowColumn(ControlWindow, (char *)"controlRC", args, n);
   XtManageChild(controlRC);
 
   n = 0;
-  frame[0] = XmCreateFrame(controlRC, "timeFrame", args, 0);
-  frame[1] = XmCreateFrame(controlRC, "fileFrame", args, 0);
-  frame[2] = XmCreateFrame(controlRC, "plotFrame", args, 0);
-  frame[3] = XmCreateFrame(controlRC, "axisFrame", args, 0);
-  frame[4] = XmCreateFrame(controlRC, "panelFrame", args, 0);
-  frame[5] = XmCreateFrame(controlRC, "trackFrame", args, 0);
+  frame[0] = XmCreateFrame(controlRC, (char *)"timeFrame", args, 0);
+  frame[1] = XmCreateFrame(controlRC, (char *)"fileFrame", args, 0);
+  frame[2] = XmCreateFrame(controlRC, (char *)"plotFrame", args, 0);
+  frame[3] = XmCreateFrame(controlRC, (char *)"axisFrame", args, 0);
+  frame[4] = XmCreateFrame(controlRC, (char *)"panelFrame", args, 0);
+  frame[5] = XmCreateFrame(controlRC, (char *)"trackFrame", args, 0);
   XtManageChildren(frame, 6);
 
   n = 0;
-  title[0] = XmCreateLabel(frame[0], "timeTitle", args, 0);
-  title[1] = XmCreateLabel(frame[1], "fileTitle", args, 0);
-  title[2] = XmCreateLabel(frame[2], "plotTitle", args, 0);
-  title[3] = XmCreateLabel(frame[3], "axisTitle", args, 0);
-  title[4] = XmCreateLabel(frame[4], "panelTitle", args, 0);
-  title[5] = XmCreateLabel(frame[5], "trackTitle", args, 0);
+  title[0] = XmCreateLabel(frame[0], (char *)"timeTitle", args, 0);
+  title[1] = XmCreateLabel(frame[1], (char *)"fileTitle", args, 0);
+  title[2] = XmCreateLabel(frame[2], (char *)"plotTitle", args, 0);
+  title[3] = XmCreateLabel(frame[3], (char *)"axisTitle", args, 0);
+  title[4] = XmCreateLabel(frame[4], (char *)"panelTitle", args, 0);
+  title[5] = XmCreateLabel(frame[5], (char *)"trackTitle", args, 0);
   XtManageChild(title[0]); XtManageChild(title[1]);
   XtManageChild(title[2]); XtManageChild(title[3]);
   XtManageChild(title[4]); XtManageChild(title[5]);
 
   n = 0;
-  RC[0] = XmCreateRowColumn(frame[0], "timeRC", args, n);
-  RC[2] = XmCreateRadioBox(frame[2], "plotRC", args, 0);
-  plRC[0] = XmCreateRowColumn(frame[3], "plRC", args, n);
-  RC[3] = XmCreateRadioBox(plRC[0], "axisRC", args, 0);
-  RC[4] = XmCreateRadioBox(plRC[0], "scaleRC", args, 0);
-  RC[5] = XmCreateRowColumn(plRC[0], "axoptRC", args, 0);
-  RC[6] = XmCreateRowColumn(frame[4], "panelRC", args, 0);
-  RC[7] = XmCreateRowColumn(frame[5], "trackRC", args, 0);
+  RC[0] = XmCreateRowColumn(frame[0], (char *)"timeRC", args, n);
+  RC[2] = XmCreateRadioBox(frame[2], (char *)"plotRC", args, 0);
+  plRC[0] = XmCreateRowColumn(frame[3], (char *)"plRC", args, n);
+  RC[3] = XmCreateRadioBox(plRC[0], (char *)"axisRC", args, 0);
+  RC[4] = XmCreateRadioBox(plRC[0], (char *)"scaleRC", args, 0);
+  RC[5] = XmCreateRowColumn(plRC[0], (char *)"axoptRC", args, 0);
+  RC[6] = XmCreateRowColumn(frame[4], (char *)"panelRC", args, 0);
+  RC[7] = XmCreateRowColumn(frame[5], (char *)"trackRC", args, 0);
   XtManageChild(plRC[0]);
   XtManageChild(RC[0]);
   XtManageChild(RC[2]); XtManageChild(RC[3]);
@@ -647,30 +647,30 @@ void CreateControlWindow(Widget parent)
 
   /* Start & End Time widgets.
    */
-  plRC[0] = XmCreateRowColumn(RC[0], "plRC", args, n);
-  plRC[1] = XmCreateRowColumn(RC[0], "pgButtRC", args, n);
+  plRC[0] = XmCreateRowColumn(RC[0], (char *)"plRC", args, n);
+  plRC[1] = XmCreateRowColumn(RC[0], (char *)"pgButtRC", args, n);
   XtManageChildren(plRC, 2);
   n = 0;
-  timeText[0] = XmCreateTextField(plRC[0], "timeText", args, n);
-  timeText[1] = XmCreateTextField(plRC[0], "timeText", args, n);
+  timeText[0] = XmCreateTextField(plRC[0], (char *)"timeText", args, n);
+  timeText[1] = XmCreateTextField(plRC[0], (char *)"timeText", args, n);
   XtManageChildren(timeText, 2);
   XtAddCallback(timeText[0], XmNlosingFocusCallback, ValidateTime, NULL);
   XtAddCallback(timeText[1], XmNlosingFocusCallback, ValidateTime, NULL);
 
   n = 0;
-  b[0] = XmCreatePushButton(plRC[0], "applyButton", args, n);
-  b[1] = XmCreatePushButton(plRC[0], "All", args, n);
+  b[0] = XmCreatePushButton(plRC[0], (char *)"applyButton", args, n);
+  b[1] = XmCreatePushButton(plRC[0], (char *)"All", args, n);
   XtManageChildren(b, 2);
   XtAddCallback(b[0], XmNactivateCallback, ApplyTimeChange, NULL);
   XtAddCallback(b[1], XmNactivateCallback, ApplyTimeChange, (XtPointer)0xFFFF);
 
   n = 0;
-  bkd = XmCreatePushButton(plRC[1], "pageBkd", args, n);
+  bkd = XmCreatePushButton(plRC[1], (char *)"pageBkd", args, n);
   XtAddCallback(bkd, XmNactivateCallback, PageBackward, NULL);
   XtManageChild(bkd);
 
   n = 0;
-  fwd = XmCreatePushButton(plRC[1], "pageFwd", args, n);
+  fwd = XmCreatePushButton(plRC[1], (char *)"pageFwd", args, n);
   XtAddCallback(fwd, XmNactivateCallback, PageForward, NULL);
   XtManageChild(fwd);
 
@@ -678,27 +678,27 @@ void CreateControlWindow(Widget parent)
   if (RealTime)
     {
     n = 0;
-    RC[1] = XmCreateRowColumn(frame[1], "plRC", args, n);
+    RC[1] = XmCreateRowColumn(frame[1], (char *)"plRC", args, n);
     XtManageChild(RC[1]);
 
     n = 0;
-    realTime = XmCreateToggleButton(RC[1], "Realtime", args, n);
+    realTime = XmCreateToggleButton(RC[1], (char *)"Realtime", args, n);
     XtManageChild(realTime);
     XmToggleButtonSetState(realTime, True, False);
     XtSetSensitive(RC[0], False);
 
     n = 0;
-    rtText = XmCreateTextField(RC[1], "rtText", args, n);
+    rtText = XmCreateTextField(RC[1], (char *)"rtText", args, n);
     XtManageChild(rtText);
 
     n = 0;
-    b[0] = XmCreatePushButton(RC[1], "applyButton", args, n);
+    b[0] = XmCreatePushButton(RC[1], (char *)"applyButton", args, n);
     XtManageChild(b[0]);
     XtAddCallback(b[0], XmNactivateCallback, ApplyTimeChange, NULL);
     }
   else
     {
-    RC[1] = XmCreateRadioBox(frame[1], "fileRC", args, 0);
+    RC[1] = XmCreateRadioBox(frame[1], (char *)"fileRC", args, 0);
     XtManageChild(RC[1]);
 
     /* File Toggle Buttons.
@@ -706,7 +706,7 @@ void CreateControlWindow(Widget parent)
     for (size_t i = 0; i < MAX_DATAFILES; ++i)
       {
       n = 0;
-      fileB.push_back(XmCreateToggleButton(RC[1], "none", NULL, 0));
+      fileB.push_back(XmCreateToggleButton(RC[1], (char *)"none", NULL, 0));
       XtAddCallback(fileB[i], XmNvalueChangedCallback,
                     (XtCallbackProc)SetDataFile, (XtPointer)i);
       }
@@ -721,9 +721,9 @@ void CreateControlWindow(Widget parent)
   /* Plot, axis, and scale stuff.
    */
   n = 0;
-  plotType[0] = XmCreateToggleButton(RC[2], "Time Series", NULL, 0);
-  plotType[1] = XmCreateToggleButton(RC[2], "XY plot", NULL, 0);
-  plotType[2] = XmCreateToggleButton(RC[2], "XYZ plot", NULL, 0);
+  plotType[0] = XmCreateToggleButton(RC[2], (char *)"Time Series", NULL, 0);
+  plotType[1] = XmCreateToggleButton(RC[2], (char *)"XY plot", NULL, 0);
+  plotType[2] = XmCreateToggleButton(RC[2], (char *)"XYZ plot", NULL, 0);
 
   XtAddCallback(plotType[0], XmNvalueChangedCallback,
     (XtCallbackProc)ChangePlotType, (XtPointer)TIME_SERIES);
@@ -736,9 +736,9 @@ void CreateControlWindow(Widget parent)
   XmToggleButtonSetState(plotType[0], True, False);
 
 
-  whichAxis[0] = XmCreateToggleButton(RC[3], "X axis  ", NULL, 0);
-  whichAxis[1] = XmCreateToggleButton(RC[3], "Y axis  ", NULL, 0);
-  whichAxis[2] = XmCreateToggleButton(RC[3], "Z axis  ", NULL, 0);
+  whichAxis[0] = XmCreateToggleButton(RC[3], (char *)"X axis  ", NULL, 0);
+  whichAxis[1] = XmCreateToggleButton(RC[3], (char *)"Y axis  ", NULL, 0);
+  whichAxis[2] = XmCreateToggleButton(RC[3], (char *)"Z axis  ", NULL, 0);
   XtManageChildren(whichAxis, 3);
 
   XtSetSensitive(RC[3], False);
@@ -748,16 +748,16 @@ void CreateControlWindow(Widget parent)
   XmToggleButtonSetState(whichAxis[1], True, False);
 
 
-  scaleLocation[0] = XmCreateToggleButton(RC[4], "Left", NULL, 0);
-  scaleLocation[1] = XmCreateToggleButton(RC[4], "Right", NULL, 0);
+  scaleLocation[0] = XmCreateToggleButton(RC[4], (char *)"Left", NULL, 0);
+  scaleLocation[1] = XmCreateToggleButton(RC[4], (char *)"Right", NULL, 0);
   XtManageChildren(scaleLocation, 2);
 
   XtAddCallback(scaleLocation[0], XmNvalueChangedCallback, (XtCallbackProc)SetInvertLogScale, NULL);
   XtAddCallback(scaleLocation[1], XmNvalueChangedCallback, (XtCallbackProc)SetInvertLogScale, NULL);
   XmToggleButtonSetState(scaleLocation[0], True, False);
 
-  invert = XmCreateToggleButton(RC[5], "Invert", NULL, 0);
-  logScale = XmCreateToggleButton(RC[5], "Log Scale", NULL, 0);
+  invert = XmCreateToggleButton(RC[5], (char *)"Invert", NULL, 0);
+  logScale = XmCreateToggleButton(RC[5], (char *)"Log Scale", NULL, 0);
   XtManageChild(invert); XtManageChild(logScale);
   XtAddCallback(invert, XmNvalueChangedCallback, (XtCallbackProc)ApplyInvert, NULL);
   XtAddCallback(logScale, XmNvalueChangedCallback, (XtCallbackProc)ApplyLogScale, NULL);
@@ -765,15 +765,15 @@ void CreateControlWindow(Widget parent)
   /* Panel stuff.
    */
   n = 0;
-  plRC[0] = XmCreateRowColumn(RC[6], "plRC", args, n);
-  plRC[1] = XmCreateRowColumn(RC[6], "plRC", args, n);
-  plRC[2] = XmCreateRowColumn(RC[6], "plRC", args, n);
+  plRC[0] = XmCreateRowColumn(RC[6], (char *)"plRC", args, n);
+  plRC[1] = XmCreateRowColumn(RC[6], (char *)"plRC", args, n);
+  plRC[2] = XmCreateRowColumn(RC[6], (char *)"plRC", args, n);
   XtManageChildren(plRC, 3);
 
-  label = XmCreateLabel(plRC[0], "Panel", args, n);
+  label = XmCreateLabel(plRC[0], (char *)"Panel", args, n);
   XtManageChild(label);
 
-  plRC[4] = XmCreateRadioBox(plRC[0], "pnRC", args, n);
+  plRC[4] = XmCreateRadioBox(plRC[0], (char *)"pnRC", args, n);
   XtManageChild(plRC[4]);
 
   for (size_t i = 0; i < MAX_PANELS; ++i)
@@ -789,16 +789,16 @@ void CreateControlWindow(Widget parent)
   XmToggleButtonSetState(panelB[0], True, False);
 
   n = 0;
-  b[0] = XmCreatePushButton(plRC[1], "Add", args, n);
-  b[1] = XmCreatePushButton(plRC[1], "Delete", args, n);
-  b[2] = XmCreatePushButton(plRC[1], "Clear", args, n);
+  b[0] = XmCreatePushButton(plRC[1], (char *)"Add", args, n);
+  b[1] = XmCreatePushButton(plRC[1], (char *)"Delete", args, n);
+  b[2] = XmCreatePushButton(plRC[1], (char *)"Clear", args, n);
   XtManageChildren(b, 3);
   XtAddCallback(b[0], XmNactivateCallback, AddPanel, NULL);
   XtAddCallback(b[1], XmNactivateCallback, DeletePanel, NULL);
   XtAddCallback(b[2], XmNactivateCallback, ClearPanel, NULL);
 
 
-  b[3] = XmCreateToggleButton(plRC[2], "Labels on all multi-panels", args, n);
+  b[3] = XmCreateToggleButton(plRC[2], (char *)"Labels on all multi-panels", args, n);
   XtManageChild(b[3]);
   XtAddCallback(b[3], XmNvalueChangedCallback, ToggleLabels, NULL);
   XmToggleButtonSetState(b[3], True, False);
@@ -807,16 +807,16 @@ void CreateControlWindow(Widget parent)
   /* Options.
   */
   n = 0;
-  optButton[0] = XmCreateToggleButton(RC[7], "Black & White (on/off)", args, n);
-  optButton[1] = XmCreateToggleButton(RC[7], "UT seconds (on/off)", args, n);
-  optButton[2] = XmCreateToggleButton(RC[7], "Grid (on/off)", args, n);
-  optButton[3] = XmCreateToggleButton(RC[7], "Cross-hair (on/off)", args, n);
+  optButton[0] = XmCreateToggleButton(RC[7], (char *)"Black & White (on/off)", args, n);
+  optButton[1] = XmCreateToggleButton(RC[7], (char *)"UT seconds (on/off)", args, n);
+  optButton[2] = XmCreateToggleButton(RC[7], (char *)"Grid (on/off)", args, n);
+  optButton[3] = XmCreateToggleButton(RC[7], (char *)"Cross-hair (on/off)", args, n);
   XtManageChildren(optButton, 4);
 
-  plRC[0] = XmCreateRowColumn(RC[7], "pnRC", args, n); XtManageChild(plRC[0]);
-  lineThickTxt = XmCreateTextField(plRC[0], "lineThick", args, n);
+  plRC[0] = XmCreateRowColumn(RC[7], (char *)"pnRC", args, n); XtManageChild(plRC[0]);
+  lineThickTxt = XmCreateTextField(plRC[0], (char *)"lineThick", args, n);
   XtManageChild(lineThickTxt);
-  label = XmCreateLabel(plRC[0], "Line Thickness", args, n);
+  label = XmCreateLabel(plRC[0], (char *)"Line Thickness", args, n);
   XtManageChild(label);
 
   sprintf(buffer, "%ld", LineThickness);

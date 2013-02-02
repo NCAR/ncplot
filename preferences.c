@@ -92,14 +92,14 @@ void SetPreferences()
 
   XmTextFieldSetString(prefText[0], buffer);
 
-  sprintf(buffer, "%d", LineThickness);
+  sprintf(buffer, "%zu", LineThickness);
   XmTextFieldSetString(prefText[1], buffer);
   XmTextFieldSetString(prefText[2], GetTemplateDirectory());
 
   if (printerSetup.color)
-    XmTextFieldSetString(prefText[3], "Color");
+    XmTextFieldSetString(prefText[3], (char *)"Color");
   else
-    XmTextFieldSetString(prefText[3], "B&W");
+    XmTextFieldSetString(prefText[3], (char *)"B&W");
 
   XmTextFieldSetString(prefText[4], const_cast<char *>(printerSetup.lpCommand.c_str()));
 
@@ -141,7 +141,7 @@ printf("Save Preferences: Writing ~/.ncplotrc\n");
     }
 
   fprintf(fp, "Colors = %s\n", buffer);
-  fprintf(fp, "LineWidth = %d\n", LineThickness);
+  fprintf(fp, "LineWidth = %zu\n", LineThickness);
   fprintf(fp, "TemplateDirectory = %s\n", GetTemplateDirectory());
   if (printerSetup.color)
     fprintf(fp, "PrintColor = Color\n");
@@ -243,25 +243,25 @@ static void CreatePreferences()
   PreferShell = XtCreatePopupShell("prefParmsShell",
                    topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  PreferWindow = XmCreateRowColumn(PreferShell, "prefRC", NULL, 0);
+  PreferWindow = XmCreateRowColumn(PreferShell, (char *)"prefRC", NULL, 0);
 
   n = 0;
-  frame = XmCreateFrame(PreferWindow, "prefFrame", args, n);
+  frame = XmCreateFrame(PreferWindow, (char *)"prefFrame", args, n);
   XtManageChild(frame);
 
   n = 0;
-  RC = XmCreateRowColumn(frame, "prefRC", args, n);
+  RC = XmCreateRowColumn(frame, (char *)"prefRC", args, n);
 
   for (i = 0; i < TOTAL_PREFERS; ++i)
     {
-    plRC = XmCreateRowColumn(RC, "plRC", args, n);
+    plRC = XmCreateRowColumn(RC, (char *)"plRC", args, n);
     XtManageChild(plRC);
 
     sprintf(buffer, "prefer%d", i);
     label = XmCreateLabel(plRC, buffer, args, n);
     XtManageChild(label);
 
-    prefText[i] = XmCreateTextField(plRC, "prefText", args, n);
+    prefText[i] = XmCreateTextField(plRC, (char *)"prefText", args, n);
     XtManageChild(prefText[i]);
     XtAddCallback(prefText[i], XmNlosingFocusCallback, ApplyPreferences, NULL);
     }
@@ -270,18 +270,18 @@ static void CreatePreferences()
   /* Command buttons.
    */
   n = 0;
-  frame = XmCreateFrame(PreferWindow, "buttonFrame", args, 0);
+  frame = XmCreateFrame(PreferWindow, (char *)"buttonFrame", args, 0);
   XtManageChild(frame);
 
   n = 0;
-  plRC = XmCreateForm(frame, "buttonRC", args, n);
+  plRC = XmCreateForm(frame, (char *)"buttonRC", args, n);
 
   n = 0;
-  b[0] = XmCreatePushButton(plRC, "dismissButton", args, n);
+  b[0] = XmCreatePushButton(plRC, (char *)"dismissButton", args, n);
   XtAddCallback(b[0], XmNactivateCallback, DismissWindow, PreferWindow);
 
   n = 0;
-  b[1] = XmCreatePushButton(plRC, "saveButton", args, n);
+  b[1] = XmCreatePushButton(plRC, (char *)"saveButton", args, n);
   XtAddCallback(b[1], XmNactivateCallback, SavePreferences, NULL);
 
   XtManageChildren(b, 2);

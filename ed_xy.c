@@ -147,7 +147,7 @@ static void CreateXYParmsWindow()
   XYShell = XtCreatePopupShell("editXYShell",
   topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  XYParmsWindow = XmCreateRowColumn(XYShell, "parmsRC", NULL, 0);
+  XYParmsWindow = XmCreateRowColumn(XYShell, (char *)"parmsRC", NULL, 0);
 
   for (i = 0; i < TOTAL_PARMS; ++i)
     parmsText[i] = NULL;

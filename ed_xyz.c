@@ -118,7 +118,7 @@ static void CreateTrackParmsWindow()
   TrackShell = XtCreatePopupShell("editXYZShell",
                   topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  TrackParmsWindow = XmCreateRowColumn(TrackShell, "parmsRC", NULL, 0);
+  TrackParmsWindow = XmCreateRowColumn(TrackShell, (char *)"parmsRC", NULL, 0);
 
   for (i = 0; i < TOTAL_PARMS; ++i)
     parmsText[i] = NULL;

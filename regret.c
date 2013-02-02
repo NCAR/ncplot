@@ -142,11 +142,11 @@ static void leasqu(DATASET_INFO *x, DATASET_INFO *y, int degree, double *w, int 
     rsqu = 0.0;
 
 
-  printf("Number of data points = %d\n", x->nPoints);
+  printf("Number of data points = %zu\n", x->nPoints);
   printf("A[0] is the constant, A[i] is the coefficient for ith power of X\n");
 
   for (i = 0; i <= (size_t)degree; i++)
-    printf("A[%d] = %15.8f\n", i, r[i]);
+    printf("A[%zu] = %15.8f\n", i, r[i]);
 
   printf("R square = %15.8f\n", rsqu);
   printf("Avg Y    = %15.8f\n", ybar);
@@ -241,7 +241,7 @@ static int linear_regression(DATASET_INFO *x, DATASET_INFO *y)
   F		= SSreg / rms;
   R2		= SSreg / SYY;
 
-  printf("Number of data points\t\t = %6d\n", cnt);
+  printf("Number of data points\t\t = %6zu\n", cnt);
   printf("Mean of independent variable\t = %15.8f\n", xbar);
   printf("Mean of dependent variable\t = %15.8f\n", ybar);
   printf("Standard dev. of ind. variable\t = %15.8f\n", sdx);
@@ -256,8 +256,8 @@ static int linear_regression(DATASET_INFO *x, DATASET_INFO *y)
   printf("\nAnalysis of variance\n");
   printf("Source\t\t d.f\t Sum of squares\t Mean Square\t F\n");
   printf("Regression\t   1\t%.7g\t%.7g\t%.7g\n", SSreg, SSreg, F);
-  printf("Residual\t%5d\t%.7g\t%.7g\n", cnt - 2, RSS, RSS / (cnt - 2));
-  printf("Total\t\t%5d\t%.7g\n\n", cnt - 1, SYY);
+  printf("Residual\t%5zu\t%.7g\t%.7g\n", cnt - 2, RSS, RSS / (cnt - 2));
+  printf("Total\t\t%5zu\t%.7g\n\n", cnt - 1, SYY);
 
   regretCo[0] = intercept;
   regretCo[1] = slope;

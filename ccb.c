@@ -150,7 +150,6 @@ void ToggleTracking(Widget w, XtPointer client, XtPointer call)
 void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
 {
   char *selectedVariable;
-  int  position = ((XmListCallbackStruct *)call)->item_position - 1;
   XmString item = ((XmListCallbackStruct *)call)->item;
   XmStringGetLtoR(item, XmSTRING_DEFAULT_CHARSET, &selectedVariable);
 

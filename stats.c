@@ -216,24 +216,24 @@ static void CreateStatsWindow()
                   topLevelShellWidgetClass, AppShell, args, n);
 
   n = 0;
-  StatsWindow = XmCreateForm(StatsShell, "statsForm", args, n);
+  StatsWindow = XmCreateForm(StatsShell, (char *)"statsForm", args, n);
 
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
-  drFrame = XmCreateFrame(StatsWindow, "buttonFrame", args, n);
+  drFrame = XmCreateFrame(StatsWindow, (char *)"buttonFrame", args, n);
   XtManageChild(drFrame);
 
   n = 0;
-  drRC = XmCreateRowColumn(drFrame, "buttonRC", args, n);
+  drRC = XmCreateRowColumn(drFrame, (char *)"buttonRC", args, n);
   XtManageChild(drRC);
 
 
   n = 0;
-  b[0] = XmCreatePushButton(drRC, "dismissButton", args, n);
-  b[1] = XmCreatePushButton(drRC, "printButton", args, n);
-  b[2] = XmCreatePushButton(drRC, "parmsButton", args, n);
+  b[0] = XmCreatePushButton(drRC, (char *)"dismissButton", args, n);
+  b[1] = XmCreatePushButton(drRC, (char *)"printButton", args, n);
+  b[2] = XmCreatePushButton(drRC, (char *)"parmsButton", args, n);
   XtManageChildren(b, 3);
   XtAddCallback(b[0], XmNactivateCallback, DismissStats, StatsWindow);
   XtAddCallback(b[1], XmNactivateCallback, PrintStats, NULL);
@@ -246,7 +246,7 @@ static void CreateStatsWindow()
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
-  statsText = XmCreateScrolledText(StatsWindow, "statsText", args, n);
+  statsText = XmCreateScrolledText(StatsWindow, (char *)"statsText", args, n);
   XtManageChild(statsText);
 
 }	/* END CREATESTATSWINDOW */

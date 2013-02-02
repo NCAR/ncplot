@@ -153,24 +153,24 @@ static void CreateDifferenceWindow()
                       AppShell, args, n);
 
   n = 0;
-  DifferenceWindow = XmCreateForm(DiffShell, "diffForm", args, n);
+  DifferenceWindow = XmCreateForm(DiffShell, (char *)"diffForm", args, n);
 
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
-  frame = XmCreateFrame(DifferenceWindow, "buttonFrame", args, n);
+  frame = XmCreateFrame(DifferenceWindow, (char *)"buttonFrame", args, n);
   XtManageChild(frame);
 
   n = 0;
-  rc = XmCreateRowColumn(frame, "buttonRC", args, n);
+  rc = XmCreateRowColumn(frame, (char *)"buttonRC", args, n);
   XtManageChild(rc);
 
   n = 0;
-  b[0] = XmCreatePushButton(rc, "dismissButton", args, n);
-  b[1] = XmCreatePushButton(rc, "printButton", args, n);
-  b[2] = XmCreatePushButton(rc, "parmsButton", args, n);
-  b[3] = XmCreatePushButton(rc, "savepngButton", args, n);
+  b[0] = XmCreatePushButton(rc, (char *)"dismissButton", args, n);
+  b[1] = XmCreatePushButton(rc, (char *)"printButton", args, n);
+  b[2] = XmCreatePushButton(rc, (char *)"parmsButton", args, n);
+  b[3] = XmCreatePushButton(rc, (char *)"savepngButton", args, n);
   XtManageChildren(b, 4);
   XtAddCallback(b[0], XmNactivateCallback, DiffWinDown, NULL);
   XtAddCallback(b[1], XmNactivateCallback, diffPostScript, NULL);
@@ -188,7 +188,7 @@ static void CreateDifferenceWindow()
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
-  diffPlot.canvas = XmCreateDrawingArea(DifferenceWindow,"diffCanvas",args,n);
+  diffPlot.canvas = XmCreateDrawingArea(DifferenceWindow,(char *)"diffCanvas",args,n);
   XtManageChild(diffPlot.canvas);
 
 }	/* END CREATEDIFFERENCEWINDOW */

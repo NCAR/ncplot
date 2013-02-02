@@ -64,7 +64,7 @@ static void DismissTitles(Widget w, XtPointer client, XtPointer call)
     {
     XtUnmanageChild(TitleWindow);
     XtPopdown(XtParent(TitleWindow));
-    XmTextSetString(titleText, "");
+    XmTextSetString(titleText, (char *)"");
     }
 
 }	/* END DISMISSHEADER */
@@ -83,7 +83,7 @@ static void SetTitles()
   DATAFILE_INFO	*curFile = &dataFile[CurrentDataFile];
 
   XmTextSetString(titleText, const_cast<char *>(curFile->fileName.c_str()));
-  XmTextInsert(titleText, XmTextGetLastPosition(titleText), "\n\n");
+  XmTextInsert(titleText, XmTextGetLastPosition(titleText), (char *)"\n\n");
 
   for (size_t i = 0; i < curFile->Variable.size(); ++i)
     {
@@ -125,25 +125,25 @@ static void CreateTitleWindow()
                   topLevelShellWidgetClass, AppShell, args, n);
 
   n = 0;
-  TitleWindow = XmCreateForm(TitleShell, "headerForm", args, n);
+  TitleWindow = XmCreateForm(TitleShell, (char *)"headerForm", args, n);
 
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
-  drFrame = XmCreateFrame(TitleWindow, "buttonFrame", args, n);
+  drFrame = XmCreateFrame(TitleWindow, (char *)"buttonFrame", args, n);
   XtManageChild(drFrame);
 
   n = 0;
-  drRC = XmCreateRowColumn(drFrame, "buttonRC", args, n);
+  drRC = XmCreateRowColumn(drFrame, (char *)"buttonRC", args, n);
   XtManageChild(drRC);
 
   n = 0;
-  b[0] = XmCreatePushButton(drRC, "dismissButton", args, n);
+  b[0] = XmCreatePushButton(drRC, (char *)"dismissButton", args, n);
   XtAddCallback(b[0], XmNactivateCallback, DismissTitles, TitleWindow);
 
   n = 0;
-  b[1] = XmCreatePushButton(drRC, "printButton", args, n);
+  b[1] = XmCreatePushButton(drRC, (char *)"printButton", args, n);
   XtAddCallback(b[1], XmNactivateCallback, PrintTitles, NULL);
 
   XtManageChildren(b, 2);
@@ -153,17 +153,17 @@ static void CreateTitleWindow()
   /* Category Op Menu.
    */
   n = 0;
-  catPD = XmCreatePulldownMenu(drRC, "catPullDown", args, n);
+  catPD = XmCreatePulldownMenu(drRC, (char *)"catPullDown", args, n);
  
   n = 0;
   XtSetArg(args[n], XmNsubMenuId, catPD); ++n;
-  catOpMenu = XmCreateOptionMenu(drRC, "catOpMenu", args, n);
+  catOpMenu = XmCreateOptionMenu(drRC, (char *)"catOpMenu", args, n);
   XtManageChild(catOpMenu);
  
-  name = XmStringCreateLocalized("All Variables");
+  name = XmStringCreateLocalized((char *)"All Variables");
   n = 0;
   XtSetArg(args[n], XmNlabelString, name); ++n;
-  catButts[0] = XmCreatePushButton(catPD, "opMenB", args, n);
+  catButts[0] = XmCreatePushButton(catPD, (char *)"opMenB", args, n);
   XtAddCallback(catButts[0], XmNactivateCallback, SetCategory, (XtPointer)0);
  
   XmStringFree(name);
@@ -175,7 +175,7 @@ static void CreateTitleWindow()
  
     n = 0;
     XtSetArg(args[n], XmNlabelString, name); ++n;
-    catButts[i] = XmCreatePushButton(catPD, "opMenB", args, n);
+    catButts[i] = XmCreatePushButton(catPD, (char *)"opMenB", args, n);
     XtAddCallback(catButts[i], XmNactivateCallback, SetCategory, (XtPointer)i);
  
     XmStringFree(name);
@@ -191,7 +191,7 @@ static void CreateTitleWindow()
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
-  titleText = XmCreateScrolledText(TitleWindow, "headerText", args, n);
+  titleText = XmCreateScrolledText(TitleWindow, (char *)"headerText", args, n);
   XtManageChild(titleText);
 
 }	/* END CREATETITLEWINDOW */

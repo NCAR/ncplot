@@ -68,7 +68,7 @@ void FileCancel(Widget w, XtPointer clientData, XtPointer callData)
 /* -------------------------------------------------------------------- */
 void CreateFileSelectionBox(Widget parent)
 {
-  fileBox = XmCreateFileSelectionDialog(parent, "fileBox", NULL, 0);
+  fileBox = XmCreateFileSelectionDialog(parent, (char *)"fileBox", NULL, 0);
   XtSetSensitive(XmFileSelectionBoxGetChild(fileBox, XmDIALOG_HELP_BUTTON), False);
 
   XtAddCallback(fileBox, XmNcancelCallback, FileCancel, (XtPointer)False);

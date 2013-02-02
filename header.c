@@ -48,7 +48,7 @@ static void DismissHeader(Widget w, XtPointer client, XtPointer call)
     {
     XtUnmanageChild(HeaderWindow);
     XtPopdown(XtParent(HeaderWindow));
-    XmTextSetString(headerText, "");
+    XmTextSetString(headerText, (char *)"");
     }
 
 }	/* END DISMISSHEADER */
@@ -77,7 +77,7 @@ static void SetHeaderData()
   FILE	*pp;
 
   XmTextSetString(headerText, const_cast<char *>(dataFile[CurrentDataFile].fileName.c_str()));
-  XmTextInsert(headerText, XmTextGetLastPosition(headerText), "\n\n");
+  XmTextInsert(headerText, XmTextGetLastPosition(headerText), (char *)"\n\n");
 
   sprintf(buffer, "ncdump -h %s", dataFile[CurrentDataFile].fileName.c_str());
 
@@ -120,25 +120,25 @@ static void CreateHeaderWindow()
                   topLevelShellWidgetClass, AppShell, args, n);
 
   n = 0;
-  HeaderWindow = XmCreateForm(HeaderShell, "headerForm", args, n);
+  HeaderWindow = XmCreateForm(HeaderShell, (char *)"headerForm", args, n);
 
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
-  drFrame = XmCreateFrame(HeaderWindow, "buttonFrame", args, n);
+  drFrame = XmCreateFrame(HeaderWindow, (char *)"buttonFrame", args, n);
   XtManageChild(drFrame);
 
   n = 0;
-  drRC = XmCreateRowColumn(drFrame, "buttonRC", args, n);
+  drRC = XmCreateRowColumn(drFrame, (char *)"buttonRC", args, n);
   XtManageChild(drRC);
 
   n = 0;
-  b[0] = XmCreatePushButton(drRC, "dismissButton", args, n);
+  b[0] = XmCreatePushButton(drRC, (char *)"dismissButton", args, n);
   XtAddCallback(b[0], XmNactivateCallback, DismissHeader, HeaderWindow);
 
   n = 0;
-  b[1] = XmCreatePushButton(drRC, "printButton", args, n);
+  b[1] = XmCreatePushButton(drRC, (char *)"printButton", args, n);
   XtAddCallback(b[1], XmNactivateCallback, PrintHeader, NULL);
 
   XtManageChildren(b, 2);
@@ -150,7 +150,7 @@ static void CreateHeaderWindow()
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
-  headerText = XmCreateScrolledText(HeaderWindow, "headerText", args, n);
+  headerText = XmCreateScrolledText(HeaderWindow, (char *)"headerText", args, n);
   XtManageChild(headerText);
 
 }	/* END CREATEHEADERWINDOW */

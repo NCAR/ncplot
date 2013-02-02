@@ -125,7 +125,7 @@ static void CreateDiffParmsWindow()
   DiffShell = XtCreatePopupShell("editDiffShell",
                   topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  DiffParmsWindow = XmCreateRowColumn(DiffShell, "parmsRC", NULL, 0);
+  DiffParmsWindow = XmCreateRowColumn(DiffShell, (char *)"parmsRC", NULL, 0);
 
   for (i = 0; i < TOTAL_PARMS; ++i)
     parmsText[i] = NULL;

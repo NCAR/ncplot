@@ -50,7 +50,7 @@ void ErrorOK(Widget w, XtPointer clientData, XtPointer callData)
 /* -------------------------------------------------------------------- */
 void CreateErrorBox(Widget parent)
 {
-  errorBox = XmCreateErrorDialog(parent, "errorBox", NULL, 0);
+  errorBox = XmCreateErrorDialog(parent, (char *)"errorBox", NULL, 0);
   XtSetSensitive(XmMessageBoxGetChild(errorBox, XmDIALOG_CANCEL_BUTTON), False);
   XtSetSensitive(XmMessageBoxGetChild(errorBox, XmDIALOG_HELP_BUTTON), False);
 

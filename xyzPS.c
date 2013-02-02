@@ -334,7 +334,7 @@ void PSplot3dTrack(FILE *fp, PLOT_INFO *plot)
     }
 
 
-  fprintf(fp, "%d setlinewidth\n", LineThickness<<1);
+  fprintf(fp, "%zu setlinewidth\n", LineThickness<<1);
 
   if (printerSetup.color)
     {

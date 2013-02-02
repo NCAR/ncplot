@@ -120,30 +120,30 @@ static void CreateASCIIwindow()
                 topLevelShellWidgetClass, AppShell, args, n);
 
   n = 0;
-  ASCIIwindow = XmCreateForm(ASCIIshell, "asciiForm", args, n);
+  ASCIIwindow = XmCreateForm(ASCIIshell, (char *)"asciiForm", args, n);
 
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
-  drFrame = XmCreateFrame(ASCIIwindow, "buttonFrame", args, n);
+  drFrame = XmCreateFrame(ASCIIwindow, (char *)"buttonFrame", args, n);
   XtManageChild(drFrame);
 
   n = 0;
-  drRC = XmCreateRowColumn(drFrame, "buttonRC", args, n);
+  drRC = XmCreateRowColumn(drFrame, (char *)"buttonRC", args, n);
   XtManageChild(drRC);
 
 
   n = 0;
-  b[0] = XmCreatePushButton(drRC, "saveButton", args, n);
+  b[0] = XmCreatePushButton(drRC, (char *)"saveButton", args, n);
   XtAddCallback(b[0], XmNactivateCallback, SaveASCII, NULL);
 
   n = 0;
-  b[1] = XmCreatePushButton(drRC, "printButton", args, n);
+  b[1] = XmCreatePushButton(drRC, (char *)"printButton", args, n);
   XtAddCallback(b[1], XmNactivateCallback, PrintASCII, NULL);
 
   n = 0;
-  b[2] = XmCreatePushButton(drRC, "dismissButton", args, n);
+  b[2] = XmCreatePushButton(drRC, (char *)"dismissButton", args, n);
   XtAddCallback(b[2], XmNactivateCallback, DismissASCII, ASCIIwindow);
 
   XtManageChildren(b, 3);
@@ -155,7 +155,7 @@ static void CreateASCIIwindow()
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
-  asciiText = XmCreateScrolledText(ASCIIwindow, "asciiText", args, n);
+  asciiText = XmCreateScrolledText(ASCIIwindow, (char *)"asciiText", args, n);
   XtManageChild(asciiText);
 
 }	/* END CREATEASCIIWINDOW */
@@ -163,7 +163,7 @@ static void CreateASCIIwindow()
 /* -------------------------------------------------------------------- */
 static void SaveASCII(Widget w, XtPointer client, XtPointer call)
 {
-  char	*p;
+  const char	*p;
 
   if ((p = getenv("DATA_DIR")) == NULL)
     if ((p = getenv("HOME")) == NULL)
@@ -291,7 +291,7 @@ static void freqDomainASCII(FILE *fp, int nPoints)
   double	*dataP = 0;
 
   if (!fp)
-    XmTextSetString(asciiText, "");
+    XmTextSetString(asciiText, (char *)"");
 
   if (psd[0].display == SPECTRA)
     nSets = std::min(NumberDataSets, MAX_PSD);

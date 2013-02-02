@@ -261,23 +261,23 @@ static void CreateTrackOptWin()
                         topLevelShellWidgetClass, AppShell, args, n);
 
   n = 0;
-  TrackOptWindow = XmCreateForm(TrackOptShell, "trackOptWindow", args, n);
+  TrackOptWindow = XmCreateForm(TrackOptShell, (char *)"trackOptWindow", args, n);
 
   n = 0;
-  trackOptRC = XmCreateRowColumn(TrackOptWindow, "trackOptRC", args, n);
+  trackOptRC = XmCreateRowColumn(TrackOptWindow, (char *)"trackOptRC", args, n);
   XtManageChild(trackOptRC);
 
 
   n = 0;
-  frame[0] = XmCreateFrame(trackOptRC, "trackLoadFrame", args, 0);
-  frame[1] = XmCreateFrame(trackOptRC, "windFrame", args, 0);
-  frame[2] = XmCreateFrame(trackOptRC, "miscOptFrame", args, 0);
+  frame[0] = XmCreateFrame(trackOptRC, (char *)"trackLoadFrame", args, 0);
+  frame[1] = XmCreateFrame(trackOptRC, (char *)"windFrame", args, 0);
+  frame[2] = XmCreateFrame(trackOptRC, (char *)"miscOptFrame", args, 0);
   XtManageChildren(frame, 3);
 
   n = 0;
-  RC[0] = XmCreateRowColumn(frame[0], "trackLoadRC", args, 0);
-  RC[1] = XmCreateRowColumn(frame[1], "windRC", args, 0);
-  RC[2] = XmCreateRowColumn(frame[2], "miscRC", args, 0);
+  RC[0] = XmCreateRowColumn(frame[0], (char *)"trackLoadRC", args, 0);
+  RC[1] = XmCreateRowColumn(frame[1], (char *)"windRC", args, 0);
+  RC[2] = XmCreateRowColumn(frame[2], (char *)"miscRC", args, 0);
   XtManageChild(RC[0]);
   XtManageChild(RC[1]);
   XtManageChild(RC[2]);
@@ -286,12 +286,12 @@ static void CreateTrackOptWin()
   /* INS/GPS Track.
    */
   n = 0;
-  b[0] = XmCreatePushButton(RC[0], "Load INS Track", args, n);
-  b[1] = XmCreatePushButton(RC[0], "Load GPS Track", args, n);
-  b[2] = XmCreatePushButton(RC[0], "Load GPS Corrected", args, n);
-  b[3] = XmCreateToggleButton(RC[0], "Landmarks", args, n);
-  b[4] = XmCreateToggleButton(RC[0], "Geo-political map", args, n);
-  b[5] = XmCreateToggleButton(RC[0], "Track scaling", args, n);
+  b[0] = XmCreatePushButton(RC[0], (char *)"Load INS Track", args, n);
+  b[1] = XmCreatePushButton(RC[0], (char *)"Load GPS Track", args, n);
+  b[2] = XmCreatePushButton(RC[0], (char *)"Load GPS Corrected", args, n);
+  b[3] = XmCreateToggleButton(RC[0], (char *)"Landmarks", args, n);
+  b[4] = XmCreateToggleButton(RC[0], (char *)"Geo-political map", args, n);
+  b[5] = XmCreateToggleButton(RC[0], (char *)"Track scaling", args, n);
 
   XtManageChildren(b, 6);
 
@@ -312,35 +312,35 @@ static void CreateTrackOptWin()
   /* Wind vector options.
    */
   n = 0;
-  b[0] = XmCreateToggleButton(RC[1], "Wind vectors", args, n);
+  b[0] = XmCreateToggleButton(RC[1], (char *)"Wind vectors", args, n);
   XtManageChildren(b, 1);
 
   XtAddCallback(b[0], XmNvalueChangedCallback, ToggleWindBarbs, NULL);
 
   n = 0;
-  plRC[0] = XmCreateRadioBox(RC[1], "plRC", args, n);
-  plRC[1] = XmCreateRowColumn(RC[1], "plRC", args, n);
-  plRC[2] = XmCreateRowColumn(RC[1], "plRC", args, n);
+  plRC[0] = XmCreateRadioBox(RC[1], (char *)"plRC", args, n);
+  plRC[1] = XmCreateRowColumn(RC[1], (char *)"plRC", args, n);
+  plRC[2] = XmCreateRowColumn(RC[1], (char *)"plRC", args, n);
   XtManageChildren(plRC, 3);
 
   n = 0;
-  average[0] = XmCreateToggleButton(plRC[0], "Averaged", args, n);
-  average[1] = XmCreateToggleButton(plRC[0], "Instant", args, n);
+  average[0] = XmCreateToggleButton(plRC[0], (char *)"Averaged", args, n);
+  average[1] = XmCreateToggleButton(plRC[0], (char *)"Instant", args, n);
   XtManageChildren(average, 2);
   XmToggleButtonSetState(average[0], true, false);
 
   /* Time interval. */
   n = 0;
-  label = XmCreateLabel(plRC[1], "Interval (secs)", args, n);
-  tiText = XmCreateTextField(plRC[1], "tiText", args, n);
+  label = XmCreateLabel(plRC[1], (char *)"Interval (secs)", args, n);
+  tiText = XmCreateTextField(plRC[1], (char *)"tiText", args, n);
   XtManageChild(label);
   XtManageChild(tiText);
   XmTextFieldSetString(tiText, windVariables[2]);
 
   /* UI & VI Text widgets. */
   n = 0;
-  wvText[0] = XmCreateTextField(plRC[2], "uiText", args, n);
-  wvText[1] = XmCreateTextField(plRC[2], "uiText", args, n);
+  wvText[0] = XmCreateTextField(plRC[2], (char *)"uiText", args, n);
+  wvText[1] = XmCreateTextField(plRC[2], (char *)"uiText", args, n);
   XtManageChildren(wvText, 2);
   XmTextFieldSetString(wvText[0], windVariables[0]);
   XmTextFieldSetString(wvText[1], windVariables[1]);
@@ -348,17 +348,17 @@ static void CreateTrackOptWin()
 
   /* Other Options. */
   n = 0;
-  plRC[0] = XmCreateRowColumn(RC[2], "pnRC", args, n); XtManageChild(plRC[0]);
-  dirText = XmCreateTextField(plRC[0], "dirText", args, n); XtManageChild(dirText);
-  label = XmCreateLabel(plRC[0], "Direction arrows", args, n); XtManageChild(label);
+  plRC[0] = XmCreateRowColumn(RC[2], (char *)"pnRC", args, n); XtManageChild(plRC[0]);
+  dirText = XmCreateTextField(plRC[0], (char *)"dirText", args, n); XtManageChild(dirText);
+  label = XmCreateLabel(plRC[0], (char *)"Direction arrows", args, n); XtManageChild(label);
 
-  plRC[0] = XmCreateRowColumn(RC[2], "pnRC", args, n); XtManageChild(plRC[0]);
-  tsText = XmCreateTextField(plRC[0], "tsText", args, n); XtManageChild(tsText);
-  label = XmCreateLabel(plRC[0], "Time Stamps", args, n); XtManageChild(label);
+  plRC[0] = XmCreateRowColumn(RC[2], (char *)"pnRC", args, n); XtManageChild(plRC[0]);
+  tsText = XmCreateTextField(plRC[0], (char *)"tsText", args, n); XtManageChild(tsText);
+  label = XmCreateLabel(plRC[0], (char *)"Time Stamps", args, n); XtManageChild(label);
 
-  optButton[0] = XmCreateToggleButton(RC[2], "Scatter plot (on/off)", args,n);
-  optButton[1] = XmCreateToggleButton(RC[2], "Project to XY-plane", args, n);
-  optButton[2] = XmCreateToggleButton(RC[2], "Project to back planes", args, n);
+  optButton[0] = XmCreateToggleButton(RC[2], (char *)"Scatter plot (on/off)", args,n);
+  optButton[1] = XmCreateToggleButton(RC[2], (char *)"Project to XY-plane", args, n);
+  optButton[2] = XmCreateToggleButton(RC[2], (char *)"Project to back planes", args, n);
   XtManageChildren(optButton, 3);
 
   XtAddCallback(dirText, XmNvalueChangedCallback, ToggleArrows, NULL);

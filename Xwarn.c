@@ -84,7 +84,7 @@ void CreateWarningBox(Widget parent)
 
   for (i = 0; i < nWarnings; ++i) {
     inUse[i] = False;
-    warnBox[i] = XmCreateWarningDialog(parent, "warnBox", NULL, 0);
+    warnBox[i] = XmCreateWarningDialog(parent, (char *)"warnBox", NULL, 0);
     XtSetSensitive(XmMessageBoxGetChild(warnBox[i],
                    XmDIALOG_HELP_BUTTON), False);
     }

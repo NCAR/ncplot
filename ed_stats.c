@@ -148,16 +148,16 @@ static void CreateStatsParmsWindow()
   StatsShell = XtCreatePopupShell("editStatsShell",
                topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  StatsParmsWindow = XmCreateRowColumn(StatsShell, "parmsRC", NULL, 0);
+  StatsParmsWindow = XmCreateRowColumn(StatsShell, (char *)"parmsRC", NULL, 0);
 
-  form = XmCreateForm(StatsParmsWindow, "outlierForm", NULL, 0);
+  form = XmCreateForm(StatsParmsWindow, (char *)"outlierForm", NULL, 0);
   XtManageChild(form);
 
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
-  list = XmCreateScrolledList(form, "olVarList", args, n);
+  list = XmCreateScrolledList(form, (char *)"olVarList", args, n);
   XtManageChild(list);
   XtAddCallback(list, XmNsingleSelectionCallback, setOutlierVar, NULL);
 
@@ -165,27 +165,27 @@ static void CreateStatsParmsWindow()
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
-  oRC = XmCreateRowColumn(form, "statsRC", args, n);
+  oRC = XmCreateRowColumn(form, (char *)"statsRC", args, n);
   XtManageChild(oRC);
 
 
   n = 0;
-  frame[0] = XmCreateFrame(oRC, "outlierFrame", args, 0);
-  frame[1] = XmCreateFrame(oRC, "averageFrame", args, 0);
-  frame[2] = XmCreateFrame(oRC, "regretFrame", args, 0);
+  frame[0] = XmCreateFrame(oRC, (char *)"outlierFrame", args, 0);
+  frame[1] = XmCreateFrame(oRC, (char *)"averageFrame", args, 0);
+  frame[2] = XmCreateFrame(oRC, (char *)"regretFrame", args, 0);
   XtManageChildren(frame, 3);
 
   n = 0;
-  title[0] = XmCreateLabel(frame[1], "outlierTitle", args, 0);
-  title[1] = XmCreateLabel(frame[0], "averageTitle", args, 0);
-  title[2] = XmCreateLabel(frame[2], "regretTitle", args, 0);
+  title[0] = XmCreateLabel(frame[1], (char *)"outlierTitle", args, 0);
+  title[1] = XmCreateLabel(frame[0], (char *)"averageTitle", args, 0);
+  title[2] = XmCreateLabel(frame[2], (char *)"regretTitle", args, 0);
   XtManageChild(title[0]); XtManageChild(title[1]);
   XtManageChild(title[2]);
 
   n = 0;
-  RC[0] = XmCreateRowColumn(frame[1], "outlierRC", args, 0);
-  RC[1] = XmCreateRowColumn(frame[0], "averageRC", args, 0);
-  RC[2] = XmCreateRowColumn(frame[2], "regretRC", args, 0);
+  RC[0] = XmCreateRowColumn(frame[1], (char *)"outlierRC", args, 0);
+  RC[1] = XmCreateRowColumn(frame[0], (char *)"averageRC", args, 0);
+  RC[2] = XmCreateRowColumn(frame[2], (char *)"regretRC", args, 0);
   XtManageChild(RC[0]); XtManageChild(RC[1]);
   XtManageChild(RC[2]);
 
@@ -193,19 +193,19 @@ static void CreateStatsParmsWindow()
   /* Outlier frame.
    */
   n = 0;
-  plRC[0] = XmCreateRowColumn(RC[0], "plRC", args, n);
-  plRC[1] = XmCreateRowColumn(RC[0], "plRC", args, n);
+  plRC[0] = XmCreateRowColumn(RC[0], (char *)"plRC", args, n);
+  plRC[1] = XmCreateRowColumn(RC[0], (char *)"plRC", args, n);
   XtManageChildren(plRC, 2);
 
 
-  label = XmCreateLabel(plRC[0], "Floor", NULL, 0);
-  parmsText[1] = XmCreateTextField(plRC[0], "floorTxt", NULL, 0);
+  label = XmCreateLabel(plRC[0], (char *)"Floor", NULL, 0);
+  parmsText[1] = XmCreateTextField(plRC[0], (char *)"floorTxt", NULL, 0);
   XtAddCallback(parmsText[1], XmNlosingFocusCallback, ValidateFloat, (XtPointer)"%g");
   XtManageChild(label);
   XtManageChild(parmsText[1]);
 
-  label = XmCreateLabel(plRC[1], "Ceiling", NULL, 0);
-  parmsText[2] = XmCreateTextField(plRC[1], "ceilTxt", NULL, 0);
+  label = XmCreateLabel(plRC[1], (char *)"Ceiling", NULL, 0);
+  parmsText[2] = XmCreateTextField(plRC[1], (char *)"ceilTxt", NULL, 0);
   XtAddCallback(parmsText[2], XmNlosingFocusCallback, ValidateFloat, (XtPointer)"%g");
   XtManageChild(label);
   XtManageChild(parmsText[2]);
@@ -214,12 +214,12 @@ static void CreateStatsParmsWindow()
   /* Averaging frame.
    */
   n = 0;
-  plRC[0] = XmCreateRowColumn(RC[1], "plRC", args, n);
+  plRC[0] = XmCreateRowColumn(RC[1], (char *)"plRC", args, n);
   XtManageChild(plRC[0]);
 
   n = 0;
-  parmsText[0] = XmCreateTextField(plRC[0], "floorTxt", NULL, 0);
-  label = XmCreateLabel(plRC[0], ":1 ratio", NULL, 0);
+  parmsText[0] = XmCreateTextField(plRC[0], (char *)"floorTxt", NULL, 0);
+  label = XmCreateLabel(plRC[0], (char *)":1 ratio", NULL, 0);
   XtManageChild(parmsText[0]);
   XtManageChild(label);
   XtAddCallback(parmsText[0], XmNlosingFocusCallback, ValidateInteger, (XtPointer)"%d");

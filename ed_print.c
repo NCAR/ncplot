@@ -166,20 +166,20 @@ static void CreatePrintWindow()
                 topLevelShellWidgetClass, AppShell, args, n);
 
   n = 0;
-  PrintWindow = XmCreateRowColumn(PrintShell, "parmsRC", args, n);
+  PrintWindow = XmCreateRowColumn(PrintShell, (char *)"parmsRC", args, n);
 
   n = 0;
-  frame[0] = XmCreateFrame(PrintWindow, "printParmsFrame", args, 0);
-  frame[1] = XmCreateFrame(PrintWindow, "shapeFrame", args, 0);
-  frame[2] = XmCreateFrame(PrintWindow, "colorFrame", args, 0);
-  frame[3] = XmCreateFrame(PrintWindow, "buttonFrame", args, 0);
+  frame[0] = XmCreateFrame(PrintWindow, (char *)"printParmsFrame", args, 0);
+  frame[1] = XmCreateFrame(PrintWindow, (char *)"shapeFrame", args, 0);
+  frame[2] = XmCreateFrame(PrintWindow, (char *)"colorFrame", args, 0);
+  frame[3] = XmCreateFrame(PrintWindow, (char *)"buttonFrame", args, 0);
   XtManageChildren(frame, 4);
 
   n = 0;
-  RC[0] = XmCreateRowColumn(frame[0], "printParmsRC", args, 0);
-  RC[1] = XmCreateRadioBox(frame[1], "plRC", args, 0);
-  RC[2] = XmCreateRadioBox(frame[2], "plRC", args, 0);
-  RC[3] = XmCreateRowColumn(frame[3], "buttonRC", args, 0);
+  RC[0] = XmCreateRowColumn(frame[0], (char *)"printParmsRC", args, 0);
+  RC[1] = XmCreateRadioBox(frame[1], (char *)"plRC", args, 0);
+  RC[2] = XmCreateRadioBox(frame[2], (char *)"plRC", args, 0);
+  RC[3] = XmCreateRowColumn(frame[3], (char *)"buttonRC", args, 0);
   XtManageChild(RC[0]); XtManageChild(RC[1]);
   XtManageChild(RC[2]); XtManageChild(RC[3]);
 
@@ -187,11 +187,11 @@ static void CreatePrintWindow()
   /* Printer Op Menu
    */
   n = 0;
-  slPD = XmCreatePulldownMenu(RC[0], "slPullDown", args, n);
+  slPD = XmCreatePulldownMenu(RC[0], (char *)"slPullDown", args, n);
 
   n = 0;
   XtSetArg(args[n], XmNsubMenuId, slPD); ++n;
-  slOpMenu = XmCreateOptionMenu(RC[0], "prOpMenu", args, n);
+  slOpMenu = XmCreateOptionMenu(RC[0], (char *)"prOpMenu", args, n);
   XtManageChild(slOpMenu);
 
 
@@ -201,7 +201,7 @@ static void CreatePrintWindow()
 
     n = 0;
     XtSetArg(args[n], XmNlabelString, name); ++n;
-    slButts[i] = XmCreatePushButton(slPD, "opMenB", args, n);
+    slButts[i] = XmCreatePushButton(slPD, (char *)"opMenB", args, n);
     XtAddCallback(slButts[i], XmNactivateCallback, SetPrinter,
                   (XtPointer)printerList[i].c_str());
 
@@ -216,7 +216,7 @@ static void CreatePrintWindow()
   for (i = cnt = 0; i < TOTAL_PARMS; ++i, ++cnt)
     {
     n = 0;
-    plRC[i] = XmCreateRowColumn(RC[0], "plRC", args, n);
+    plRC[i] = XmCreateRowColumn(RC[0], (char *)"plRC", args, n);
 
     n = 0;
     sprintf(buffer, "lbl%ld", cnt);
@@ -234,7 +234,7 @@ static void CreatePrintWindow()
       XtAddCallback(parmsText[cnt],XmNlosingFocusCallback, ValidateFloat,
 		(XtPointer)"%.3f");
 
-      label = XmCreateLabel(plRC[i], "inches", NULL, 0);
+      label = XmCreateLabel(plRC[i], (char *)"inches", NULL, 0);
       XtManageChild(label);
       }
     }
@@ -243,13 +243,13 @@ static void CreatePrintWindow()
 
 
   n = 0;
-  shapeB[0] = XmCreateToggleButton(RC[1], "Portrait     ", args, n);
-  shapeB[1] = XmCreateToggleButton(RC[1], "Landscape    ", args, n);
+  shapeB[0] = XmCreateToggleButton(RC[1], (char *)"Portrait     ", args, n);
+  shapeB[1] = XmCreateToggleButton(RC[1], (char *)"Landscape    ", args, n);
   XtManageChildren(shapeB, 2);
 
   n = 0;
-  colorB[0] = XmCreateToggleButton(RC[2], "Color        ", args, n);
-  colorB[1] = XmCreateToggleButton(RC[2], "Black & White", args, n);
+  colorB[0] = XmCreateToggleButton(RC[2], (char *)"Color        ", args, n);
+  colorB[1] = XmCreateToggleButton(RC[2], (char *)"Black & White", args, n);
   XtManageChildren(colorB, 2);
 
   if (printerSetup.color)
@@ -260,9 +260,9 @@ static void CreatePrintWindow()
   /* Command buttons.
    */
   n = 0;
-  b[0] = XmCreatePushButton(RC[3], "applyButton", args, n);
-  b[1] = XmCreatePushButton(RC[3], "resetButton", args, n);
-  b[2] = XmCreatePushButton(RC[3], "dismissButton", args, n);
+  b[0] = XmCreatePushButton(RC[3], (char *)"applyButton", args, n);
+  b[1] = XmCreatePushButton(RC[3], (char *)"resetButton", args, n);
+  b[2] = XmCreatePushButton(RC[3], (char *)"dismissButton", args, n);
   XtAddCallback(b[0], XmNactivateCallback, ApplyPrintParms, NULL);
   XtAddCallback(b[1], XmNactivateCallback, EditPrintParms, NULL);
   XtAddCallback(b[2], XmNactivateCallback, DismissWindow, PrintWindow);
