@@ -387,7 +387,7 @@ void createPanelButts(Widget parent, std::vector<Widget>& panelB, XtCallbackProc
  
   for (size_t i = 0; i < MAX_PANELS; ++i)
     {
-    sprintf(buffer, "%d", i+1);
+    sprintf(buffer, "%zu", i+1);
     panelB.push_back(XmCreateToggleButton(plRC, buffer, NULL, 0));
  
     XtAddCallback(panelB[i], XmNvalueChangedCallback, set, (XtPointer)i);
