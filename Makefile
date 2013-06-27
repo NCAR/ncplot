@@ -30,7 +30,7 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL6
 # setenv JLOCAL /usr/local
 #
 #DEFINES	= -DPNG
-#INCLUDES= -I/usr/OpenMotif/include -I${LOCAL}/include
+#INCLUDES= -I/usr/OpenMotif/include -I/usr/X11R6/include -I${LOCAL}/include
 #LIB_DIRS= -L/usr/OpenMotif/lib -L/usr/X11R6/lib -L${LOCAL}/lib
 #LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
 #BIN	= /usr/local/bin
