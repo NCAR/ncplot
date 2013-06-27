@@ -180,7 +180,11 @@ static void _SavePNG(char file_name[], XImage *image)
     }
 
 
-  if (setjmp(png_ptr->jmpbuf)) {
+#ifdef PNG15
+  if (setjmp(png_jmpbuf(png_ptr))) {
+#else
+   if (setjmp(png_ptr->jmpbuf)) {
+#endif
     png_destroy_write_struct(&png_ptr, &info_ptr);
     fclose(outFP);
     return;
