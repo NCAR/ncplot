@@ -32,7 +32,7 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL6
 #DEFINES	= -DPNG
 #INCLUDES= -I/usr/OpenMotif/include -I/usr/X11R6/include -I${LOCAL}/include
 #LIB_DIRS= -L/usr/OpenMotif/lib -L/usr/X11R6/lib -L${LOCAL}/lib
-#LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lfl -lm -lpng -lz -lpthread
+#LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -ll -lm -lpng -lz -lpthread
 #BIN	= /usr/local/bin
 
 CFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES}
