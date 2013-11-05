@@ -132,8 +132,22 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 
   fprintf(fp, "ncplot template file\n");
   fprintf(fp, "Version=4\n");
-  fprintf(fp, "PlotType=%d\n", PlotType);
 
+  if (ExpWindow)
+    {
+    char *p;
+    for (i = 0; i < 5; ++i)
+      {
+      p = XmTextFieldGetString(expText[i]);
+
+      if (strlen(p))
+        fprintf(fp, "userCalc=%s\n", p);
+
+      free(p);
+      }
+    }
+
+  fprintf(fp, "PlotType=%d\n", PlotType);
   switch (PlotType)
     {
     case TIME_SERIES:
@@ -256,20 +270,6 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
       break;
     }
 
-  if (ExpWindow)
-    {
-    char *p;
-    for (i = 0; i < 5; ++i)
-      {
-      p = XmTextFieldGetString(expText[i]);
-
-      if (strlen(p))
-        fprintf(fp, "userCalc=%s\n", p);
-
-      free(p);
-      }
-    }
-
   fclose(fp);
 
   Freeze = saveState;
@@ -324,7 +324,23 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
   fgets(buffer, 512, fp);
   sscanf(buffer, "Version=%ld", &version);
 
+  void CreateExpressionWindow();
   fgets(buffer, 512, fp);
+  for (int calcCnt = 0; strncmp(buffer, "userCalc", 8) == 0; )
+    {
+    CreateExpressionWindow();
+
+    char *p = strchr(buffer, '=')+1;
+    if (p)
+      {
+      p[strlen(p)-1] = '\0';
+      XmTextFieldSetString(expText[calcCnt++], p);
+      }
+
+    AcceptExpressions(NULL, NULL, NULL);
+    fgets(buffer, 512, fp);
+    }
+
   sscanf(buffer, "PlotType=%ld", &x);
 
   ChangePlotType(NULL, (XtPointer)x, NULL);
@@ -710,24 +726,6 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         }
 
       break;
-    }
-
-  void CreateExpressionWindow();
-  for (int calcCnt = 0; fgets(buffer, 512, fp); )
-    {
-    if (strncmp(buffer, "userCalc", 8) == 0)
-      {
-      CreateExpressionWindow();
-
-      char *p = strchr(buffer, '=')+1;
-      if (p)
-        {
-        p[strlen(p)-1] = '\0';
-        XmTextFieldSetString(expText[calcCnt++], p);
-        }
-
-      AcceptExpressions(NULL, NULL, NULL);
-      }
     }
 
   fclose(fp);
