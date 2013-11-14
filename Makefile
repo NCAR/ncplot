@@ -35,7 +35,7 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL6
 #LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -ll -lm -lpng -lz -lpthread
 #BIN	= /usr/local/bin
 
-CFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES}
+CFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES} -Wno-write-strings -Wno-overflow
 
 PROG	= ncplot
 HDRS	= define.h extern.h
