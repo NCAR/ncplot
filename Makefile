@@ -9,8 +9,6 @@ YACC	= bison
 YFLAGS	= -d
 
 
-# ${LOCAL}/include needs to locate netcdf.h
-
 # Linux
 #
 DEFINES	= -DPNG
@@ -26,12 +24,14 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL6
 # and get OpenMotif from here (OpenMotif from Macports was not working for us):
 #  http://www.ist-inc.com/downloads/motif_download.html
 #
-# setenv LOCAL /opt/local
+# Mountain Lion update.  Need to get XQuartz download for X11, it is no longer bundled
+# with MacOS.  Using Homebrew instead of MacPorts now.
+#
 # setenv JLOCAL /usr/local
 #
 #DEFINES	= -DPNG -DPNG15
-#INCLUDES= -I/usr/OpenMotif/include -I/usr/X11R6/include -I${LOCAL}/include
-#LIB_DIRS= -L/usr/OpenMotif/lib -L/usr/X11R6/lib -L${LOCAL}/lib
+#INCLUDES= -I/usr/OpenMotif/include -I/opt/X11/include
+#LIB_DIRS= -L/usr/OpenMotif/lib -L/opt/X11/lib
 #LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -ll -lm -lpng -lz -lpthread
 #BIN	= /usr/local/bin
 
