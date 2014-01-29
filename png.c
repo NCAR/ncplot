@@ -180,7 +180,7 @@ static void _SavePNG(char file_name[], XImage *image)
     }
 
 
-#ifdef PNG15
+#if PNG_LIBPNG_VER >= 10500
   if (setjmp(png_jmpbuf(png_ptr))) {
 #else
    if (setjmp(png_ptr->jmpbuf)) {
