@@ -311,13 +311,13 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     size_t start[2], count[2];
     double tf[max_read];
     int dimids[3];
-    size_t recs;
+    size_t nrecs;
     int days;
 
     nc_inq_vardimid( InputFile, timeVarID, dimids );
-    nc_inq_dimlen( InputFile, dimids[0], &recs );
+    nc_inq_dimlen( InputFile, dimids[0], &nrecs );
 
-    max_read = std::min((size_t)120, recs);
+    max_read = std::min((size_t)120, nrecs);
 
     start[0] = 0; start[1] = 0;
     count[0] = max_read; count[1] = 1;
@@ -325,7 +325,16 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
     nc_get_vara_double(InputFile, timeVarID, start, count, tf);
 
     curFile->baseDataRate = baseRate(tf, max_read);
-    days = (recs*curFile->baseDataRate) / 86400;
+
+    {
+    // Hack to handle NOAA AOC high-rate files where time is in milli-seconds.
+    char tmp[256];
+    nc_get_att_text(InputFile, timeVarID, "long_name", tmp);
+    if (strstr(tmp, "milli") )
+      curFile->baseDataRate /= 1000;
+    }
+
+    days = (nrecs*curFile->baseDataRate) / 86400;
     curFile->FileEndTime[0] += days*24;
     curFile->FileEndTime[3] += days*86400;
     }
