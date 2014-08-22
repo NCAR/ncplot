@@ -30,7 +30,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1998
 #include <Xm/RowColumn.h>
 #include <Xm/TextF.h>
 
-static const int TOTAL_PARMS = 2;
+static const int TOTAL_PARMS = 4;
 
 extern Widget	AppShell;
 static Widget	StatsShell = NULL, StatsParmsWindow, parmsText[TOTAL_PARMS],
@@ -73,6 +73,8 @@ void SetStatsDefaults()
 /* -------------------------------------------------------------------- */
 static void setOutlierVar(Widget w, XtPointer client, XtPointer call)
 {
+/* This code is incomplete.
+
   int		position;
   DATASET_INFO	*set;
 
@@ -98,7 +100,7 @@ static void setOutlierVar(Widget w, XtPointer client, XtPointer call)
 
 
     }
-
+*/
 }	/* END SETOUTLIERVAR */
 
 /* -------------------------------------------------------------------- */
