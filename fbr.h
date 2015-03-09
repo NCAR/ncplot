@@ -41,7 +41,7 @@ static String fallback_resources[] =
   "*topLevelShell.y:			50",
   "*controlShell.title:			Variable Selection",
   "*controlShell.x:			925",
-  "*controlShell.y:			50",
+  "*controlShell.y:			55",
   "*buttonFrame.shadowType:		SHADOW_IN",
   "*buttonRC.XmPushButton.recomputeSize: False",
   "*buttonRC.XmPushButton.width:	125",
