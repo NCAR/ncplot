@@ -388,16 +388,23 @@ static void readSet(DATASET_INFO *set)
 
   if (set->varInfo->inVarID == COMPUTED)
     {
-    size_t whichExp = set->varInfo->name[4] - '1';;
+    size_t whichExp = set->varInfo->name[4] - '1';
 
     set->nPoints = NumberSeconds;
 
     for (i = 0; i < expSet.size(); ++i) 
+    {
       if (expSet[i].panelIndex == whichExp && expSet[i].nPoints == 0)
         {
         readSet(&expSet[i]);
         set->nPoints = expSet[i].nPoints;
+
+        // Convert all missing values to nan for computation purposes.
+        for (size_t j = 0; j < expSet[i].nPoints; ++j)
+          if (expSet[i].data[j] == DEFAULT_MISSING_VALUE)
+            expSet[i].data[j] = nanf("");
         }
+    }
 
     set->missingValue = DEFAULT_MISSING_VALUE;
     set->data = new NR_TYPE[set->nPoints];

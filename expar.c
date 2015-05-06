@@ -53,7 +53,11 @@ void ComputeExp(DATASET_INFO *set)
   strcpy(theExpression, set->varInfo->expression.c_str());
 
   for (size_t i = 0; i < set->nPoints; ++i)
+  {
     set->data[i] = scanit(theExpression, i);
+    if (std::isnan(set->data[i]))
+      set->data[i] = set->missingValue;
+  }
 
   Freeze = saveState;
 
