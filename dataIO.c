@@ -401,7 +401,7 @@ static void readSet(DATASET_INFO *set)
 
         // Convert all missing values to nan for computation purposes.
         for (size_t j = 0; j < expSet[i].nPoints; ++j)
-          if (expSet[i].data[j] == DEFAULT_MISSING_VALUE)
+          if (isMissingValue(expSet[i].data[j], expSet[i].missingValue))
             expSet[i].data[j] = nanf("");
         }
     }
@@ -514,9 +514,6 @@ void ReadData()
     }
 
   freeDataSets(false);
-
-  for (i = 0; i < expSet.size(); ++i)
-    readSet(&expSet[i]);
 
   for (i = 0; i < NumberDataSets; ++i)
     readSet(&dataSet[i]);
