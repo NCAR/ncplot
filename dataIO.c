@@ -198,7 +198,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
       }
     }
 
-  /* Get Time dimension.
+  /* Get Time variable.
    */
   int timeVarID;
   if (nc_inq_varid(InputFile, "Time", &timeVarID) != NC_NOERR)
