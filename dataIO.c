@@ -94,7 +94,7 @@ void NewDataFile(Widget w, XtPointer client, XtPointer call)
         &UserStartTime[0], &UserStartTime[1], &UserStartTime[2],
         &UserEndTime[0], &UserEndTime[1], &UserEndTime[2]);
 
-	if (UserStartTime[0] > UserEndTime[0])
+    if (UserStartTime[0] > UserEndTime[0])
       UserEndTime[0] += 24;
 
     delete [] timeSeg;
@@ -677,6 +677,9 @@ void AddVariable(DATASET_INFO *set, const char *var)
 /* -------------------------------------------------------------------- */
 void ReduceData(int start, int newNumberSeconds)
 {
+  if (NumberSeconds == 0)
+    return;
+
   for (size_t set = 0; set < NumberDataSets; ++set)
     {
     size_t rate = dataSet[set].nPoints / NumberSeconds;
@@ -857,6 +860,12 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
    */
   std::string tmpS;
   getNCattr(InputFile, NC_GLOBAL, "TimeInterval", tmpS);
+
+  if (tmpS.length() == 0)
+    {
+    HandleError("netCDF global attribute TimeInterval not defined.", Interactive, IRET);
+    return;
+    }
 
   sscanf(tmpS.c_str(), "%02d:%02d:%02d-%02d:%02d:%02d",
          &curFile->FileStartTime[0], &curFile->FileStartTime[1],

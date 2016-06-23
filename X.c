@@ -467,6 +467,9 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
   float		xScale, yScale, halfSecond, yMin;
   struct axisInfo	*yAxis;
 
+  if (NumberSeconds == 0)
+    return;
+
   yAxis = &plot->Yaxis[set->scaleLocation];
 
   if (yAxis->logScale)
