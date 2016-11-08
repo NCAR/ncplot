@@ -303,10 +303,11 @@ static void CreateTrackOptWin()
   XtAddCallback(b[5], XmNvalueChangedCallback, ToggleEqualScaling, NULL);
 
   /* GMTHOME is used by in-house builds of GMT (deprecating).
-   * GMT_SHAREDIR is used by RPM installations.
+   * GMT_SHAREDIR is used by RPM installations...GMT4 & RHEL6
+   * @TODO: For RHEL7 and GMT5, no env is used, need a new test here for greying out button.
    */
-  if (getenv("GMTHOME") == NULL && getenv("GMT_SHAREDIR") == NULL)
-    XtSetSensitive(b[4], false);
+//  if (getenv("GMTHOME") == NULL && getenv("GMT_SHAREDIR") == NULL)
+//    XtSetSensitive(b[4], false);
 
 
   /* Wind vector options.

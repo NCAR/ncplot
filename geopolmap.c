@@ -290,6 +290,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
 /* -------------------------------------------------------------------- */
 static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisInfo *yAxis)
 {
+  char  scale_str[16], river_str[16], command[256];
   float	scale;
   int	xMin, xMax, yMin, yMax;
   char	*env;
@@ -302,19 +303,35 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
   /* Determine which resolution GMT database to use.
    */
   scale = sqrt((xAxis->max - xAxis->min) * (yAxis->max - yAxis->min));
+  if (scale > 60)	strcpy(scale_str, "-Dc"); else
+  if (scale > 40)	strcpy(scale_str, "-Dl"); else
+  if (scale > 20)	strcpy(scale_str, "-Di"); else
+  if (scale > 10)	strcpy(scale_str, "-Dh"); else
+			strcpy(scale_str, "-Df");
 
+  if (scale > 40)	strcat(river_str, "");	else
+  if (scale > 20)	strcat(river_str, " -I1"); else
+  if (scale > 10)	strcat(river_str, " -Ir"); else
+			strcat(river_str, " -Ia");
+
+  /* GMT5 only supports one of borders, shores, or rivers in in one command.
+   * So now we have to string multiple pscoast commands together.
+   */
   if ( (env = getenv("GMTHOME")) )	// home built GMT
-    sprintf(buf, "%s/bin/pscoast -R%d/%d/%d/%d -M -Na -W -Jx1d ",
-	env, xMin, xMax, yMin, yMax);
+    sprintf(command, "%s/bin/pscoast -R%d/%d/%d/%d -M -Jx1d %s",
+	env, xMin, xMax, yMin, yMax, scale_str);
   else					// RPM GMT
-    sprintf(buf, "/usr/bin/pscoast -R%d/%d/%d/%d -M -Na -W -Jx1d ",
-	xMin, xMax, yMin, yMax);
+    sprintf(command, "/bin/gmt pscoast -R%d/%d/%d/%d -M -Jx1d %s",
+	xMin, xMax, yMin, yMax, scale_str);
 
-  if (scale > 60)	strcat(buf, "-Dc");	else
-  if (scale > 40)	strcat(buf, "-Dl");	else
-  if (scale > 20)	strcat(buf, "-I1 -Di"); else
-  if (scale > 10)	strcat(buf, "-Ir -Dh"); else
-			strcat(buf, "-Ia -Df");
+  sprintf(buf, "(%s -Na; %s -W;", command, command);
+  if (strlen(river_str) > 0)
+  {
+    strcat(buf, command);
+    strcat(buf, river_str);
+  }
+
+  strcat(buf, ")");
 
 }	/* END CREATECOASTCOMMAND */
 
