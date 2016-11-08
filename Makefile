@@ -16,22 +16,19 @@ INCLUDES=
 LIB_DIRS= 
 LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lm -lpng -lz -lpthread
 BIN	= ${JLOCAL}/bin
-ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL6
+ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 
 # Mac OS X
 #
-# Requires XCode from Mac App Store, use Macports/porticus to get libpng and netcdf
-# and get OpenMotif from here (OpenMotif from Macports was not working for us):
-#  http://www.ist-inc.com/downloads/motif_download.html
+# Requires XCode from Mac App Store.  Using Hombrew instead of MacPorts.
+# Need to get XQuartz download for X11, it is no longer bundled
+# with MacOS.  https://www.xquartz.org/
 #
-# Mountain Lion update.  Need to get XQuartz download for X11, it is no longer bundled
-# with MacOS.  Using Homebrew instead of MacPorts now.
-#
-# setenv JLOCAL /usr/local
+# Yosemite/El Capitan update.  openmotif available from "brew install homebrew/x11/openmotif"
 #
 #DEFINES	= -DPNG -DPNG15
-#INCLUDES= -I/usr/OpenMotif/include -I/opt/X11/include
-#LIB_DIRS= -L/usr/OpenMotif/lib -L/opt/X11/lib
+#INCLUDES= -I/opt/X11/include
+#LIB_DIRS= -L/opt/X11/lib
 #LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -ll -lm -lpng -lz -lpthread
 #BIN	= /usr/local/bin
 
