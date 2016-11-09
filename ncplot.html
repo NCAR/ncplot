@@ -29,7 +29,7 @@ span.comment { background-color: #88FF88; font-style: italic; }
 <body>
 
 <h1 align=CENTER>NCPLOT User's Guide</h1>
-<h1 align=CENTER>Version 4.9.7</h1>
+<h1 align=CENTER>Version 4.9.8</h1>
 <hr>
 <h1 align=CENTER>Table Of Contents</h1>
 <ol type=A>
@@ -750,8 +750,12 @@ be defined for <b>ncplot</b> to engage mapping.  The <b>pscoast</b> command
 must be in your <b>$GMTHOME/bin</b>, and the coast libraries
 <b>$GMTHOME/lib/binned_*.cdf</b> (~75Mb) must be installed.
 <p>
-For GMT installation via Redhat RPMs the <b>GMT_SHAREDIR</b> environment variable
-must be defined (/usr/share/GMT most likely).
+Pre-canned packages exist for Ubuntu/Debian, RHEL/CentOS, MacOSX, and Windows.  Please
+visit the GMT installation page at <a href="http://gmt.soest.hawaii.edu/projects/gmt/wiki/Installing">http://gmt.soest.hawaii.edu/projects/gmt/wiki/Installing</a>.
+<p>
+For RHEL/CentOS installs, the gmt-gshhg package is missing the high-resolution netCDF files,
+so I <a href="http://gmt.soest.hawaii.edu/projects/gmt/wiki/Download">downloaded</a> those
+my self and copied the files into /usr/share/gshhg-gmt-nc4.
 <p>
 
 <a name="kp"></a>
