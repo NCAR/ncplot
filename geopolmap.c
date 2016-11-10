@@ -318,7 +318,7 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
    * So now we have to string multiple pscoast commands together.
    */
   if ( (env = getenv("GMTHOME")) )	// home built GMT
-    sprintf(command, "%s/bin/pscoast -R%d/%d/%d/%d -M -Jx1d %s",
+    sprintf(command, "%s/bin/gmt pscoast -R%d/%d/%d/%d -M -Jx1d %s",
 	env, xMin, xMax, yMin, yMax, scale_str);
   else					// RPM GMT
     sprintf(command, "/bin/gmt pscoast -R%d/%d/%d/%d -M -Jx1d %s",
