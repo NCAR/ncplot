@@ -309,10 +309,10 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
   if (scale > 10)	strcpy(scale_str, "-Dh"); else
 			strcpy(scale_str, "-Df");
 
-  if (scale > 40)	strcat(river_str, "");	else
-  if (scale > 20)	strcat(river_str, " -I1"); else
-  if (scale > 10)	strcat(river_str, " -Ir"); else
-			strcat(river_str, " -Ia");
+  if (scale > 40)	strcpy(river_str, "");	else
+  if (scale > 20)	strcpy(river_str, " -I1"); else
+  if (scale > 10)	strcpy(river_str, " -Ir"); else
+			strcpy(river_str, " -Ia");
 
   /* GMT5 only supports one of borders, shores, or rivers in in one command.
    * So now we have to string multiple pscoast commands together.
