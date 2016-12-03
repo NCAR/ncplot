@@ -20,9 +20,11 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
 #include "define.h"
 #include "ps.h"
 
+#include <sys/stat.h>
 #include <Xm/TextF.h>
 
 static bool	GeoPolMap = False;
+static char	gmt_path[128];
 
 static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisInfo *yAxis);
 static void setColor(PLOT_INFO * plot, char str[], FILE *fp);
@@ -288,12 +290,49 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
 }	/* END DRAWGEOPOLMAPXYZ */
 
 /* -------------------------------------------------------------------- */
+bool TestForGMT()
+{
+  bool rc = false;
+  char *env;
+  struct stat sb;
+
+  gmt_path[0] = '\0';
+
+  if ( (env = getenv("GMTHOME")) )	// home built GMT
+  {
+    char test_path[128];
+
+    strcpy(test_path, env);
+    strcat(test_path, "/bin/gmt");
+
+    stat(test_path, &sb);
+    if ((sb.st_mode & S_IFMT) == S_IFREG) {
+      strcpy(gmt_path, env);
+      rc = true;
+    }
+  }
+
+
+  stat("/usr/local/bin/gmt", &sb);
+  if ((sb.st_mode & S_IFMT) == S_IFREG) {
+    strcpy(gmt_path, "/usr/local");
+    rc = true;
+  }
+
+  stat("/bin/gmt", &sb);
+  if ((sb.st_mode & S_IFMT) == S_IFREG) {
+    rc = true;
+  }
+
+  return rc;
+}
+
+/* -------------------------------------------------------------------- */
 static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisInfo *yAxis)
 {
   char  scale_str[16], river_str[16], command[256];
   float	scale;
   int	xMin, xMax, yMin, yMax;
-  char	*env;
 
   xMin = (xAxis->min < 0.0) ? (int)xAxis->min-1 : (int)xAxis->min;
   yMin = (yAxis->min < 0.0) ? (int)yAxis->min-1 : (int)yAxis->min;
@@ -317,12 +356,8 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
   /* GMT5 only supports one of borders, shores, or rivers in in one command.
    * So now we have to string multiple pscoast commands together.
    */
-  if ( (env = getenv("GMTHOME")) )	// home built GMT
-    sprintf(command, "%s/bin/gmt pscoast -R%d/%d/%d/%d -M -Jx1d %s",
-	env, xMin, xMax, yMin, yMax, scale_str);
-  else					// RPM GMT
-    sprintf(command, "/bin/gmt pscoast -R%d/%d/%d/%d -M -Jx1d %s",
-	xMin, xMax, yMin, yMax, scale_str);
+  sprintf(command, "%s/bin/gmt pscoast -R%d/%d/%d/%d -M -Jx1d %s",
+	gmt_path, xMin, xMax, yMin, yMax, scale_str);
 
   sprintf(buf, "(%s -Na; %s -W;", command, command);
   if (strlen(river_str) > 0)

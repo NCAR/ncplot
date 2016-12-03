@@ -45,6 +45,7 @@ static Widget	wvText[2], tiText, average[2], optButton[8], dirText, tsText;
 /* static char *defaultUI = "UIC", *defaultVI = "VIC", *defaultTI = "300"; */
 
 void	findMinMax();
+bool	TestForGMT();
 static void CreateTrackOptWin();
 
 /* -------------------------------------------------------------------- */
@@ -302,12 +303,8 @@ static void CreateTrackOptWin()
   XtAddCallback(b[4], XmNvalueChangedCallback, ToggleGeoPolMap, NULL);
   XtAddCallback(b[5], XmNvalueChangedCallback, ToggleEqualScaling, NULL);
 
-  /* GMTHOME is used by in-house builds of GMT (deprecating).
-   * GMT_SHAREDIR is used by RPM installations...GMT4 & RHEL6
-   * @TODO: For RHEL7 and GMT5, no env is used, need a new test here for greying out button.
-   */
-//  if (getenv("GMTHOME") == NULL && getenv("GMT_SHAREDIR") == NULL)
-//    XtSetSensitive(b[4], false);
+  if (TestForGMT() == false)
+    XtSetSensitive(b[4], false);
 
 
   /* Wind vector options.
