@@ -14,7 +14,7 @@ YFLAGS	= -d
 DEFINES	= -DPNG
 INCLUDES= 
 LIB_DIRS= 
-LIBS    = -lXm -lXt -lXext -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lm -lpng -lz -lpthread
+LIBS    = -lXm -lXt -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lm -lpng -lz -lpthread
 BIN	= ${JLOCAL}/bin
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 
