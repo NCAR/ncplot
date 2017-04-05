@@ -270,40 +270,40 @@ static void PrintStats(Widget w, XtPointer client, XtPointer call)
 
   fprintf(fp, "%s, %s\n\n",
 	mainPlot[0].title.c_str(), mainPlot[0].subTitle.c_str());
-  fprintf(fp, statTitle);
+  fprintf(fp, "%s", statTitle);
 
   for (i = 0; i < NumberDataSets; ++i)
     {
     formatLine(buffer, &dataSet[i]);
-    fprintf(fp, buffer);
+    fprintf(fp, "%s", buffer);
     }
 
   for (i = 0; i < NumberXYXsets; ++i)
     {
     formatLine(buffer, &xyXset[i]);
-    fprintf(fp, buffer);
+    fprintf(fp, "%s", buffer);
     }
 
   for (i = 0; i < NumberXYYsets; ++i)
     {
     formatLine(buffer, &xyYset[i]);
-    fprintf(fp, buffer);
+    fprintf(fp, "%s", buffer);
     }
 
   for (i = 0; i < 3; ++i)
     if (xyzSet[i].varInfo)
       {
       formatLine(buffer, &xyzSet[i]);
-      fprintf(fp, buffer);
+      fprintf(fp, "%s", buffer);
       }
 
   if (WindBarbs)
     {
     formatLine(buffer, &ui);
-    fprintf(fp, buffer);
+    fprintf(fp, "%s", buffer);
 
     formatLine(buffer, &vi);
-    fprintf(fp, buffer);
+    fprintf(fp, "%s", buffer);
     }
 
   pclose(fp);

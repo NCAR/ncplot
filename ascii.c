@@ -242,7 +242,7 @@ static void timeDomainASCII(FILE *fp, int nPoints)
   int	msecCnt;
 
   if (fp)
-    fprintf(fp, formatTitle(buffer));
+    fprintf(fp, "%s", formatTitle(buffer));
   else
     XmTextSetString(asciiText, formatTitle(buffer));
 
@@ -265,7 +265,7 @@ static void timeDomainASCII(FILE *fp, int nPoints)
     formatLine(buffer, i, hour, min, sec, msec);
 
     if (fp)
-      fprintf(fp, buffer);
+      fprintf(fp, "%s", buffer);
     else
       XmTextInsert(asciiText, XmTextGetLastPosition(asciiText), buffer);
 
@@ -325,7 +325,7 @@ static void freqDomainASCII(FILE *fp, int nPoints)
         sprintf(buffer, "%14f %14e\n", psd[set].freqPerBin * i, dataP[i]);
 
       if (fp)
-        fprintf(fp, buffer);
+        fprintf(fp, "%s", buffer);
       else
         XmTextInsert(asciiText, XmTextGetLastPosition(asciiText), buffer);
       }
