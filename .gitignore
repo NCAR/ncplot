@@ -1,2 +1,6 @@
 # ignore objects and archives, anywhere in the tree.
-*.[oa]
+*.o
+ncplot
+exp.tab.c
+exp.tab.h
+lex.yy.c
