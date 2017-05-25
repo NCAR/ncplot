@@ -806,7 +806,9 @@ static void freeDataSets(int mode)
   for (set = 0; set < expSet.size(); ++set)
     {
     expSet[set].nPoints = 0;
-    delete [] expSet[set].data;
+    if (expSet[set].data)
+      delete [] expSet[set].data;
+    expSet[set].data = 0;
     }
 
   if (mode)
