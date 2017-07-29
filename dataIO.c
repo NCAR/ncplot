@@ -687,9 +687,6 @@ void ReduceData(int start, int newNumberSeconds)
 
     memcpy((char *)dataSet[set].data, (char *)&dataSet[set].data[start*rate],
 			dataSet[set].nPoints * sizeof(NR_TYPE));
-
-    dataSet[set].data = (NR_TYPE *)realloc((void *)dataSet[set].data,
-                dataSet[set].nPoints * sizeof(NR_TYPE));
     }
 
   for (size_t set = 0; set < expSet.size(); ++set)
@@ -702,9 +699,6 @@ void ReduceData(int start, int newNumberSeconds)
 
     memcpy((char *)expSet[set].data, (char *)&expSet[set].data[start*rate],
 			expSet[set].nPoints * sizeof(NR_TYPE));
-
-    expSet[set].data = (NR_TYPE *)realloc((void *)expSet[set].data,
-                expSet[set].nPoints * sizeof(NR_TYPE));
     }
 
   NumberSeconds = newNumberSeconds;
