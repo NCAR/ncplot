@@ -685,7 +685,7 @@ void ReduceData(int start, int newNumberSeconds)
     size_t rate = dataSet[set].nPoints / NumberSeconds;
     dataSet[set].nPoints = newNumberSeconds * rate;
 
-    memcpy((char *)dataSet[set].data, (char *)&dataSet[set].data[start*rate],
+    memmove((char *)dataSet[set].data, (char *)&dataSet[set].data[start*rate],
 			dataSet[set].nPoints * sizeof(NR_TYPE));
     }
 
@@ -697,7 +697,7 @@ void ReduceData(int start, int newNumberSeconds)
     size_t rate = expSet[set].nPoints / NumberSeconds;
     expSet[set].nPoints = newNumberSeconds * rate;
 
-    memcpy((char *)expSet[set].data, (char *)&expSet[set].data[start*rate],
+    memmove((char *)expSet[set].data, (char *)&expSet[set].data[start*rate],
 			expSet[set].nPoints * sizeof(NR_TYPE));
     }
 
