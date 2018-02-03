@@ -131,7 +131,7 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
   WaitCursor(MainWindow);
   WaitCursor(ControlWindow);
 
-  if (client > 0)
+  if (client)
     psd[0].display = (long)client;
 
   if (firstTime)

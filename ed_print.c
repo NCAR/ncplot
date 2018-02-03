@@ -285,7 +285,7 @@ void *GetPrinterList(void *arg)
 
   printerList.push_back("Default");
 
-  for (i = 1; fgets(buffer, 1024, in) > 0; ++i)
+  for (i = 1; fgets(buffer, 1024, in); ++i)
     {
     if (i >= MAX_PRINTERS-1)
       {

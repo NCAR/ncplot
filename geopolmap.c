@@ -99,7 +99,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
   reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
   pts = new XPoint[reqSize];
 
-  while (fgets(buffer, 1024, in) > 0)
+  while (fgets(buffer, 1024, in))
     {
     if (buffer[0] == '#' || buffer[0] == '>')
     {
@@ -129,7 +129,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
 
       ++cnt;
       }
-    while (fgets(buffer, 1024, in) > 0 && buffer[0] != '>');
+    while (fgets(buffer, 1024, in) && buffer[0] != '>');
 
     setColor(plot, buffer, fp);
 
@@ -221,7 +221,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
   reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
   pts = new XPoint[reqSize];
 
-  while (fgets(buffer, 1024, in) > 0)
+  while (fgets(buffer, 1024, in))
     {
     if (buffer[0] == '#' || buffer[0] == '>')
     {
@@ -262,7 +262,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
       pts[cnt].y = (int)y;
       ++cnt;
       }
-    while (fgets(buffer, 1024, in) > 0 && buffer[0] != '>');
+    while (fgets(buffer, 1024, in) && buffer[0] != '>');
 
     setColor(plot, buffer, fp);
 

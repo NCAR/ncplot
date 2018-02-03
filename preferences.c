@@ -307,7 +307,7 @@ void ReadConfigFile()
 
   printf("Reading config file %s.\n", buffer);
 
-  while (fgets(buffer, 1024, fp) > 0)
+  while (fgets(buffer, 1024, fp))
     {
     if (buffer[0] == '#' || strlen(buffer) < 3)
       continue;
