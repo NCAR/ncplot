@@ -21,14 +21,14 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 
 # Mac OS X
 #
-# Requires XCode from Apple App Store.  Don't forget to run "xcode-select --install"
-# after it is installed.
+# Requires XCode from Apple App Store.  Don't forget to run Xcode after it is
+# installed to accept license.
 #
 # Need to get XQuartz download for X11, it is no longer bundled
 # with MacOS.  https://www.xquartz.org/
 #
 # Using Homebrew instead of MacPorts.  https://brew.sh/
-#  brew install homebrew/x11/openmotif
+#  brew install openmotif
 #  brew install netcdf
 #  brew install gmt  ; for geo-politcal maps.
 #  brew install whatever else
