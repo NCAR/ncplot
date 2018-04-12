@@ -563,7 +563,7 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
 /* -------------------------------------------------------------------- */
 void plotXY(PLOT_INFO *plot, DATASET_INFO *Xset, DATASET_INFO *Yset, int color)
 {
-  int		i, cnt, nPts, reqSize, xIn, yIn, segCnt = 0;
+  size_t	i, cnt, nPts, reqSize, xIn, yIn, segCnt = 0;
   XPoint	*pts;
   NR_TYPE	datumX, datumY;
   float		xScale, yScale, xRatio, yRatio, xMin, yMin;
@@ -696,7 +696,30 @@ void plotXY(PLOT_INFO *plot, DATASET_INFO *Xset, DATASET_INFO *Yset, int color)
       XSetForeground(plot->dpy, plot->gc, GetColor(color));
 
     if (ScatterPlot)
+      {
+      size_t j, k, l;
+      XPoint *pts1;
+      pts1 = new XPoint[cnt];
+
+      // Draw initial point.
       XDrawPoints(plot->dpy, plot->win, plot->gc, pts, cnt, CoordModeOrigin);
+
+      // For line thickness greater than 1, we need to actually draw each point to make it bigger.
+      for (j = 1; j < LineThickness; ++j)
+        {
+        for (k = 1; k < LineThickness; ++k)
+          {
+          for (l = 0; l < cnt; ++l)
+            {
+            pts1[l].x = pts[l].x + j;
+            pts1[l].y = pts[l].y + k;
+            }
+
+          XDrawPoints(plot->dpy, plot->win, plot->gc, pts1, cnt, CoordModeOrigin);
+          }
+        }
+      delete [] pts1;
+      }
     else
       XDrawLines(plot->dpy, plot->win, plot->gc, pts, cnt, CoordModeOrigin);
 

@@ -358,12 +358,13 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
         {
         if (ScatterPlot)
           {
-          fprintf(fp, moveto, x-1, y-1);
-          fprintf(fp, lineto, x+1, y-1);
-          fprintf(fp, lineto, x+1, y);
-          fprintf(fp, lineto, x-1, y);
-          fprintf(fp, lineto, x-1, y+1);
-          fprintf(fp, lineto, x+1, y+1);
+          size_t offset = std::min(1, (int)LineThickness);
+          fprintf(fp, moveto, x-offset, y-offset);
+          fprintf(fp, lineto, x+offset, y-offset);
+          fprintf(fp, lineto, x+offset, y);
+          fprintf(fp, lineto, x-offset, y);
+          fprintf(fp, lineto, x-offset, y+offset);
+          fprintf(fp, lineto, x+offset, y+offset);
           }
         else
           fprintf(fp, p, x, y);
