@@ -106,7 +106,7 @@ static String fallback_resources[] =
   "*headerText.rows:			42",
 
   "*statsText.background:		Gray",
-  "*statsText.columns:			95",
+  "*statsText.columns:			101",
   "*statsText.editable:			False",
   "*statsText.editMode:			MULTI_LINE_EDIT",
   "*statsText.rows:			10",

@@ -19,7 +19,7 @@ REFERENCES:	none
 
 REFERENCED BY:	Menu button.
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-9
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2018
 -------------------------------------------------------------------------
 */
 
@@ -46,7 +46,7 @@ static void
 	DismissStats(Widget w, XtPointer client, XtPointer call);
 static char *formatLine(char *, DATASET_INFO *);
 
-static char *statTitle = "Variable              nPoints         Min         Max        Mean       Sigma         Var\n";
+static char *statTitle = "Variable              nPoints             Min          Max         Mean       Sigma         Var\n";
 
 extern Widget	AppShell;
 
@@ -323,7 +323,7 @@ static char *formatLine(char buff[], DATASET_INFO *set)
   sprintf(temp, "%5ld/%ld", (long)set->stats.nPoints, (long)set->nPoints);
   memcpy(&buff[20], temp, strlen(temp));
 
-  sprintf(&buff[32], "%12.6e %12.6e %12.6e %12.6e %12.6e\n",
+  sprintf(&buff[36], "%12.6e %12.6e %12.6e %12.6e %12.6e\n",
       set->stats.min,
       set->stats.max,
       set->stats.mean,
