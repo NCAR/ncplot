@@ -30,6 +30,7 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 # Using Homebrew instead of MacPorts.  https://brew.sh/
 #  brew install openmotif
 #  brew install netcdf
+#  brew install gsl
 #  brew install gmt  ; for geo-politcal maps.
 #  brew install whatever else
 #
