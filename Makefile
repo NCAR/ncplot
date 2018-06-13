@@ -38,7 +38,7 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 #INCLUDES= -I/opt/X11/include
 #LIB_DIRS= -L/opt/X11/lib
 #NCH_DEP	= /usr/local/include/netcdf.h
-#LIBS    = -lXm -lXt -lX11 -lnetcdf -ll -gsl -lm -lpng -lz -lpthread
+#LIBS    = -lXm -lXt -lX11 -lnetcdf -ll -lgsl -lm -lpng -lz -lpthread
 #BIN	= /usr/local/bin
 
 CFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES} -Wno-write-strings -Wno-overflow
