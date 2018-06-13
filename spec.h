@@ -55,8 +55,6 @@ double Spectrum(float data[], double Pxx[], size_t K, size_t M,
 double CoSpectrum(float data1[], float data2[], double Pxx[], double Qxx[],
 	size_t K, size_t M, double (*window)(int, int), size_t nPoints);
 
-void fft(double *real, double *imaginary, int power, int direction);
-
 void DetrendLinear(DATASET_INFO *in, float out[]);
 void DetrendMean(DATASET_INFO *in, float out[]);
 void DetrendNone(DATASET_INFO *in, float out[]);

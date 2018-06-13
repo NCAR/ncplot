@@ -15,7 +15,7 @@ DEFINES	= -DPNG
 INCLUDES= 
 LIB_DIRS= 
 NCH_DEP	= /usr/include/netcdf.h
-LIBS    = -lXm -lXt -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lm -lpng -lz -lpthread
+LIBS    = -lXm -lXt -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lgsl -lm -lpng -lz -lpthread
 BIN	= ${JLOCAL}/bin
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 
@@ -37,7 +37,7 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 #INCLUDES= -I/opt/X11/include
 #LIB_DIRS= -L/opt/X11/lib
 #NCH_DEP	= /usr/local/include/netcdf.h
-#LIBS    = -lXm -lXt -lX11 -lnetcdf -ll -lm -lpng -lz -lpthread
+#LIBS    = -lXm -lXt -lX11 -lnetcdf -ll -gsl -lm -lpng -lz -lpthread
 #BIN	= /usr/local/bin
 
 CFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES} -Wno-write-strings -Wno-overflow

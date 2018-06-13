@@ -27,6 +27,11 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
 #include "define.h"
 #include "spec.h"
 
+#include <gsl/gsl_fft_complex.h>
+
+#define REAL(z,i) ((z)[2*(i)])
+#define IMAG(z,i) ((z)[2*(i)+1])
+
 
 /* -------------------------------------------------------------------- */
 double Spectrum(float data[],		/* Input data			*/
@@ -36,22 +41,13 @@ double Spectrum(float data[],		/* Input data			*/
 		double (*window)(int, int),	/* Window function	*/
 		size_t nPoints)
 {
-  size_t i, seg, segP, Base = 1, twoM;
-  double KU, Wss, *currentSegment, *imaginary, *Window, variance;
+  size_t i, seg, segP, twoM;
+  double KU, Wss, *currentSegment, *Window, variance;
 
 
   twoM = M << 1;
 
-  currentSegment = new double[twoM];
-  imaginary = new double[twoM];
-
-
-  /* Figure out 2^Base.
-   */
-  for (i = 0; i < 32; ++i)
-    if ((0x00000001 << i) & twoM)
-      Base = i;
-
+  currentSegment = new double[twoM * 2];	// Imaginary is interleaved.
 
   /* Ouptut will consist of M + 1 points.
    */
@@ -109,23 +105,23 @@ double Spectrum(float data[],		/* Input data			*/
     {
     for (i = 0; i < twoM; ++i)
       {
-      currentSegment[i] = data[segP+i] * Window[i];
-      imaginary[i] = 0.0;
+      REAL(currentSegment,i) = data[segP+i] * Window[i];
+      IMAG(currentSegment,i) = 0.0;
       }
 
-    fft(currentSegment, imaginary, Base, 1);
+    gsl_fft_complex_radix2_forward(currentSegment, 1, twoM);
 
-    Pxx[0] += (currentSegment[0] * currentSegment[0]) +
-              (imaginary[0] * imaginary[0]);
+    Pxx[0] += (REAL(currentSegment,0) * REAL(currentSegment,0)) +
+              (IMAG(currentSegment,0) * IMAG(currentSegment,0));
 
     for (i = 1; i < M; ++i)
-      Pxx[i] +=	(currentSegment[i] * currentSegment[i]) +
-                (imaginary[i] * imaginary[i]) +
-                (currentSegment[twoM-i] * currentSegment[twoM-i]) +
-                (imaginary[twoM-i] * imaginary[twoM-i]);
+      Pxx[i] +=	(REAL(currentSegment,i) * REAL(currentSegment,i)) +
+                (IMAG(currentSegment,i) * IMAG(currentSegment,i)) +
+                (REAL(currentSegment,twoM-i) * REAL(currentSegment,twoM-i)) +
+                (IMAG(currentSegment,twoM-i) * IMAG(currentSegment,twoM-i));
 
-    Pxx[M] += (currentSegment[M] * currentSegment[M]) +
-              (imaginary[M] * imaginary[M]);
+    Pxx[M] += (REAL(currentSegment,M) * REAL(currentSegment,M)) +
+              (IMAG(currentSegment,M) * IMAG(currentSegment,M));
     }
 
 
@@ -140,7 +136,6 @@ double Spectrum(float data[],		/* Input data			*/
     }
 
   delete [] Window;
-  delete [] imaginary;
   delete [] currentSegment;
 
   return(variance);
@@ -157,25 +152,14 @@ double CoSpectrum(float data1[],	/* Input data			*/
 		double (*window)(int, int),	/* Window function	*/
 		size_t nPoints)
 {
-  size_t i, seg, segP, Base = 0, twoM;
+  size_t i, seg, segP, twoM;
   double KU, Wss, *Window;
-  double *currentSegment1, *imaginary1, *currentSegment2, *imaginary2,
-	variance;
+  double *currentSegment1, *currentSegment2, variance;
 
   twoM = M << 1;
 
-  currentSegment1 = new double[twoM];
-  currentSegment2 = new double[twoM];
-  imaginary1 = new double[twoM];
-  imaginary2 = new double[twoM];
-
-
-  /* Figure out 2^Base.
-   */
-  for (i = 0; i < 32; ++i)
-    if ((0x00000001 << i) & twoM)
-      Base = i;
-
+  currentSegment1 = new double[twoM * 2];
+  currentSegment2 = new double[twoM * 2];
 
   for (i = 0; i <= M; ++i)
     Pxx[i] = Qxx[i] = 0.0;
@@ -241,39 +225,39 @@ double CoSpectrum(float data1[],	/* Input data			*/
     {
     for (i = 0; i < twoM; ++i)
       {
-      currentSegment1[i] = data1[segP+i] * Window[i];
-      currentSegment2[i] = data2[segP+i] * Window[i];
-      imaginary1[i] = imaginary2[i] = 0.0;
+      REAL(currentSegment1, i) = data1[segP+i] * Window[i];
+      REAL(currentSegment2, i) = data2[segP+i] * Window[i];
+      IMAG(currentSegment1, i) = IMAG(currentSegment2, i) = 0.0;
       }
 
-    fft(currentSegment1, imaginary1, Base, 1);
-    fft(currentSegment2, imaginary2, Base, 1);
+    gsl_fft_complex_radix2_forward(currentSegment1, 1, twoM);
+    gsl_fft_complex_radix2_forward(currentSegment2, 1, twoM);
 
 
-    Pxx[0] += (currentSegment1[0] * currentSegment2[0]) +
-	      (imaginary1[0] * imaginary2[0]);
+    Pxx[0] += (REAL(currentSegment1, 0) * REAL(currentSegment2, 0)) +
+	      (IMAG(currentSegment1, 0) * IMAG(currentSegment2, 0));
 
-    Qxx[0] += (imaginary1[0] * currentSegment2[0]) -
-	      (currentSegment1[0] * imaginary2[0]);
+    Qxx[0] += (IMAG(currentSegment1, 0) * REAL(currentSegment2, 0)) -
+	      (REAL(currentSegment1, 0) * IMAG(currentSegment2, 0));
 
     for (i = 1; i < M; ++i)
       {
-      Pxx[i] += (currentSegment1[i] * currentSegment2[i]) +
-                (imaginary1[i] * imaginary2[i]) +
-                (currentSegment1[twoM-i] * currentSegment2[twoM-i]) +
-                (imaginary1[twoM-i] * imaginary2[twoM-i]);
+      Pxx[i] += (REAL(currentSegment1, i) * REAL(currentSegment2, i)) +
+                (IMAG(currentSegment1, i) * IMAG(currentSegment2, i)) +
+                (REAL(currentSegment1, twoM-i) * REAL(currentSegment2, twoM-i)) +
+                (IMAG(currentSegment1, twoM-i) * IMAG(currentSegment2, twoM-i));
 
-      Qxx[i] += (imaginary1[i] * currentSegment2[i]) -
-                (currentSegment1[i] * imaginary2[i]) -
-                (imaginary1[twoM-i] * currentSegment2[twoM-i]) +
-                (currentSegment1[twoM-i] * imaginary2[twoM-i]);
+      Qxx[i] += (IMAG(currentSegment1, i) * REAL(currentSegment2, i)) -
+                (REAL(currentSegment1, i) * IMAG(currentSegment2, i)) -
+                (IMAG(currentSegment1, twoM-i) * REAL(currentSegment2, twoM-i)) +
+                (REAL(currentSegment1, twoM-i) * IMAG(currentSegment2, twoM-i));
       }
 
-    Pxx[M] += (currentSegment1[M] * currentSegment2[M]) +
-              (imaginary1[M] * imaginary2[M]);
+    Pxx[M] += (REAL(currentSegment1, M) * REAL(currentSegment2, M)) +
+              (IMAG(currentSegment1, M) * IMAG(currentSegment2, M));
 
-    Qxx[M] += (-imaginary1[M] * currentSegment2[M]) +
-              (currentSegment1[M] * imaginary2[M]);
+    Qxx[M] += (-IMAG(currentSegment1, M) * REAL(currentSegment2, M)) +
+              (REAL(currentSegment1, M) * IMAG(currentSegment2, M));
     }
 
 
@@ -289,8 +273,6 @@ double CoSpectrum(float data1[],	/* Input data			*/
     }
 
   delete [] Window;
-  delete [] imaginary2;
-  delete [] imaginary1;
   delete [] currentSegment2;
   delete [] currentSegment1;
 
