@@ -114,6 +114,13 @@ void ComputeCoSpectrum()
   specPlot.Yaxis[0].biggestValue = -100000.0;
   cf = (double)(psd[0].M << 1) / psd[0].frequency;
 
+  std::string units0 = dataSet[0].stats.units;
+  std::string units1 = dataSet[1].stats.units;
+  if (units0.find('/') != std::string::npos)
+    units0 = '(' + units0 + ')';
+  if (units1.find('/') != std::string::npos)
+    units1 = '(' + units1 + ')';
+
   if (psd[0].display == COSPECTRA)
     {
     sprintf(buffer, "CoSpectrum of %s x %s",
@@ -130,7 +137,7 @@ void ComputeCoSpectrum()
 
         sprintf(buffer, "f x Co of %s x %s (%s^2 x %s^2)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
-            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+            units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
         }
       else
@@ -140,7 +147,7 @@ void ComputeCoSpectrum()
 
         sprintf(buffer, "f^(5/3) x Co of %s x %s (%s^2 x %s^2)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
-            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+            units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
         }
       else
@@ -149,7 +156,7 @@ void ComputeCoSpectrum()
 
         sprintf(buffer, "Co of %s x %s (%s^2 x %s^2 / Hz)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
-            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+            units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
         }
 
@@ -174,7 +181,7 @@ void ComputeCoSpectrum()
 
         sprintf(buffer, "f x Qxx of %s x %s (%s^2 x %s^2)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
-            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+            units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
         }
       else
@@ -183,7 +190,7 @@ void ComputeCoSpectrum()
 
         sprintf(buffer, "Qxx of %s x %s (%s^2 x %s^2 / Hz)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
-            dataSet[0].stats.units.c_str(), dataSet[1].stats.units.c_str());
+            units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
         }
 
@@ -251,7 +258,7 @@ void ComputeCoSpectrum()
     for (i = 1; i <= psd[0].M; ++i)
       psd[0].Special[i] = atan2(psd[0].Qxx[i], psd[0].Pxx[i]) * 180.0 / M_PI;
     }
-
+printf("%s\n", buffer);
   delete [] detrendedData[0];
   delete [] detrendedData[1];
 

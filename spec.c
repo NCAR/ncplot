@@ -265,6 +265,9 @@ void ComputeSpectrum()
 
     ComputeBandLimitedVariance(NULL, NULL, NULL);
 
+    std::string units = dataSet[0].stats.units;
+    if (units.find('/') != std::string::npos)
+      units = '(' + units + ')';
 
     if (multiplyByFreq())
       {
@@ -272,7 +275,7 @@ void ComputeSpectrum()
         psd[set].Pxx[i] *= i;
 
       sprintf(buffer, "f x PSD of %s (%s^2)",
-  	dataSet[0].varInfo->name.c_str(), dataSet[0].stats.units.c_str());
+  	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
     else
@@ -282,7 +285,7 @@ void ComputeSpectrum()
         psd[set].Pxx[i] *= pow((double)i, 5.0/3.0);
 
       sprintf(buffer, "f^(5/3) x PSD of %s (%s^2)",
-  	dataSet[0].varInfo->name.c_str(), dataSet[0].stats.units.c_str());
+  	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
     else
@@ -293,7 +296,7 @@ void ComputeSpectrum()
         psd[set].Pxx[i] *= cf;
 
       sprintf(buffer, "PSD of %s (%s^2 / Hz)",
-  	dataSet[0].varInfo->name.c_str(), dataSet[0].stats.units.c_str());
+  	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
     }
