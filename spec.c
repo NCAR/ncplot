@@ -274,7 +274,7 @@ void ComputeSpectrum()
       for (size_t i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= i;
 
-      sprintf(buffer, "f x PSD of %s (%s^2)",
+      sprintf(buffer, "f x P(f) of %s (%s^2)",
   	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
@@ -284,7 +284,7 @@ void ComputeSpectrum()
       for (size_t i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= pow((double)i, 5.0/3.0);
 
-      sprintf(buffer, "f^(5/3) x PSD of %s (%s^2)",
+      sprintf(buffer, "f^(5/3) x P(f) of %s (%s^2)",
   	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
@@ -295,7 +295,7 @@ void ComputeSpectrum()
       for (size_t i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= cf;
 
-      sprintf(buffer, "PSD of %s (%s^2 / Hz)",
+      sprintf(buffer, "P(f) of %s (%s^2 / Hz)",
   	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
