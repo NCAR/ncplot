@@ -761,10 +761,8 @@ my self and copied the files into /usr/share/gshhg-gmt-nc4.
 <hr>
 <h1>Known Problems</h1>
 <ul>
-<li> Fedora Core 5 : setenv XKEYSYMDB /usr/share/X11/XKeysymDB
 <li>If the menu and button text shows up as squares, then some fonts are missing.
-'yum install "xorg-x11-fonts*"' should solve the problem.  We have noticed this on
-Fedora 9 and up, and RHEL 6.
+'yum install "xorg-x11-fonts-ISO8859-1*"' should solve the problem.
 <li>Time gaps in the netCDF file.  Time gaps should be filled with _FillValue or
 missing_value.  ncplot uses the TimeInterval global attribute to determine how many
 records are in the file.
@@ -782,6 +780,6 @@ Research Aviation Facility.<br>
 <hr>
 <font size=2>
 Last update:
-Wed Mar  6 15:28:35 MST 2013
+Thu Oct 10 19:05:59 MDT 2019
 </body>
 </html>
