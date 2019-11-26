@@ -15,7 +15,7 @@ DEFINES	= -DPNG
 INCLUDES= 
 LIB_DIRS= 
 NCH_DEP	= /usr/include/netcdf.h
-LIBS    = -lXm -lXt -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lgsl -lm -lpng -lz -lpthread
+LIBS    = -lXm -lXt -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lgsl -lgslcblas -lm -lpng -lz -lpthread
 BIN	= ${JLOCAL}/bin
 ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 
