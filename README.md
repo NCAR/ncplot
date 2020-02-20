@@ -25,3 +25,17 @@ ncplot was written at the Research Aviation Facility of The National Center for 
 
 http://www.eol.ucar.edu/raf/Software/ncplot.html  
 https://github.com/ncar/aircraft_oap/wiki/MacOS-Build-Environment for building on MacOS.
+
+## Build
+
+ncplot can be built on any Unix platform, including MacOS.  Motif GUI toolkit is the limiting factor.
+
+    ```
+    git clone https://github.com/ncar/ncplot
+    cd ncplot
+    ```
+    If you are on MacOS, follow MacOS Environment instructions above and edit the Makefile and uncomment the MacOS section.
+    ```
+    make
+    ```
+    
