@@ -24,3 +24,4 @@ ncplot was written at the Research Aviation Facility of The National Center for 
 ## Documentation
 
 http://www.eol.ucar.edu/raf/Software/ncplot.html
+https://github.com/ncar/aircraft_oap/wiki/MacOS-Build-Environment for building on MacOS.
