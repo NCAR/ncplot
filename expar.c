@@ -166,7 +166,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
 
   /* Ok, parse and validate expressions.
    */
-  size_t NumberExpSets = 0;
+  int NumberExpSets = 0;
 
   for (i = 0; i < nExps; ++i)
     {
@@ -189,7 +189,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
       {
       *p++ = '\0';
       theExpression += e;
-      sprintf(buffer, "%c", 'A' + NumberExpSets);
+      sprintf(buffer, "%c", 'A' + (char)NumberExpSets);
       theExpression += buffer;
 
       if ((e = strchr(p, '\"')) == NULL)
