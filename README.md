@@ -20,3 +20,7 @@ A few of its features are:
 ncplot is NOT for contouring, image or vector data.
 
 ncplot was written at the Research Aviation Facility of The National Center for Atmospheric Research to view and analyze our aircraft data (and NOAA's GIV). The NCAR-RAF/nimbus conventions were designed to store multi-rate data, i.e., variable A may be stored at 5sps and variable B at 25sps. ncplot will plot variables of differing rates (and from different files) next to each other. Every effort has been made to make it "what you see is what you get" between the screen and printouts.
+
+## Documentation
+
+http://www.eol.ucar.edu/raf/Software/ncplot.html
