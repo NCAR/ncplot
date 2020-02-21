@@ -95,7 +95,7 @@ static void SetTitles()
     else
       {
       std::set<std::string>::iterator it = curFile->categories.begin();
-      std::advance (it, currentCategory - 1); 
+      std::advance (it, currentCategory - 1);
 
       if (find(vp->categories.begin(), vp->categories.end(), *it) != vp->categories.end())
         ok = true;
@@ -116,7 +116,7 @@ static void SetTitles()
 static void CreateTitleWindow()
 {
   Arg		args[8];
-  Cardinal	i, n;
+  size_t	i, n;
   Widget	drFrame, drRC, b[3], catPD, catOpMenu, catButts[32];
   XmString	name;
 
@@ -154,35 +154,35 @@ static void CreateTitleWindow()
    */
   n = 0;
   catPD = XmCreatePulldownMenu(drRC, (char *)"catPullDown", args, n);
- 
+
   n = 0;
   XtSetArg(args[n], XmNsubMenuId, catPD); ++n;
   catOpMenu = XmCreateOptionMenu(drRC, (char *)"catOpMenu", args, n);
   XtManageChild(catOpMenu);
- 
+
   name = XmStringCreateLocalized((char *)"All Variables");
   n = 0;
   XtSetArg(args[n], XmNlabelString, name); ++n;
   catButts[0] = XmCreatePushButton(catPD, (char *)"opMenB", args, n);
   XtAddCallback(catButts[0], XmNactivateCallback, SetCategory, (XtPointer)0);
- 
+
   XmStringFree(name);
-  
+
   std::set<std::string>::iterator it = dataFile[0].categories.begin();
   for (i = 1; it != dataFile[0].categories.end(); ++it, ++i)
     {
     name = XmStringCreateLocalized(const_cast<char *>((*it).c_str()));
- 
+
     n = 0;
     XtSetArg(args[n], XmNlabelString, name); ++n;
     catButts[i] = XmCreatePushButton(catPD, (char *)"opMenB", args, n);
     XtAddCallback(catButts[i], XmNactivateCallback, SetCategory, (XtPointer)i);
- 
+
     XmStringFree(name);
     }
- 
+
   XtManageChildren(catButts, i);
- 
+
 
 
   n = 0;

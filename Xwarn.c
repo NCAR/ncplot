@@ -30,7 +30,7 @@ void CancelWarning(Widget, XtPointer, XtPointer);
 /* -------------------------------------------------------------------- */
 void WarnUser(const char str[], XtCallbackProc okCB, XtCallbackProc cancelCB)
 {
-  int		i;
+  size_t	i;
   Widget	label;
   Arg		args[5];
   XmString	xStr;

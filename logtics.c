@@ -11,10 +11,6 @@ STATIC FNS:	none
 
 DESCRIPTION:	
 
-INPUT:		
-
-OUTPUT:		
-
 REFERENCES:	none
 
 REFERENCED BY:	plotX.c, diffX.c, specX.c
@@ -214,7 +210,7 @@ void xLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, bool labels)
 /* -------------------------------------------------------------------- */
 void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
 {
-  int		i, yoffset, len, ticlen;
+  int		i, yoffset, ticlen;
   double	yScale, incrementer, value;
   struct axisInfo	*yAxis = &plot->Yaxis[scale];
 
@@ -226,11 +222,10 @@ void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
   if (labels)	// Generate first label outside of mainloop.
     {
     if (log10(incrementer) == floor(log10(yAxis->min)))
-      len = MakeLogTicLabel(buffer, (int)rint(log10(yAxis->min)));
+      MakeLogTicLabel(buffer, (int)rint(log10(yAxis->min)));
     else
       {
       sprintf(buffer, "%g", yAxis->min);
-      len = strlen(buffer);
       }
 
     if (yAxis->invertAxis)
@@ -263,7 +258,7 @@ void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
 
       if (labels)
         {
-        len = MakeLogTicLabel(buffer, (int)rint(log10(value)));
+        MakeLogTicLabel(buffer, (int)rint(log10(value)));
 
         if (scale == LEFT_SIDE)
           fprintf(fp, "%d (%s) stringwidth pop sub %d moveto (%s) show\n",
@@ -291,11 +286,10 @@ void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
   if (labels)	// Generate last label outside of mainloop.
     {
     if (log10(incrementer) == floor(log10(yAxis->max)))
-      len = MakeLogTicLabel(buffer, (int)rint(log10(yAxis->max)));
+      MakeLogTicLabel(buffer, (int)rint(log10(yAxis->max)));
     else
       {
       sprintf(buffer, "%g", yAxis->max);
-      len = strlen(buffer);
       }
 
     if (yAxis->invertAxis)
@@ -316,11 +310,10 @@ void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
 /* -------------------------------------------------------------------- */
 void xLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, bool labels)
 {
-  int		i, xoffset, yoffset, len, ticlen;
+  int		i, xoffset, ticlen;
   double	xScale, incrementer, value;
   struct axisInfo	*xAxis = &plot->Xaxis;
 
-  yoffset	= plot->ps.xTicLabelOffset;
   xScale        = plot->ps.HD / (log10(xAxis->max) - log10(xAxis->min));
   incrementer   = pow(10.0, floor(log10(xAxis->min)));
   value         = (int)(xAxis->min / incrementer) * incrementer;
@@ -328,11 +321,10 @@ void xLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, bool labels)
   if (labels)   // Generate first label outside of mainloop.
     {
     if (log10(incrementer) == floor(log10(xAxis->min)))
-      len = MakeLogTicLabel(buffer, (int)rint(log10(xAxis->min)));
+      MakeLogTicLabel(buffer, (int)rint(log10(xAxis->min)));
     else
       {
       sprintf(buffer, "%g", xAxis->min);
-      len = strlen(buffer);
       }
 
     if (xAxis->invertAxis)
@@ -361,10 +353,10 @@ void xLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, bool labels)
 
       if (labels)
         {
-        len = MakeLogTicLabel(buffer, (int)rint(log10(value)));
+        MakeLogTicLabel(buffer, (int)rint(log10(value)));
 
         fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
-    		xoffset, buffer, plot->ps.xTicLabelOffset);
+		xoffset, buffer, plot->ps.xTicLabelOffset);
         fprintf(fp, show, buffer);
         }
       }
@@ -386,11 +378,10 @@ void xLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, bool labels)
   if (labels)   // Generate first label outside of mainloop.
     {
     if (log10(incrementer) == floor(log10(xAxis->max)))
-      len = MakeLogTicLabel(buffer, (int)rint(log10(xAxis->max)));
+      MakeLogTicLabel(buffer, (int)rint(log10(xAxis->max)));
     else
       {
       sprintf(buffer, "%g", xAxis->max);
-      len = strlen(buffer);
       }
 
     if (xAxis->invertAxis)
@@ -399,7 +390,7 @@ void xLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, bool labels)
       xoffset = plot->ps.HD;
 
     fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
-    		xoffset, buffer, plot->ps.xTicLabelOffset);
+		xoffset, buffer, plot->ps.xTicLabelOffset);
     fprintf(fp, show, buffer);
     }
 
