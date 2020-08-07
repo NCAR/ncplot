@@ -4,3 +4,4 @@ ncplot
 exp.tab.c
 exp.tab.h
 lex.yy.c
+gmt.history
