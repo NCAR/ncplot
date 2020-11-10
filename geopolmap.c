@@ -35,7 +35,7 @@ void ToggleGeoPolMap(Widget w, XtPointer client, XtPointer call)
   GeoPolMap = !GeoPolMap;
 
   DrawMainWindow();
- 
+
 }	/* END TOGGLEGEOPOLMAP */
 
 /* -------------------------------------------------------------------- */
@@ -58,10 +58,10 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
    */
   xAxis = &plot->Xaxis;
   yAxis = &plot->Yaxis[0];
- 
+
   xMin = xAxis->min;
   yMin = yAxis->min;
- 
+
   if (fp)
     offsets = &plot->ps;
   else
@@ -69,7 +69,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
 
   xScale = (float)offsets->HD / (xAxis->max - xMin);
   yScale = (float)offsets->VD / (yAxis->max - yMin);
- 
+
 
   /* Open pipe to pscoast
    */
@@ -94,7 +94,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
     XSetForeground(plot->dpy, plot->gc, GetColor(0));
     setClippingX(plot);
     }
- 
+
 
   reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
   pts = new XPoint[reqSize];
@@ -145,7 +145,7 @@ void DrawGeoPolMapXY(PLOT_INFO *plot, FILE *fp)
     else
       XDrawLines(plot->dpy, plot->win, plot->gc, pts, cnt, CoordModeOrigin);
     }
- 
+
   delete [] pts;
   pclose(in);
 
@@ -182,12 +182,12 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
    */
   xAxis = &plot->Xaxis;
   yAxis = &plot->Yaxis[0];
- 
+
   xMin = xAxis->min;
   xMax = xAxis->max;
   zMin = plot->Zaxis.min;
   zMax = plot->Zaxis.max;
- 
+
   if (fp)
     offsets = &plot->ps;
   else
@@ -196,7 +196,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
   xScale = (float)offsets->HD / (xAxis->max - xMin);
   yScale = (float)offsets->VD / (yAxis->max - yAxis->min);
   zScale = (float)ZD / (zMax - zMin);
- 
+
 
   /* Open pipe to pscoast
    */
@@ -216,7 +216,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
     }
   else
     XSetForeground(plot->dpy, plot->gc, GetColor(0));
- 
+
 
   reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
   pts = new XPoint[reqSize];
@@ -278,7 +278,7 @@ void DrawGeoPolMapXYZ(PLOT_INFO *plot, int ZD, float cosFac, float sinFac, FILE 
     else
       XDrawLines(plot->dpy, plot->win, plot->gc, pts, cnt, CoordModeOrigin);
     }
- 
+
   delete [] pts;
   pclose(in);
 
@@ -393,7 +393,7 @@ static void setColor(PLOT_INFO * plot, char str[], FILE *fp)
     }
     else
       XSetForeground(plot->dpy, plot->gc, GetColor(color_idx));
-  } 
+  }
 }	/* END SETCOLOR */
 
 /* END GEOPOLMAP.C */
