@@ -258,7 +258,7 @@ static void timeDomainASCII(FILE *fp, int nPoints)
   if (dataSet[0].nPoints < NumberSeconds)
     msecCnt = 1000;
   else
-    msecCnt = 1000 / (dataSet[0].nPoints / NumberSeconds);
+    msecCnt = (int)(1000.0 / (dataSet[0].nPoints / NumberSeconds) + 0.5);
 
   for (i = 0; i < nPoints; ++i)
     {
