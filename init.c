@@ -143,7 +143,7 @@ void Initialize()
   specPlot.Xaxis.nMinorTics	= 10;
   specPlot.Yaxis[0].nMinorTics	= 10;
   specPlot.Xaxis.min		= 0.001;
-  specPlot.Xaxis.max		= 5000;
+  specPlot.Xaxis.max		= 1000;
   specPlot.Xaxis.label = "Frequency (Hz)";
 
   for (i = 0; i < MAX_PSD; ++i)
