@@ -180,7 +180,7 @@ void Initialize()
   else
     {
     strcpy(asciiFormat, "%14e");
-    nASCIIpoints = 1000;
+    nASCIIpoints = 5000;
     }
 
 
