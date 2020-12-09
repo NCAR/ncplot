@@ -34,7 +34,7 @@ ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 #  brew install gmt  ; for geo-politcal maps.
 #  brew install whatever else
 #
-#DEFINES	= -DPNG -DPNG15
+#DEFINES	= -DPNG
 #INCLUDES= -I/opt/X11/include
 #LIB_DIRS= -L/opt/X11/lib
 #NCH_DEP	= /usr/local/include/netcdf.h
