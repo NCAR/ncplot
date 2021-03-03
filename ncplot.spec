@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
 Version: 4.9
-Release: 9
+Release: 10
 License: GPL
 Group: System Environment/Daemons
 Url: http://www.eol.ucar.edu/
@@ -10,7 +10,14 @@ Packager: Chris Webster <cjw@ucar.edu>
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Vendor: UCAR
 BuildArch: x86_64
-Requires: openmotif netcdf libpng
+Requires: netcdf libpng gsl
+
+%if 0%{?rhel} <= 7
+Requires: openmotif
+%else
+Requires: motif
+%endif
+
 Source: ftp://ftp.eol.ucar.edu/pub/archive/RAF-src/%{name}.tar.gz
 
 %description
@@ -30,7 +37,7 @@ cp %{name} %{buildroot}%{_bindir}
 %post
 
 echo
-echo Optionally \"yum install GMT GMT-coastlines-all\" and \"setenv GMT_SHAREDIR /usr/share/GMT\" for geo-political boundaries database.
+echo Optionally \'yum install GMT \"gshhg*\"\' for geo-political boundaries database.
 echo
 
 
