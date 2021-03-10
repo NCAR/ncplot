@@ -406,7 +406,7 @@ void ForkNetscape(Widget w, XtPointer client, XtPointer call)
     switch ((long)client)
       {
       case 1:
-        execlp("firefox", "firefox", "http://www.eol.ucar.edu/raf", NULL);
+        execlp("firefox", "firefox", "http://www.eol.ucar.edu/research-aircraft", NULL);
         break;
       case 2:
         execlp("firefox", "firefox", "http://www.eol.ucar.edu/raf/Software", NULL);
