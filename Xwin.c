@@ -110,7 +110,7 @@ static struct menu	optionMenu[] = {
 	{ NULL, NULL, NULL }};
 
 static struct menu  helpMenu[] = {
-	{ "RAF Homepage", BrowseTo, (XtPointer)1 },
+	{ "EOL Homepage", BrowseTo, (XtPointer)1 },
 	{ "RAF Software Page", BrowseTo, (XtPointer)2 },
 	{ "ncplot User's Manual", BrowseTo, (XtPointer)3 },
 	{ NULL, NULL, NULL }};
