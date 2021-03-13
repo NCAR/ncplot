@@ -48,8 +48,6 @@ static Widget	plotType[3], invert, logScale,
 
 static int	currentAxis = Y_AXIS;
 
-static const char *helpURL = "http://www.eol.ucar.edu/raf/Software/ncplot.html";
-
 void	ChangePlotType(Widget, XtPointer, XtPointer);
 void	CheckForTemplateFile();
 void	SetInvertLogScale(Widget, XtPointer, XmToggleButtonCallbackStruct *);
@@ -111,9 +109,6 @@ void DrawMainWindow()
     case TIME_SERIES:
       AutoScale();
       DrawTimeSeries();
-
-      XDrawString(mainPlot[0].dpy, mainPlot[0].win, mainPlot[0].gc,
-                  360, 15, helpURL, strlen(helpURL));
 
       XCopyArea(mainPlot[0].dpy, mainPlot[0].win,
 	XtWindow(mainPlot[0].canvas), mainPlot[0].gc,
