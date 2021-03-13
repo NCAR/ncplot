@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
 Version: 4.9
-Release: 10
+Release: 11
 License: GPL
 Group: System Environment/Daemons
 Url: http://www.eol.ucar.edu/
@@ -49,6 +49,8 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
+* Sat Mar 13 2021 Chris Webster <cjw@ucar.edu> - 4.9-11
+- Fix Help Menu.  Use system "opener" instead of forking firefox.
 * Thu Jul 13 2011 Chris Webster <cjw@ucar.edu> - 1.0-2
 - updates for 4.9.1
 * Thu Sep 3 2009 Chris Webster <cjw@ucar.edu> - 1.0-1
