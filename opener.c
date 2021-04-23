@@ -62,7 +62,7 @@ opener(const char *url)
 
     char *script = create_cmd(cmd, url);
 
-    system(script);
+    (void)system(script);
     free(script);
     return 0;
 }
