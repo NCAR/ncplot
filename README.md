@@ -23,11 +23,30 @@ ncplot was written at the Research Aviation Facility of The National Center for 
 
 ## Documentation
 
-https://www.eol.ucar.edu/raf/Software/ncplot.html  
-https://www.eol.ucar.edu/raf/Software/netCDF.html describes netCDF conventions used.  
-https://github.com/ncar/aircraft_oap/wiki/MacOS-Build-Environment for building on MacOS.
+[User's Manual](https://www.eol.ucar.edu/raf/Software/ncplot.html).\
+[RAF netCDF file conventions](https://www.eol.ucar.edu/raf/Software/netCDF.html).\
+[MacOS build environment](https://github.com/ncar/aircraft_oap/wiki/MacOS-Build-Environment).
 
 ## Build
+
+# Dependencies
+
+Redhat
+```
+openmotif-devel (motif-devel CentOS 8 & Fedora)
+netcdf-devel
+flex-devel
+gsl-devel
+xorg-x11-fonts-ISO8859-1-75dpi
+xorg-x11-fonts-ISO8859-1-100dpi
+```
+
+Ubuntu Bionic (18.04)
+```
+libxt-dev
+libmotif-dev
+libnetcdf-dev
+```
 
 ncplot can be built on any Unix platform, including MacOS.  Motif GUI toolkit is the limiting factor.
 
@@ -38,8 +57,8 @@ cd ncplot
     
 If you are on MacOS, follow MacOS Environment instructions above and edit the Makefile and uncomment the MacOS section.
 
+For Ubuntu, edit the Makefile and uncomment the two lines under the Ubuntu heading.
 ```
 make
 ```
 
-    
