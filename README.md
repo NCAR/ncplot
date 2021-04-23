@@ -29,7 +29,7 @@ ncplot was written at the Research Aviation Facility of The National Center for 
 
 ## Build
 
-# Dependencies
+## Dependencies
 
 Redhat
 ```
