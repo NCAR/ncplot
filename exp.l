@@ -6,6 +6,7 @@
 #include <cstdlib>
 
 int yyparse(void);
+extern "C" int yylex();
 
 float scanit(char s[], int indx)
 {

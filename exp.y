@@ -16,7 +16,7 @@ int yyerror(char *s)
   return(0);
 }
 
-int yylex ();
+extern "C" int yylex ();
 
 %}
 
