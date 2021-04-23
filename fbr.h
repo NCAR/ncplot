@@ -4,6 +4,25 @@
 
 static String fallback_resources[] =
   {
+#ifdef UBUNTU
+  "*defaultFontList:	-misc-fixed-bold-r-*-*-14-*-*-*-*-*-iso8859-1",
+
+  "*font24:		-misc-fixed-bold-r-*-*-24-*-*-*-*-*-iso8859-1",
+  "*font18:		-misc-fixed-bold-r-*-*-18-*-*-*-*-*-iso8859-1",
+  "*font14:		-misc-fixed-bold-r-*-*-14-*-*-*-*-*-iso8859-1",
+  "*font12:		-misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-1",
+  "*font10:		-misc-fixed-bold-r-*-*-10-*-*-*-*-*-iso8859-1",
+
+  "*plRC*fontList:		-misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-1",
+  "*controlForm*fontList:	-misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-1",
+  "*printParmsRC*fontList:	-misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-1",
+  "*specOptForm*fontList:	-misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-1",
+  "*editSpecShell*fontList:	-misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-1",
+
+  "*asciiText.fontList:		-misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-1",
+  "*headerText.fontList:	-misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-1",
+  "*statsText.fontList:		-misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-1",
+#else
   "*defaultFontList:	-adobe-courier-bold-r-*-*-14-140-75-75-m-90-*-*",
 
   "*font24:		-adobe-courier-bold-r-*-*-24-240-75-75-*-*-*-*",
@@ -21,6 +40,7 @@ static String fallback_resources[] =
   "*asciiText.fontList:		-adobe-courier-bold-r-*-*-12-120-75-75-*-70-*-*",
   "*headerText.fontList:	-adobe-courier-bold-r-*-*-12-120-75-75-*-70-*-*",
   "*statsText.fontList:		-adobe-courier-bold-r-*-*-12-120-75-75-*-70-*-*",
+#endif
 
   "*plotRC.spacing:			0",
   "*axisRC.spacing:			0",

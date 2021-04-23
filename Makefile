@@ -9,7 +9,7 @@ YACC	= bison
 YFLAGS	= -d
 
 
-# Linux
+# Linux Redhat / Fedora
 #
 DEFINES	= -DPNG
 INCLUDES= 
@@ -17,8 +17,13 @@ LIB_DIRS=
 NCH_DEP	= /usr/include/netcdf.h
 LIBS    = -lXm -lXt -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lgsl -lgslcblas -lpng -lpthread
 BIN	= ${JLOCAL}/bin
-ANONFTP	= /net/ftp/pub/archive/RAF-src/bin.RHEL7
 
+# Linux Ubuntu
+#
+#DEFINES	= -DPNG -DUBUNTU
+#LIBS    = -lXm -lXt -lX11 -lnetcdf -lfl -lgsl -lgslcblas -lpng -lpthread
+
+#
 # Mac OS X
 #
 # Requires XCode from Apple App Store.  Don't forget to run Xcode after it is
