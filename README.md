@@ -46,6 +46,8 @@ Ubuntu Bionic (18.04)
 libxt-dev
 libmotif-dev
 libnetcdf-dev
+libgsl-dev
+flex bison
 ```
 
 ncplot can be built on any Unix platform, including MacOS.  Motif GUI toolkit is the limiting factor.
