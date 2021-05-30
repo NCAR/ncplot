@@ -11,6 +11,9 @@ YFLAGS	= -d
 
 # Linux Redhat / Fedora
 #
+# yum install flex-devel netcdf-devel motif-devel gsl-devel \
+#    xorg-x11-fonts-ISO8859-1-75dpi xorg-x11-fonts-ISO8859-1-100dpi
+#
 DEFINES	= -DPNG
 INCLUDES= 
 LIB_DIRS= 
@@ -20,11 +23,13 @@ BIN	= ${JLOCAL}/bin
 
 # Linux Ubuntu
 #
+# apt-get install bison flex libgsl-dev libnetcdf-dev libxt-dev libmotif-dev
+#
 #DEFINES	= -DPNG -DUBUNTU
 #LIBS    = -lXm -lXt -lX11 -lnetcdf -lfl -lgsl -lgslcblas -lpng -lpthread
 
 #
-# Mac OS X
+# Mac OS X (ncplot is availble from macports as of 2021).
 #
 # Requires XCode from Apple App Store.  Don't forget to run Xcode after it is
 # installed to accept license.
@@ -33,9 +38,7 @@ BIN	= ${JLOCAL}/bin
 # with MacOS.  https://www.xquartz.org/
 #
 # Using Homebrew instead of MacPorts.  https://brew.sh/
-#  brew install openmotif
-#  brew install netcdf
-#  brew install gsl
+#  brew install openmotif netcdf gsl
 #  brew install gmt  ; for geo-politcal maps.
 #  brew install whatever else
 #

@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
 Version: 4.9
-Release: 11
+Release: 12
 License: GPL
 Group: System Environment/Daemons
 Url: http://www.eol.ucar.edu/
@@ -49,6 +49,8 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
+* Sun May 30 2021 Chris Webster <cjw@ucar.edu> - 4.9-12
+- Improve box-zoom behavior when going off right edge of time-series.
 * Sat Mar 13 2021 Chris Webster <cjw@ucar.edu> - 4.9-11
 - Fix Help Menu.  Use system "opener" instead of forking firefox.
 * Thu Jul 13 2011 Chris Webster <cjw@ucar.edu> - 1.0-2

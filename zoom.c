@@ -78,17 +78,17 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
   if (xb->button != Button1)
     return;
 
-  if ((xb->state & Button1MotionMask) == 0)
+  if ((xb->state & Button1MotionMask) == 0)	// Reset on button pressed.
     startX = startY = endX = endY = 0;
 
-  if ((xb->state & Button1MotionMask) == 0x100)
+  if ((xb->state & Button1MotionMask) == 0x100)	// Capture box on release.
     {
     XSetFunction(mainPlot[0].dpy, mainPlot[0].gc, GXcopy);
     XtRemoveEventHandler(mainPlot[0].canvas, Button1MotionMask, false,
                          (XtEventHandler)DoTheBox, NULL);
     }
 
-  // Keep it bounds.
+  // Keep it in-bounds.
   if (xb->x < mainPlot[0].x.LV) xb->x = mainPlot[0].x.LV;
   if (xb->x > mainPlot[0].x.RV) xb->x = mainPlot[0].x.RV;
   if (xb->y < mainPlot[0].x.TH) xb->y = mainPlot[0].x.TH;
@@ -99,7 +99,7 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
       return;
 
 
-  if ((xb->state & Button1MotionMask) == 0)
+  if ((xb->state & Button1MotionMask) == 0)		// Button pressed.
     {
     cancel = false;
 
@@ -110,7 +110,7 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
     XtAddEventHandler(mainPlot[0].canvas, Button1MotionMask, false,
                       (XtEventHandler)DoTheBox, NULL);
     }
-  else if ((xb->state & Button1MotionMask) == 0x100)
+  else if ((xb->state & Button1MotionMask) == 0x100)	// Button released.
     {
     if (abs(startX - xb->x) < 10 || abs(startY - xb->y) < 10)
       return;
@@ -143,7 +143,9 @@ void Zoom(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
       if (NumberSeconds > 900)	/* 15 minutes.	*/
         {
         stpe /= 60; stpe *= 60;
-        etpe += 60; etpe /= 60; etpe *= 60;
+        if (etpe != 0) {	// don't adjust if at right border.
+          etpe += 60; etpe /= 60; etpe *= 60;
+          }
         }
 
       ReduceData(stpe, NumberSeconds - stpe - etpe);
