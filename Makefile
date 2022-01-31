@@ -1,15 +1,12 @@
 #
 # Makefile for ncplot
 #
-WWW	= /net/www/docs/raf/Software
 
-CC	= g++
 LEX	= flex
 YACC	= bison
 YFLAGS	= -d
 
-
-# Linux Redhat / Fedora
+# Linux Redhat / CentOS / Fedora
 #
 # yum install flex-devel netcdf-devel motif-devel gsl-devel \
 #    xorg-x11-fonts-ISO8859-1-75dpi xorg-x11-fonts-ISO8859-1-100dpi
@@ -20,6 +17,8 @@ LIB_DIRS=
 NCH_DEP	= /usr/include/netcdf.h
 LIBS    = -lXm -lXt -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lgsl -lgslcblas -lpng -lpthread
 BIN	= ${JLOCAL}/bin
+WWW	= /net/www/docs/raf/Software
+
 
 # Linux Ubuntu
 #
@@ -28,7 +27,7 @@ BIN	= ${JLOCAL}/bin
 #DEFINES	= -DPNG -DUBUNTU
 #LIBS    = -lXm -lXt -lX11 -lnetcdf -lfl -lgsl -lgslcblas -lpng -lpthread
 
-#
+
 # Mac OS X (ncplot is availble from macports as of 2021).
 #
 # Requires XCode from Apple App Store.  Don't forget to run Xcode after it is
@@ -43,13 +42,21 @@ BIN	= ${JLOCAL}/bin
 #  brew install whatever else
 #
 #DEFINES	= -DPNG
-#INCLUDES= -I/opt/X11/include
-#LIB_DIRS= -L/opt/X11/lib
-#NCH_DEP	= /usr/local/include/netcdf.h
 #LIBS    = -lXm -lXt -lX11 -lnetcdf -ll -lgsl -lpng -lpthread
 #BIN	= /usr/local/bin
 
-CFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES} -Wno-write-strings -Wno-overflow
+# Homebrew
+#INCLUDES=
+#LIB_DIRS=
+#NCH_DEP	= /usr/local/include/netcdf.h
+
+# MacPorts
+#INCLUDES= -I/opt/local/include
+#LIB_DIRS= -L/opt/local/lib
+#NCH_DEP	= /opt/local/include/netcdf.h
+
+
+CXXFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES} -Wno-write-strings -Wno-overflow
 
 PROG	= ncplot
 HDRS	= define.h extern.h
@@ -87,10 +94,10 @@ PSOBJ=	annotate.o arrows.o ascii.o barbs.o diffPS.o ed_print.o global.o\
 
 
 .c.o:
-	${CC} ${CFLAGS} -c $*.c
+	${CXX} ${CXXFLAGS} -c $*.c
 
 ${PROG}: ${OBJS}
-	${CC} ${CFLAGS} ${LIB_DIRS} ${OBJS} ${LIBS} -o $@
+	${CXX} ${CXXFLAGS} ${LIB_DIRS} ${OBJS} ${LIBS} -o $@
 
 exp.tab.c exp.tab.h: exp.y
 	${YACC} ${YFLAGS} exp.y
