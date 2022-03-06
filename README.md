@@ -1,7 +1,7 @@
 # ncplot
 RAF netCDF file timeseries plotting tool.
 
-ncplot is an interactive plotting tool for workstations running X11/R5, Motif 1.2. ncplot allows the user to view time-series data stored in netCDF files that conform to the NCAR-RAF/nimbus conventions. Both Low-rate and Mixed-rate files are supported, as well as files where the data have been reduced below 1 sps (sample per second), e.g., files run through ncav.
+ncplot is an interactive plotting tool for viewing aircraft in-situ time-series data.  The GUI is based on X11 and theMotif toolkit. ncplot allows the user to view time-series data stored in netCDF files that conform to the NCAR-RAF/nimbus conventions. Both Low-rate and Mixed-rate files are supported, as well as files where the data have been reduced below 1 sps (sample per second), e.g., files run through ncav.
 
 A few of its features are:
 
