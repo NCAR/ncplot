@@ -24,12 +24,15 @@ ncplot was written at the Research Aviation Facility of The National Center for 
 ## Documentation
 
 [User's Manual](https://www.eol.ucar.edu/raf/Software/ncplot.html).\
-[RAF netCDF file conventions](https://www.eol.ucar.edu/raf/Software/netCDF.html).\
-[MacOS build environment](https://github.com/ncar/aircraft_oap/wiki/MacOS-Build-Environment).
+[RAF netCDF file conventions](https://www.eol.ucar.edu/raf/Software/netCDF.html).
 
 ## Build
 
-## Dependencies
+### MacOS
+
+ncplot is available via [MacPorts](https://www.macports.org/) or follow the [MacOS build environment](https://github.com/ncar/aircraft_oap/wiki/MacOS-Build-Environment) directions to build from source.
+
+### Dependencies
 
 Redhat
 ```
