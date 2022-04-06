@@ -15,7 +15,7 @@ REFERENCES:	none
 
 REFERENCED BY:	XtMainLoop()
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1999-2001
+COPYRIGHT:	University Corporation for Atmospheric Research, 1999-2022
 -------------------------------------------------------------------------
 */
 
@@ -201,7 +201,7 @@ static void TrackXY(int x, int y)
   if (axis->logScale)
     {
     float xScale = plot->x.HD / (log10(axis->max) - log10(axis->min));
-    
+
     if (axis->invertAxis)
       xDiff = -(((x - plot->x.RV) / xScale) - log10(axis->min));
     else
@@ -228,7 +228,7 @@ static void TrackXY(int x, int y)
   if (axis->logScale)
     {
     float yScale = plot->x.VD / (log10(axis->max) - log10(axis->min));
-    
+
     if (axis->invertAxis)
       yDiff = ((y - plot->x.TH) / yScale) + log10(axis->min);
     else

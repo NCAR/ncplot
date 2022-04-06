@@ -11,7 +11,7 @@ STATIC FNS:	none
 
 DESCRIPTION:	
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -24,7 +24,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
 void ToggleTimeStamps(Widget w, XtPointer client, XtPointer call)
 {
   char  *p = XmTextFieldGetString(w);
- 
+
   nTimeStamps = atoi(p);
   XtFree(p);
 
@@ -32,7 +32,7 @@ void ToggleTimeStamps(Widget w, XtPointer client, XtPointer call)
     --nTimeStamps;
 
   DrawMainWindow();
- 
+
 }	/* END TOGGLETIMESTAMPS */
 
 /* -------------------------------------------------------------------- */
@@ -62,12 +62,12 @@ void PlotTimeStamps(PLOT_INFO *plot, int x, int y, int cnt, FILE *fp)
   else
     {
     XSetForeground(plot->dpy, plot->gc, GetColor(0));
- 
+
     XDrawLine(plot->dpy, plot->win, plot->gc, x, y, x+8, y);
 
     XDrawString(plot->dpy, plot->win, plot->gc, x+10, y+4,
                 buffer, strlen(buffer));
- 
+
     XSetForeground(plot->dpy, plot->gc, CurrentColor());
     }
 

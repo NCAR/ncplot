@@ -25,7 +25,7 @@ ENTRY POINTS:	ChangeLineThickness()
 
 STATIC FNS:	none
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1994-2007
+COPYRIGHT:	University Corporation for Atmospheric Research, 1994-2022
 -------------------------------------------------------------------------
 */
 
@@ -116,7 +116,7 @@ void ToggleScatter(Widget w, XtPointer client, XtPointer call)
     DrawMainWindow();
 
 }	/* END TOGGLESCATTER */
- 
+
 /* -------------------------------------------------------------------- */
 void ToggleGrid(Widget w, XtPointer client, XtPointer call)
 {
@@ -261,7 +261,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
 void ClearPlot(Widget w, XtPointer client, XtPointer call)
 {
   size_t i, set;
- 
+
   ClearAnnotations();
 
   switch (PlotType)
@@ -277,7 +277,7 @@ void ClearPlot(Widget w, XtPointer client, XtPointer call)
       NumberDataSets = 0;
       SetYlabels(mainPlot, dataSet, NumberDataSets);
       break;
- 
+
     case XY_PLOT:
       for (i = 0; i < MAX_PANELS; ++i)
         {
@@ -307,7 +307,7 @@ void ClearPlot(Widget w, XtPointer client, XtPointer call)
       SetXlabels(xyyPlot, xyXset, NumberXYXsets);
       SetYlabels(xyyPlot, xyYset, NumberXYYsets);
       break;
- 
+
     case XYZ_PLOT:
       xyzPlot.Xaxis.label.clear();
       xyzPlot.Yaxis[0].label.clear();
@@ -337,7 +337,7 @@ void ClearRegression(Widget w, XtPointer client, XtPointer call)
   DrawMainWindow();
 
 }	/* CLEARREGRESSION */
- 
+
 /* -------------------------------------------------------------------- */
 void LinearRegression(Widget w, XtPointer client, XtPointer call)
 {
@@ -370,7 +370,7 @@ void PolyRegression2(Widget w, XtPointer client, XtPointer call)
 
   ShowRegression = nDegree;
   DrawMainWindow();
- 
+
 }	/* END POLYREGRESSION2 */
 
 /* -------------------------------------------------------------------- */

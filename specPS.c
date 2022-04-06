@@ -16,9 +16,9 @@ REFERENCES:	ps.c
 
 REFERENCED BY:	spec Print Button
 
-AUTHOR:		websterc@ncar.ucar.edu
+AUTHOR:		chris@atd.ucar.edu
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 
@@ -382,22 +382,22 @@ static void doWaveLengthPS(FILE *fp, PLOT_INFO *plot)
 {
   int           i, x, xDecade, nXdecades;
   double        xMantissa;
- 
- 
+
+
   /* Plot Wave Length Scale.
    */
   xMantissa = log10(tas.stats.mean);
   xDecade = (int)xMantissa;
   xMantissa -= xDecade;
   nXdecades = (int)(xDecade - log10(plot->Xaxis.min));
- 
+
   x = (int)(xMantissa * numXpix);
- 
+
   for (i = 0; i < plot->Xaxis.nMajorTics; ++i)
     {
     fprintf(fp, moveto, x, plot->ps.VD);
     fprintf(fp, lineto, x, plot->ps.VD + plot->ps.ticLength);
- 
+
     MakeLogTicLabel(buffer, nXdecades - 3);
     fprintf(fp, "%d (%s) stringwidth pop 2 div sub %d moveto\n",
             x, buffer, plot->ps.VD + plot->ps.ticLength+5);

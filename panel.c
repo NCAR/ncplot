@@ -17,7 +17,7 @@ DESCRIPTION:
 
 MODIFIES:	CurrentDataFile, CurrentPanel, NumberOfPanels
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1998
+COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2022
 -------------------------------------------------------------------------
 */
 
@@ -43,12 +43,12 @@ void SetPlotShape(PLOT_INFO *plot, int shape)
 {
   int   n;
   Arg   args[4];
- 
+
   if (shape == PORTRAIT)
     {
     plot->x.windowWidth = 703;
     plot->x.windowHeight = 900;
- 
+
     n = 0;
     XtSetArg(args[n], XmNx, 10); ++n;
     XtSetArg(args[n], XmNy, 30); ++n;
@@ -58,20 +58,20 @@ void SetPlotShape(PLOT_INFO *plot, int shape)
     {
     plot->x.windowWidth = 900;
     plot->x.windowHeight = 703;
- 
+
     n = 0;
     XtSetArg(args[n], XmNx, 10); ++n;
     XtSetArg(args[n], XmNy, 50); ++n;
     XtSetValues(MainShell, args, n);
     }
- 
+
   n = 0;
   XtSetArg(args[n], XmNwidth, plot->x.windowWidth); ++n;
   XtSetArg(args[n], XmNheight, plot->x.windowHeight); ++n;
   XtSetValues(plot->canvas, args, n);
- 
+
   SetPrinterShape(shape);
- 
+
 }       /* END SETPLOTSHAPE */
 
 /* -------------------------------------------------------------------- */

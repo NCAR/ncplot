@@ -22,7 +22,7 @@ STATIC FNS:	ApplyTimeChange()
 		ApplyLogScale()
 		changeAxis()
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2007
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -539,7 +539,7 @@ void SetDataFile(Widget w, XtPointer client, XmToggleButtonCallbackStruct *call)
     CurrentDataFile = (long)client;
     SetList(NULL, NULL, NULL);
     }
- 
+
 }   /* END SETDATAFILE */
 
 /* -------------------------------------------------------------------- */
@@ -775,7 +775,7 @@ void CreateControlWindow(Widget parent)
     {
     sprintf(buffer, "%ld", i+1);
     panelB.push_back(XmCreateToggleButton(plRC[4], buffer, NULL, 0));
-    
+
     XtAddCallback(panelB[i], XmNvalueChangedCallback,
                   (XtCallbackProc)SetCurrentPanel, (XtPointer)i);
     }

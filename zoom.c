@@ -11,11 +11,7 @@ STATIC FNS:	DoTheBox()
 
 DESCRIPTION:	
 
-REFERENCES:	
-
-REFERENCED BY:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 

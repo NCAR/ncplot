@@ -6,7 +6,7 @@ FULL NAME:	Spectral Header File
 
 DESCRIPTION:	Prototypes for Spectral Density and FFT functions.
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1995-7
+COPYRIGHT:	University Corporation for Atmospheric Research, 1995-2022
 -------------------------------------------------------------------------
 */
 

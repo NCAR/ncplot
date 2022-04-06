@@ -14,11 +14,7 @@ STATIC FNS:	CreateTrackParmsWindow()
 
 DESCRIPTION:	
 
-INPUT:		none
-
-OUTPUT:		none
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1998
+COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2022
 -------------------------------------------------------------------------
 */
 
@@ -140,7 +136,7 @@ static void CreateTrackParmsWindow()
   for (i = 0; i < TOTAL_PARMS-1; ++i)
     if (parmsText[i])
       XtAddCallback(parmsText[i], XmNlosingFocusCallback, ApplyTrackParms ,NULL);
- 
+
 }	/* END CREATETRACKPARMSWINDOW */
 
 /* END ED_XYZ.C */

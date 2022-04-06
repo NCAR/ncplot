@@ -16,7 +16,7 @@ REFERENCES:	X.c
 
 REFERENCED:	XtAppMainLoop()
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 
@@ -64,7 +64,7 @@ void ResizeXY()
     }
 
   totalHD = xyyPlot[0].x.windowWidth - 20;
- 
+
   for (i = 0; i < NumberOfXYpanels; ++i)
     {
     if (i > 0)
@@ -72,7 +72,7 @@ void ResizeXY()
       xyyPlot[i].x.windowWidth = xyyPlot[0].x.windowWidth;
       xyyPlot[i].x.windowHeight = xyyPlot[0].x.windowHeight;
       }
- 
+
     if (NumberOfXYpanels == 1)
       {
       xyyPlot[i].x.LV = (int)(xyyPlot[0].x.windowWidth * 0.2);
@@ -96,7 +96,7 @@ void ResizeXY()
       xyyPlot[i].x.yLabelOffset	= xyyPlot[i].x.LV - 55;
       }
 
- 
+
     xyyPlot[i].x.RV = xyyPlot[i].x.LV + xyyPlot[i].x.HD;
     xyyPlot[i].x.BH = xyyPlot[i].x.TH + xyyPlot[i].x.VD;
 
@@ -294,7 +294,7 @@ static void plotRegression(PLOT_INFO *plot, DATASET_INFO *x, DATASET_INFO *y)
   setClippingX(plot);
   XSetForeground(plot->dpy, plot->gc, GetColor(0));
 
-  
+
   if (ShowRegression == 1)	/* Linear */
     {
     yInterMin = yScale * (regretCo[0] + (regretCo[1] * xMin) - yMin);

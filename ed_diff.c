@@ -14,11 +14,7 @@ STATIC FNS:	CreateDiffParmsWindow()
 
 DESCRIPTION:	
 
-INPUT:		none
-
-OUTPUT:		none
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 
@@ -34,7 +30,7 @@ extern Widget	AppShell;
 static Widget	DiffShell = NULL, DiffParmsWindow, parmsText[TOTAL_PARMS],
 		autoScaleButton, autoTicsButton;
 
-static void	CreateDiffParmsWindow(), 
+static void	CreateDiffParmsWindow(),
 		ApplyDiffParms(Widget w, XtPointer client, XtPointer call);
 
 

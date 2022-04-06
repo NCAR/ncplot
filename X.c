@@ -25,7 +25,7 @@ REFERENCES:	none
 
 REFERENCED BY:	plotX.c, diffX.c, specX.c
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 
@@ -592,14 +592,14 @@ void plotXY(PLOT_INFO *plot, DATASET_INFO *Xset, DATASET_INFO *Yset, int color)
     }
 
   xRatio = yRatio = 1.0;
- 
+
   reqSize = (XMaxRequestSize(plot->dpy) - 3) >> 1;
 
   /* dataSet[0] is guaranteed to be the X axis variable.
    */
   nPts = std::max(Xset->nPoints, Yset->nPoints);
   pts = new XPoint[nPts];
- 
+
   if (Xset->nPoints > Yset->nPoints)
     yRatio = (float)Yset->nPoints / Xset->nPoints;
   else

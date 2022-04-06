@@ -22,7 +22,7 @@ REFERENCES:	none
 
 REFERENCED BY:	Callback, Xplot.c
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 
@@ -334,7 +334,7 @@ static void freqDomainASCII(FILE *fp, int nPoints)
 }	/* END FREQDOMAINASCII */
 
 /* -------------------------------------------------------------------- */
-static char *formatTitle(char buff[]) 
+static char *formatTitle(char buff[])
 {
   int		lrOffset, varCnt = 0;
   VARTBL	*vp;
@@ -342,7 +342,7 @@ static char *formatTitle(char buff[])
   lrOffset = (dataSet[0].nPoints == NumberSeconds) ? 16 : 19;
   memset(buff, ' ', 20 * (NumberDataSets+1));
   memcpy(buff, "UTC", 3);
- 
+
   for (size_t i = 0; i < NumberDataSets; ++i)
     {
     vp = dataSet[i].varInfo;
@@ -350,7 +350,7 @@ static char *formatTitle(char buff[])
     if (dataSet[i].nPoints == dataSet[0].nPoints)
       memcpy(&buff[lrOffset+(14*varCnt++)], vp->name.c_str(), vp->name.size());
     }
- 
+
   strcpy(&buff[lrOffset+(varCnt*14)], "\n");
 
   return(buff);

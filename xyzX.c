@@ -18,7 +18,7 @@ REFERENCES:	X.c
 
 REFERENCED:	XtAppMainLoop()
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2001
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 
@@ -215,14 +215,14 @@ static void plotXYZ(PLOT_INFO *plot, XFontStruct *fontInfo)
 
       if (nDirectionArrows &&
 		(i+1) % (xyzSet[0].nPoints / nDirectionArrows) == 0)
-        PlotDirectionArrow(plot, pts[cnt].x, pts[cnt].y, 
+        PlotDirectionArrow(plot, pts[cnt].x, pts[cnt].y,
                            pts[cnt-4].x, pts[cnt-4].y, NULL);
 
       if (nTimeStamps && ((segCnt == 0 && cnt == 0) ||
 			 (i+1) % (xyzSet[0].nPoints / nTimeStamps) == 0))
         PlotTimeStamps(plot, pts[cnt].x, pts[cnt].y,
                        (i+1) / (xyzSet[0].nPoints / nTimeStamps), NULL);
- 
+
 
       /* Throw out duplicate points.
        */

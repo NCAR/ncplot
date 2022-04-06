@@ -34,12 +34,12 @@ void QueryFile(const char *prompt, const char *directory, XtCallbackProc callBac
   if (prompt)
     {
     xmprompt = XmStringCreate(const_cast<char *>(prompt), XmSTRING_DEFAULT_CHARSET);
- 
+
     XtSetArg(args[n], XmNselectionLabelString, xmprompt); ++n;
     XtSetValues(fileBox, args, n);
     XmStringFree(xmprompt);
     }
- 
+
   if (directory)
     {
     xmdir = XmStringCreate(const_cast<char *>(directory), XmSTRING_DEFAULT_CHARSET);

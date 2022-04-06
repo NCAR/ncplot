@@ -15,7 +15,7 @@ A few of its features are:
     Allows user-defined titles, labels, scaling, and major & minor tic marks.
     Annotations.
     Publication quality [Encapsulated] [color] PostScript printouts.
-    Optional realtime/on-board mode. 
+    Optional realtime/on-board mode.
 
 ncplot is NOT for contouring, image or vector data.
 
@@ -59,7 +59,7 @@ ncplot can be built on any Unix platform, including MacOS.  Motif GUI toolkit is
 git clone https://github.com/ncar/ncplot
 cd ncplot
 ```
-    
+
 If you are on MacOS, follow MacOS Environment instructions above and edit the Makefile and uncomment the MacOS section.
 
 For Ubuntu, edit the Makefile and uncomment the two lines under the Ubuntu heading.

@@ -22,11 +22,7 @@ DESCRIPTION:	This creates the initial X window, menus and all associated
 		widgets.  Also calls CreateFile(), CreateError(),
 		CreateQuery().
 
-INPUT:		none
-
-OUTPUT:		none
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 
@@ -353,10 +349,9 @@ Widget createParamsTitles(Widget parent, Widget parmsText[])
   n = 0;
   frame = XmCreateFrame(parent, "titlesFrame", args, n);
   XtManageChild(frame);
- 
+
   n = 0;
   RC = XmCreateRowColumn(frame, "titlesRC", args, n);
- 
 
   plRC[0] = createLineItem(RC, &parmsText[0], "Title", "titleTxt");
   plRC[1] = createLineItem(RC, &parmsText[1], "Subtitle", "subTitleTxt");
@@ -379,20 +374,20 @@ void createPanelButts(Widget parent, std::vector<Widget>& panelB, XtCallbackProc
   n = 0;
   plRC = XmCreateRowColumn(parent, "plRC", args, n);
   XtManageChild(plRC);
- 
+
   label = XmCreateLabel(plRC, "Panel", args, n);
   plRC = XmCreateRadioBox(plRC, "pnRC", args, n);
   XtManageChild(label);
   XtManageChild(plRC);
- 
+
   for (size_t i = 0; i < MAX_PANELS; ++i)
     {
     sprintf(buffer, "%zu", i+1);
     panelB.push_back(XmCreateToggleButton(plRC, buffer, NULL, 0));
- 
+
     XtAddCallback(panelB[i], XmNvalueChangedCallback, set, (XtPointer)i);
     }
- 
+
   XtManageChildren(&panelB[0], MAX_PANELS);
   XmToggleButtonSetState(panelB[0], True, False);
 

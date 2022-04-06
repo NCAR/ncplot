@@ -14,11 +14,7 @@ STATIC FNS:	SetSpecDefaults()
 
 DESCRIPTION:	
 
-REFERENCES:	none
-
-REFERENCED BY:	none
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2002
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 
@@ -33,7 +29,7 @@ static const int TOTAL_PARMS = 17;
 extern Widget	AppShell;
 static Widget	SpecShell = NULL, SpecParmsWindow, parmsText[TOTAL_PARMS],
 		parmsTB[6], autoScaleButton, autoTicsButton;
- 
+
 static void	CreateSpecParmsWindow(),
 		ApplySpecParms(Widget w, XtPointer client, XtPointer call);
 

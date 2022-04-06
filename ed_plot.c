@@ -15,11 +15,7 @@ STATIC FNS:	CreateMainParmsWindow()
 
 DESCRIPTION:	
 
-INPUT:		none
-
-OUTPUT:		none
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 

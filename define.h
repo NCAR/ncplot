@@ -5,6 +5,10 @@ OBJECT NAME:	define.h
 FULL NAME:	Include File to Include the Include Files
 
 DESCRIPTION:	
+
+AUTHOR:		cjw@ucar.edu
+
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -30,9 +34,9 @@ DESCRIPTION:
 #define OK		(0)
 #define ERR		(-1)
 #endif
- 
+
 #define COMMENT	'#'	/* Comment character for textfiles  */
- 
+
 #define SecondsSinceMidnite(t)	(t[0] * 3600 + t[1] * 60 + t[2])
 
 #define ALL_SETS	(-1)

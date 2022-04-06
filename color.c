@@ -16,7 +16,7 @@ STATIC FNS:	none
 
 DESCRIPTION:	
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2006
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -144,7 +144,7 @@ void ResetColors()
 {
   colorIndex = 0;
 }
- 
+
 /* -------------------------------------------------------------------- */
 uint32_t NextColor()
 {
@@ -156,19 +156,19 @@ uint32_t CurrentColor()
 {
   return(GetColor(colorIndex));
 }
- 
+
 /* -------------------------------------------------------------------- */
 void PushColor()
 {
   saveColor = colorIndex;
 }
- 
+
 /* -------------------------------------------------------------------- */
 void PopColor()
 {
   colorIndex = saveColor;
 }
- 
+
 /* -------------------------------------------------------------------- */
 float *GetColorRGB_PS(int indx)
 {
@@ -186,7 +186,7 @@ float *CurrentColorRGB_PS()
 {
   return(GetColorRGB_PS(colorIndex));
 }
- 
+
 /* -------------------------------------------------------------------- */
 uint16_t *GetColorRGB_X(int indx)
 {

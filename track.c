@@ -11,11 +11,7 @@ STATIC FNS:	CreateTrackOptWin()
 
 DESCRIPTION:	
 
-REFERENCES:	
-
-REFERENCED BY:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -30,8 +26,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
 #include <Xm/TextF.h>
 
 
-#define INS	1
-#define GPS	2
+#define INS		1
+#define GPS		2
 #define CORRECTED	3
 
 extern char	*insVariables[], *gpsVariables[], *gpsCorrected[],

@@ -15,7 +15,7 @@ REFERENCES:	dataIO.c, exp.l, exp.y
 
 REFERENCED BY:	Callback, dataIO.c
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 2001-02
+COPYRIGHT:	University Corporation for Atmospheric Research, 2001-2022
 -------------------------------------------------------------------------
 */
 
@@ -136,7 +136,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
 
   /* Remove all expression varibles from dataFile[0].
    */
-  for (	indx = dataFile[0].Variable.size()-1; 
+  for (	indx = dataFile[0].Variable.size()-1;
 	dataFile[0].Variable[indx]->name.find("USER") != std::string::npos;
 	--indx)
     delete dataFile[0].Variable[indx];
@@ -249,11 +249,11 @@ void CreateExpressionWindow()
 
   ExpWindow = XmCreateRowColumn(ExpShell, (char *)"expParRC", NULL, 0);
 
-  n = 0; 
+  n = 0;
   frame = XmCreateFrame(ExpWindow, (char *)"expFrame", args, n);
   XtManageChild(frame);
-  
-  n = 0; 
+
+  n = 0;
   RC = XmCreateRowColumn(frame, (char *)"expRC", args, n);
 
 

@@ -15,11 +15,7 @@ STATIC FNS:	CreateStatsWindow()
 
 DESCRIPTION:	
 
-REFERENCES:	none
-
-REFERENCED BY:	Menu button.
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2018
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -133,7 +129,7 @@ void ComputeStats(DATASET_INFO *set)
 {
   size_t i, missCnt, len = 0;
   double y, sum, sigma;
- 
+
   /* Read in variables units from file.
    */
   buffer[0] = '\0';
@@ -163,10 +159,10 @@ void ComputeStats(DATASET_INFO *set)
 
   missCnt = 0;
   sum = sigma = 0.0;
- 
+
   set->stats.min = FLT_MAX;
   set->stats.max = -FLT_MAX;
- 
+
   for (i = 0; i < set->nPoints; ++i)
     {
     if (isMissingValue((y = set->data[i]), set->missingValue) ||
@@ -175,13 +171,13 @@ void ComputeStats(DATASET_INFO *set)
       ++missCnt;
       continue;
       }
- 
+
     set->stats.min = std::min(set->stats.min, y);
     set->stats.max = std::max(set->stats.max, y);
 
     sum += y;
     }
- 
+
   if (set->nPoints == missCnt)
     {
     set->stats.mean = 0.0;
@@ -198,7 +194,7 @@ void ComputeStats(DATASET_INFO *set)
     if (!isMissingValue((y = set->data[i]), set->missingValue) ||
         y < set->stats.outlierMin || y > set->stats.outlierMax)
       sigma += pow(y - set->stats.mean, 2.0);
- 
+
   set->stats.variance = sigma / (set->stats.nPoints - 1);
   set->stats.sigma = (float)sqrt(sigma / (set->stats.nPoints - 1));
 

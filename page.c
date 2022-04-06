@@ -11,11 +11,7 @@ STATIC FNS:	none
 
 DESCRIPTION:	
 
-REFERENCES:	
-
-REFERENCED BY:	Callback
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 

@@ -7,6 +7,8 @@ FULL NAME:	Global Variable External Declarations
 DESCRIPTION:	
 
 AUTHOR:		cjw@ucar.edu
+
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -156,7 +158,7 @@ void	ApplyParms(Widget *, PLOT_INFO *),
 	ApplyLogInvert(Widget *, PLOT_INFO *, int),
 	SetDefaults(Widget *, PLOT_INFO *),
 	SetLogInvert(Widget *, PLOT_INFO *, int);
-		
+
 void	SetYdialog(), SetYlabel(const char *s), CreateParmsWindow(Widget parent),
 	SetSubtitles(), SetDiffDefaults(), SetSpecDefaults(), SetXYDefaults(),
 	SetTrackDefaults(), SetPrinterShape(int), SetXlabel(const char *),

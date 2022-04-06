@@ -16,7 +16,7 @@ static FNS:	scaleAxis()
 DESCRIPTION:	These procedures are responsible for auto scaling the
 		X and Y axis.
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 
@@ -77,11 +77,11 @@ void AutoScaleXYZ()
     return;
 
   xyzPlot.Xaxis.smallestValue	= xyzSet[0].stats.min;
-  xyzPlot.Xaxis.biggestValue 	= xyzSet[0].stats.max;
+  xyzPlot.Xaxis.biggestValue	= xyzSet[0].stats.max;
   xyzPlot.Yaxis[0].smallestValue= xyzSet[1].stats.min;
   xyzPlot.Yaxis[0].biggestValue = xyzSet[1].stats.max;
   xyzPlot.Zaxis.smallestValue	= xyzSet[2].stats.min;
-  xyzPlot.Zaxis.biggestValue 	= xyzSet[2].stats.max;
+  xyzPlot.Zaxis.biggestValue	= xyzSet[2].stats.max;
 
   scaleAxis(&xyzPlot.Xaxis);
   scaleAxis(&xyzPlot.Yaxis[LEFT_SIDE]);

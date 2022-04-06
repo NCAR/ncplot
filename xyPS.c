@@ -16,7 +16,7 @@ REFERENCES:	ps.c
 
 REFERENCED BY:	PrintPostScript()
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2005
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 
@@ -117,14 +117,14 @@ static void ResizePSxyyPlot()
     }
 
   totalHD = xyyPlot[0].ps.windowWidth - (int)(200 * printerSetup.widthRatio);
- 
+
   for (i = 0; i < NumberOfXYpanels; ++i)
     {
     if (NumberOfXYpanels == 1)
       {
       xyyPlot[i].ps.LV = (int)(xyyPlot[0].ps.windowWidth * 0.2);
       xyyPlot[i].ps.HD = (int)(xyyPlot[0].ps.windowWidth * 0.61);
- 
+
       xyyPlot[i].ps.TH = (int)(xyyPlot[0].ps.windowHeight * 0.75);
       xyyPlot[i].ps.VD = (int)(xyyPlot[0].ps.windowHeight * 0.4735);
 
@@ -138,7 +138,7 @@ static void ResizePSxyyPlot()
 					(300 * printerSetup.heightRatio));
       xyyPlot[i].ps.HD = (int)(totalHD / NumberOfXYpanels -
 					(300 * printerSetup.heightRatio));
- 
+
       xyyPlot[i].ps.TH = (int)(xyyPlot[0].ps.windowHeight * 0.8);
       xyyPlot[i].ps.VD = (int)(xyyPlot[0].ps.windowHeight * 0.6);
 
@@ -147,7 +147,7 @@ static void ResizePSxyyPlot()
       xyyPlot[i].ps.xLegendText  = (int)((xyyPlot[i].x.HD >> 1) -
 			(100 * printerSetup.widthRatio));
       }
- 
+
     xyyPlot[i].ps.RV = xyyPlot[i].ps.LV + xyyPlot[i].ps.HD;
     xyyPlot[i].ps.BH = xyyPlot[i].ps.TH - xyyPlot[i].ps.VD;
 
@@ -182,7 +182,7 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
   for (CurrentDataSet = 0, plotNum = 0; plotNum < n; ++plotNum)
     {
     xChanged = yChanged = False;
- 
+
     for (i = xset+1; i < NumberXYXsets; ++i)
       if (xyXset[i].panelIndex == currentPanel)
         {
@@ -190,7 +190,7 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
         xset = i;
         break;
         }
- 
+
     for (i = yset+1; i < NumberXYYsets; ++i)
       if (xyYset[i].panelIndex == currentPanel)
         {
@@ -262,7 +262,7 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
   for (plotNum = 0; plotNum < n; ++plotNum)
     {
     xChanged = yChanged = False;
- 
+
     for (i = xset+1; i < NumberXYXsets; ++i)
       if (xyXset[i].panelIndex == currentPanel)
         {
@@ -270,7 +270,7 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
         xset = i;
         break;
         }
- 
+
     for (i = yset+1; i < NumberXYYsets; ++i)
       if (xyYset[i].panelIndex == currentPanel)
         {
@@ -278,7 +278,7 @@ static void PSplotXY(FILE *fp, PLOT_INFO *plot)
         yset = i;
         break;
         }
- 
+
     if (xset == -1 || yset == -1 || (!xChanged && !yChanged))
       break;
 
@@ -423,7 +423,7 @@ static void PSplotRegression(FILE *fp, PLOT_INFO *plot, DATASET_INFO *x, DATASET
   float	yInterMin, yInterMax;
 
   void fitcurve(DATASET_INFO *x, DATASET_INFO *y, int ideg);
- 
+
   printf("X axis variable: %s from %s\n",
 		x->varInfo->name.c_str(), dataFile[x->fileIndex].fileName.c_str());
   printf("Y axis variable: %s from %s\n",
@@ -501,7 +501,7 @@ static void doLegendLineItemPS(FILE *fp, PLOT_INFO *plot, DATASET_INFO *set, int
       x = plot->ps.xLegendText + (int)(1950 * printerSetup.widthRatio);
     else
       x = plot->ps.xLegendText;
- 
+
     if (showLine)
       {
       fprintf(fp, moveto, (int)(x - (180 * printerSetup.widthRatio)), y+10);
@@ -525,13 +525,13 @@ static void doLegendLineItemPS(FILE *fp, PLOT_INFO *plot, DATASET_INFO *set, int
       else
         fprintf(fp, "%d (%s) stringwidth pop add %d moveto\n",
 		(int)(plot->ps.xLegendText+20), buffer, y + 10);
- 
+
       fprintf(fp, "%d %d rlineto\n", (int)(160 * printerSetup.widthRatio), 0);
       }
 
     if (printerSetup.color)
       fprintf(fp, "stroke\n0 0 0 setrgbcolor\n");
- 
+
     sprintf(buffer, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
 
     fprintf(fp, moveto, plot->ps.xLegendText, y);

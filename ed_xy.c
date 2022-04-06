@@ -13,11 +13,7 @@ STATIC FNS:	CreateXYParmsWindow()
 
 DESCRIPTION:	
 
-INPUT:		none
-
-OUTPUT:		none
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 
@@ -37,7 +33,7 @@ static std::vector<Widget> panelB;
 
 static int      currentPanel = 0;
 
-static void	CreateXYParmsWindow(), 
+static void	CreateXYParmsWindow(),
 		ApplyXYParms(Widget w, XtPointer client, XtPointer call);
 
 
@@ -72,16 +68,16 @@ void SetXYDefaults()
 
   XmTextFieldSetString(parmsText[0], const_cast<char *>(xyyPlot[0].title.c_str()));
   XmTextFieldSetString(parmsText[1], const_cast<char *>(xyyPlot[0].subTitle.c_str()));
- 
+
   for (i = 0; i < NumberOfXYpanels; ++i)
     XtSetSensitive(panelB[i], True);
- 
+
   for (; i < MAX_PANELS; ++i)
     XtSetSensitive(panelB[i], False);
- 
+
   XmToggleButtonSetState(autoScaleButton, xyyPlot[currentPanel].autoScale, False);
   XmToggleButtonSetState(autoTicsButton, xyyPlot[currentPanel].autoTics, False);
- 
+
   for (i = 5; i < 11; ++i)
     XtSetSensitive(parmsText[i], 1-xyyPlot[currentPanel].autoScale);
 
@@ -135,7 +131,7 @@ static void SetXYPanel(Widget w, XtPointer client, XtPointer call)
 {
   currentPanel = (long)client;
   EditXYParms(NULL, NULL, NULL);
- 
+
 }       /* END SETPLOTPANEL */
 
 /* -------------------------------------------------------------------- */

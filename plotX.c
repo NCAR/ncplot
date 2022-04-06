@@ -12,11 +12,7 @@ STATIC FNS:	plotData()
 DESCRIPTION:	This is the Expose event procedure to regenerate the
 		main image.
 
-INPUT:		none
-
-OUTPUT:		none
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2005
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 
@@ -72,7 +68,7 @@ void ResizeTimeSeries()
       mainPlot[i].x.TH = (int)(100 + totalVD / NumberOfPanels * i);
       mainPlot[i].x.VD = (int)(totalVD / NumberOfPanels - 40);
       }
- 
+
     mainPlot[i].x.RV = mainPlot[i].x.LV + mainPlot[i].x.HD;
     mainPlot[i].x.BH = mainPlot[i].x.TH + mainPlot[i].x.VD;
 

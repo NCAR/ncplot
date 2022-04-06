@@ -13,11 +13,7 @@ STATIC FNS:	CreateStatsParmsWindow()
 
 DESCRIPTION:	
 
-INPUT:		none
-
-OUTPUT:		none
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1998
+COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2022
 -------------------------------------------------------------------------
 */
 
@@ -116,9 +112,9 @@ static void setOutlierList()
 {
   size_t	i, cnt = 0;
   XmString      item[MAX_DATASETS<<1];
- 
+
   XmListDeleteAllItems(list);
- 
+
   for (i = 0; i < NumberDataSets; ++i)
     item[cnt++] = XmStringCreateLocalized(const_cast<char*>(dataSet[i].varInfo->name.c_str()));
 
@@ -134,10 +130,10 @@ static void setOutlierList()
 
   if (cnt > 0)
     XmListAddItems(list, item, cnt, 1);
- 
+
   for (i = 0; i < cnt; ++i)
     XmStringFree(item[i]);
- 
+
 }       /* END SETOUTLIERLIST */
 
 /* -------------------------------------------------------------------- */

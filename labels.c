@@ -15,9 +15,7 @@ STATIC FNS:	none
 
 DESCRIPTION:	
 
-INPUT:		
-
-OUTPUT:		
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -127,7 +125,7 @@ void SetXlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets)
    */
   for (size_t i = 0; i < MAX_PANELS; ++i)
     plot[i].Xaxis.label = "";
- 
+
   for (int i = nSets-1; i >= 0; --i)
     if (PlotType == TIME_SERIES)
       plot[set[i].panelIndex].Xaxis.label = set[i].stats.units.c_str();
@@ -136,9 +134,9 @@ void SetXlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets)
       sprintf(buffer, "%s (%s)", set[i].varInfo->name.c_str(), set[i].stats.units.c_str());
       plot[set[i].panelIndex].Xaxis.label = buffer;
       }
- 
+
 }       /* END SETXLABELS */
- 
+
 /* -------------------------------------------------------------------- */
 void SetYlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets)
 {
@@ -147,7 +145,7 @@ void SetYlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets)
   for (size_t i = 0; i < MAX_PANELS; ++i)
     for (int j = 0; j < 2; ++j)
       plot[i].Yaxis[j].label = "";
- 
+
   for (int i = nSets-1; i >= 0; --i)
     if (PlotType == TIME_SERIES)
       plot[set[i].panelIndex].Yaxis[set[i].scaleLocation].label =
@@ -158,7 +156,7 @@ void SetYlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets)
         sprintf(buffer, "%s (%s)", set[i].varInfo->name.c_str(), set[i].stats.units.c_str());
         plot[set[i].panelIndex].Yaxis[set[i].scaleLocation].label = buffer;
         }
- 
+
 }       /* END SETYLABELS */
 
 /* LABELS.C */

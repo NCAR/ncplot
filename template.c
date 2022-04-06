@@ -15,7 +15,7 @@ STATIC FNS:	load_CB2()
 
 DESCRIPTION:	
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2013
+COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2022
 -------------------------------------------------------------------------
 */
 
@@ -158,7 +158,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
         fprintf(fp, "Grid=%d, AutoScale=%d, AutoTics=%d\n", mainPlot[i].grid,
 		mainPlot[i].autoScale, mainPlot[i].autoTics);
 
-        fprintf(fp, "Yaxis - Invert=%d %d, log=%d %d, bounds=%e %e %e %e, xTics=%d %d, yTics=%d %d\n", 
+        fprintf(fp, "Yaxis - Invert=%d %d, log=%d %d, bounds=%e %e %e %e, xTics=%d %d, yTics=%d %d\n",
 		mainPlot[i].Yaxis[0].invertAxis,
 		mainPlot[i].Yaxis[1].invertAxis,
 		mainPlot[i].Yaxis[0].logScale,
@@ -196,12 +196,12 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
         fprintf(fp, "Grid=%d, AutoScale=%d, AutoTics=%d\n",
 		xyyPlot[i].grid, xyyPlot[i].autoScale, xyyPlot[i].autoTics);
 
-        fprintf(fp, "Xaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d\n", 
+        fprintf(fp, "Xaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d\n",
 		xyyPlot[i].Xaxis.invertAxis, xyyPlot[i].Xaxis.logScale,
 		xyyPlot[i].Xaxis.min, xyyPlot[i].Xaxis.max,
 		xyyPlot[i].Xaxis.nMajorTics, xyyPlot[i].Xaxis.nMinorTics);
 
-        fprintf(fp, "Yaxis - Invert=%d %d, log=%d %d, bounds=%e %e %e %e, tics=%d %d\n", 
+        fprintf(fp, "Yaxis - Invert=%d %d, log=%d %d, bounds=%e %e %e %e, tics=%d %d\n",
 		xyyPlot[i].Yaxis[0].invertAxis, xyyPlot[i].Yaxis[1].invertAxis,
 		xyyPlot[i].Yaxis[0].logScale, xyyPlot[i].Yaxis[1].logScale,
 		xyyPlot[i].Yaxis[0].min, xyyPlot[i].Yaxis[0].max,
@@ -236,17 +236,17 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
       fprintf(fp, "nPanels=1\n");
       fprintf(fp, "AutoScale=%d, AutoTics=%d\n", xyzPlot.autoScale, xyzPlot.autoTics);
 
-      fprintf(fp, "Xaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d\n", 
+      fprintf(fp, "Xaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d\n",
 		xyzPlot.Xaxis.invertAxis, xyzPlot.Xaxis.logScale,
 		xyzPlot.Xaxis.min, xyzPlot.Xaxis.max,
 		xyzPlot.Xaxis.nMajorTics, xyzPlot.Xaxis.nMinorTics);
 
-      fprintf(fp, "Yaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d\n", 
+      fprintf(fp, "Yaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d\n",
 		xyzPlot.Yaxis[0].invertAxis, xyzPlot.Yaxis[0].logScale,
 		xyzPlot.Yaxis[0].min, xyzPlot.Yaxis[0].max,
 		xyzPlot.Yaxis[0].nMajorTics, xyzPlot.Yaxis[0].nMinorTics);
 
-      fprintf(fp, "Zaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d\n", 
+      fprintf(fp, "Zaxis - Invert=%d, log=%d, bounds=%e %e, tics=%d %d\n",
 		xyzPlot.Zaxis.invertAxis, xyzPlot.Zaxis.logScale,
 		xyzPlot.Zaxis.min, xyzPlot.Zaxis.max,
 		xyzPlot.Zaxis.nMajorTics, xyzPlot.Zaxis.nMinorTics);
@@ -454,7 +454,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
 
       while (x > NumberOfXYpanels)
         AddPanel(NULL, NULL, NULL);
- 
+
       while (x < NumberOfXYpanels)
         DeletePanel(NULL, NULL, NULL);
 
@@ -464,7 +464,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
         sscanf(buffer, "Grid=%ld, AutoScale=%ld", &x1, &x2);
         xyyPlot[i].grid = x1;
         xyyPlot[i].autoScale = x2;
- 
+
         fgets(buffer, 512, fp);
         if (version < 2)
           sscanf(buffer, "Xaxis - Invert=%ld, log=%ld", &x1, &x2);

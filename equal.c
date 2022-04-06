@@ -12,11 +12,7 @@ STATIC FNS:	none
 DESCRIPTION:	On Track plots, one would like lat and lon to cover the
 		same distance on the plot.
 
-REFERENCES:	
-
-REFERENCED BY:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 2000
+COPYRIGHT:	University Corporation for Atmospheric Research, 2000-2022
 -------------------------------------------------------------------------
 */
 

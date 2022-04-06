@@ -6,15 +6,9 @@ FULL NAME:	RealTime
 
 ENTRY POINTS:	UpdateData()
 
-STATIC FNS:		
-
 DESCRIPTION:	
 
-REFERENCES:	
-
-REFERENCED BY:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -36,7 +30,7 @@ void	findMinMax();
 /* -------------------------------------------------------------------- */
 void UpdateDataRT(XtPointer client, XtIntervalId *id)
 {
-  int  		recDim;
+  int		recDim;
   size_t	i, nRecords;
 
   if (Freeze)
@@ -103,7 +97,7 @@ reset:
 static void updateSet(DATASET_INFO *set)
 {
   ncount[1] = set->varInfo->OutputRate;
- 
+
   if ((set->head + (ncount[0] * ncount[1])) > NumberSeconds * ncount[1])
     {
     int	nextCount = 0;
@@ -127,10 +121,10 @@ static void updateSet(DATASET_INFO *set)
     nc_get_vara_float(InputFile, set->varInfo->inVarID, lastRecordNumber, ncount,
              &set->data[set->head]);
     }
- 
+
   if ((set->head += ncount[0] * ncount[1]) == NumberSeconds * ncount[1])
     set->head = 0;
- 
+
   if (set->head > NumberSeconds * ncount[1])
     {
     printf("circBuff index superceeded max count, you shouldn't see this message = %ld.\n", set->head);

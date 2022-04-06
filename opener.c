@@ -44,7 +44,7 @@ opener(const char *url)
     const char *platform = operating_system();
     const char *cmd = NULL;
 
-    // Hanlde macOS
+    // Handle macOS
     if (!strcmp(platform, "macOS")) {
       cmd = "open";
 
@@ -54,8 +54,8 @@ opener(const char *url)
 
     // Handle Linux, Unix, etc
     } else if (!strcmp(platform, "unix")
-      || !strcmp(platform, "linux") 
-      || !strcmp(platform, "freeBSD") 
+      || !strcmp(platform, "linux")
+      || !strcmp(platform, "freeBSD")
       || !strcmp(platform, "other")) {
       cmd = "xdg-open";
     }

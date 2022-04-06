@@ -12,11 +12,7 @@ STATIC FNS:	none
 
 DESCRIPTION:	
 
-REFERENCES:	
-
-REFERENCED BY:	
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -31,7 +27,7 @@ static int	timeInterval, average;
 void ToggleWindBarbs(Widget w, XtPointer client, XtPointer call)
 {
   WindBarbs = !WindBarbs;
- 
+
   if (WindBarbs)
     {
     std::string GetUI, GetVI, GetTI;
@@ -46,10 +42,10 @@ void ToggleWindBarbs(Widget w, XtPointer client, XtPointer call)
 
     average = isAverage();
     }
- 
+
   if (Interactive)
     DrawMainWindow();
- 
+
 }	/* END TOGGLEWINDBARBS */
 
 /* -------------------------------------------------------------------- */

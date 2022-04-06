@@ -17,7 +17,7 @@ REFERENCES:	ps.c
 
 REFERENCED BY:	track Print Button
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2000
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 

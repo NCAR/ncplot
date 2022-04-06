@@ -13,7 +13,9 @@ DESCRIPTION:	Inializiation routines run once at the beginning of main
 		Initialize is used to set all global variables.
 		Process_args does just that.
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-9
+AUTHOR:		chris@atd.ucar.edu
+
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 

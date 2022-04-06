@@ -18,7 +18,7 @@ DESCRIPTION:	This is the Expose event procedure to regenerate the
 
 AUTHOR:		cjw@ucar.edu
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2005
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 
@@ -48,7 +48,7 @@ void ResizeSpecWindow(Widget w, XtPointer client, XtPointer call)
   XtGetValues(specPlot.canvas, args, n);
 
   NewPixmap(&specPlot, specPlot.x.windowWidth, specPlot.x.windowHeight, depth);
- 
+
   specPlot.x.HD = (int)(specPlot.x.windowWidth * 0.7);
   specPlot.x.VD = (int)(specPlot.x.windowHeight * 0.7);
   specPlot.x.LV = (int)(specPlot.x.windowWidth * 0.2);
@@ -145,7 +145,7 @@ void PlotSpectrum(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *call)
 
   XCopyArea(specPlot.dpy, specPlot.win, XtWindow(specPlot.canvas), specPlot.gc,
         0, 0, specPlot.x.windowWidth, specPlot.x.windowHeight, 0, 0);
- 
+
 }	/* END PLOTSPECTRUM */
 
 /* -------------------------------------------------------------------- */

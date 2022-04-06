@@ -24,7 +24,7 @@ REFERENCES:	none
 
 REFERENCED BY:	spctrm.c
 
-COPYRIGHT:	Public Domain
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 

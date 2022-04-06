@@ -21,7 +21,7 @@ REFERENCES:	spctrm.c
 
 REFERENCED BY:	Callbacks, control.c
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-05
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 
@@ -47,7 +47,7 @@ struct ccb_info
 	void	(*callBack)(Widget, XtPointer, XtPointer);
         void    *client;
         };
- 
+
 static struct ccb_info  segLenInfo[] = {
         { "   128",   SetSegLen,	(void *)64, },
         { "   256",   SetSegLen,	(void *)128, },
@@ -60,7 +60,7 @@ static struct ccb_info  segLenInfo[] = {
         { "32,768",   SetSegLen,	(void *)16384, },
         { NULL,       NULL,	NULL }
         };
- 
+
 static struct ccb_info  windowInfo[] = {
         { "Bartlett", SetWindow,	(void *)Bartlett, },
         { "Blackman", SetWindow,	(void *)Blackman, },
@@ -72,7 +72,7 @@ static struct ccb_info  windowInfo[] = {
         { "Welch",    SetWindow,	(void *)Welch, },
         { NULL,       NULL,	NULL }
         };
- 
+
 static struct ccb_info  detrendInfo[] = {
         { "None",     SetDetrend,	(void *)DetrendNone, },
         { "Difference",   SetDetrend,	(void *)DiffPreFilter, },
@@ -80,7 +80,7 @@ static struct ccb_info  detrendInfo[] = {
         { "Linear",   SetDetrend,	(void *)DetrendLinear, },
         { NULL,       NULL,	NULL }
         };
- 
+
 
 extern Widget	AppShell, MainWindow, ControlWindow, SpecShell, SpectrumWindow;
 
@@ -102,9 +102,9 @@ void SpecWinDown(Widget w, XtPointer client, XtPointer call)
     XtUnmanageChild(SpectrumWindow);
     XtPopdown(XtParent(SpectrumWindow));
     }
- 
+
 }   /* END SPECWINDOWN */
- 
+
 /* -------------------------------------------------------------------- */
 void SpecWinUp(Widget w, XtPointer client, XtPointer call)
 {
@@ -229,7 +229,7 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
 void ComputeSpectrum()
 {
   float *detrendedData = 0;
-  
+
   size_t nSets = std::min(NumberDataSets, MAX_PSD);
 
   for (size_t set = 0; set < nSets; ++set)
@@ -285,7 +285,7 @@ void ComputeSpectrum()
         psd[set].Pxx[i] *= pow((double)i, 5.0/3.0);
 
       sprintf(buffer, "f^(5/3) x P(f) of %s (%s^2)",
-  	dataSet[0].varInfo->name.c_str(), units.c_str());
+	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
     else
@@ -296,7 +296,7 @@ void ComputeSpectrum()
         psd[set].Pxx[i] *= cf;
 
       sprintf(buffer, "P(f) of %s (%s^2 / Hz)",
-  	dataSet[0].varInfo->name.c_str(), units.c_str());
+	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
     }
@@ -309,7 +309,7 @@ void ComputeSpectrum()
 void AutoScaleSpectralWindow()
 {
   struct axisInfo *Yaxis = &specPlot.Yaxis[0];
- 
+
   if (specPlot.autoTics)
     specPlot.Xaxis.nMajorTics = (int)(ceil(log10(specPlot.Xaxis.max)) - floor(log10(specPlot.Xaxis.min)));
 
@@ -330,7 +330,7 @@ void AutoScaleSpectralWindow()
         }
       AutoScaleSpec();
       return;
- 
+
     case COHERENCE:
       if (specPlot.autoScale)
         {
@@ -344,7 +344,7 @@ void AutoScaleSpectralWindow()
         Yaxis->nMinorTics = 4;
         }
       return;
- 
+
     case RATIO:
       if (specPlot.autoScale)
         {
@@ -358,7 +358,7 @@ void AutoScaleSpectralWindow()
         Yaxis->nMinorTics = 3;
         }
       return;
- 
+
     case PHASE:
       if (specPlot.autoScale)
         {
@@ -386,12 +386,12 @@ void AutoScaleSpectralWindow()
       {
       if (psd[set].Pxx[i] < 0.0)
         continue;
- 
+
       Yaxis->smallestValue = std::min(Yaxis->smallestValue, psd[set].Pxx[i]);
       Yaxis->biggestValue = std::max(Yaxis->biggestValue, psd[set].Pxx[i]);
       }
     }
- 
+
   if (specPlot.autoTics)
     {
     Yaxis->nMinorTics = 10;
@@ -399,7 +399,7 @@ void AutoScaleSpectralWindow()
     }
 
   AutoScaleSpec();
- 
+
 }	/* END AUTOSCALESPECTRALWINDOW */
 
 /* -------------------------------------------------------------------- */
@@ -432,7 +432,7 @@ double startFreq()
   p = XmTextFieldGetString(sFreq);
   n = atof(p);
   free(p);
- 
+
   return(n);
 }
 
@@ -445,7 +445,7 @@ double endFreq()
   p = XmTextFieldGetString(eFreq);
   n = atof(p);
   free(p);
- 
+
   return(n);
 }
 
@@ -458,10 +458,10 @@ int timeShift()
   p = XmTextFieldGetString(tShift);
   n = atoi(p);
   free(p);
- 
+
   return(n);
 }
- 
+
 /* -------------------------------------------------------------------- */
 void ToggleSpecGrid(Widget w, XtPointer client, XtPointer call)
 {
@@ -483,7 +483,7 @@ void ToggleWaveNumberScale(Widget w, XtPointer client, XtPointer call)
         delete [] tas.data;
         tas.data = NULL;
         }
- 
+
       if (LoadVariable(&tas, tasVarName) == ERR)
         {
         sprintf(buffer, "Can't locate True Airspeed variable %s.", tasVarName.c_str());
@@ -511,7 +511,7 @@ void ToggleWaveNumberScale(Widget w, XtPointer client, XtPointer call)
   SetSpecDefaults();
 
 }	/* END TOGGLEWAVENUMBERSCALE */
- 
+
 /* -------------------------------------------------------------------- */
 void ToggleWaveLengthScale(Widget w, XtPointer client, XtPointer call)
 {
@@ -522,7 +522,7 @@ void ToggleWaveLengthScale(Widget w, XtPointer client, XtPointer call)
         delete [] tas.data;
         tas.data = NULL;
         }
- 
+
       if (LoadVariable(&tas, tasVarName) == ERR)
         {
         XmToggleButtonSetState(pmOptButt[5], false, false);
@@ -570,19 +570,19 @@ bool plotFiveThirds()
 {
   return(XmToggleButtonGetState(pmOptButt[1]));
 }
- 
+
 /* -------------------------------------------------------------------- */
 bool multiplyByFreq()
 {
   return(XmToggleButtonGetState(pmOptButt[2]));
 }
- 
+
 /* -------------------------------------------------------------------- */
 bool multiplyByFreq53()	/* freq to the 5/3 power */
 {
   return(XmToggleButtonGetState(pmOptButt[3]));
 }
- 
+
 /* -------------------------------------------------------------------- */
 bool plotWaveNumber()
 {
@@ -591,7 +591,7 @@ bool plotWaveNumber()
 
   return(XmToggleButtonGetState(pmOptButt[4]));
 }
- 
+
 /* -------------------------------------------------------------------- */
 bool plotWaveLength()
 {
@@ -600,7 +600,7 @@ bool plotWaveLength()
 
   return(XmToggleButtonGetState(pmOptButt[5]));
 }
- 
+
 /* -------------------------------------------------------------------- */
 bool equalLogInterval()
 {
@@ -877,7 +877,7 @@ static void setDefaults()
   XtSetArg(args[0], XmNlabelString, name);
   XtSetValues(XmOptionButtonGadget(slOpMenu), args, 1);
   XmStringFree(name);
- 
+
   for (x = i = 0; windowInfo[i].name; ++i)
     if ((long)windowInfo[i].client == (long)psd[0].windowFn)
       x = i;
@@ -886,16 +886,16 @@ static void setDefaults()
   XtSetArg(args[0], XmNlabelString, name);
   XtSetValues(XmOptionButtonGadget(winOpMenu), args, 1);
   XmStringFree(name);
- 
+
   for (x = i = 0; detrendInfo[i].name; ++i)
     if ((long)detrendInfo[i].client == (long)psd[0].detrendFn)
       x = i;
- 
+
   name = XmStringCreateLocalized(detrendInfo[x].name);
   XtSetArg(args[0], XmNlabelString, name);
   XtSetValues(XmOptionButtonGadget(dtOpMenu), args, 1);
   XmStringFree(name);
- 
+
 }	/* END SETDEFAULTS */
 
 /* -------------------------------------------------------------------- */

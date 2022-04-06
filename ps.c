@@ -27,7 +27,7 @@ REFERENCES:	none
 
 REFERENCED BY:	plotPS.c, specPS.c, diffPS.c, trackPS.c
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1995-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1995-2022
 -------------------------------------------------------------------------
 */
 
@@ -298,7 +298,7 @@ void PSyTics(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
         value = yAxis->max - (yDiff / nMajTics * i);
       else
         value = yAxis->min + (yDiff / nMajTics * i);
- 
+
       MakeTicLabel(buffer, yDiff, nMajTics, value);
 
       if (scale == LEFT_SIDE)
@@ -425,27 +425,27 @@ void PSstatsLegend(FILE *fp, PLOT_INFO *plot, char *title, int cnt, DATASET_INFO
 
   fprintf(fp, moveto, plot->ps.xLegendText, ylegend);
   fprintf(fp, show, title);
- 
+
   fprintf(fp, moveto,
 	(int)(plot->ps.xLegendText + (700 * printerSetup.widthRatio)), ylegend);
   sprintf(buffer, "%11.2f", set->stats.mean);
   fprintf(fp, rightShow, buffer);
- 
+
   fprintf(fp, moveto,
 	(int)(plot->ps.xLegendText +(1000 * printerSetup.widthRatio)), ylegend);
   sprintf(buffer, "%11.2f", set->stats.sigma);
   fprintf(fp, rightShow, buffer);
- 
+
   fprintf(fp, moveto,
 	(int)(plot->ps.xLegendText +(1300 * printerSetup.widthRatio)), ylegend);
   sprintf(buffer, "%11.2f", set->stats.min);
   fprintf(fp, rightShow, buffer);
- 
+
   fprintf(fp, moveto,
 	(int)(plot->ps.xLegendText +(1600 * printerSetup.widthRatio)), ylegend);
   sprintf(buffer, "%11.2f", set->stats.max);
   fprintf(fp, rightShow, buffer);
- 
+
 }	/* END PSSTATSLEGEND */
 
 /* -------------------------------------------------------------------- */
@@ -456,19 +456,19 @@ void PSstatsTitle(FILE *fp, PLOT_INFO *plot, int cnt)
   fprintf(fp, moveto,
       (int)(plot->ps.xLegendText + (700 * printerSetup.widthRatio)), ylegend);
   fprintf(fp, rightShow, "mean");
- 
+
   fprintf(fp, moveto,
       (int)(plot->ps.xLegendText + (1000 * printerSetup.widthRatio)), ylegend);
   fprintf(fp, rightShow, "sigma");
- 
+
   fprintf(fp, moveto,
       (int)(plot->ps.xLegendText + (1300 * printerSetup.widthRatio)), ylegend);
   fprintf(fp, rightShow, "min");
- 
+
   fprintf(fp, moveto,
       (int)(plot->ps.xLegendText + (1600 * printerSetup.widthRatio)), ylegend);
   fprintf(fp, rightShow, "max");
- 
+
 }	/* END PSSTATSTITLE */
 
 /* -------------------------------------------------------------------- */

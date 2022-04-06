@@ -19,7 +19,9 @@ STATIC FNS:	findMinMax()
 		getNCattr()
 		readSet()
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2011
+AUTHOR:		chris@atd.ucar.edu
+
+COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 -------------------------------------------------------------------------
 */
 
@@ -392,7 +394,7 @@ static void readSet(DATASET_INFO *set)
 
     set->nPoints = NumberSeconds;
 
-    for (i = 0; i < expSet.size(); ++i) 
+    for (i = 0; i < expSet.size(); ++i)
     {
       if (expSet[i].panelIndex == whichExp && expSet[i].nPoints == 0)
         {
@@ -506,10 +508,10 @@ void ReadData()
   {
     if (UserStartTime[3] < MinStartTime[3])
       memcpy((char *)UserStartTime, (char *)MinStartTime, 4*sizeof(int));
- 
+
     if (UserEndTime[3] > MaxEndTime[3])
       memcpy((char *)UserEndTime, (char *)MaxEndTime, 4*sizeof(int));
- 
+
     NumberSeconds = UserEndTime[3] - UserStartTime[3];
   }
 
@@ -871,7 +873,7 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
 
   if (curFile->FileStartTime[0] > curFile->FileEndTime[0])
     curFile->FileEndTime[0] += 24;
- 
+
   /* Seconds since midnight.
    */
   curFile->FileStartTime[3] = SecondsSinceMidnite(curFile->FileStartTime);

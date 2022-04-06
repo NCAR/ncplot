@@ -17,11 +17,7 @@ STATIC FNS:	none
 
 DESCRIPTION:	
 
-REFERENCES:	none
-
-REFERENCED BY:	ed_*.c
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -46,11 +42,11 @@ void ApplyParms(Widget parmsText[], PLOT_INFO *plot)
   p = XmTextFieldGetString(parmsText[0]);
   plot->title = p;
   XtFree(p);
- 
+
   p = XmTextFieldGetString(parmsText[1]);
   plot->subTitle = p;
   XtFree(p);
- 
+
   p = XmTextFieldGetString(parmsText[2]);
   plot->Xaxis.label = p;
   XtFree(p);

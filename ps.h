@@ -1,10 +1,12 @@
 /*
 -------------------------------------------------------------------------
 OBJECT NAME:    ps.h
- 
+
 FULL NAME:      Printing/PostScript header include file.
- 
+
 DESCRIPTION:
+
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 

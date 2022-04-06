@@ -12,7 +12,7 @@ STATIC FNS:	none.
 
 DESCRIPTION:	
 
-COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2010
+COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 -------------------------------------------------------------------------
 */
 
@@ -43,7 +43,7 @@ void ToggleLandMarks(Widget w, XtPointer client, XtPointer call)
 
   if (Interactive)
     DrawMainWindow();
- 
+
 }	/* END TOGGLELANDMARKS */
 
 /* -------------------------------------------------------------------- */
@@ -131,7 +131,7 @@ void PlotLandMarks3D(
   zMax = plot->Zaxis.max;
 
   plotInfo = (fp) ? &plot->ps : &plot->x;
- 
+
   xScale = (float)plotInfo->HD / (xMax - xMin);
   yScale = (float)plotInfo->VD / (plot->Yaxis[0].max - plot->Yaxis[0].min);
   zScale = (float)ZD / (zMax - zMin);
@@ -141,7 +141,7 @@ void PlotLandMarks3D(
     if (landMark[i].lat < zMin || landMark[i].lat > zMax ||
         landMark[i].lon < xMin || landMark[i].lon > xMax)
       continue;
- 
+
     if (fp)	/* PostScript */
       {
       x = (int)(xScale * (landMark[i].lon - xMin));
@@ -159,7 +159,7 @@ void PlotLandMarks3D(
 
       x += (int)(cosFac * (zScale * (landMark[i].lat - zMin)));
       y -= (int)(sinFac * (zScale * (landMark[i].lat - zMin)));
- 
+
       plotLMx(plot, x, y, i);
       }
     }
