@@ -30,7 +30,7 @@ void ToggleWindBarbs(Widget w, XtPointer client, XtPointer call)
 
   if (WindBarbs)
     {
-    std::string GetUI(), GetVI(), GetTI();
+    std::string GetUI(void), GetVI(void), GetTI(void);
 
     if (LoadVariable(&ui, GetUI()) == ERR)
       fprintf(stderr, "Can't find variable %s\n", GetUI().c_str());
