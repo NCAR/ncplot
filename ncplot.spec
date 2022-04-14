@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
 Version: 4.9
-Release: 12%{?dist}
+Release: 13%{?dist}
 License: GPL
 Group: System Environment/Daemons
 Url: http://www.eol.ucar.edu/
@@ -49,6 +49,8 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
+* Thu Apr 30 2022 Chris Webster <cjw@ucar.edu> - 4.9-13
+- Fix wind barb bug instroduced in 2017.  Fixes core dump when engaging.
 * Sun May 30 2021 Chris Webster <cjw@ucar.edu> - 4.9-12
 - Improve box-zoom behavior when going off right edge of time-series.
 * Sat Mar 13 2021 Chris Webster <cjw@ucar.edu> - 4.9-11
