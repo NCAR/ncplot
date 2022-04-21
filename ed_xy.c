@@ -162,10 +162,10 @@ static void CreateXYParmsWindow()
   XtManageChild(RC[2]); XtManageChild(RC[3]);
   XtManageChild(RC[4]);
 
-  XtAddCallback(autoScaleButton, XmNvalueChangedCallback, ApplyXYParms, NULL);
   XtAddCallback(autoScaleButton, XmNvalueChangedCallback, SetXYAutoScale, NULL);
-  XtAddCallback(autoTicsButton, XmNvalueChangedCallback, ApplyXYParms, NULL);
   XtAddCallback(autoTicsButton, XmNvalueChangedCallback, SetXYAutoTics, NULL);
+  XtAddCallback(autoScaleButton, XmNvalueChangedCallback, ApplyXYParms, NULL);
+  XtAddCallback(autoTicsButton, XmNvalueChangedCallback, ApplyXYParms, NULL);
 
   for (i = 0; i < TOTAL_PARMS-1; ++i)
     if (parmsText[i])

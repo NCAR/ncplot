@@ -136,9 +136,9 @@ static void CreateDiffParmsWindow()
   XtManageChild(RC[4]);
 
   XtAddCallback(autoScaleButton, XmNvalueChangedCallback, SetDiffAutoScale, NULL);
+  XtAddCallback(autoTicsButton, XmNvalueChangedCallback, SetDiffAutoTics, NULL);
   XtAddCallback(autoTicsButton, XmNvalueChangedCallback, ApplyDiffParms, NULL);
   XtAddCallback(autoScaleButton, XmNvalueChangedCallback, ApplyDiffParms, NULL);
-  XtAddCallback(autoTicsButton, XmNvalueChangedCallback, SetDiffAutoTics, NULL);
 
   for (i = 0; i < TOTAL_PARMS-1; ++i)
     if (parmsText[i])

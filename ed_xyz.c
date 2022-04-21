@@ -128,10 +128,10 @@ static void CreateTrackParmsWindow()
   XtManageChild(RC[2]); XtManageChild(RC[3]);
   XtManageChild(RC[4]);
 
-  XtAddCallback(autoScaleButton, XmNvalueChangedCallback, ApplyTrackParms, NULL);
-  XtAddCallback(autoTicsButton, XmNvalueChangedCallback, ApplyTrackParms, NULL);
   XtAddCallback(autoScaleButton, XmNvalueChangedCallback, SetTrackAutoScale, NULL);
   XtAddCallback(autoTicsButton, XmNvalueChangedCallback, SetTrackAutoTics, NULL);
+  XtAddCallback(autoScaleButton, XmNvalueChangedCallback, ApplyTrackParms, NULL);
+  XtAddCallback(autoTicsButton, XmNvalueChangedCallback, ApplyTrackParms, NULL);
 
   for (i = 0; i < TOTAL_PARMS-1; ++i)
     if (parmsText[i])
