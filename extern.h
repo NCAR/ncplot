@@ -20,7 +20,7 @@ extern const size_t	BUFFSIZE, MAX_DATAFILES, MAX_DATASETS, MAX_PANELS;
 extern bool	Interactive, DataChanged, AsciiWinOpen, Statistics,
 		ScatterPlot, WindBarbs, UTCseconds, Color, StatsWinOpen,
 		LandMarks, ProjectToXY, ProjectToBack, RealTime,
-		Freeze, allLabels;
+		Freeze, allLabels, ShowMissingValueCount;
 
 extern std::string DataPath, tasVarName;
 extern char	buffer[], *parmsFile, *outFile, *timeSeg;
@@ -88,7 +88,7 @@ void	NewDataFile(Widget, XtPointer, XtPointer),
 	LoadTemplate(Widget, XtPointer, XtPointer),
 	AddVariable(DATASET_INFO *, const char *), SetTimeText(),
 	FromSecondsSinceMidnite(int timeSeg[]),
-	GetTimeInterval(int InputFile, DATAFILE_INFO *),
+	GetTimeInterval(int InputFile, DATAFILE_INFO *, int),
 	ReadData(), ReduceData(int start, int newNumberSeconds);
 
 void	Quit(Widget, XtPointer, XtPointer),
@@ -104,6 +104,7 @@ void	Quit(Widget, XtPointer, XtPointer),
 	ToggleProject(Widget, XtPointer, XtPointer),
 	ToggleScatter(Widget, XtPointer, XtPointer),
 	ToggleWindBarbs(Widget, XtPointer, XtPointer),
+	ToggleMissingCount(Widget, XtPointer, XtPointer),
 	ToggleLandMarks(Widget, XtPointer, XtPointer),
 	ToggleEqualScaling(Widget, XtPointer, XtPointer),
 	ChangeLineThickness(Widget, XtPointer, XtPointer),

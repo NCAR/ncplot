@@ -73,6 +73,7 @@ void Initialize()
   UTCseconds		= false;
   LandMarks		= false;
   ScatterPlot		= false;
+  ShowMissingValueCount	= false;
   WindBarbs		= false;
   Statistics		= true;
   allLabels		= true;

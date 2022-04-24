@@ -44,7 +44,7 @@ static std::vector<Widget> fileB;
 
 static Widget	plotType[3], invert, logScale,
 		whichAxis[3], scaleLocation[2], RC[9], frame[9],
-		optButton[5], timeText[2], realTime, rtText, lineThickTxt;
+		optButton[8], timeText[2], realTime, rtText, lineThickTxt;
 
 static int	currentAxis = Y_AXIS;
 
@@ -806,7 +806,8 @@ void CreateControlWindow(Widget parent)
   optButton[1] = XmCreateToggleButton(RC[7], (char *)"UT seconds (on/off)", args, n);
   optButton[2] = XmCreateToggleButton(RC[7], (char *)"Grid (on/off)", args, n);
   optButton[3] = XmCreateToggleButton(RC[7], (char *)"Cross-hair (on/off)", args, n);
-  XtManageChildren(optButton, 4);
+  optButton[4] = XmCreateToggleButton(RC[7], (char *)"Missing value count (on/off)", args, n);
+  XtManageChildren(optButton, 5);
 
   plRC[0] = XmCreateRowColumn(RC[7], (char *)"pnRC", args, n); XtManageChild(plRC[0]);
   lineThickTxt = XmCreateTextField(plRC[0], (char *)"lineThick", args, n);
@@ -822,6 +823,7 @@ void CreateControlWindow(Widget parent)
   XtAddCallback(optButton[1], XmNvalueChangedCallback, ToggleUTC, NULL);
   XtAddCallback(optButton[2], XmNvalueChangedCallback, ToggleGrid, NULL);
   XtAddCallback(optButton[3], XmNvalueChangedCallback, ToggleTracking, NULL);
+  XtAddCallback(optButton[4], XmNvalueChangedCallback, ToggleMissingCount, NULL);
   XtAddCallback(lineThickTxt, XmNvalueChangedCallback, ChangeLineThickness, lineThickTxt);
 
   /* Check positioning and keep it on the screen (laptops).

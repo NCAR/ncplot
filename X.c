@@ -461,14 +461,17 @@ void xTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, bool labels)
 /* -------------------------------------------------------------------- */
 void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
 {
-  size_t	i, cnt, reqSize;
-  XPoint	*pts;
+  size_t	i;
+  int		cnt, reqSize, missCnt;
+  XPoint	*pts, last;
   NR_TYPE	datum;
   float		xScale, yScale, halfSecond, yMin;
   struct axisInfo	*yAxis;
 
   if (NumberSeconds == 0)
     return;
+
+  last.x = last.y = 0;
 
   yAxis = &plot->Yaxis[set->scaleLocation];
 
@@ -506,9 +509,10 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
    */
   for (i = 0; i < set->nPoints; ++i)
     {
+    missCnt = 0;
     while (isMissingValue((datum = set->data[(set->head + i) % set->nPoints]),
 	set->missingValue) && i < set->nPoints)
-      ++i;
+      { ++i; ++missCnt; }
 
     for (cnt = 0; !isMissingValue(datum, set->missingValue) &&
               cnt < reqSize && i < set->nPoints; ++cnt)
@@ -543,6 +547,15 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
       }
 
 
+    if (ShowMissingValueCount && missCnt)
+      {
+      char tmp[16];
+      sprintf(tmp, "%d", missCnt);
+      XSetFont(plot->dpy, plot->gc, plot->fontInfo[4]->fid);
+      XDrawString(plot->dpy, plot->win, plot->gc, (pts[0].x+last.x)/2-10, (pts[2].y+last.y)/2+10, tmp, strlen(tmp));
+      }
+
+
     if (cnt > 1)
       XDrawLines(plot->dpy, plot->win, plot->gc, pts, cnt, CoordModeOrigin);
     else
@@ -552,6 +565,8 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
       XDrawLine(plot->dpy, plot->win, plot->gc,
 		pts[0].x-2, pts[0].y, pts[0].x+2, pts[0].y);
       }
+
+    last.x = pts[std::max(0, cnt-2)].x; last.y = pts[std::max(0, cnt-3)].y;
     }
 
   XSetClipMask(plot->dpy, plot->gc, None);

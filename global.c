@@ -29,6 +29,7 @@ bool	UTCseconds;	/* Seconds since midnight vs. HH:MM:SS		*/
 
 bool	allLabels;	/* Labels on all panels for multi-panel		*/
 bool	ScatterPlot;	/* Scatter instead of line on XY		*/
+bool	ShowMissingValueCount;	/* Display number missing points on times-series */
 bool	ProjectToXY;	/* Project XYZ  to ground			*/
 bool	ProjectToBack;	/* Project XYZ to back & side planes.		*/
 bool	WindBarbs;	/* Show wind barbs on XY			*/
