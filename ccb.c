@@ -133,6 +133,16 @@ void ToggleGrid(Widget w, XtPointer client, XtPointer call)
 }	/* END TOGGLEGRID */
 
 /* -------------------------------------------------------------------- */
+void ToggleMissingCount(Widget w, XtPointer client, XtPointer call)
+{
+  ShowMissingValueCount = !ShowMissingValueCount;
+
+  if (Interactive)
+    DrawMainWindow();
+
+}	/* END TOGGLEGRID */
+
+/* -------------------------------------------------------------------- */
 void ToggleTracking(Widget w, XtPointer client, XtPointer call)
 {
   XmToggleButtonCallbackStruct *cb = (XmToggleButtonCallbackStruct *)call;

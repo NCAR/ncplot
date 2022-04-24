@@ -88,7 +88,7 @@ void	NewDataFile(Widget, XtPointer, XtPointer),
 	LoadTemplate(Widget, XtPointer, XtPointer),
 	AddVariable(DATASET_INFO *, const char *), SetTimeText(),
 	FromSecondsSinceMidnite(int timeSeg[]),
-	GetTimeInterval(int InputFile, DATAFILE_INFO *, int),
+	GetTimeInterval(int InputFile, DATAFILE_INFO *),
 	ReadData(), ReduceData(int start, int newNumberSeconds);
 
 void	Quit(Widget, XtPointer, XtPointer),
