@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
-Version: 4.9
-Release: 14%{?dist}
+Version: 4.10
+Release: 0%{?dist}
 License: GPL
 Group: System Environment/Daemons
 Url: http://www.eol.ucar.edu/
@@ -49,7 +49,11 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
-* Thu Apr 30 2022 Chris Webster <cjw@ucar.edu> - 4.9-13
+* Sat Apr 23 2022 Chris Webster <cjw@ucar.edu> - 4.10-0
+- Add toggle 'Show Missing Value Count' on time-series.
+* Thu Apr 21 2022 Chris Webster <cjw@ucar.edu> - 4.9-14
+- Fix autoscale buttons for XY, XYZ, and diff plots.
+* Thu Apr 14 2022 Chris Webster <cjw@ucar.edu> - 4.9-13
 - Fix wind barb bug instroduced in 2017.  Fixes core dump when engaging.
 * Sun May 30 2021 Chris Webster <cjw@ucar.edu> - 4.9-12
 - Improve box-zoom behavior when going off right edge of time-series.
