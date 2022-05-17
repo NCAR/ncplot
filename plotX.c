@@ -24,7 +24,7 @@ static size_t	currentPanel;
 static int	fontOffset;
 
 void MakeLegendLabel(char *, DATASET_INFO *);
-static void plotData(PLOT_INFO *plot);
+static void plotData(PLOT_INFO *plot, XFontStruct *fontInfo);
 
 
 /* -------------------------------------------------------------------- */
@@ -155,7 +155,7 @@ void DrawTimeSeries()
             dataSet[i].panelIndex == currentPanel)
           yTicsLabelsX(&mainPlot[currentPanel], fontInfo, RIGHT_SIDE, true);
 
-      plotData(&mainPlot[currentPanel]);
+      plotData(&mainPlot[currentPanel], fontInfo);
       }
     }
 
@@ -164,7 +164,7 @@ void DrawTimeSeries()
 }	/* END DRAWTIMESERIES */
 
 /* -------------------------------------------------------------------- */
-static void plotData(PLOT_INFO *plot)
+static void plotData(PLOT_INFO *plot, XFontStruct *fontInfo)
 {
   DATASET_INFO *set;
   VARTBL	*vp;
@@ -189,7 +189,7 @@ static void plotData(PLOT_INFO *plot)
     else
       XSetLineAttributes(plot->dpy, plot->gc, LineThickness, LineOnOffDash, CapButt, JoinMiter);
 
-    plotTimeSeries(plot, set);
+    plotTimeSeries(plot, set, fontInfo);
 
 
     /* Display legend for each dataset

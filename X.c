@@ -459,7 +459,7 @@ void xTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, bool labels)
 }	/* END XTICSLABELSX */
 
 /* -------------------------------------------------------------------- */
-void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
+void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set, XFontStruct *fontInfo)
 {
   size_t	i;
   int		cnt, reqSize, missCnt;
@@ -553,6 +553,7 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set)
       sprintf(tmp, "%d", missCnt);
       XSetFont(plot->dpy, plot->gc, plot->fontInfo[4]->fid);
       XDrawString(plot->dpy, plot->win, plot->gc, (pts[0].x+last.x)/2-10, (pts[2].y+last.y)/2+10, tmp, strlen(tmp));
+      XSetFont(plot->dpy, plot->gc, fontInfo->fid);
       }
 
 

@@ -152,7 +152,7 @@ void	initPlotGC(PLOT_INFO *),
 	PrintTimeSeries(), PrintXY(), PrintXYZ(),
 	UpdateAnnotationsPS(PLOT_INFO *, FILE *),
 	PSclearClip(FILE *), PSclip(FILE *, PLOT_INFO *),
-	plotTimeSeries(PLOT_INFO *, DATASET_INFO *), ClearAnnotations(),
+	plotTimeSeries(PLOT_INFO *, DATASET_INFO *, XFontStruct *), ClearAnnotations(),
 	plotXY(PLOT_INFO *, DATASET_INFO *, DATASET_INFO *, int);
 
 void	ApplyParms(Widget *, PLOT_INFO *),

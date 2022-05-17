@@ -25,7 +25,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-8
 
 static int	fontOffset;
 
-static void	plotDiffLines(PLOT_INFO *plot);
+static void	plotDiffLines(PLOT_INFO *plot, XFontStruct *fontInfo);
 
 
 /* -------------------------------------------------------------------- */
@@ -97,7 +97,7 @@ void PlotDifference(Widget w, XtPointer client,
     {
     yTicsLabelsX(&diffPlot, fontInfo, LEFT_SIDE, true);
     xTicsLabelsX(&diffPlot, fontInfo, true);
-    plotDiffLines(&diffPlot);
+    plotDiffLines(&diffPlot, fontInfo);
     }
 
   XCopyArea(diffPlot.dpy, diffPlot.win, XtWindow(diffPlot.canvas), diffPlot.gc,
@@ -106,7 +106,7 @@ void PlotDifference(Widget w, XtPointer client,
 }	/* END PLOTDIFFERENCE */
 
 /* -------------------------------------------------------------------- */
-static void plotDiffLines(PLOT_INFO *plot)
+static void plotDiffLines(PLOT_INFO *plot, XFontStruct *fontInfo)
 {
   if (Color)
     {
@@ -116,7 +116,7 @@ static void plotDiffLines(PLOT_INFO *plot)
 
   XSetLineAttributes(plot->dpy, plot->gc, LineThickness, LineSolid, CapButt, JoinMiter);
 
-  plotTimeSeries(plot, &diffSet);
+  plotTimeSeries(plot, &diffSet, fontInfo);
 
   if (Color)
     XSetForeground(plot->dpy, plot->gc, GetColor(0));
