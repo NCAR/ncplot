@@ -16,8 +16,8 @@ pipeline {
     }
   }
   post {
-    success {
-      mail(body: 'ncplot Jenkinsfile build successful', subject: 'ncplot Jenkinsfile build successful', to: 'cjw@ucar.edu taylort@ucar.edu')
+    failure {
+      mail(body: 'ncplot Jenkinsfile build failed', subject: 'ncplot Jenkinsfile build failed', to: 'cjw@ucar.edu taylort@ucar.edu')
     }
   }
   options {
