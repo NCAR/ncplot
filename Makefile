@@ -45,10 +45,15 @@ WWW	= /net/www/docs/raf/Software
 #LIBS    = -lXm -lXt -lX11 -lnetcdf -ll -lgsl -lpng -lpthread
 #BIN	= /usr/local/bin
 
-# Homebrew
+# Homebrew Intel
 #INCLUDES=
 #LIB_DIRS=
 #NCH_DEP	= /usr/local/include/netcdf.h
+
+# Homebrew M1
+#INCLUDES= -I/opt/homebrew/include
+#LIB_DIRS= -L/opt/homebrew/lib
+#NCH_DEP = /opt/homebrew/include/netcdf.h
 
 # MacPorts
 #INCLUDES= -I/opt/local/include
