@@ -313,9 +313,9 @@ bool TestForGMT()
   }
 
 
-  stat("/usr/local/bin/gmt", &sb);
+  stat("/opt/homebrew/bin/gmt", &sb);
   if ((sb.st_mode & S_IFMT) == S_IFREG) {
-    strcpy(gmt_path, "/usr/local");
+    strcpy(gmt_path, "/opt/homebrew");
     rc = true;
   }
 
