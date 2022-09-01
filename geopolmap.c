@@ -313,7 +313,7 @@ bool TestForGMT()
   }
 
   stat("/usr/local/bin/gmt", &sb);
-  if ((sb.st_mode & S_IFMT) == SIFREG) {
+  if ((sb.st_mode & S_IFMT) == S_IFREG) {
     strcpy(gmt_path, "/usr/local");
     rc = true;
   }
