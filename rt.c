@@ -45,7 +45,7 @@ void UpdateDataRT(XtPointer client, XtIntervalId *id)
   if (lastRecordNumber[0] == nRecords)
     goto reset;
 
-  GetTimeInterval(InputFile, &dataFile[0]);
+  GetTimeInterval(InputFile, &dataFile[0], -1, 0, 0);
   memcpy((char *)UserEndTime, (char *)dataFile[0].FileEndTime, sizeof(int)*4);
 
   UserStartTime[3] = UserEndTime[3] - NumberSeconds;

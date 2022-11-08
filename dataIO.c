@@ -42,6 +42,7 @@ static void freeDataSets(int);
 bool getNCattr(int ncid, int varID, const char attr[], std::string & dest);
 static bool VarCompareLT(const VARTBL *x, const VARTBL *y);
 static int baseRate(const double tf[], int n);
+static double * readTimeVariable(int, int, size_t *);
 
 
 /* Imported from exp.c */
@@ -245,7 +246,9 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   }
 
 
-  GetTimeInterval(InputFile, curFile);
+  size_t nRecs = 0;
+  double *tf = readTimeVariable(InputFile, timeVarID, &nRecs);
+  GetTimeInterval(InputFile, curFile, timeVarID, (size_t)tf[0], (size_t)tf[nRecs-1]);
 
   /* Find which file has min start time, and max end time.
    */
@@ -309,22 +312,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   curFile->baseDataRate = 1;
   if (timeVarID != -1)
   {
-    int max_read = 120;
-    size_t start[2], count[2];
-    double tf[max_read];
-    int dimids[3];
-    size_t nrecs;
-    int days;
-
-    nc_inq_vardimid( InputFile, timeVarID, dimids );
-    nc_inq_dimlen( InputFile, dimids[0], &nrecs );
-
-    max_read = std::min((size_t)120, nrecs);
-
-    start[0] = 0; start[1] = 0;
-    count[0] = max_read; count[1] = 1;
-
-    nc_get_vara_double(InputFile, timeVarID, start, count, tf);
+    int max_read = std::min((size_t)120, nRecs);
 
     curFile->baseDataRate = baseRate(tf, max_read);
 
@@ -336,7 +324,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
       curFile->baseDataRate /= 1000;
     }
 
-    days = (nrecs*curFile->baseDataRate) / 86400;
+    int days = (nRecs*curFile->baseDataRate) / 86400;
     curFile->FileEndTime[0] += days*24;
     curFile->FileEndTime[3] += days*86400;
   }
@@ -795,6 +783,37 @@ int DeleteVariable(DATASET_INFO *sets, size_t nSets, const char *var)
 }	/* END DELETEVARIABLE */
 
 /* -------------------------------------------------------------------- */
+static double * readTimeVariable(int InputFile, int timeVarID, size_t *nr)
+{
+  size_t start[2], count[2];
+  int dimids[3];
+  size_t nRecs;
+  double *tf = 0;
+
+  if (timeVarID == -1)
+  {
+    return tf;
+  }
+
+  nc_inq_vardimid( InputFile, timeVarID, dimids );
+  nc_inq_dimlen( InputFile, dimids[0], &nRecs );
+
+  if (nRecs > 0)
+  {
+    tf = new double[nRecs];
+
+    start[0] = 0; start[1] = 0;
+    count[0] = nRecs; count[1] = 1;
+
+    nc_get_vara_double(InputFile, timeVarID, start, count, tf);
+  }
+
+  *nr = nRecs;
+  return(tf);
+
+}
+
+/* -------------------------------------------------------------------- */
 static void freeDataSets(int mode)
 {
   size_t set;
@@ -852,24 +871,50 @@ static void freeDataSets(int mode)
 }	/* END FREEDATASETS */
 
 /* -------------------------------------------------------------------- */
-void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile)
+void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile, int timeVarID, size_t first, size_t last)
 {
   /* Perform time computations.
    */
-  std::string tmpS;
-  getNCattr(InputFile, NC_GLOBAL, "TimeInterval", tmpS);
-
-  if (tmpS.length() == 0)
+  if (timeVarID >= 0)
   {
-    HandleError("netCDF global attribute TimeInterval not defined.", Interactive, IRET);
-    return;
-  }
+    std::string units, format;
+    struct tm stm, *tm_p;
+    getNCattr(InputFile, timeVarID, "units", units);
+    getNCattr(InputFile, timeVarID, "strptime_format", format);
 
-  sscanf(tmpS.c_str(), "%02d:%02d:%02d-%02d:%02d:%02d",
+    strptime(units.c_str(), format.c_str(), &stm);
+    setenv("TZ", "", 1);
+    tzset();
+    time_t start = mktime(&stm) + first - timezone;
+    time_t end = mktime(&stm) + last - timezone;
+
+    tm_p = gmtime(&start);
+    curFile->FileStartTime[0] = tm_p->tm_hour;
+    curFile->FileStartTime[1] = tm_p->tm_min;
+    curFile->FileStartTime[2] = tm_p->tm_sec;
+    tm_p = gmtime(&end);
+    curFile->FileEndTime[0] = tm_p->tm_hour;
+    curFile->FileEndTime[1] = tm_p->tm_min;
+    curFile->FileEndTime[2] = tm_p->tm_sec;
+  }
+  else
+  {
+    std::string tmpS;
+    getNCattr(InputFile, NC_GLOBAL, "TimeInterval", tmpS);
+
+    if (tmpS.length() == 0)
+    {
+      HandleError("netCDF global attribute TimeInterval not defined.", Interactive, IRET);
+      return;
+    }
+
+    sscanf(tmpS.c_str(), "%02d:%02d:%02d-%02d:%02d:%02d",
          &curFile->FileStartTime[0], &curFile->FileStartTime[1],
          &curFile->FileStartTime[2],
          &curFile->FileEndTime[0], &curFile->FileEndTime[1],
          &curFile->FileEndTime[2]);
+  }
+
 
   if (curFile->FileStartTime[0] > curFile->FileEndTime[0])
     curFile->FileEndTime[0] += 24;
