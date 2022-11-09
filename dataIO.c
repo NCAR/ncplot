@@ -385,7 +385,7 @@ static void readSet(DATASET_INFO *set)
     for (i = 0; i < expSet.size(); ++i)
     {
       if (expSet[i].panelIndex == whichExp && expSet[i].nPoints == 0)
-        {
+      {
         readSet(&expSet[i]);
         set->nPoints = expSet[i].nPoints;
 
@@ -393,7 +393,7 @@ static void readSet(DATASET_INFO *set)
         for (size_t j = 0; j < expSet[i].nPoints; ++j)
           if (isMissingValue(expSet[i].data[j], expSet[i].missingValue))
             expSet[i].data[j] = nanf("");
-        }
+      }
     }
 
     set->missingValue = DEFAULT_MISSING_VALUE;
@@ -811,7 +811,7 @@ static double * readTimeVariable(int InputFile, int timeVarID, size_t *nr)
   *nr = nRecs;
   return(tf);
 
-}
+}	/* END READTIMEVARIABLE */
 
 /* -------------------------------------------------------------------- */
 static void freeDataSets(int mode)
@@ -873,14 +873,19 @@ static void freeDataSets(int mode)
 /* -------------------------------------------------------------------- */
 void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile, int timeVarID, size_t first, size_t last)
 {
-  /* Perform time computations.
+  /* In order, try:
+   *  - read the Time variable and use the units plus first/last Time value.
+   *  - global attribute TimeInterval.
    */
-  if (timeVarID >= 0)
+
+  std::string tmpS;
+  if (timeVarID >= 0)	// Use Time variable units and data.
   {
     std::string units, format;
     struct tm stm, *tm_p;
     getNCattr(InputFile, timeVarID, "units", units);
-    getNCattr(InputFile, timeVarID, "strptime_format", format);
+    if (getNCattr(InputFile, timeVarID, "strptime_format", format) == false)
+      format = "seconds since %F %T %z";
 
     strptime(units.c_str(), format.c_str(), &stm);
     setenv("TZ", "", 1);
@@ -897,9 +902,8 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile, int timeVarID, size_
     curFile->FileEndTime[1] = tm_p->tm_min;
     curFile->FileEndTime[2] = tm_p->tm_sec;
   }
-  else
+  else			// Use TimeInterval global attribute....last resort.
   {
-    std::string tmpS;
     getNCattr(InputFile, NC_GLOBAL, "TimeInterval", tmpS);
 
     if (tmpS.length() == 0)
@@ -916,6 +920,9 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile, int timeVarID, size_
   }
 
 
+
+  /* Perform time computations.
+   */
   if (curFile->FileStartTime[0] > curFile->FileEndTime[0])
     curFile->FileEndTime[0] += 24;
 
