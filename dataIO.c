@@ -806,7 +806,16 @@ static double * readTimeVariable(int InputFile, int timeVarID, size_t *nr)
     count[0] = nRecs; count[1] = 1;
 
     nc_get_vara_double(InputFile, timeVarID, start, count, tf);
+
+    if (tf[0] >= tf[nRecs-1])
+    {
+      fprintf(stderr, "Last time value is less than or equal to first time value:\n");
+      fprintf(stderr, " time[0]=%lu, time[%lu]=%lu\n", (size_t)tf[0], nRecs-1, (size_t)tf[nRecs-1]);
+      HandleError("Corrupt or incomplete netCDF file?\nLast time value is less than or equal to first time value.", Interactive, IRET);
+    }
   }
+  else
+    HandleError("Number of records in netCDF files is zero...", Interactive, IRET);
 
   *nr = nRecs;
   return(tf);
