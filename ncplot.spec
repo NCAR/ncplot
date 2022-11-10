@@ -61,7 +61,7 @@ rm -rf %{buildroot}
 - Improve box-zoom behavior when going off right edge of time-series.
 * Sat Mar 13 2021 Chris Webster <cjw@ucar.edu> - 4.9-11
 - Fix Help Menu.  Use system "opener" instead of forking firefox.
-* Thu Jul 13 2011 Chris Webster <cjw@ucar.edu> - 1.0-2
+* Thu Jul 14 2011 Chris Webster <cjw@ucar.edu> - 1.0-2
 - updates for 4.9.1
 * Thu Sep 3 2009 Chris Webster <cjw@ucar.edu> - 1.0-1
 - initial version
