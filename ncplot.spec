@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
 Version: 4.10
-Release: 0%{?dist}
+Release: 1%{?dist}
 License: GPL
 Group: System Environment/Daemons
 Url: http://www.eol.ucar.edu/
@@ -49,6 +49,8 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
+* Wed Nov  9 2022 Chris Webster <cjw@ucar.edu> - 4.10-1
+- Switch away from TimeInterval attribute to using Time variable.
 * Sat Apr 23 2022 Chris Webster <cjw@ucar.edu> - 4.10-0
 - Add toggle 'Show Missing Value Count' on time-series.
 * Thu Apr 21 2022 Chris Webster <cjw@ucar.edu> - 4.9-14
