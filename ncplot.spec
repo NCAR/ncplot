@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
-Version: 4.10
-Release: 1%{?dist}
+Version: 4.11
+Release: 0%{?dist}
 License: GPL
 Group: System Environment/Daemons
 Url: http://www.eol.ucar.edu/
