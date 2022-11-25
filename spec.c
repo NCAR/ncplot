@@ -15,7 +15,7 @@ STATIC FNS:	CreateSpectrumWindow()
 		AutoScaleSpectralWindow()
 		setDefaults()
 
-DESCRIPTION:	
+DESCRIPTION:	Power spectra window funcitons/callbacks
 
 REFERENCES:	spctrm.c
 
@@ -275,7 +275,7 @@ void ComputeSpectrum()
         psd[set].Pxx[i] *= i;
 
       sprintf(buffer, "f x P(f) of %s (%s^2)",
-  	dataSet[0].varInfo->name.c_str(), units.c_str());
+	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
     else

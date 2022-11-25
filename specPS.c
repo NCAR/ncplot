@@ -311,7 +311,7 @@ static void printSemiLog(FILE *fp, PLOT_INFO *plot, double *dataP)
     waveNumber = 2.0 * M_PI / tas.stats.mean;
 
   PSclip(fp, plot);
-  fprintf(fp, "%ld setlinewidth\n", LineThickness<<1);
+  fprintf(fp, "%zu setlinewidth\n", LineThickness<<1);
 
   for (i = 1; i <= nPts; ++i)
     {

@@ -12,15 +12,9 @@ STATIC FNS:	none
 DESCRIPTION:	Power Spectral Density estimation via the Welch averaging
 		periodogram.
 
-INPUT:		
+REFERENCED BY:	spec.c
 
-OUTPUT:		Total Variance
-
-REFERENCES:	fft.c
-
-REFERENCED BY:	ncplot.c
-
-COPYRIGHT:	University Corporation for Atmospheric Research, 1996-8
+COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 -------------------------------------------------------------------------
 */
 

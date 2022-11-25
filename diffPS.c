@@ -134,7 +134,7 @@ static void doDiffGraph(FILE *fp, PLOT_INFO *plot)
 
 
   PSclip(fp, plot);
-  fprintf(fp, "%ld setlinewidth\n", LineThickness<<1);
+  fprintf(fp, "%zu setlinewidth\n", LineThickness<<1);
 
 
   for (size_t i = 0; i < dataSet[0].nPoints; ++i)

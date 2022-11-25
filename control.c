@@ -815,7 +815,7 @@ void CreateControlWindow(Widget parent)
   label = XmCreateLabel(plRC[0], (char *)"Line Thickness", args, n);
   XtManageChild(label);
 
-  sprintf(buffer, "%ld", LineThickness);
+  sprintf(buffer, "%zu", LineThickness);
   XmTextFieldSetString(lineThickTxt, buffer);
 
 

@@ -152,6 +152,8 @@ void PlotSpectrum(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *call)
 static void plotLogLog(PLOT_INFO *plot)
 {
   size_t	i, nPts, set, nSets;
+  std::string	varName;
+  int		ylegend, pos;
   XPoint	*pts;
   double	*plotData, datumY, freq, waveNumber = 0;
   double	xMin, yMin;
@@ -184,7 +186,6 @@ static void plotLogLog(PLOT_INFO *plot)
   nSets = std::min(NumberDataSets, MAX_PSD);
 
   pts = new XPoint[psd[0].M+1];
-  setClippingX(plot);
   XSetLineAttributes(specPlot.dpy, specPlot.gc, LineThickness, LineSolid,CapButt,JoinMiter);
 
   /* Display data lines.
@@ -234,10 +235,23 @@ static void plotLogLog(PLOT_INFO *plot)
       }
 
 
-    /* Drop band limited variance lines.
+    /* Display legend for each dataset
      */
+    pos = plot->x.LV + (set * 100);
+    ylegend = plot->x.TH - 5;
+    varName = dataSet[set].varInfo->name;
+
+    XDrawLine(plot->dpy, plot->win, plot->gc, pos, ylegend-2, pos + 35, ylegend-2);
+
     PushColor();
     XSetForeground(plot->dpy, plot->gc, GetColor(0));
+
+    XDrawString(plot->dpy, plot->win, plot->gc, pos + 40,
+                  ylegend+3, varName.c_str(), varName.size());
+
+
+    /* Drop band limited variance lines.
+     */
     for (i = 1; i <= psd[0].M; ++i)
       {
       if ((size_t)rint(startFreq() / psd[set].freqPerBin) == i ||
@@ -274,6 +288,7 @@ static void plotLogLog(PLOT_INFO *plot)
 
   /* Draw -5/3 slope line.
    */
+  setClippingX(plot);
   XSetForeground(plot->dpy, plot->gc, GetColor(0));
   if (plotFiveThirds())
     doFiveThirdsX(plot);
