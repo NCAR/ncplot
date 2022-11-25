@@ -173,7 +173,7 @@ void Initialize()
   printerSetup.height = 11.0;
   printerSetup.shape = LANDSCAPE;
   printerSetup.dpi = 288;
-  printerSetup.color = false;
+  printerSetup.color = true;
 
   if (RealTime)
     {
