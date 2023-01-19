@@ -65,7 +65,7 @@ ifeq ($(OS), Darwin)
 endif
 LIBS += $(shell pkg-config --libs gsl) $(shell pkg-config --libs libpng) -lpthread
 
-ifdef ${JLOCAL}
+ifdef JLOCAL
   BIN = ${JLOCAL}/bin
 else
   BIN = /usr/local/bin
