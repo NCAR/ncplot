@@ -6,17 +6,18 @@ LEX	= flex
 YACC	= bison
 YFLAGS	= -d
 
+DEFINES	= -DPNG
+NCH_DEP	= $(shell pkg-config --variable=prefix netcdf)/include/netcdf.h
+
+OS = $(shell uname)
+ARCH = $(shell uname -m)
+
+
 # Linux Redhat / CentOS / Fedora
 #
 # yum install flex-devel netcdf-devel motif-devel gsl-devel \
 #    xorg-x11-fonts-ISO8859-1-75dpi xorg-x11-fonts-ISO8859-1-100dpi
 #
-DEFINES	= -DPNG
-INCLUDES= 
-LIB_DIRS= 
-NCH_DEP	= /usr/include/netcdf.h
-LIBS    = -lXm -lXt -lX11 -lnetcdf -lhdf5 -lhdf5_hl -lfl -lgsl -lgslcblas -lpng -lpthread
-BIN	= ${JLOCAL}/bin
 WWW	= /net/www/docs/raf/Software
 
 
@@ -24,8 +25,9 @@ WWW	= /net/www/docs/raf/Software
 #
 # apt-get install bison flex libgsl-dev libnetcdf-dev libxt-dev libmotif-dev
 #
-#DEFINES	= -DPNG -DUBUNTU
-#LIBS    = -lXm -lXt -lX11 -lnetcdf -lfl -lgsl -lgslcblas -lpng -lpthread
+ifeq ($(findstring ubuntu,$(shell uname -a)),ubuntu)
+  DEFINES += -DUBUNTU
+endif
 
 
 # Mac OS X (ncplot is availble from macports as of 2021).
@@ -41,24 +43,34 @@ WWW	= /net/www/docs/raf/Software
 #  brew install gmt  ; for geo-politcal maps.
 #  brew install whatever else
 #
-#DEFINES	= -DPNG
-#LIBS    = -lXm -lXt -lX11 -lnetcdf -ll -lgsl -lpng -lpthread
-#BIN	= /usr/local/bin
 
-# Homebrew Intel
-#INCLUDES=
-#LIB_DIRS=
-#NCH_DEP	= /usr/local/include/netcdf.h
-
-# Homebrew M1
-#INCLUDES= -I/opt/homebrew/include
-#LIB_DIRS= -L/opt/homebrew/lib
-#NCH_DEP = /opt/homebrew/include/netcdf.h
+ifeq ($(OS), Darwin)
+  ifeq ($(ARCH), arm64)
+    INCLUDES = -I/opt/homebrew/include
+    LIB_DIRS = -L/opt/homebrew/lib
+  endif
+endif
 
 # MacPorts
 #INCLUDES= -I/opt/local/include
 #LIB_DIRS= -L/opt/local/lib
-#NCH_DEP	= /opt/local/include/netcdf.h
+
+
+LIBS    = -lXm $(shell pkg-config --libs xt) $(shell pkg-config --libs netcdf)
+ifeq ($(OS), Linux)
+  LIBS += -lfl
+endif
+ifeq ($(OS), Darwin)
+  LIBS += -ll
+endif
+LIBS += $(shell pkg-config --libs gsl) $(shell pkg-config --libs libpng) -lpthread
+
+ifdef ${JLOCAL}
+  BIN = ${JLOCAL}/bin
+else
+  BIN = /usr/local/bin
+endif
+
 
 
 CXXFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES} -Wno-write-strings -Wno-overflow
