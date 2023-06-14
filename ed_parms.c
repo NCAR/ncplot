@@ -179,10 +179,10 @@ void SetDefaults(Widget parmsText[], PLOT_INFO *plot)
   SetXminMax(parmsText, plot);
   SetYminMax(parmsText, plot);
 
-  sprintf(buffer, "%d", plot->Xaxis.nMajorTics);
+  snprintf(buffer, BUFFSIZE, "%d", plot->Xaxis.nMajorTics);
   XmTextFieldSetString(parmsText[11], buffer);
 
-  sprintf(buffer, "%d", plot->Xaxis.nMinorTics);
+  snprintf(buffer, BUFFSIZE, "%d", plot->Xaxis.nMinorTics);
   XmTextFieldSetString(parmsText[12], buffer);
 
 
@@ -192,16 +192,16 @@ void SetDefaults(Widget parmsText[], PLOT_INFO *plot)
     XmTextFieldSetString(parmsText[4], const_cast<char *>(plot->Yaxis[0].label.c_str()));
     SetZminMax(parmsText, plot);
 
-    sprintf(buffer, "%d", plot->Zaxis.nMajorTics);
+    snprintf(buffer, BUFFSIZE, "%d", plot->Zaxis.nMajorTics);
     XmTextFieldSetString(parmsText[13], buffer);
 
-    sprintf(buffer, "%d", plot->Zaxis.nMinorTics);
+    snprintf(buffer, BUFFSIZE, "%d", plot->Zaxis.nMinorTics);
     XmTextFieldSetString(parmsText[14], buffer);
 
-    sprintf(buffer, "%d", plot->Yaxis[0].nMajorTics);
+    snprintf(buffer, BUFFSIZE, "%d", plot->Yaxis[0].nMajorTics);
     XmTextFieldSetString(parmsText[15], buffer);
 
-    sprintf(buffer, "%d", plot->Yaxis[0].nMinorTics);
+    snprintf(buffer, BUFFSIZE, "%d", plot->Yaxis[0].nMinorTics);
     XmTextFieldSetString(parmsText[16], buffer);
     }
   else
@@ -209,10 +209,10 @@ void SetDefaults(Widget parmsText[], PLOT_INFO *plot)
     XmTextFieldSetString(parmsText[3], const_cast<char *>(plot->Yaxis[0].label.c_str()));
     XmTextFieldSetString(parmsText[4], const_cast<char *>(plot->Yaxis[1].label.c_str()));
 
-    sprintf(buffer, "%d", plot->Yaxis[0].nMajorTics);
+    snprintf(buffer, BUFFSIZE, "%d", plot->Yaxis[0].nMajorTics);
     XmTextFieldSetString(parmsText[13], buffer);
 
-    sprintf(buffer, "%d", plot->Yaxis[0].nMinorTics);
+    snprintf(buffer, BUFFSIZE, "%d", plot->Yaxis[0].nMinorTics);
     XmTextFieldSetString(parmsText[14], buffer);
     }
 
@@ -240,9 +240,9 @@ void SetXminMax(Widget parmsText[], PLOT_INFO *plot)
 {
   if (plot->plotType != TIME_SERIES)
     {
-    sprintf(buffer, "%g", plot->Xaxis.min);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Xaxis.min);
     XmTextFieldSetString(parmsText[5], buffer);
-    sprintf(buffer, "%g", plot->Xaxis.max);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Xaxis.max);
     XmTextFieldSetString(parmsText[6], buffer);
     }
 
@@ -253,21 +253,21 @@ void SetYminMax(Widget parmsText[], PLOT_INFO *plot)
 {
   if (plot->plotType == XYZ_PLOT)
     {
-    sprintf(buffer, "%g", plot->Zaxis.min);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Zaxis.min);
     XmTextFieldSetString(parmsText[7], buffer);
-    sprintf(buffer, "%g", plot->Zaxis.max);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Zaxis.max);
     XmTextFieldSetString(parmsText[8], buffer);
     }
   else
     {
-    sprintf(buffer, "%g", plot->Yaxis[0].min);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Yaxis[0].min);
     XmTextFieldSetString(parmsText[7], buffer);
-    sprintf(buffer, "%g", plot->Yaxis[0].max);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Yaxis[0].max);
     XmTextFieldSetString(parmsText[8], buffer);
 
-    sprintf(buffer, "%g", plot->Yaxis[1].min);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Yaxis[1].min);
     XmTextFieldSetString(parmsText[9], buffer);
-    sprintf(buffer, "%g", plot->Yaxis[1].max);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Yaxis[1].max);
     XmTextFieldSetString(parmsText[10], buffer);
     }
 
@@ -278,9 +278,9 @@ void SetZminMax(Widget parmsText[], PLOT_INFO *plot)
 {
   if (plot->plotType == XYZ_PLOT)
     {
-    sprintf(buffer, "%g", plot->Yaxis[0].min);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Yaxis[0].min);
     XmTextFieldSetString(parmsText[9], buffer);
-    sprintf(buffer, "%g", plot->Yaxis[0].max);
+    snprintf(buffer, BUFFSIZE, "%g", plot->Yaxis[0].max);
     XmTextFieldSetString(parmsText[10], buffer);
     }
 
@@ -299,7 +299,7 @@ void SetSubtitles()
   else
     buffer[0] = '\0';
 
-  sprintf(tmp, "%02d:%02d:%02d-%02d:%02d:%02d",
+  snprintf(tmp, 25, "%02d:%02d:%02d-%02d:%02d:%02d",
         UserStartTime[0], UserStartTime[1], UserStartTime[2],
         UserEndTime[0], UserEndTime[1], UserEndTime[2]);
 

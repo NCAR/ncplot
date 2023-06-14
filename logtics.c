@@ -41,7 +41,7 @@ void yLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, int scale, bool lab
       len = MakeLogTicLabel(buffer, (int)rint(yMin));
     else
       {
-      sprintf(buffer, "%g", yAxis->min);
+      snprintf(buffer, BUFFSIZE, "%g", yAxis->min);
       len = strlen(buffer);
       }
 
@@ -103,7 +103,7 @@ void yLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, int scale, bool lab
       len = MakeLogTicLabel(buffer, (int)rint(log10(yAxis->max)));
     else
       {
-      sprintf(buffer, "%g", yAxis->max);
+      snprintf(buffer, BUFFSIZE, "%g", yAxis->max);
       len = strlen(buffer);
       }
 
@@ -138,7 +138,7 @@ void xLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, bool labels)
       len = MakeLogTicLabel(buffer, (int)rint(xMin));
     else
       {
-      sprintf(buffer, "%g", xAxis->min);
+      snprintf(buffer, BUFFSIZE, "%g", xAxis->min);
       len = strlen(buffer);
       }
 
@@ -193,7 +193,7 @@ void xLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, bool labels)
       len = MakeLogTicLabel(buffer, (int)rint(log10(xAxis->max)));
     else
       {
-      sprintf(buffer, "%g", xAxis->max);
+      snprintf(buffer, BUFFSIZE, "%g", xAxis->max);
       len = strlen(buffer);
       }
 
@@ -225,7 +225,7 @@ void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
       MakeLogTicLabel(buffer, (int)rint(log10(yAxis->min)));
     else
       {
-      sprintf(buffer, "%g", yAxis->min);
+      snprintf(buffer, BUFFSIZE, "%g", yAxis->min);
       }
 
     if (yAxis->invertAxis)
@@ -289,7 +289,7 @@ void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
       MakeLogTicLabel(buffer, (int)rint(log10(yAxis->max)));
     else
       {
-      sprintf(buffer, "%g", yAxis->max);
+      snprintf(buffer, BUFFSIZE, "%g", yAxis->max);
       }
 
     if (yAxis->invertAxis)
@@ -324,7 +324,7 @@ void xLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, bool labels)
       MakeLogTicLabel(buffer, (int)rint(log10(xAxis->min)));
     else
       {
-      sprintf(buffer, "%g", xAxis->min);
+      snprintf(buffer, BUFFSIZE, "%g", xAxis->min);
       }
 
     if (xAxis->invertAxis)
@@ -381,7 +381,7 @@ void xLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, bool labels)
       MakeLogTicLabel(buffer, (int)rint(log10(xAxis->max)));
     else
       {
-      sprintf(buffer, "%g", xAxis->max);
+      snprintf(buffer, BUFFSIZE, "%g", xAxis->max);
       }
 
     if (xAxis->invertAxis)

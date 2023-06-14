@@ -151,7 +151,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
     vi = new VARTBL;
     dataFile[0].Variable.push_back(vi);
 
-    sprintf(tmp, "USER%ld", i+1);
+    snprintf(tmp, 64, "USER%ld", i+1);
     vi->name = tmp;
     vi->OutputRate = 1;
     vi->inVarID = COMPUTED;
@@ -189,7 +189,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
       {
       *p++ = '\0';
       theExpression += e;
-      sprintf(buffer, "%c", 'A' + (char)NumberExpSets);
+      snprintf(buffer, BUFFSIZE, "%c", 'A' + (char)NumberExpSets);
       theExpression += buffer;
 
       if ((e = strchr(p, '\"')) == NULL)
@@ -206,7 +206,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
 
       if ((indx = SearchTable(dataFile[fileIndx].Variable, varName)) == ERR)
         {
-        sprintf(buffer, "Parse error, undefined variable %s.", varName.c_str());
+        snprintf(buffer, BUFFSIZE, "Parse error, undefined variable %s.", varName.c_str());
         HandleError(buffer, Interactive, IRET);
         return;
         }
@@ -224,7 +224,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
 
     /* Add new variable to the *first* data file.
      */
-    sprintf(buffer, "USER%ld", i+1);
+    snprintf(buffer, BUFFSIZE, "USER%ld", i+1);
 
     vi = dataFile[0].Variable[SearchTable(dataFile[0].Variable, buffer)];
     vi->expression = theExpression;
@@ -263,7 +263,7 @@ void CreateExpressionWindow()
     plRC = XmCreateRowColumn(RC, (char *)"plRC", args, n);
     XtManageChild(plRC);
 
-    sprintf(labelStr, "USER%ld = ", i+1);
+    snprintf(labelStr, 64, "USER%ld = ", i+1);
     label = XmCreateLabel(plRC, labelStr, args, n);
     XtManageChild(label);
 

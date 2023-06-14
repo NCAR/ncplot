@@ -53,7 +53,7 @@ FILE *openPSfile(char *outFile)
     {
     if ((fp = fopen(outFile, "w")) == NULL)
       {
-      sprintf(buffer, "Can't open output file %s", outFile);
+      snprintf(buffer, BUFFSIZE, "Can't open output file %s", outFile);
       HandleError(buffer, Interactive, IRET);
       return(NULL);
       }
@@ -428,22 +428,22 @@ void PSstatsLegend(FILE *fp, PLOT_INFO *plot, char *title, int cnt, DATASET_INFO
 
   fprintf(fp, moveto,
 	(int)(plot->ps.xLegendText + (700 * printerSetup.widthRatio)), ylegend);
-  sprintf(buffer, "%11.2f", set->stats.mean);
+  snprintf(buffer, BUFFSIZE, "%11.2f", set->stats.mean);
   fprintf(fp, rightShow, buffer);
 
   fprintf(fp, moveto,
 	(int)(plot->ps.xLegendText +(1000 * printerSetup.widthRatio)), ylegend);
-  sprintf(buffer, "%11.2f", set->stats.sigma);
+  snprintf(buffer, BUFFSIZE, "%11.2f", set->stats.sigma);
   fprintf(fp, rightShow, buffer);
 
   fprintf(fp, moveto,
 	(int)(plot->ps.xLegendText +(1300 * printerSetup.widthRatio)), ylegend);
-  sprintf(buffer, "%11.2f", set->stats.min);
+  snprintf(buffer, BUFFSIZE, "%11.2f", set->stats.min);
   fprintf(fp, rightShow, buffer);
 
   fprintf(fp, moveto,
 	(int)(plot->ps.xLegendText +(1600 * printerSetup.widthRatio)), ylegend);
-  sprintf(buffer, "%11.2f", set->stats.max);
+  snprintf(buffer, BUFFSIZE, "%11.2f", set->stats.max);
   fprintf(fp, rightShow, buffer);
 
 }	/* END PSSTATSLEGEND */

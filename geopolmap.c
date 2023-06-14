@@ -361,10 +361,10 @@ static void createCoastCommand(char buf[], struct axisInfo *xAxis, struct axisIn
   /* GMT5 only supports one of borders, shores, or rivers in in one command.
    * So now we have to string multiple pscoast commands together.
    */
-  sprintf(command, "%s/bin/gmt pscoast -R%d/%d/%d/%d -M -Jx1d %s",
+  snprintf(command, 256, "%s/bin/gmt pscoast -R%d/%d/%d/%d -M -Jx1d %s",
 	gmt_path, xMin, xMax, yMin, yMax, scale_str);
 
-  sprintf(buf, "(%s -Na; %s -W;", command, command);
+  snprintf(buf, 1024, "(%s -Na; %s -W;", command, command);
   if (strlen(river_str) > 0)
   {
     strcat(buf, command);

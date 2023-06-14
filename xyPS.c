@@ -508,14 +508,14 @@ static void doLegendLineItemPS(FILE *fp, PLOT_INFO *plot, DATASET_INFO *set, int
       fprintf(fp, lineto, (int)(x - (20 * printerSetup.widthRatio)), y+10);
       }
 
-    sprintf(buffer, "%s (%s), %d s/sec",
+    snprintf(buffer, BUFFSIZE, "%s (%s), %d s/sec",
 	set->varInfo->name.c_str(), set->stats.units.c_str(), set->varInfo->OutputRate);
 
     PSstatsLegend(fp, plot, buffer, CurrentDataSet+2, set);
     }
   else
     {
-    sprintf(buffer, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
+    snprintf(buffer, BUFFSIZE, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
 
     if (showLine)
       {
@@ -532,7 +532,7 @@ static void doLegendLineItemPS(FILE *fp, PLOT_INFO *plot, DATASET_INFO *set, int
     if (printerSetup.color)
       fprintf(fp, "stroke\n0 0 0 setrgbcolor\n");
 
-    sprintf(buffer, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
+    snprintf(buffer, BUFFSIZE, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
 
     fprintf(fp, moveto, plot->ps.xLegendText, y);
     fprintf(fp, show, buffer);

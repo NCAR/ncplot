@@ -231,7 +231,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
           delete [] xyzSet[0].data;
 
         AddVariable(&xyzSet[0], selectedVariable);
-        sprintf(buffer, "%s (%s)",
+        snprintf(buffer, BUFFSIZE, "%s (%s)",
 		xyzSet[0].varInfo->name.c_str(), xyzSet[0].stats.units.c_str());
         xyzPlot.Xaxis.label = buffer;
         }
@@ -242,7 +242,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
           delete [] xyzSet[2].data;
 
         AddVariable(&xyzSet[2], selectedVariable);
-        sprintf(buffer, "%s (%s)",
+        snprintf(buffer, BUFFSIZE, "%s (%s)",
 		xyzSet[2].varInfo->name.c_str(), xyzSet[2].stats.units.c_str());
         xyzPlot.Zaxis.label = buffer;
         }
@@ -253,7 +253,7 @@ void ModifyActiveVars(Widget w, XtPointer client, XtPointer call)
           delete [] xyzSet[1].data;
 
         AddVariable(&xyzSet[1], selectedVariable);
-        sprintf(buffer, "%s (%s)",
+        snprintf(buffer, BUFFSIZE, "%s (%s)",
                 xyzSet[1].varInfo->name.c_str(), xyzSet[1].stats.units.c_str());
         xyzPlot.Yaxis[0].label = buffer;
         }

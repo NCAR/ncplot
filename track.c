@@ -134,7 +134,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
       fprintf(stderr, "Can't locate variable %s\n", posVar[0]);
     else
       {
-      sprintf(buffer, "%s (%s)",
+      snprintf(buffer, BUFFSIZE, "%s (%s)",
 		xyXset[NumberXYXsets].varInfo->name.c_str(),
 		xyXset[NumberXYXsets].stats.units.c_str());
       xyyPlot[CurrentPanel].Xaxis.label = buffer;
@@ -150,7 +150,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
       fprintf(stderr, "Can't locate variable %s\n", posVar[1]);
     else
       {
-      sprintf(buffer, "%s (%s)",
+      snprintf(buffer, BUFFSIZE, "%s (%s)",
 		xyYset[NumberXYYsets].varInfo->name.c_str(),
 		xyYset[NumberXYYsets].stats.units.c_str());
       xyyPlot[CurrentPanel].Yaxis[0].label = buffer;
@@ -176,7 +176,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
       fprintf(stderr, "Can't locate variable %s\n", posVar[0]);
     else
       {
-      sprintf(buffer, "%s (%s)",
+      snprintf(buffer, BUFFSIZE, "%s (%s)",
               xyzSet[0].varInfo->name.c_str(), xyzSet[0].stats.units.c_str());
       xyzPlot.Xaxis.label = buffer;
       }
@@ -184,7 +184,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
       fprintf(stderr, "Can't locate variable %s\n", posVar[2]);
     else
       {
-      sprintf(buffer, "%s (%s)",
+      snprintf(buffer, BUFFSIZE, "%s (%s)",
               xyzSet[1].varInfo->name.c_str(), xyzSet[1].stats.units.c_str());
       xyzPlot.Yaxis[0].label = buffer;
       }
@@ -192,7 +192,7 @@ static void LoadTrack(Widget w, XtPointer client, XtPointer call)
       fprintf(stderr, "Can't locate variable %s\n", posVar[1]);
     else
       {
-      sprintf(buffer, "%s (%s)",
+      snprintf(buffer, BUFFSIZE, "%s (%s)",
               xyzSet[2].varInfo->name.c_str(), xyzSet[2].stats.units.c_str());
       xyzPlot.Zaxis.label = buffer;
       }

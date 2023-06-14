@@ -550,7 +550,7 @@ void plotTimeSeries(PLOT_INFO *plot, DATASET_INFO *set, XFontStruct *fontInfo)
     if (ShowMissingValueCount && missCnt)
       {
       char tmp[16];
-      sprintf(tmp, "%d", missCnt);
+      snprintf(tmp, 16, "%d", missCnt);
       XSetFont(plot->dpy, plot->gc, plot->fontInfo[4]->fid);
       XDrawString(plot->dpy, plot->win, plot->gc, (pts[0].x+last.x)/2-10, (pts[2].y+last.y)/2+10, tmp, strlen(tmp));
       XSetFont(plot->dpy, plot->gc, fontInfo->fid);

@@ -86,13 +86,13 @@ void SetPreferences()
   strcpy(buffer, GetColorName(1));
   for (i = 2; i < 8; ++i)
     {
-    sprintf(temp, ", %s", GetColorName(i));
+    snprintf(temp, 100, ", %s", GetColorName(i));
     strcat(buffer, temp);
     }
 
   XmTextFieldSetString(prefText[0], buffer);
 
-  sprintf(buffer, "%zu", LineThickness);
+  snprintf(buffer, BUFFSIZE, "%zu", LineThickness);
   XmTextFieldSetString(prefText[1], buffer);
   XmTextFieldSetString(prefText[2], GetTemplateDirectory());
 
@@ -128,7 +128,7 @@ printf("Save Preferences: Writing ~/.ncplotrc\n");
   if ((p = getenv("HOME")) == NULL)
     return;
 
-  sprintf(buffer, "%s/.ncplotrc", p);
+  snprintf(buffer, BUFFSIZE, "%s/.ncplotrc", p);
 
   if ((fp = fopen(buffer, "w+")) == NULL)
     return;
@@ -136,7 +136,7 @@ printf("Save Preferences: Writing ~/.ncplotrc\n");
   strcpy(buffer, GetColorName(1));
   for (i = 2; i < 8; ++i)
     {
-    sprintf(temp, ", %s", GetColorName(i));
+    snprintf(temp, 100, ", %s", GetColorName(i));
     strcat(buffer, temp);
     }
 
@@ -257,7 +257,7 @@ static void CreatePreferences()
     plRC = XmCreateRowColumn(RC, (char *)"plRC", args, n);
     XtManageChild(plRC);
 
-    sprintf(buffer, "prefer%d", i);
+    snprintf(buffer, BUFFSIZE, "prefer%d", i);
     label = XmCreateLabel(plRC, buffer, args, n);
     XtManageChild(label);
 
@@ -300,7 +300,7 @@ void ReadConfigFile()
   if ((p = getenv("HOME")) == NULL)
     return;
 
-  sprintf(buffer, "%s/.ncplotrc", p);
+  snprintf(buffer, BUFFSIZE, "%s/.ncplotrc", p);
 
   if ((fp = fopen(buffer, "r")) == NULL)
     return;

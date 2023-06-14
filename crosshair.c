@@ -124,7 +124,7 @@ static void TrackTimeSeries(int x, int y)
     else
       yDiff = -(((y - plot->x.BH) / yScale) - log10(axis->min));
 
-    sprintf(tStr[1], "%g", pow(10.0, yDiff));
+    snprintf(tStr[1], 20, "%g", pow(10.0, yDiff));
     }
   else
     {
@@ -135,7 +135,7 @@ static void TrackTimeSeries(int x, int y)
     else
       yDiff *= (float)(plot->x.BH - y) / plot->x.VD;
 
-    sprintf(tStr[1], "%g", axis->min + yDiff);
+    snprintf(tStr[1], 20, "%g", axis->min + yDiff);
     }
 
   XDrawString(dpy, win, gc, x-50, y-10, tStr[1], strlen(tStr[1]));
@@ -207,7 +207,7 @@ static void TrackXY(int x, int y)
     else
       xDiff = ((x - plot->x.LV) / xScale) + log10(axis->min);
 
-    sprintf(tStr[0], "%g", pow(10.0, xDiff));
+    snprintf(tStr[0], 20, "%g", pow(10.0, xDiff));
     }
   else
     {
@@ -218,7 +218,7 @@ static void TrackXY(int x, int y)
     else
       xDiff *= (float)(x - plot->x.LV) / plot->x.HD;
 
-    sprintf(tStr[0], "%g", axis->min + xDiff);
+    snprintf(tStr[0], 20, "%g", axis->min + xDiff);
     }
 
   XDrawString(dpy, win, gc, x+10, y+30, tStr[0], strlen(tStr[0]));
@@ -234,7 +234,7 @@ static void TrackXY(int x, int y)
     else
       yDiff = -(((y - plot->x.BH) / yScale) - log10(axis->min));
 
-    sprintf(tStr[1], "%g", pow(10.0, yDiff));
+    snprintf(tStr[1], 20, "%g", pow(10.0, yDiff));
     }
   else
     {
@@ -245,7 +245,7 @@ static void TrackXY(int x, int y)
     else
       yDiff *= (float)(plot->x.BH - y) / plot->x.VD;
 
-    sprintf(tStr[1], "%g", axis->min + yDiff);
+    snprintf(tStr[1], 20, "%g", axis->min + yDiff);
     }
 
   XDrawString(dpy, win, gc, x-50, y-10, tStr[1], strlen(tStr[1]));

@@ -123,7 +123,7 @@ void ComputeCoSpectrum()
 
   if (psd[0].display == COSPECTRA)
     {
-    sprintf(buffer, "CoSpectrum of %s x %s",
+    snprintf(buffer, BUFFSIZE, "CoSpectrum of %s x %s",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str());
     specPlot.Yaxis[0].label = buffer;
 
@@ -135,7 +135,7 @@ void ComputeCoSpectrum()
         {
         psd[0].Pxx[i] *= i;
 
-        sprintf(buffer, "f x Co of %s x %s (%s^2 x %s^2)",
+        snprintf(buffer, BUFFSIZE, "f x Co of %s x %s (%s^2 x %s^2)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
             units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
@@ -145,7 +145,7 @@ void ComputeCoSpectrum()
         {
         psd[0].Pxx[i] *= pow((double)i, 5.0/3.0);
 
-        sprintf(buffer, "f^(5/3) x Co of %s x %s (%s^2 x %s^2)",
+        snprintf(buffer, BUFFSIZE, "f^(5/3) x Co of %s x %s (%s^2 x %s^2)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
             units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
@@ -154,7 +154,7 @@ void ComputeCoSpectrum()
         {
         psd[0].Pxx[i] *= cf;
 
-        sprintf(buffer, "Co of %s x %s (%s^2 x %s^2 / Hz)",
+        snprintf(buffer, BUFFSIZE, "Co of %s x %s (%s^2 x %s^2 / Hz)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
             units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
@@ -169,7 +169,7 @@ void ComputeCoSpectrum()
 
   if (psd[0].display == QUADRATURE)
     {
-    sprintf(buffer, "Quadrature of %s x %s",
+    snprintf(buffer, BUFFSIZE, "Quadrature of %s x %s",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str());
     specPlot.Yaxis[0].label = buffer;
 
@@ -179,7 +179,7 @@ void ComputeCoSpectrum()
         {
         psd[0].Qxx[i] *= i;
 
-        sprintf(buffer, "f x Qxx of %s x %s (%s^2 x %s^2)",
+        snprintf(buffer, BUFFSIZE, "f x Qxx of %s x %s (%s^2 x %s^2)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
             units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
@@ -188,7 +188,7 @@ void ComputeCoSpectrum()
         {
         psd[0].Qxx[i] *= cf;
 
-        sprintf(buffer, "Qxx of %s x %s (%s^2 x %s^2 / Hz)",
+        snprintf(buffer, BUFFSIZE, "Qxx of %s x %s (%s^2 x %s^2 / Hz)",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
             units0.c_str(), units1.c_str());
         specPlot.Yaxis[0].label = buffer;
@@ -221,7 +221,7 @@ void ComputeCoSpectrum()
 
     if (psd[0].display == COHERENCE)
       {
-      sprintf(buffer, "Coherence of %s x %s",
+      snprintf(buffer, BUFFSIZE, "Coherence of %s x %s",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str());
       specPlot.Yaxis[0].label = buffer;
 
@@ -233,7 +233,7 @@ void ComputeCoSpectrum()
     else
     if (psd[0].display == RATIO)
       {
-      sprintf(buffer, "Ratio of %s / %s",
+      snprintf(buffer, BUFFSIZE, "Ratio of %s / %s",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str());
       specPlot.Yaxis[0].label = buffer;
 
@@ -251,7 +251,7 @@ void ComputeCoSpectrum()
     {
     psd[0].Special = new double[psd[0].M+1];
 
-    sprintf(buffer, "Phase of %s x %s",
+    snprintf(buffer, BUFFSIZE, "Phase of %s x %s",
             dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str());
     specPlot.Yaxis[0].label = buffer;
 

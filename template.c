@@ -100,7 +100,7 @@ static void save_CB2(Widget w, XtPointer client, XtPointer call)
 
   if (access(templateFile, F_OK) == 0)
     {
-    sprintf(buffer, "Overwrite file %s?", templateFile);
+    snprintf(buffer, BUFFSIZE, "Overwrite file %s?", templateFile);
     WarnUser(buffer, saveTemplate, NULL);
     }
   else
@@ -120,7 +120,7 @@ static void saveTemplate(Widget w, XtPointer client, XtPointer call)
 
   if ((fp = fopen(templateFile, "w+")) == NULL)
     {
-    sprintf(buffer, "Can't destroy %s.", templateFile);
+    snprintf(buffer, BUFFSIZE, "Can't destroy %s.", templateFile);
     HandleError(buffer, Interactive, RETURN);
     return;
     }
@@ -307,7 +307,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
 
   if ((fp = fopen(templateFile, "r")) == NULL)
     {
-    sprintf(buffer, "Can't open %s.", templateFile);
+    snprintf(buffer, BUFFSIZE, "Can't open %s.", templateFile);
     HandleError(buffer, Interactive, RETURN);
     return;
     }
@@ -420,7 +420,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           }
         else
           {
-          sprintf(buffer, "Variable %s not found, continuing.", s);
+          snprintf(buffer, BUFFSIZE, "Variable %s not found, continuing.", s);
           HandleError(buffer, Interactive, RETURN);
           }
 
@@ -554,7 +554,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           }
         else
           {
-          sprintf(buffer, "Variable %s not found, continuing.", s);
+          snprintf(buffer, BUFFSIZE, "Variable %s not found, continuing.", s);
           HandleError(buffer, Interactive, RETURN);
           }
 
@@ -683,19 +683,19 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           switch (x1)
             {
             case X_AXIS >> 1:
-              sprintf(buffer, "%s (%s)",
+              snprintf(buffer, BUFFSIZE, "%s (%s)",
 		xyzSet[x1].varInfo->name.c_str(), xyzSet[x1].stats.units.c_str());
               xyzPlot.Xaxis.label = buffer;
               break;
 
             case Y_AXIS >> 1:
-              sprintf(buffer, "%s (%s)",
+              snprintf(buffer, BUFFSIZE, "%s (%s)",
 		xyzSet[x1].varInfo->name.c_str(), xyzSet[x1].stats.units.c_str());
               xyzPlot.Yaxis[0].label = buffer;
               break;
 
             case Z_AXIS >> 1:
-              sprintf(buffer, "%s (%s)",
+              snprintf(buffer, BUFFSIZE, "%s (%s)",
 		xyzSet[x1].varInfo->name.c_str(), xyzSet[x1].stats.units.c_str());
               xyzPlot.Zaxis.label = buffer;
               break;
@@ -703,7 +703,7 @@ static void load_CB2(Widget w, XtPointer client, XtPointer call)
           }
         else
           {
-          sprintf(buffer, "Variable %s not found, continuing.", s);
+          snprintf(buffer, BUFFSIZE, "Variable %s not found, continuing.", s);
           HandleError(buffer, Interactive, RETURN);
           }
 

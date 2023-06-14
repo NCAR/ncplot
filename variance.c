@@ -70,7 +70,7 @@ void PlotVarianceX(PLOT_INFO *plot, XFontStruct *fontInfo)
   XDrawString(plot->dpy, plot->win, plot->gc, plot->x.LV,
                 plot->x.windowHeight - 15, buffer, strlen(buffer));
 
-  sprintf(buffer, "K = %d, M = %d, nPoints = %ld\n",
+  snprintf(buffer, BUFFSIZE, "K = %d, M = %d, nPoints = %ld\n",
                 (int)psd[0].K, (int)psd[0].M, (long)dataSet[0].nPoints);
   XDrawString(plot->dpy, plot->win, plot->gc, plot->x.LV,
                 plot->x.windowHeight - 5, buffer, strlen(buffer));
@@ -98,7 +98,7 @@ void PlotVariancePS(PLOT_INFO *plot, FILE *fp)
   fprintf(fp, moveto, 0, plot->ps.xLabelOffset - 120);
   fprintf(fp, show, buffer);
 
-  sprintf(buffer, "K = %d, M = %d, nPoints = %ld\n",
+  snprintf(buffer, BUFFSIZE, "K = %d, M = %d, nPoints = %ld\n",
           (int)psd[0].K, (int)psd[0].M, (long)dataSet[0].nPoints);
   fprintf(fp, moveto, 0, plot->ps.xLabelOffset - 165);
   fprintf(fp, show, buffer);
@@ -108,7 +108,7 @@ void PlotVariancePS(PLOT_INFO *plot, FILE *fp)
 /* -------------------------------------------------------------------- */
 static void makeTotalVarLabel()
 {
-  sprintf(buffer, "Total %svariance = %g",
+  snprintf(buffer, BUFFSIZE, "Total %svariance = %g",
 		psd[0].display == SPECTRA ? "" : "co-", psd[0].totalVariance);
 }
 
@@ -116,10 +116,10 @@ static void makeTotalVarLabel()
 static void makeBandLimitedVarLabel(size_t startBin, size_t endBin, double sf, double ef)
 {
   if (startBin == 1 && endBin == psd[0].M)
-    sprintf(buffer, "%sVariance (w/o DC component) = %g",
+    snprintf(buffer, BUFFSIZE, "%sVariance (w/o DC component) = %g",
       psd[0].display == SPECTRA ? "" : "Co-", psd[0].bandVariance);
   else
-    sprintf(buffer, "Band limited %svariance = %g (%gHz - %gHz)",
+    snprintf(buffer, BUFFSIZE, "Band limited %svariance = %g (%gHz - %gHz)",
       psd[0].display == SPECTRA ? "" : "co-", psd[0].bandVariance, sf, ef);
 }
 

@@ -179,7 +179,7 @@ static void doLineGraph(FILE *fp, PLOT_INFO *plot)
       fprintf(fp, moveto, (int)(x - (180 * printerSetup.widthRatio)), y);
       fprintf(fp, lineto, (int)(x - (20 * printerSetup.widthRatio)), y);
 
-      sprintf(buffer, "%s (%s), %d s/sec",
+      snprintf(buffer, BUFFSIZE, "%s (%s), %d s/sec",
 		vp->name.c_str(), set->stats.units.c_str(), vp->OutputRate);
       PSstatsLegend(fp, plot, buffer, CurrentDataSet, set);
       }

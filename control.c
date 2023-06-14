@@ -210,7 +210,7 @@ void OpenControlWindow(Widget w, XtPointer client, XtPointer call)
     }
   else
     {
-    sprintf(buffer, "%ld", NumberSeconds);
+    snprintf(buffer, BUFFSIZE, "%ld", NumberSeconds);
     XmTextFieldSetString(rtText, buffer);
     }
 
@@ -241,11 +241,11 @@ void SetTimeText()
 {
   /* Set start/end time.
    */
-  sprintf(buffer, "%02d:%02d:%02d",
+  snprintf(buffer, BUFFSIZE, "%02d:%02d:%02d",
           UserStartTime[0], UserStartTime[1], UserStartTime[2]);
   XmTextFieldSetString(timeText[0], buffer);
 
-  sprintf(buffer, "%02d:%02d:%02d",
+  snprintf(buffer, BUFFSIZE, "%02d:%02d:%02d",
           UserEndTime[0], UserEndTime[1], UserEndTime[2]);
   XmTextFieldSetString(timeText[1], buffer);
 
@@ -268,11 +268,11 @@ static void ApplyTimeChange(Widget w, XtPointer client, XtPointer call)
       {
       int	*l = dataFile[CurrentDataFile].FileStartTime;
 
-      sprintf(buffer, "%02d:%02d:%02d", l[0], l[1], l[2]);
+      snprintf(buffer, BUFFSIZE, "%02d:%02d:%02d", l[0], l[1], l[2]);
       XmTextFieldSetString(timeText[0], buffer);
 
       l = dataFile[CurrentDataFile].FileEndTime;
-      sprintf(buffer, "%02d:%02d:%02d", l[0], l[1], l[2]);
+      snprintf(buffer, BUFFSIZE, "%02d:%02d:%02d", l[0], l[1], l[2]);
       XmTextFieldSetString(timeText[1], buffer);
       }
 
@@ -773,7 +773,7 @@ void CreateControlWindow(Widget parent)
 
   for (size_t i = 0; i < MAX_PANELS; ++i)
     {
-    sprintf(buffer, "%ld", i+1);
+    snprintf(buffer, BUFFSIZE, "%ld", i+1);
     panelB.push_back(XmCreateToggleButton(plRC[4], buffer, NULL, 0));
 
     XtAddCallback(panelB[i], XmNvalueChangedCallback,
@@ -815,7 +815,7 @@ void CreateControlWindow(Widget parent)
   label = XmCreateLabel(plRC[0], (char *)"Line Thickness", args, n);
   XtManageChild(label);
 
-  sprintf(buffer, "%zu", LineThickness);
+  snprintf(buffer, BUFFSIZE, "%zu", LineThickness);
   XmTextFieldSetString(lineThickTxt, buffer);
 
 

@@ -173,7 +173,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   curFile->ncid = 0;
   if (access(curFile->fileName.c_str(), R_OK) != 0)
   {
-    sprintf(buffer, "Can't open %s.", curFile->fileName.c_str());
+    snprintf(buffer, BUFFSIZE, "Can't open %s.", curFile->fileName.c_str());
     HandleError(buffer, Interactive, IRET);
     return;
   }
@@ -183,7 +183,7 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   rc = nc_open(curFile->fileName.c_str(), NC_NOWRITE, &InputFile);
   if (rc != NC_NOERR)
   {
-    sprintf(buffer, "Can't open %s.\n\n%s", curFile->fileName.c_str(), nc_strerror(rc));
+    snprintf(buffer, BUFFSIZE, "Can't open %s.\n\n%s", curFile->fileName.c_str(), nc_strerror(rc));
     HandleError(buffer, Interactive, IRET);
     return;
   }
@@ -454,7 +454,7 @@ static void readSet(DATASET_INFO *set)
   if (rc != NC_NOERR)
   {
     char msg[80];
-    sprintf(msg, "dataIO.c::readSet: Failed to read data for variable %s.\n\n%s",
+    snprintf(msg, 80, "dataIO.c::readSet: Failed to read data for variable %s.\n\n%s",
 	set->varInfo->name.c_str(), nc_strerror(rc));
     HandleError(msg, Interactive, IRET);
     return;

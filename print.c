@@ -88,7 +88,7 @@ static void print_PS_CB2(Widget w, XtPointer client, XtPointer call)
 
   if (access(outFile, F_OK) == 0)
     {
-    sprintf(buffer, "Overwrite file %s", outFile);
+    snprintf(buffer, BUFFSIZE, "Overwrite file %s", outFile);
     WarnUser(buffer, PrintPostScript, NULL);
     }
   else

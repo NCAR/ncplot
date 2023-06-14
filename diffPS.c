@@ -109,7 +109,7 @@ static void doDiffGraph(FILE *fp, PLOT_INFO *plot)
 
   /* Print legend.
    */
-  sprintf(buffer, "(%s-%s), %d s/sec",
+  snprintf(buffer, BUFFSIZE, "(%s-%s), %d s/sec",
           dataSet[0].varInfo->name.c_str(), dataSet[1].varInfo->name.c_str(),
           dataSet[0].varInfo->OutputRate);
 

@@ -27,24 +27,24 @@ int MakeTicLabel(char buffer[], float diff, int majorTics, double value)
   int	idiff = (int)diff;
 
   if (diff < 0.01)
-    sprintf(buffer, "%f", value);
+    snprintf(buffer, BUFFSIZE, "%f", value);
   else
   if (diff < 0.1)
-    sprintf(buffer, "%.4f", value);
+    snprintf(buffer, BUFFSIZE, "%.4f", value);
   else
   if (diff < 1.0)
-    sprintf(buffer, "%.3f", value);
+    snprintf(buffer, BUFFSIZE, "%.3f", value);
   else
   if (diff == (float)idiff && (idiff % majorTics) == 0)
-    sprintf(buffer, "%ld", (long)value);
+    snprintf(buffer, BUFFSIZE, "%ld", (long)value);
   else
   if (diff < 10.0)
-    sprintf(buffer, "%.2f", value);
+    snprintf(buffer, BUFFSIZE, "%.2f", value);
   else
   if (diff < 40.0)
-    sprintf(buffer, "%.1f", value);
+    snprintf(buffer, BUFFSIZE, "%.1f", value);
   else
-    sprintf(buffer, "%ld", (long)value);
+    snprintf(buffer, BUFFSIZE, "%ld", (long)value);
 
   return(strlen(buffer));
 
@@ -53,7 +53,7 @@ int MakeTicLabel(char buffer[], float diff, int majorTics, double value)
 /* -------------------------------------------------------------------- */
 int MakeLogTicLabel(char buffer[], int value)
 {
-  sprintf(buffer, "10^%d", value);
+  snprintf(buffer, BUFFSIZE, "10^%d", value);
   return(strlen(buffer));
 }
 
@@ -81,12 +81,12 @@ int MakeTimeTicLabel(char buffer[], int indx, int nTics)
   if ((nh += UserStartTime[0]) > 23) { nh -= 24; }
 
   if (UTCseconds)
-    sprintf(buffer, "%d", nh * 3600 + nm * 60 + ns);
+    snprintf(buffer, BUFFSIZE, "%d", nh * 3600 + nm * 60 + ns);
   else
     if (NumberSeconds > 1800)
-      sprintf(buffer, "%02d:%02d", nh, nm);
+      snprintf(buffer, BUFFSIZE, "%02d:%02d", nh, nm);
     else
-      sprintf(buffer, "%02d:%02d:%02d", nh, nm, ns);
+      snprintf(buffer, BUFFSIZE, "%02d:%02d:%02d", nh, nm, ns);
 
   return(strlen(buffer));
 
@@ -97,20 +97,20 @@ int MakeLegendLabel(char buf[], DATASET_INFO *set)
 {
   if (Statistics)
     {
-    sprintf(buf, "%s (%s), %d s/sec",
+    snprintf(buf, 256, "%s (%s), %d s/sec",
                 set->varInfo->name.c_str(),
                 set->stats.units.c_str(),
                 set->varInfo->OutputRate);
 
     if (strlen(buf) < 30)
       memset(&buf[strlen(buf)], ' ', 30-strlen(buf));
-    sprintf(&buf[30], "%11.2f%11.2f%11.2f%11.2f",
+    snprintf(&buf[30], 64, "%11.2f%11.2f%11.2f%11.2f",
                 set->stats.mean, set->stats.sigma,
                 set->stats.min, set->stats.max);
     }
   else
     {
-    sprintf(buf, "%s (%s)",
+    snprintf(buf, 256, "%s (%s)",
                 set->varInfo->name.c_str(), set->stats.units.c_str());
     }
 
@@ -131,7 +131,7 @@ void SetXlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets)
       plot[set[i].panelIndex].Xaxis.label = set[i].stats.units.c_str();
     else
       {
-      sprintf(buffer, "%s (%s)", set[i].varInfo->name.c_str(), set[i].stats.units.c_str());
+      snprintf(buffer, BUFFSIZE, "%s (%s)", set[i].varInfo->name.c_str(), set[i].stats.units.c_str());
       plot[set[i].panelIndex].Xaxis.label = buffer;
       }
 
@@ -153,7 +153,7 @@ void SetYlabels(PLOT_INFO *plot, DATASET_INFO *set, size_t nSets)
     else
       if (allLabels || set[i].panelIndex == 0)
         {
-        sprintf(buffer, "%s (%s)", set[i].varInfo->name.c_str(), set[i].stats.units.c_str());
+        snprintf(buffer, BUFFSIZE, "%s (%s)", set[i].varInfo->name.c_str(), set[i].stats.units.c_str());
         plot[set[i].panelIndex].Yaxis[set[i].scaleLocation].label = buffer;
         }
 

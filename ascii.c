@@ -169,7 +169,7 @@ static void SaveASCII(Widget w, XtPointer client, XtPointer call)
     if ((p = getenv("HOME")) == NULL)
       p = "";
 
-  sprintf(buffer, "%s/*", p);
+  snprintf(buffer, BUFFSIZE, "%s/*", p);
   QueryFile("Enter file name to save:", buffer, (XtCallbackProc)Save_OK);
 
 }
@@ -184,7 +184,7 @@ static void Save_OK(Widget w, XtPointer client, XmFileSelectionBoxCallbackStruct
   FileCancel((Widget)NULL, (XtPointer)NULL, (XtPointer)NULL);
 
   if ((fp = fopen(file, "w")) == NULL) {
-    sprintf(buffer, "Save: can't open %s.", file);
+    snprintf(buffer, BUFFSIZE, "Save: can't open %s.", file);
     ShowError(buffer);
     return;
     }
@@ -216,7 +216,7 @@ static void PrintASCII(Widget w, XtPointer client, XtPointer call)
 
   if ((fp = popen(printerSetup.lpCommand.c_str(), "w")) == NULL)
     {
-    sprintf(buffer, "PrintASCII: can't open pipe to '%s'", printerSetup.lpCommand.c_str());
+    snprintf(buffer, BUFFSIZE, "PrintASCII: can't open pipe to '%s'", printerSetup.lpCommand.c_str());
     ShowError(buffer);
     return;
     }
@@ -320,9 +320,9 @@ static void freqDomainASCII(FILE *fp, int nPoints)
     for (i = 0; i <= nPoints; ++i)
       {
       if (equalLogInterval())
-        sprintf(buffer, "%14f %14e\n", psd[set].ELIAx[i], psd[set].ELIAy[i]);
+        snprintf(buffer, BUFFSIZE, "%14f %14e\n", psd[set].ELIAx[i], psd[set].ELIAy[i]);
       else
-        sprintf(buffer, "%14f %14e\n", psd[set].freqPerBin * i, dataP[i]);
+        snprintf(buffer, BUFFSIZE, "%14f %14e\n", psd[set].freqPerBin * i, dataP[i]);
 
       if (fp)
         fprintf(fp, "%s", buffer);
@@ -370,16 +370,16 @@ static char *formatLine(
   if (UTCseconds)
     {
     if (dataSet[0].nPoints <= NumberSeconds)
-      sprintf(buff, "%05d   ", hour*3600 + min*60 + sec);
+      snprintf(buff, 64, "%05d   ", hour*3600 + min*60 + sec);
     else
-      sprintf(buff, "%05d.%03d   ", hour*3600 + min*60 + sec, msec);
+      snprintf(buff, 64, "%05d.%03d   ", hour*3600 + min*60 + sec, msec);
     }
   else
     {
     if (dataSet[0].nPoints <= NumberSeconds)
-      sprintf(buff, "%02d:%02d:%02d   ", hour, min, sec);
+      snprintf(buff, 64, "%02d:%02d:%02d   ", hour, min, sec);
     else
-      sprintf(buff, "%02d:%02d:%02d.%03d   ", hour, min, sec, msec);
+      snprintf(buff, 64, "%02d:%02d:%02d.%03d   ", hour, min, sec, msec);
     }
 
   intData =	strchr(asciiFormat, 'd') || strchr(asciiFormat, 'x') ||
@@ -390,9 +390,9 @@ static char *formatLine(
     if (dataSet[i].nPoints == dataSet[0].nPoints)
       {
       if (intData)
-        sprintf(tempBuff, asciiFormat, (int)dataSet[i].data[(dataSet[i].head + indx) % dataSet[i].nPoints]);
+        snprintf(tempBuff, 32, asciiFormat, (int)dataSet[i].data[(dataSet[i].head + indx) % dataSet[i].nPoints]);
       else
-        sprintf(tempBuff, asciiFormat, dataSet[i].data[(dataSet[i].head + indx) % dataSet[i].nPoints]);
+        snprintf(tempBuff, 32, asciiFormat, dataSet[i].data[(dataSet[i].head + indx) % dataSet[i].nPoints]);
       strcat(buff, tempBuff);
       }
     }

@@ -55,7 +55,7 @@ void ComputeDiff()
   diffSet.missingValue = dataSet[0].missingValue;
   diffSet.data = new float[dataSet[0].nPoints];
 
-  sprintf(buffer, "(%s-%s) %s",
+  snprintf(buffer, BUFFSIZE, "(%s-%s) %s",
 	dataSet[0].varInfo->name.c_str(),
         dataSet[1].varInfo->name.c_str(),
 	mainPlot[0].Yaxis[0].label.c_str());

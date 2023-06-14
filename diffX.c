@@ -121,7 +121,7 @@ static void plotDiffLines(PLOT_INFO *plot, XFontStruct *fontInfo)
   if (Color)
     XSetForeground(plot->dpy, plot->gc, GetColor(0));
 
-  sprintf(buffer, "%10.2f%10.2f%10.2f%10.2f%10.2f",
+  snprintf(buffer, BUFFSIZE, "%10.2f%10.2f%10.2f%10.2f%10.2f",
           diffSet.stats.mean, diffSet.stats.sigma, diffSet.stats.variance,
           diffSet.stats.min, diffSet.stats.max);
 

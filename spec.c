@@ -274,7 +274,7 @@ void ComputeSpectrum()
       for (size_t i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= i;
 
-      sprintf(buffer, "f x P(f) of %s (%s^2)",
+      snprintf(buffer, BUFFSIZE, "f x P(f) of %s (%s^2)",
 	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
@@ -284,7 +284,7 @@ void ComputeSpectrum()
       for (size_t i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= pow((double)i, 5.0/3.0);
 
-      sprintf(buffer, "f^(5/3) x P(f) of %s (%s^2)",
+      snprintf(buffer, BUFFSIZE, "f^(5/3) x P(f) of %s (%s^2)",
 	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
@@ -295,7 +295,7 @@ void ComputeSpectrum()
       for (size_t i = 1; i <= psd[0].M; ++i)
         psd[set].Pxx[i] *= cf;
 
-      sprintf(buffer, "P(f) of %s (%s^2 / Hz)",
+      snprintf(buffer, BUFFSIZE, "P(f) of %s (%s^2 / Hz)",
 	dataSet[0].varInfo->name.c_str(), units.c_str());
       specPlot.Yaxis[0].label = buffer;
       }
@@ -486,7 +486,7 @@ void ToggleWaveNumberScale(Widget w, XtPointer client, XtPointer call)
 
       if (LoadVariable(&tas, tasVarName) == ERR)
         {
-        sprintf(buffer, "Can't locate True Airspeed variable %s.", tasVarName.c_str());
+        snprintf(buffer, BUFFSIZE, "Can't locate True Airspeed variable %s.", tasVarName.c_str());
         ShowError(buffer);
         }
       }
@@ -526,7 +526,7 @@ void ToggleWaveLengthScale(Widget w, XtPointer client, XtPointer call)
       if (LoadVariable(&tas, tasVarName) == ERR)
         {
         XmToggleButtonSetState(pmOptButt[5], false, false);
-        sprintf(buffer, "Can't locate True Airspeed variable %s.", tasVarName.c_str());
+        snprintf(buffer, BUFFSIZE, "Can't locate True Airspeed variable %s.", tasVarName.c_str());
         ShowError(buffer);
         return;
         }

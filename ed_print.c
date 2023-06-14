@@ -60,9 +60,9 @@ void EditPrintParms(Widget w, XtPointer clientData, XtPointer callData)
     }
 
   XmTextFieldSetString(parmsText[0], const_cast<char *>(printerSetup.lpCommand.c_str()));
-  sprintf(buffer, "%.3f", printerSetup.width);
+  snprintf(buffer, BUFFSIZE, "%.3f", printerSetup.width);
   XmTextFieldSetString(parmsText[1], buffer);
-  sprintf(buffer, "%.3f", printerSetup.height);
+  snprintf(buffer, BUFFSIZE, "%.3f", printerSetup.height);
   XmTextFieldSetString(parmsText[2], buffer);
 
   SetPrinterShape(printerSetup.shape);
@@ -219,11 +219,11 @@ static void CreatePrintWindow()
     plRC[i] = XmCreateRowColumn(RC[0], (char *)"plRC", args, n);
 
     n = 0;
-    sprintf(buffer, "lbl%ld", cnt);
+    snprintf(buffer, BUFFSIZE, "lbl%ld", cnt);
     label = XmCreateLabel(plRC[i], buffer, args, n);
 
     n = 0;
-    sprintf(buffer, "txt%ld", cnt);
+    snprintf(buffer, BUFFSIZE, "txt%ld", cnt);
     parmsText[cnt] = XmCreateTextField(plRC[i], buffer, args, n);
 
     XtManageChild(label);

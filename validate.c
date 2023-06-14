@@ -44,7 +44,7 @@ void ValidateTime(Widget w, XtPointer client, XtPointer call)
   if (min > 59)	min = 59;
   if (sec > 59)	sec = 59;
 
-  sprintf(buffer, "%02d:%02d:%02d", hour, min, sec);
+  snprintf(buffer, BUFFSIZE, "%02d:%02d:%02d", hour, min, sec);
   XmTextFieldSetString(w, buffer);
   XtFree(p);
 
@@ -57,7 +57,7 @@ void ValidateInteger(Widget w, XtPointer client, XtPointer call)
 
   p = XmTextFieldGetString(w);
 
-  sprintf(buffer, "%d", atoi(p));
+  snprintf(buffer, BUFFSIZE, "%d", atoi(p));
   XmTextFieldSetString(w, buffer);
 
   XtFree(p);
@@ -71,7 +71,7 @@ void ValidateFloat(Widget w, XtPointer client, XtPointer call)
 
   p = XmTextFieldGetString(w);
 
-  sprintf(buffer, (char *)client, atof(p));
+  snprintf(buffer, BUFFSIZE, (char *)client, atof(p));
   XmTextFieldSetString(w, buffer);
 
   XtFree(p);

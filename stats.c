@@ -309,17 +309,17 @@ static void PrintStats(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 static char *formatLine(char buff[], DATASET_INFO *set)
 {
-  char	temp[64];
+  char	temp[128];
 
   memset(buff, ' ', 256);
 
-  sprintf(temp, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
+  snprintf(temp, 128, "%s (%s)", set->varInfo->name.c_str(), set->stats.units.c_str());
   memcpy(buff, temp, strlen(temp));
 
-  sprintf(temp, "%5ld/%ld", (long)set->stats.nPoints, (long)set->nPoints);
+  snprintf(temp, 128, "%5ld/%ld", (long)set->stats.nPoints, (long)set->nPoints);
   memcpy(&buff[20], temp, strlen(temp));
 
-  sprintf(&buff[36], "%12.6e %12.6e %12.6e %12.6e %12.6e\n",
+  snprintf(&buff[36], 128, "%12.6e %12.6e %12.6e %12.6e %12.6e\n",
       set->stats.min,
       set->stats.max,
       set->stats.mean,

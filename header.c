@@ -79,13 +79,13 @@ static void SetHeaderData()
   XmTextSetString(headerText, const_cast<char *>(dataFile[CurrentDataFile].fileName.c_str()));
   XmTextInsert(headerText, XmTextGetLastPosition(headerText), (char *)"\n\n");
 
-  sprintf(buffer, "ncdump -h %s", dataFile[CurrentDataFile].fileName.c_str());
+  snprintf(buffer, BUFFSIZE, "ncdump -h %s", dataFile[CurrentDataFile].fileName.c_str());
 
   if ((pp = popen(buffer, "r")) == NULL)
     {
     char	msg[128];
 
-    sprintf(msg, "Can't open pipe [%s]", buffer);
+    snprintf(msg, 128, "Can't open pipe [%s]", buffer);
     HandleError(msg, Interactive, IRET);
     return;
     }
