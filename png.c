@@ -212,7 +212,7 @@ static void _SavePNG(char file_name[], XImage *image)
 
   /* Force background to white.
    */
-  palette[i-1].red = palette[i-1].green = palette[i-1].blue = 0xffff;
+  palette[i-1].red = palette[i-1].green = palette[i-1].blue = 0xff;
 
   png_set_PLTE(png_ptr, info_ptr, palette, NumberOfColors());
 
