@@ -29,7 +29,7 @@ span.comment { background-color: #88FF88; font-style: italic; }
 <body>
 
 <h1 align=CENTER>NCPLOT User's Guide</h1>
-<h1 align=CENTER>Version 4.10.1</h1>
+<h1 align=CENTER>Version 4.11.2</h1>
 <hr>
 <h1 align=CENTER>Table Of Contents</h1>
 <ol type=A>
@@ -110,9 +110,9 @@ span.comment { background-color: #88FF88; font-style: italic; }
 <h1 align=CENTER>Overview</h1>
 <b>ncplot</b> is an interactive plotting tool for workstations running X11/R5,
 Motif 1.2.  <b>ncplot</b> allows the user to view time-series data stored in
-<a href="http://www.unidata.ucar.edu/software/netcdf/">netCDF</a>
+<a href="https://www.unidata.ucar.edu/software/netcdf/">netCDF</a>
 files that conform to the
-<a href="http://www.eol.ucar.edu/raf/Software/netCDF.html">NCAR-RAF/nimbus</a>
+<a href="https://www.eol.ucar.edu/raf/Software/netCDF.html">NCAR-RAF/nimbus</a>
 
 conventions.  Both Low-rate and Mixed-rate files are supported, as well as
 files where the data have been reduced below 1 sps (sample per second), e.g.,
@@ -135,11 +135,11 @@ A few of its features are:
 </ul>
 <b>ncplot</b> is NOT for contouring, image or vector data.
 <p>
-<b>ncplot</b> was written at the <a href="http://www.eol.ucar.edu/">Research
-Aviation Facility</a> of <a href="http://www.ncar.ucar.edu/">The National
+<b>ncplot</b> was written at the <a href="https://www.eol.ucar.edu/">Research
+Aviation Facility</a> of <a href="https://www.ncar.ucar.edu/">The National
 Center for Atmospheric Research</a> to view and analyze our aircraft data
 (and NOAA's GIV).  The
-<a href="http://www.eol.ucar.edu/raf/Software/netCDF.html">NCAR-RAF/nimbus</a>
+<a href="https://www.eol.ucar.edu/raf/Software/netCDF.html">NCAR-RAF/nimbus</a>
 conventions were designed to store multi-rate data, i.e., variable A may be
 stored at 5sps and variable B at 25sps.  <b>ncplot</b> will plot variables of
 differing rates (and from different files) next to each other.  Every effort
@@ -189,7 +189,7 @@ attribute.</dd>
 <kbd class="att">-s template_file</kbd>, load a template file at startup.
 <p>
 <kbd class="att">data_file</kbd>, a netCDF data file that conforms to the
-<a href="http://www.eol.ucar.edu/raf/Software/netCDF.html">NCAR-RAF/nimbus</a>
+<a href="https://www.eol.ucar.edu/raf/Software/netCDF.html">NCAR-RAF/nimbus</a>
 conventions.
 </dd>
 
@@ -215,7 +215,7 @@ Using everything:
 <hr>
 <h1 align=CENTER>Variable Selection Window</h1>
 
-<img src="http://www.eol.ucar.edu/raf/Software/ctrl.png" align=right>
+<img src="ctrl.png" align=right>
 
 <dl>
 <dt><h3>Moving around in Time</h3></dt>
@@ -314,7 +314,7 @@ plot.
 <dd>Much of this window is oriented toward flight track plots.  This window
 is only effective for <b>XY</b> and <b>XYZ</b> plots.
 <p>
-<img src="http://www.eol.ucar.edu/raf/Software/xy.png" align=center>
+<img src="xy.png" align=center>
  <dl>
  <dt><h4>Flight Tracks</h4></dt>
   <ul>
@@ -459,7 +459,7 @@ black and white.</dd>
  <dt><b>Print</b>.</dt>
  <dd>This opens a pipe and sends PostScript commands to <b>lp(1)</b>.</dd>
 <p>
- <dt><b>Save <a href="http://www.libpng.org/pub/png/">PNG</a></b>.</dt>
+ <dt><b>Save <a href="https://www.libpng.org/pub/png/">PNG</a></b>.</dt>
  <dd>This option allows you to save the plot image as a graphics file, which
 can then be used in web pages, etc.  You can adjust the size of the image
 saved by first sizing the plot canvas.</dd>
@@ -471,7 +471,7 @@ saved by first sizing the plot canvas.</dd>
 autoscaling, number of tic marks, log vs. linear, and scale inversion for
 each of the plots or windows.
 <p>
-<img src="http://www.eol.ucar.edu/raf/Software/eparm.png">
+<img src="eparm.png">
 <p>
  <dl>
  <dt><b>Time Series Parameters</b>.</dt>
@@ -549,7 +549,7 @@ names are case-sensitive and must be quoted.  The new variables show up at the
 bottom of the variable list in the control window (USER1, USER2, etc).  Only
 the variables defined will show up.
 <p>
-<img src="http://www.eol.ucar.edu/raf/Software/expar.png" align=center>
+<img src="expar.png" align=center>
 <p>
 All of the standard arithmetic operators are available plus the following
 intrinsic functions:<p>
@@ -632,7 +632,7 @@ being displayed.  You may choose how many points to display, however some
 number less than that will actually be displayed due to some bins having
 no values to average in.
 <p>
-<img src="http://www.eol.ucar.edu/raf/Software/spec.png">
+<img src="spec.png">
 <p>
 <h3>Plot Options</h3>
 <ul>
@@ -728,18 +728,17 @@ the plot trace colors.
 <h1>GMT Geo-Political Map Installation</h1>
 
 The geo-political map makes use of the
-<a href="http://gmt.soest.hawaii.edu">GMT</a> <b>pscoast</b> sub-command.
+<a href="https://www.generic-mapping-tools.org/">GMT</a> <b>pscoast</b> sub-command.
 <p>
 For GMT installation from source the <b>GMTHOME</b> environment variable must
 be defined for <b>ncplot</b> to engage mapping.  The <b>gmt</b> command
 must be in your <b>$GMTHOME/bin</b>, and the coast libraries
 <b>$GMTHOME/lib/binned_*.cdf</b> (~75Mb) must be installed.
 <p>
-Pre-canned packages exist for Ubuntu/Debian, RHEL/CentOS, MacOSX, and Windows.  Please
-visit the GMT installation page at <a href="http://gmt.soest.hawaii.edu/projects/gmt/wiki/Installing">http://gmt.soest.hawaii.edu/projects/gmt/wiki/Installing</a>.
+Pre-canned packages exist for Ubuntu/Debian, RHEL/CentOS, MacOSX, and Windows.  Usually called 'gmt' or 'GMT'.
 <p>
 For RHEL/CentOS installs, the gmt-gshhg package is missing the high-resolution netCDF files,
-so I <a href="http://gmt.soest.hawaii.edu/projects/gmt/wiki/Download">downloaded</a> those
+so I <a href="https://www.generic-mapping-tools.org/download/">downloaded</a> those
 my self and copied the files into /usr/share/gshhg-gmt-nc4.
 <p>
 
@@ -764,6 +763,6 @@ Research Aviation Facility.<br>
 <hr>
 <font size=2>
 Last update:
-Mon May 16 21:11:49 MDT 2022
+Mon Jul  3 15:29:43 MDT 2023
 </body>
 </html>
