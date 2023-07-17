@@ -126,7 +126,6 @@ install: ${PROG}
 	cp ${PROG} $(BIN)
 
 publish: $(PROG)
-	cp ${PROG} $(ANONFTP)
 	cp ${PROG}.html $(WWW)
 
 clean:
