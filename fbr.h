@@ -54,7 +54,7 @@ static String fallback_resources[] =
   "*XmTextField.foreground:		black",
   "*XmForm.horizontalSpacing:		4",
   "*XmForm.verticalSpacing:		4",
-  "*topLevelShell.title:		ncplot 4.11.2",
+  "*topLevelShell.title:		ncplot 4.12.0",
   "*topLevelShell.iconName:		ncplot",
   "*topLevelShell.allowShellResize:	True",
   "*topLevelShell.x:			50",
@@ -81,8 +81,8 @@ static String fallback_resources[] =
   "*canvas.width:			1000",
 
   "*specCanvas.background:		grey",
-  "*specCanvas.height:			600",
-  "*specCanvas.width:			600",
+  "*specCanvas.height:			700",
+  "*specCanvas.width:			700",
 
   "*diffCanvas.background:              grey",
   "*diffCanvas.height:                  300",

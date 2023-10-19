@@ -100,7 +100,7 @@ void PlotSpectrum(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *call)
   plotTitlesX(&specPlot, fontOffset, warning);
   plotLabelsX(&specPlot, fontOffset);
 
-  if (psd[0].display == SPECTRA)
+  if (psd[0].display == SPECTRA && !plotRealComponent() && !plotImaginaryComponent())
     specPlot.Yaxis[0].logScale = True;
   else
     specPlot.Yaxis[0].logScale = False;
@@ -121,7 +121,13 @@ void PlotSpectrum(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *call)
     switch (psd[0].display)
       {
       case SPECTRA:
-        plotLogLog(&specPlot);
+        if (plotRealComponent())
+          plotSemiLog(&specPlot, psd[0].Real);
+        else
+        if (plotImaginaryComponent())
+          plotSemiLog(&specPlot, psd[0].Imaginary);
+        else
+          plotLogLog(&specPlot);
 
         PlotVarianceX(&specPlot, fontInfo);
         break;
@@ -185,7 +191,6 @@ static void plotLogLog(PLOT_INFO *plot)
 
   nSets = std::min(NumberDataSets, MAX_PSD);
 
-  pts = new XPoint[psd[0].M+1];
   XSetLineAttributes(specPlot.dpy, specPlot.gc, LineThickness, LineSolid,CapButt,JoinMiter);
 
   /* Display data lines.
@@ -199,16 +204,16 @@ static void plotLogLog(PLOT_INFO *plot)
 
   for (set = 0; set < nSets; ++set)
     {
+    nPts = psd[0].M;
+    plotData = psd[set].Pxx;	// default is SPECTRA
+
     if (equalLogInterval())
       {
       nPts = psd[set].ELIAcnt - 1;
       plotData = psd[set].ELIAy;
       }
-    else
-      {
-      nPts = psd[0].M;
-      plotData = psd[set].Pxx;
-      }
+
+    pts = new XPoint[nPts+1];
 
     /* Calculate points for lines
      */
@@ -284,6 +289,8 @@ static void plotLogLog(PLOT_INFO *plot)
 
     XDrawLines(plot->dpy, plot->win, plot->gc, pts, nPts, CoordModeOrigin);
     XSetForeground(plot->dpy, plot->gc, NextColor());
+
+    delete [] pts;
     }
 
   /* Draw -5/3 slope line.
@@ -299,8 +306,6 @@ static void plotLogLog(PLOT_INFO *plot)
   if (plotWaveLength())
     doWaveLengthX(plot);
 
-  delete [] pts;
-
 }	/* END PLOTLOGLOG */
 
 /* -------------------------------------------------------------------- */
@@ -311,15 +316,13 @@ static void plotSemiLog(PLOT_INFO *plot, double *dataP)
   double	*plotData, freq, yScale, waveNumber = 0;
   double	xMin;
 
+  nPts = psd[0].M;
+  plotData = dataP;
+
   if (equalLogInterval())
     {
     nPts = psd[0].ELIAcnt - 1;
     plotData = psd[0].ELIAy;
-    }
-  else
-    {
-    nPts = psd[0].M;
-    plotData = dataP;
     }
 
   pts = new XPoint[psd[0].M+1];

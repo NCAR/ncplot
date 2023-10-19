@@ -152,7 +152,7 @@ void Initialize()
   for (i = 0; i < MAX_PSD; ++i)
     {
     psd[i].M = 512;
-    psd[i].Pxx = psd[i].Qxx = psd[i].Special = NULL;
+    psd[i].Pxx = psd[i].Qxx = psd[i].Real = psd[i].Imaginary = psd[i].Special = NULL;
     psd[i].detrendFn = DetrendLinear;
     psd[i].windowFn  = Parzen;
     psd[i].ELIAcnt = 0;

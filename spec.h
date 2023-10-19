@@ -22,15 +22,20 @@ typedef struct  /* Spectral information.        */
 	{
 	int	display;	/* Plot type, SPEC, CO-SPEC	*/
 
-	size_t	K;		/* Number of Segments.		*/
-	size_t	M;		/* 1/2 segment length.		*/
 	float	frequency;	/* Sample Rate of data.		*/
 
+	// User selected items from menus.
+	size_t	M;		/* 1/2 segment length.		*/
 	void	(*detrendFn)(DATASET_INFO *, float *);
 	double	(*windowFn)(int, int);
 
-	double	*Pxx;		/* Output array		*/
-	double	*Qxx;		/* Quadrature (CSD)	*/
+	size_t	K;		/* Number of Segments.		*/
+
+	double	*Real;
+	double	*Imaginary;
+
+	double	*Pxx;		/* Power Spectra		*/
+	double	*Qxx;		/* Quadrature (CSD)		*/
 	double	*Special;	/* Coherence, Phase or Ratio (CSD)	*/
 
 	double	freqPerBin;
@@ -49,8 +54,7 @@ extern DATASET_INFO	tas;
 
 void	ComputeBandLimitedVariance(Widget w, XtPointer client, XtPointer call);
 
-double Spectrum(float data[], double Pxx[], size_t K, size_t M,
-		double (*window)(int, int), size_t nPoints);
+double Spectrum(float data[], PSD_INFO *psd, size_t nPoints);
 
 double CoSpectrum(float data1[], float data2[], double Pxx[], double Qxx[],
 	size_t K, size_t M, double (*window)(int, int), size_t nPoints);
@@ -77,7 +81,7 @@ double Welch(int j, int N);
 
 int  eliaPoints();
 bool multiplyByFreq(), plotWaveNumber(), plotWaveLength(), equalLogInterval(),
-     plotFiveThirds(), multiplyByFreq53();
+     plotFiveThirds(), multiplyByFreq53(), plotRealComponent(), plotImaginaryComponent();
 
 void ToggleSpecGrid(Widget w, XtPointer client, XtPointer call);
 void ToggleWaveNumberScale(Widget w, XtPointer client, XtPointer call);

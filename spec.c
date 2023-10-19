@@ -122,7 +122,7 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
   if (NumberDataSets < 1)
     return;
 
-  if ((long)client > 1 && NumberDataSets < 2)
+  if ((long)client > SPECTRA && NumberDataSets < 2)
     {
     HandleError("Co-PSD requires two data sets.", Interactive, IRET);
     return;
@@ -158,6 +158,8 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
       XtSetSensitive(pmOptButt[1], true);
       XtSetSensitive(pmOptButt[2], true);
       XtSetSensitive(pmOptButt[3], true);
+      XtSetSensitive(pmOptButt[6], true);
+      XtSetSensitive(pmOptButt[7], true);
 
       nSets = std::min(NumberDataSets, MAX_PSD);
 
@@ -176,6 +178,8 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
       XtSetSensitive(pmOptButt[1], false);
       XtSetSensitive(pmOptButt[2], true);
       XtSetSensitive(pmOptButt[3], true);
+      XtSetSensitive(pmOptButt[6], false);
+      XtSetSensitive(pmOptButt[7], false);
       ComputeCoSpectrum();
       break;
 
@@ -184,6 +188,8 @@ void SpecWinUp(Widget w, XtPointer client, XtPointer call)
       XtSetSensitive(pmOptButt[1], false);
       XtSetSensitive(pmOptButt[2], false);
       XtSetSensitive(pmOptButt[3], false);
+      XtSetSensitive(pmOptButt[6], false);
+      XtSetSensitive(pmOptButt[7], false);
       ComputeCoSpectrum();
       break;
 
@@ -236,20 +242,25 @@ void ComputeSpectrum()
     {
     delete [] psd[set].Pxx;
     delete [] psd[set].Qxx;
+    delete [] psd[set].Real;
+    delete [] psd[set].Imaginary;
 
-    psd[set].Pxx = psd[set].Qxx = NULL;
+    psd[set].Pxx = psd[set].Qxx = psd[set].Real = psd[set].Imaginary = NULL;
 
 
     /* 50% overlapping.
      */
-    if ((psd[0].K = dataSet[set].nPoints / psd[0].M) < 1)
-      psd[0].K = 1;
+    if ((psd[set].K = dataSet[set].nPoints / psd[set].M) < 1)
+      psd[set].K = 1;
 
-    psd[0].K += 2;
-    size_t KxM = (psd[0].K + 1) * psd[0].M;
+    psd[set].K += 2;
+    size_t M = psd[0].M;
+    size_t KxM = (psd[set].K + 1) * M;
 
     detrendedData = new float[KxM];
-    psd[set].Pxx = new double[psd[0].M+1];
+    psd[set].Pxx = new double[M+1];
+    psd[set].Real = new double[KxM];
+    psd[set].Imaginary = new double[KxM];
 
 
     /* This computation of i, is to center the data in the zero padding.
@@ -257,11 +268,10 @@ void ComputeSpectrum()
     size_t pos = (KxM - dataSet[set].nPoints) / 2;
     memset((char *)detrendedData, 0, sizeof(float) * KxM);
     CleanAndCopyData(&dataSet[set], &detrendedData[pos]);
-    (*psd[0].detrendFn)(&dataSet[set], &detrendedData[pos]);
+    (*psd[set].detrendFn)(&dataSet[set], &detrendedData[pos]);
 
     psd[set].totalVariance =
-      Spectrum(detrendedData, psd[set].Pxx, psd[0].K, psd[0].M,
-			psd[0].windowFn, dataSet[set].nPoints);
+      Spectrum(detrendedData, &psd[set], dataSet[set].nPoints);
 
     ComputeBandLimitedVariance(NULL, NULL, NULL);
 
@@ -271,7 +281,7 @@ void ComputeSpectrum()
 
     if (multiplyByFreq())
       {
-      for (size_t i = 1; i <= psd[0].M; ++i)
+      for (size_t i = 1; i <= M; ++i)
         psd[set].Pxx[i] *= i;
 
       snprintf(buffer, BUFFSIZE, "f x P(f) of %s (%s^2)",
@@ -281,7 +291,7 @@ void ComputeSpectrum()
     else
     if (multiplyByFreq53())
       {
-      for (size_t i = 1; i <= psd[0].M; ++i)
+      for (size_t i = 1; i <= M; ++i)
         psd[set].Pxx[i] *= pow((double)i, 5.0/3.0);
 
       snprintf(buffer, BUFFSIZE, "f^(5/3) x P(f) of %s (%s^2)",
@@ -290,9 +300,9 @@ void ComputeSpectrum()
       }
     else
       {
-      double cf = (double)(psd[0].M << 1) / psd[set].frequency;
+      double cf = (double)(M << 1) / psd[set].frequency;
 
-      for (size_t i = 1; i <= psd[0].M; ++i)
+      for (size_t i = 1; i <= M; ++i)
         psd[set].Pxx[i] *= cf;
 
       snprintf(buffer, BUFFSIZE, "P(f) of %s (%s^2 / Hz)",
@@ -387,15 +397,32 @@ void AutoScaleSpectralWindow()
       if (psd[set].Pxx[i] < 0.0)
         continue;
 
-      Yaxis->smallestValue = std::min(Yaxis->smallestValue, psd[set].Pxx[i]);
-      Yaxis->biggestValue = std::max(Yaxis->biggestValue, psd[set].Pxx[i]);
+      if (plotRealComponent())
+        {
+        Yaxis->smallestValue = std::min(Yaxis->smallestValue, psd[set].Real[i]);
+        Yaxis->biggestValue = std::max(Yaxis->biggestValue, psd[set].Real[i]);
+        }
+      else
+      if (plotImaginaryComponent())
+        {
+        Yaxis->smallestValue = std::min(Yaxis->smallestValue, psd[set].Imaginary[i]);
+        Yaxis->biggestValue = std::max(Yaxis->biggestValue, psd[set].Imaginary[i]);
+        }
+      else
+        {
+        Yaxis->smallestValue = std::min(Yaxis->smallestValue, psd[set].Pxx[i]);
+        Yaxis->biggestValue = std::max(Yaxis->biggestValue, psd[set].Pxx[i]);
+        }
       }
     }
 
   if (specPlot.autoTics)
     {
     Yaxis->nMinorTics = 10;
-    Yaxis->nMajorTics = (int)(ceil(log10(Yaxis->biggestValue)) - floor(log10(Yaxis->smallestValue)));
+    if (plotRealComponent() || plotImaginaryComponent())
+      Yaxis->nMajorTics = 10;
+    else
+      Yaxis->nMajorTics = (int)(ceil(log10(Yaxis->biggestValue)) - floor(log10(Yaxis->smallestValue)));
     }
 
   AutoScaleSpec();
@@ -466,6 +493,24 @@ int timeShift()
 void ToggleSpecGrid(Widget w, XtPointer client, XtPointer call)
 {
   specPlot.grid = ((XmToggleButtonCallbackStruct *)call)->set;
+}
+
+/* -------------------------------------------------------------------- */
+void TogglePlotRealComponent(Widget w, XtPointer client, XtPointer call)
+{
+  if (((XmToggleButtonCallbackStruct *)call)->set)
+    XtSetSensitive(pmOptButt[7], false);
+  else
+    XtSetSensitive(pmOptButt[7], true);
+}
+
+/* -------------------------------------------------------------------- */
+void TogglePlotImaginaryComponent(Widget w, XtPointer client, XtPointer call)
+{
+  if (((XmToggleButtonCallbackStruct *)call)->set)
+    XtSetSensitive(pmOptButt[6], false);
+  else
+    XtSetSensitive(pmOptButt[6], true);
 }
 
 /* -------------------------------------------------------------------- */
@@ -604,7 +649,19 @@ bool plotWaveLength()
 /* -------------------------------------------------------------------- */
 bool equalLogInterval()
 {
+  return(XmToggleButtonGetState(pmOptButt[8]));
+}
+
+/* -------------------------------------------------------------------- */
+bool plotRealComponent()
+{
   return(XmToggleButtonGetState(pmOptButt[6]));
+}
+
+/* -------------------------------------------------------------------- */
+bool plotImaginaryComponent()
+{
+  return(XmToggleButtonGetState(pmOptButt[7]));
 }
 
 /* -------------------------------------------------------------------- */
@@ -617,7 +674,6 @@ int eliaPoints()
   x = atoi(p);
 
   return(x);
-
 }
 
 /* -------------------------------------------------------------------- */
@@ -790,7 +846,9 @@ static void CreateSpectrumWindow()
   pmOptButt[3] = XmCreateToggleButton(RC[3], "Multiply output by freq^(5/3)", args,n);
   pmOptButt[4] = XmCreateToggleButton(RC[3], "Wave number scale", args,n);
   pmOptButt[5] = XmCreateToggleButton(RC[3], "Wave length scale", args,n);
-  XtManageChildren(pmOptButt, 6);
+  pmOptButt[6] = XmCreateToggleButton(RC[3], "PSD Real Componant", args, n);
+  pmOptButt[7] = XmCreateToggleButton(RC[3], "PSD Imaginary Componant", args, n);
+  XtManageChildren(pmOptButt, 8);
 
   XtAddCallback(pmOptButt[0], XmNvalueChangedCallback, ToggleSpecGrid, NULL);
   XtAddCallback(pmOptButt[0], XmNvalueChangedCallback, (XtCallbackProc)PlotSpectrum, NULL);
@@ -803,6 +861,10 @@ static void CreateSpectrumWindow()
   XtAddCallback(pmOptButt[4], XmNvalueChangedCallback, (XtCallbackProc)PlotSpectrum, NULL);
   XtAddCallback(pmOptButt[5], XmNvalueChangedCallback, ToggleWaveLengthScale, NULL);
   XtAddCallback(pmOptButt[5], XmNvalueChangedCallback, (XtCallbackProc)PlotSpectrum, NULL);
+  XtAddCallback(pmOptButt[6], XmNvalueChangedCallback, TogglePlotRealComponent, NULL);
+  XtAddCallback(pmOptButt[6], XmNvalueChangedCallback, (XtCallbackProc)PlotSpectrum, NULL);
+  XtAddCallback(pmOptButt[7], XmNvalueChangedCallback, TogglePlotImaginaryComponent, NULL);
+  XtAddCallback(pmOptButt[7], XmNvalueChangedCallback, (XtCallbackProc)PlotSpectrum, NULL);
 
   XmToggleButtonSetState(pmOptButt[1], true, false);
 
@@ -818,9 +880,9 @@ static void CreateSpectrumWindow()
   RC[4] = XmCreateRowColumn(frame, "plRCv", args, n);
 
   n = 0;
-  pmOptButt[6] = XmCreateToggleButton(RC[4], "Equal-log interval averaging", args,n);
-  XtManageChild(pmOptButt[6]);
-  XtAddCallback(pmOptButt[6], XmNvalueChangedCallback, (XtCallbackProc)PlotSpectrum, NULL);
+  pmOptButt[8] = XmCreateToggleButton(RC[4], "Equal-log interval averaging", args,n);
+  XtManageChild(pmOptButt[8]);
+  XtAddCallback(pmOptButt[8], XmNvalueChangedCallback, (XtCallbackProc)PlotSpectrum, NULL);
 
   n = 0;
   plRC = XmCreateRowColumn(RC[4], "plRC", args, n);

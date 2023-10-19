@@ -29,13 +29,10 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1996-2022
 
 /* -------------------------------------------------------------------- */
 double Spectrum(float data[],		/* Input data			*/
-		double Pxx[],		/* Output data			*/
-		size_t K,		/* K overlapping segments	*/
-		size_t M,		/* 2M points per segment	*/
-		double (*window)(int, int),	/* Window function	*/
+		PSD_INFO *psd,
 		size_t nPoints)
 {
-  size_t i, seg, segP, twoM;
+  size_t i, seg, segP, twoM, M = psd->M, K = psd->K;
   double KU, Wss, *currentSegment, *Window, variance;
 
 
@@ -46,7 +43,11 @@ double Spectrum(float data[],		/* Input data			*/
   /* Ouptut will consist of M + 1 points.
    */
   for (i = 0; i <= M; ++i)
-    Pxx[i] = 0.0;
+    {
+    psd->Pxx[i] = 0.0;
+    if (psd->Real) psd->Real[i] = 0.0;
+    if (psd->Imaginary) psd->Imaginary[i] = 0.0;
+    }
 
 
   /* Generate Window & compute Window Squared and Summed.
@@ -55,7 +56,7 @@ double Spectrum(float data[],		/* Input data			*/
 
   for (i = 0, Wss = 0.0; i < twoM; ++i)
     {
-    Window[i] = (*window)(i, twoM);
+    Window[i] = (*psd->windowFn)(i, twoM);
     Wss += Window[i] * Window[i];
     }
 
@@ -105,17 +106,29 @@ double Spectrum(float data[],		/* Input data			*/
 
     gsl_fft_complex_radix2_forward(currentSegment, 1, twoM);
 
-    Pxx[0] += (REAL(currentSegment,0) * REAL(currentSegment,0)) +
-              (IMAG(currentSegment,0) * IMAG(currentSegment,0));
+    psd->Pxx[0] += (REAL(currentSegment,0) * REAL(currentSegment,0)) +
+		(IMAG(currentSegment,0) * IMAG(currentSegment,0));
 
     for (i = 1; i < M; ++i)
-      Pxx[i] +=	(REAL(currentSegment,i) * REAL(currentSegment,i)) +
+      psd->Pxx[i] += (REAL(currentSegment,i) * REAL(currentSegment,i)) +
                 (IMAG(currentSegment,i) * IMAG(currentSegment,i)) +
                 (REAL(currentSegment,twoM-i) * REAL(currentSegment,twoM-i)) +
                 (IMAG(currentSegment,twoM-i) * IMAG(currentSegment,twoM-i));
 
-    Pxx[M] += (REAL(currentSegment,M) * REAL(currentSegment,M)) +
+    psd->Pxx[M] += (REAL(currentSegment,M) * REAL(currentSegment,M)) +
               (IMAG(currentSegment,M) * IMAG(currentSegment,M));
+
+    if (psd->Real)
+      {
+      for (i = 0; i <= M; ++i)
+        psd->Real[i] += REAL(currentSegment, i);
+      }
+
+    if (psd->Imaginary)
+      {
+      for (i = 0; i <= M; ++i)
+        psd->Imaginary[i] += IMAG(currentSegment, i);
+      }
     }
 
 
@@ -125,8 +138,8 @@ double Spectrum(float data[],		/* Input data			*/
 
   for (i = 0; i <= M; ++i)
     {
-    Pxx[i] /= KU;
-    variance += Pxx[i];
+    psd->Pxx[i] /= KU;
+    variance += psd->Pxx[i];
     }
 
   delete [] Window;

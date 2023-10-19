@@ -29,7 +29,7 @@ void ComputeCoSpectrum()
 {
   size_t	i;
   int		pos, KxM, ts;
-  double	variance1, variance2, *Pxx1, *Pxx2;
+  double	variance1, variance2;
   float		*detrendedData[2], cf;
 
   if (NumberDataSets < 2 || dataSet[0].nPoints != dataSet[1].nPoints)
@@ -43,9 +43,11 @@ void ComputeCoSpectrum()
     {
     if (psd[i].Pxx) delete [] psd[i].Pxx;
     if (psd[i].Qxx) delete [] psd[i].Qxx;
+    if (psd[i].Real) delete [] psd[i].Real;
+    if (psd[i].Imaginary) delete [] psd[i].Imaginary;
     if (psd[i].Special) delete [] psd[i].Special;
 
-    psd[i].Pxx = psd[i].Qxx = psd[i].Special = NULL;
+    psd[i].Pxx = psd[i].Qxx = psd[i].Special = psd[i].Real = psd[i].Imaginary = NULL;
     }
 
 
@@ -205,8 +207,11 @@ void ComputeCoSpectrum()
     {
     psd[0].Special = new double[psd[0].M+1];
 
-    Pxx1 = new double[psd[0].M+1];
-    Pxx2 = new double[psd[0].M+1];
+    PSD_INFO psd1, psd2;
+    psd1 = psd[0];
+    psd2 = psd[0];
+    psd1.Pxx = new double[psd[0].M+1];
+    psd2.Pxx = new double[psd[0].M+1];
 
     CleanAndCopyData(&dataSet[0], &detrendedData[0][pos]);
     CleanAndCopyData(&dataSet[1], &detrendedData[1][pos]);
@@ -214,10 +219,8 @@ void ComputeCoSpectrum()
     (*psd[0].detrendFn)(&dataSet[0], &detrendedData[0][pos]);
     (*psd[0].detrendFn)(&dataSet[1], &detrendedData[1][pos]);
 
-    variance1 = Spectrum(detrendedData[0], Pxx1, psd[0].K, psd[0].M, psd[0].windowFn,
-						dataSet[0].nPoints);
-    variance2 = Spectrum(detrendedData[1], Pxx2, psd[0].K, psd[0].M, psd[0].windowFn,
-						dataSet[1].nPoints);
+    variance1 = Spectrum(detrendedData[0], &psd1, dataSet[0].nPoints);
+    variance2 = Spectrum(detrendedData[1], &psd2, dataSet[1].nPoints);
 
     if (psd[0].display == COHERENCE)
       {
@@ -228,7 +231,7 @@ void ComputeCoSpectrum()
       for (i = 1; i <= psd[0].M; ++i)
         psd[0].Special[i] =
           sqrt((psd[0].Pxx[i] * psd[0].Pxx[i] + psd[0].Qxx[i] * psd[0].Qxx[i]) /
-                               (Pxx1[i] * Pxx2[i]));
+                               (psd1.Pxx[i] * psd2.Pxx[i]));
       }
     else
     if (psd[0].display == RATIO)
@@ -238,13 +241,13 @@ void ComputeCoSpectrum()
       specPlot.Yaxis[0].label = buffer;
 
       for (i = 1; i <= psd[0].M; ++i)
-        psd[0].Special[i] = Pxx1[i] / Pxx2[i];
+        psd[0].Special[i] = psd1.Pxx[i] / psd2.Pxx[i];
       }
 
 
     printf("variance1=%f, variance2=%f\n", variance1, variance2);
-    delete [] Pxx1;
-    delete [] Pxx2;
+    delete [] psd1.Pxx;
+    delete [] psd2.Pxx;
     }
 
   if (psd[0].display == PHASE)
