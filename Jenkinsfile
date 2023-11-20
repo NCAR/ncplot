@@ -1,7 +1,7 @@
 pipeline {
   agent {
      node {
-        label 'CentOS9'
+        label 'CentOS9_x86_64'
         }
   }
   triggers {
