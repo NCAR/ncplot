@@ -1,7 +1,11 @@
 pipeline {
-  agent any
+  agent {
+     node {
+        label 'CentOS9_x86_64'
+        }
+  }
   triggers {
-    pollSCM('H H * * *')
+    pollSCM('H/15 5-21 * * *')
   }
   stages {
     stage('Checkout scm') {
@@ -17,7 +21,7 @@ pipeline {
   }
   post {
     failure {
-      emailext to: "cjw@ucar.edu janine@ucar.edu cdewerd@ucar.edu taylort@ucar.edu",
+      emailext to: "cjw@ucar.edu janine@ucar.edu cdewerd@ucar.edu",
       subject: "Jenkinsfile ncplot build failed",
       body: "See console output attached",
       attachLog: true

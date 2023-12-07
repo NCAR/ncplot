@@ -40,7 +40,7 @@ double Spectrum(float data[],		/* Input data			*/
 
   currentSegment = new double[twoM * 2];	// Imaginary is interleaved.
 
-  /* Ouptut will consist of M + 1 points.
+  /* Output will consist of M + 1 points.
    */
   for (i = 0; i <= M; ++i)
     {
