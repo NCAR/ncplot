@@ -296,7 +296,7 @@ static void freqDomainASCII(FILE *fp, int nPoints)
   if (psd[0].display == SPECTRA)
     nSets = std::min(NumberDataSets, MAX_PSD);
 
-  for (set = 0; set <= nSets; ++set)
+  for (set = 0; set < nSets; ++set)
     {
     switch (psd[0].display)
       {
