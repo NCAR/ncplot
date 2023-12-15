@@ -39,7 +39,7 @@ endif
 # with MacOS.  https://www.xquartz.org/
 #
 # Using Homebrew instead of MacPorts.  https://brew.sh/
-#  brew install openmotif netcdf gsl
+#  brew install openmotif netcdf gsl pkg-config
 #  brew install gmt  ; for geo-politcal maps.
 #  brew install whatever else
 #
