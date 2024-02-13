@@ -288,7 +288,8 @@ static void timeDomainASCII(FILE *fp, int nPoints)
 static void freqDomainASCII(FILE *fp, int nPoints)
 {
   int		i, set, nSets = 1;
-  double	*dataP = 0;
+  double	value = 0;
+  char		tmp[128];
 
   if (!fp)
     XmTextSetString(asciiText, (char *)"");
@@ -296,39 +297,63 @@ static void freqDomainASCII(FILE *fp, int nPoints)
   if (psd[0].display == SPECTRA)
     nSets = std::min(NumberDataSets, MAX_PSD);
 
-  for (set = 0; set <= nSets; ++set)
+  // Title
+  strcpy(buffer, "  Freq");
+  for (set = 0; set < nSets; ++set)
     {
-    switch (psd[0].display)
-      {
-      case SPECTRA:
-      case COSPECTRA:
-        dataP = psd[set].Pxx;
-        break;
+    snprintf(tmp, BUFFSIZE, ",  %s", dataSet[set].varInfo->name.c_str());
+    strcat(buffer, tmp);
+    }
 
-      case QUADRATURE:
-        dataP = psd[set].Qxx;
-        break;
+    strcat(buffer, "\n");
+    if (fp)
+      fprintf(fp, "%s", buffer);
+    else
+      XmTextInsert(asciiText, XmTextGetLastPosition(asciiText), buffer);
 
-      case COHERENCE:
-      case PHASE:
-      case RATIO:
-        dataP = psd[set].Special;
-        break;
-      }
+  // Loop
+  for (i = 0; i <= nPoints; ++i)
+    {
+    if (equalLogInterval())
+      snprintf(buffer, BUFFSIZE, "%8.3f", psd[0].ELIAx[i]);
+    else
+      snprintf(buffer, BUFFSIZE, "%8.3f", psd[0].freqPerBin * i);
 
-
-    for (i = 0; i <= nPoints; ++i)
+    for (set = 0; set < nSets; ++set)
       {
       if (equalLogInterval())
-        snprintf(buffer, BUFFSIZE, "%14f %14e\n", psd[set].ELIAx[i], psd[set].ELIAy[i]);
+        value = psd[set].ELIAy[i];
       else
-        snprintf(buffer, BUFFSIZE, "%14f %14e\n", psd[set].freqPerBin * i, dataP[i]);
+      switch (psd[0].display)
+        {
+        case SPECTRA:
+        case COSPECTRA:
+          value = psd[set].Pxx[i];
+          break;
 
-      if (fp)
-        fprintf(fp, "%s", buffer);
-      else
-        XmTextInsert(asciiText, XmTextGetLastPosition(asciiText), buffer);
+        case QUADRATURE:
+          value = psd[set].Qxx[i];
+          break;
+
+        case COHERENCE:
+        case PHASE:
+        case RATIO:
+          value = psd[set].Special[i];
+          break;
+
+        default:
+          value = 0.0;
+        }
+
+      snprintf(tmp, 128, ", %14e", value);
+      strcat(buffer, tmp);
       }
+
+    strcat(buffer, "\n");
+    if (fp)
+      fprintf(fp, "%s", buffer);
+    else
+      XmTextInsert(asciiText, XmTextGetLastPosition(asciiText), buffer);
     }
 
 }	/* END FREQDOMAINASCII */
