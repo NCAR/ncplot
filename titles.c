@@ -103,8 +103,9 @@ static void SetTitles()
 
     if (ok)
       {
-      snprintf(buffer, BUFFSIZE, "%-16s %s\n",
+      snprintf(buffer, BUFFSIZE, "%-20s %-10s %s\n",
 		curFile->Variable[i]->name.c_str(),
+		curFile->Variable[i]->units.c_str(),
 		curFile->Variable[i]->long_name.c_str());
       XmTextInsert(titleText, XmTextGetLastPosition(titleText), buffer);
       }
