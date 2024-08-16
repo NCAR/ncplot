@@ -220,13 +220,14 @@ void AddDataFile(Widget w, XtPointer client, XtPointer call)
   nc_inq_nvars(InputFile, &nVars);
 
 
-  if (getNCattr(InputFile, NC_GLOBAL, "ProjectName", curFile->ProjectName) == false)
-    getNCattr(InputFile, NC_GLOBAL, "project", curFile->ProjectName);	// Unidata DataDiscovery name.
+  if (getNCattr(InputFile, NC_GLOBAL, "project", curFile->ProjectName) == false)
+    getNCattr(InputFile, NC_GLOBAL, "ProjectName", curFile->ProjectName);
 
   getNCattr(InputFile, NC_GLOBAL, "FlightNumber", curFile->FlightNumber);
   getNCattr(InputFile, NC_GLOBAL, "FlightDate", curFile->FlightDate);
-  if (getNCattr(InputFile, NC_GLOBAL, "Platform", curFile->TailNumber) == false)
-    getNCattr(InputFile, NC_GLOBAL, "Aircraft", curFile->TailNumber);
+  if (getNCattr(InputFile, NC_GLOBAL, "platform", curFile->TailNumber) == false)
+    if (getNCattr(InputFile, NC_GLOBAL, "Platform", curFile->TailNumber) == false)
+      getNCattr(InputFile, NC_GLOBAL, "Aircraft", curFile->TailNumber);
 
   std::string warning;
   getNCattr(InputFile, NC_GLOBAL, "WARNING", warning);
