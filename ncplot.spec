@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
-Version: 4.11
-Release: 2%{?dist}
+Version: 4.12
+Release: 0%{?dist}
 License: GPL
 Group: System Environment/Daemons
 Url: http://www.eol.ucar.edu/
@@ -10,13 +10,7 @@ Packager: Chris Webster <cjw@ucar.edu>
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Vendor: UCAR
 BuildArch: x86_64
-Requires: netcdf libpng gsl
-
-%if 0%{?rhel} <= 7
-Requires: openmotif
-%else
-Requires: motif
-%endif
+Requires: netcdf libpng gsl motif
 
 Source: ftp://ftp.eol.ucar.edu/pub/archive/RAF-src/%{name}.tar.gz
 
@@ -49,6 +43,8 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
+* Thu Sep 19 2024 Chris Webster <cjw@ucar.edu> - 4.12-0
+- Bug fix for random 1 hour time shift from the below switch to Time variable.
 * Wed Nov  9 2022 Chris Webster <cjw@ucar.edu> - 4.10-1
 - Switch away from TimeInterval attribute to using Time variable.
 * Sat Apr 23 2022 Chris Webster <cjw@ucar.edu> - 4.10-0
