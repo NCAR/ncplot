@@ -897,9 +897,8 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile, int timeVarID, size_
     if (getNCattr(InputFile, timeVarID, "strptime_format", format) == false)
       format = "seconds since %F %T %z";
 
+    memset(&stm, 0, sizeof(struct tm));
     strptime(units.c_str(), format.c_str(), &stm);
-    setenv("TZ", "", 1);
-    tzset();
     time_t start = mktime(&stm) + first - timezone;
     time_t end = mktime(&stm) + last - timezone;
 
