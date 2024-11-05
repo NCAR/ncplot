@@ -897,6 +897,10 @@ void GetTimeInterval(int InputFile, DATAFILE_INFO *curFile, int timeVarID, size_
     if (getNCattr(InputFile, timeVarID, "strptime_format", format) == false)
       format = "seconds since %F %T %z";
 
+    // This is needed for MacOS.
+    setenv("TZ", "UTC", 1);
+    tzset();
+
     memset(&stm, 0, sizeof(struct tm));
     strptime(units.c_str(), format.c_str(), &stm);
     time_t start = mktime(&stm) + first - timezone;
