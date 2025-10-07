@@ -1,7 +1,7 @@
 Summary: Spec file for ncplot
 Name: ncplot
 Version: 4.12
-Release: 0%{?dist}
+Release: 2%{?dist}
 License: GPL
 Group: System Environment/Daemons
 Url: https://www.eol.ucar.edu/
@@ -43,6 +43,9 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 
 %changelog
+* Tue Oct  8 2025 Chris Webster <cjw@ucar.edu> - 4.12-2
+- Fix register deprecation warning on MacOS - Re: Motif
+- Fix search for GMT binary.
 * Thu Sep 19 2024 Chris Webster <cjw@ucar.edu> - 4.12-0
 - Bug fix for random 1 hour time shift from the below switch to Time variable.
 * Wed Nov  9 2022 Chris Webster <cjw@ucar.edu> - 4.10-1
