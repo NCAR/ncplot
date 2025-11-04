@@ -91,6 +91,9 @@ void	NewDataFile(Widget, XtPointer, XtPointer),
 	GetTimeInterval(int InputFile, DATAFILE_INFO *, int, size_t, size_t),
 	ReadData(), ReduceData(int start, int newNumberSeconds);
 
+void	WindowManagerCloseSetDismiss(Widget, Widget),
+	WindowManagerCloseSetQuit(Widget);
+
 void	Quit(Widget, XtPointer, XtPointer),
 	DismissWindow(Widget, XtPointer, XtPointer),
 	ModifyActiveVars(Widget, XtPointer, XtPointer),
