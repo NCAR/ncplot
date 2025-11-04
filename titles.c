@@ -128,6 +128,9 @@ static void CreateTitleWindow()
   n = 0;
   TitleWindow = XmCreateForm(TitleShell, (char *)"headerForm", args, n);
 
+  WindowManagerCloseSetDismiss(TitleShell, TitleWindow);
+
+
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;

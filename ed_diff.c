@@ -27,7 +27,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 static const int TOTAL_PARMS = 17;
 
 extern Widget	AppShell;
-static Widget	DiffShell = NULL, DiffParmsWindow, parmsText[TOTAL_PARMS],
+static Widget	DiffParmsShell = NULL, DiffParmsWindow, parmsText[TOTAL_PARMS],
 		autoScaleButton, autoTicsButton;
 
 static void	CreateDiffParmsWindow(),
@@ -39,7 +39,7 @@ void SetDiffDefaults()
 {
   int	i;
 
-  if (DiffShell == NULL)
+  if (DiffParmsShell == NULL)
     return;
 
   SetDefaults(parmsText, &diffPlot);
@@ -118,10 +118,13 @@ static void CreateDiffParmsWindow()
   int		i;
   Widget	RC[5];
 
-  DiffShell = XtCreatePopupShell("editDiffShell",
+  DiffParmsShell = XtCreatePopupShell("editDiffShell",
                   topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  DiffParmsWindow = XmCreateRowColumn(DiffShell, (char *)"parmsRC", NULL, 0);
+  DiffParmsWindow = XmCreateRowColumn(DiffParmsShell, (char *)"parmsRC", NULL, 0);
+
+  WindowManagerCloseSetDismiss(DiffParmsShell, DiffParmsWindow);
+
 
   for (i = 0; i < TOTAL_PARMS; ++i)
     parmsText[i] = NULL;

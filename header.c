@@ -122,6 +122,9 @@ static void CreateHeaderWindow()
   n = 0;
   HeaderWindow = XmCreateForm(HeaderShell, (char *)"headerForm", args, n);
 
+  WindowManagerCloseSetDismiss(HeaderShell, HeaderWindow);
+
+
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;

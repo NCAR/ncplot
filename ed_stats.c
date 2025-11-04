@@ -29,7 +29,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2022
 static const int TOTAL_PARMS = 4;
 
 extern Widget	AppShell;
-static Widget	StatsShell = NULL, StatsParmsWindow, parmsText[TOTAL_PARMS],
+static Widget	StatsParmsShell = NULL, StatsParmsWindow, parmsText[TOTAL_PARMS],
 		list;
 
 void SetStatsDefaults();
@@ -61,7 +61,7 @@ void EditStatsParms(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void SetStatsDefaults()
 {
-  if (StatsShell)
+  if (StatsParmsShell)
 ;/* Fill in widgets. */
 
 }	/* END SETSTATSDEFAULTS */
@@ -143,10 +143,13 @@ static void CreateStatsParmsWindow()
   Arg		args[8];
   Cardinal	n;
 
-  StatsShell = XtCreatePopupShell("editStatsShell",
+  StatsParmsShell = XtCreatePopupShell("editStatsShell",
                topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  StatsParmsWindow = XmCreateRowColumn(StatsShell, (char *)"parmsRC", NULL, 0);
+  StatsParmsWindow = XmCreateRowColumn(StatsParmsShell, (char *)"parmsRC", NULL, 0);
+
+  WindowManagerCloseSetDismiss(StatsParmsShell, StatsParmsWindow);
+
 
   form = XmCreateForm(StatsParmsWindow, (char *)"outlierForm", NULL, 0);
   XtManageChild(form);

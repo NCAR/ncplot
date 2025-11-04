@@ -155,6 +155,9 @@ static void CreateDifferenceWindow()
   n = 0;
   DifferenceWindow = XmCreateForm(DiffShell, (char *)"diffForm", args, n);
 
+  WindowManagerCloseSetDismiss(DiffShell, DifferenceWindow);
+
+
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;

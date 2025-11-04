@@ -27,7 +27,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2022
 static const int TOTAL_PARMS = 17;
 
 extern Widget	AppShell;
-static Widget	SpecShell = NULL, SpecParmsWindow, parmsText[TOTAL_PARMS],
+static Widget	SpecParmsShell = NULL, SpecParmsWindow, parmsText[TOTAL_PARMS],
 		parmsTB[6], autoScaleButton, autoTicsButton;
 
 static void	CreateSpecParmsWindow(),
@@ -59,7 +59,7 @@ void SetSpecDefaults()
 {
   int	i;
 
-  if (SpecShell == NULL)
+  if (SpecParmsShell == NULL)
     return;
 
   SetDefaults(parmsText, &specPlot);
@@ -121,11 +121,14 @@ void CreateSpecParmsWindow()
   Arg		args[10];
 
   n = 0;
-  SpecShell = XtCreatePopupShell("editSpecShell",
+  SpecParmsShell = XtCreatePopupShell("editSpecShell",
                 topLevelShellWidgetClass, AppShell, args, n);
 
   n = 0;
-  SpecParmsWindow = XmCreateRowColumn(SpecShell, (char *)"parmsRC", args, n);
+  SpecParmsWindow = XmCreateRowColumn(SpecParmsShell, (char *)"parmsRC", args, n);
+
+  WindowManagerCloseSetDismiss(SpecParmsShell, SpecParmsWindow);
+
 
   for (i = 0; i < TOTAL_PARMS; ++i)
     parmsText[i] = NULL;

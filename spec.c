@@ -638,6 +638,8 @@ static void CreateSpectrumWindow()
   n = 0;
   SpectrumWindow = XmCreateForm(SpecShell, "specForm", args, n);
 
+  WindowManagerCloseSetDismiss(SpecShell, SpectrumWindow);
+
 
   /* RC for Options.
    */

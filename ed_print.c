@@ -168,6 +168,9 @@ static void CreatePrintWindow()
   n = 0;
   PrintWindow = XmCreateRowColumn(PrintShell, (char *)"parmsRC", args, n);
 
+  WindowManagerCloseSetDismiss(PrintShell, PrintWindow);
+
+
   n = 0;
   frame[0] = XmCreateFrame(PrintWindow, (char *)"printParmsFrame", args, 0);
   frame[1] = XmCreateFrame(PrintWindow, (char *)"shapeFrame", args, 0);

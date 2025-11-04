@@ -245,6 +245,9 @@ static void CreatePreferences()
 
   PreferWindow = XmCreateRowColumn(PreferShell, (char *)"prefRC", NULL, 0);
 
+  WindowManagerCloseSetDismiss(PreferShell, PreferWindow);
+
+
   n = 0;
   frame = XmCreateFrame(PreferWindow, (char *)"prefFrame", args, n);
   XtManageChild(frame);
