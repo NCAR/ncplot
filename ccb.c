@@ -403,6 +403,12 @@ void PolyRegression(Widget w, XtPointer client, XtPointer call)
 /* -------------------------------------------------------------------- */
 void DismissWindow(Widget w, XtPointer client, XtPointer call)
 {
+  if (client == NULL)
+  {
+    fprintf(stderr, "DismissWindow: NULL client, doing nothing.  Report to an SE.\n");
+    return;
+  }
+
   XtPopdown(XtParent((Widget)client));
   XtUnmanageChild((Widget)client);
 
