@@ -13,9 +13,9 @@ OS = $(shell uname)
 ARCH = $(shell uname -m)
 
 
-# Linux Redhat / CentOS / Fedora
+# Linux Redhat / Alma / Fedora
 #
-# yum install flex-devel netcdf-devel motif-devel gsl-devel \
+# dnf install flex-devel netcdf-devel motif-devel gsl-devel \
 #    xorg-x11-fonts-ISO8859-1-75dpi xorg-x11-fonts-ISO8859-1-100dpi
 #
 WWW	= /net/www/docs/raf/Software
@@ -30,19 +30,9 @@ ifeq ($(findstring ubuntu,$(shell uname -a)),ubuntu)
 endif
 
 
-# Mac OS X (ncplot is availble from macports as of 2021).
+# Mac OSX (ncplot is availble from macports as of 2021).
 #
-# Requires XCode from Apple App Store.  Don't forget to run Xcode after it is
-# installed to accept license.
-#
-# Need to get XQuartz download for X11, it is no longer bundled
-# with MacOS.  https://www.xquartz.org/
-#
-# Using Homebrew instead of MacPorts.  https://brew.sh/
-#  brew install openmotif netcdf gsl pkg-config
-#  brew install gmt  ; for geo-politcal maps.
-#  brew install whatever else
-#
+# See INSTALL file.
 
 ifeq ($(OS), Darwin)
   ifeq ($(ARCH), arm64)

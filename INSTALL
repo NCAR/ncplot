@@ -1,17 +1,50 @@
 Building and installing ncplot (Linux/MacOS).
 
-1) Edit Makefile to fit your needs.
-    - You need to define ${JLOCAL} for binary install location.
-    - Uncomment/comment section for your OS.  Default is Linux, see section for MacOS.
+1) Redhat dependencies
+   - 'dnf install flex-devel netcdf-devel motif-devel gsl-devel'
 
-2) Type 'make'
+2) Edit Makefile to fit your needs.
+   - Default is Linux, see section for MacOS.
+   - Check for any OS depencies, but most have been removed.
+   - Uncomment UBUNTU if that is what you are building on.
 
-3) If you're installing for a system, put binary in appropriate place
-   (e.g.  /usr/local/bin).
+3) Type 'make'
 
-   If you are a lone user, put the binary wherever you want (e.g. $HOME/bin).
+4) If you're installing for a system, put binary in appropriate place
+   (e.g.  /usr/local/bin).  If you are a lone user, put the binary wherever
+   you want (e.g. $HOME/bin).
 
-4) You may need to do: yum install "xorg-x11-fonst-ISO*"
+   'make install' will default to /usr/local/bin
+
+5) You may need to do: dnf install "xorg-x11-fonts-ISO*"
+
+
+
+Mac OSX using Homebrew (ncplot is availble from macports as of 2021).
+
+You need three things:
+
+1) Xcode command line tools or Xcode from Apple App Store.  Don't forget to run
+   Xcode after it is installed to accept license, and/or "xcode-select --install"
+   for the command line tools.
+
+   xcode-select --install
+
+2) Using Homebrew instead of MacPorts.  https://brew.sh/
+   Run "brew bundle" in this directory after initial homebrew install to fetch
+   dependencies.
+
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   cd ncplot
+   brew bundle
+   make
+   brew install whatever else the bundle missed.
+
+3) XQuartz download for X11, it is no longer bundled with MacOS.  This is
+   required to display X11 GUI programs.
+
+   https://www.xquartz.org/
+
 
 
 Users manual: http://www.eol.ucar.edu/raf/Software/ncplot.html
