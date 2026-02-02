@@ -14,6 +14,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 2006
 
 #include "define.h"
 #include <netcdf.h>
+#include <ctime>
 
 bool getNCattr(int ncid, int varID, const char attr[], std::string & dest);
 
