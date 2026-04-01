@@ -75,6 +75,7 @@ void ViewHeader(Widget w, XtPointer client, XtPointer call)
 static void SetHeaderData()
 {
   FILE	*pp;
+  int	n;
 
   XmTextSetString(headerText, const_cast<char *>(dataFile[CurrentDataFile].fileName.c_str()));
   XmTextInsert(headerText, XmTextGetLastPosition(headerText), (char *)"\n\n");
@@ -90,17 +91,20 @@ static void SetHeaderData()
     return;
     }
 
-  while (fread(buffer, BUFFSIZE, 1, pp) > 0)
+  while ((n = fread(buffer, BUFFSIZE-1, 1, pp)) > 0)
+    {
+    buffer[n] = '\0';
     XmTextInsert(headerText, XmTextGetLastPosition(headerText), buffer);
+    }
 
-  if (strncmp(buffer, "ncdump", 6) == 0)
+  if (strstr(buffer, "ommand not found") == 0)
     {
     HandleError("Can't locate netCDF utility ncdump.", Interactive, IRET);
     return;
     }
   else
     {
-    strcpy(strchr(buffer, '}')+1, "\n\n");
+    strcat(buffer, "\n\n");
     XmTextInsert(headerText, XmTextGetLastPosition(headerText), buffer);
     }
 
