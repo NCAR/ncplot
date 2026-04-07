@@ -214,6 +214,9 @@ static void CreateStatsWindow()
   n = 0;
   StatsWindow = XmCreateForm(StatsShell, (char *)"statsForm", args, n);
 
+  WindowManagerCloseSetDismiss(StatsShell, StatsWindow);
+
+
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;

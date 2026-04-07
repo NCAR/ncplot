@@ -145,6 +145,9 @@ static void CreateXYParmsWindow()
 
   XYParmsWindow = XmCreateRowColumn(XYShell, (char *)"parmsRC", NULL, 0);
 
+  WindowManagerCloseSetDismiss(XYShell, XYParmsWindow);
+
+
   for (i = 0; i < TOTAL_PARMS; ++i)
     parmsText[i] = NULL;
 

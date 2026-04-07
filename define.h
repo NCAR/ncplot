@@ -15,6 +15,8 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 #ifndef DEFINE_H
 #define DEFINE_H
 
+#define register
+
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>

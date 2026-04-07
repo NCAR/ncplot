@@ -26,7 +26,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1992-2001
 /* -------------------------------------------------------------------- */
 void yLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, int scale, bool labels)
 {
-  int		i, xoffset, yoffset, len, ticlen;
+  int		xoffset, yoffset, len, ticlen;
   double	yScale, incrementer, value, yMin;
   struct axisInfo	*yAxis = &plot->Yaxis[scale];
 
@@ -56,7 +56,7 @@ void yLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, int scale, bool lab
     }
 
 
-  for (i = 0; value < yAxis->max; ++i)
+  while ( value < yAxis->max )
     {
     value += incrementer;
 
@@ -122,7 +122,7 @@ void yLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, int scale, bool lab
 /* -------------------------------------------------------------------- */
 void xLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, bool labels)
 {
-  int		i, xoffset, yoffset, len, ticlen;
+  int		xoffset, yoffset, len, ticlen;
   double	xScale, incrementer, value, xMin;
   struct axisInfo	*xAxis = &plot->Xaxis;
 
@@ -151,7 +151,7 @@ void xLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, bool labels)
     }
 
 
-  for (i = 0; value < xAxis->max; ++i)
+  while ( value < xAxis->max )
     {
     value += incrementer;
 
@@ -210,7 +210,7 @@ void xLogTicsLabelsX(PLOT_INFO *plot, XFontStruct *fontInfo, bool labels)
 /* -------------------------------------------------------------------- */
 void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
 {
-  int		i, yoffset, ticlen;
+  int		yoffset, ticlen;
   double	yScale, incrementer, value;
   struct axisInfo	*yAxis = &plot->Yaxis[scale];
 
@@ -242,7 +242,7 @@ void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
     }
 
 
-  for (i = 0; value < yAxis->max; ++i)
+  while ( value < yAxis->max )
     {
     value += incrementer;
 
@@ -310,7 +310,7 @@ void yLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, int scale, bool labels)
 /* -------------------------------------------------------------------- */
 void xLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, bool labels)
 {
-  int		i, xoffset, ticlen;
+  int		xoffset, ticlen;
   double	xScale, incrementer, value;
   struct axisInfo	*xAxis = &plot->Xaxis;
 
@@ -337,7 +337,7 @@ void xLogTicsLabelsPS(FILE *fp, PLOT_INFO *plot, bool labels)
     fprintf(fp, show, buffer);
     }
 
-  for (i = 0; value < xAxis->max; ++i)
+  while ( value < xAxis->max )
     {
     value += incrementer;
 

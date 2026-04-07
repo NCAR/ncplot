@@ -311,22 +311,25 @@ bool TestForGMT()
       rc = true;
     }
   }
-
-  stat("/usr/local/bin/gmt", &sb);
-  if ((sb.st_mode & S_IFMT) == S_IFREG) {
-    strcpy(gmt_path, "/usr/local");
-    rc = true;
-  }
-
-  stat("/opt/homebrew/bin/gmt", &sb);
-  if ((sb.st_mode & S_IFMT) == S_IFREG) {
-    strcpy(gmt_path, "/opt/homebrew");
-    rc = true;
-  }
-
-  stat("/bin/gmt", &sb);
-  if ((sb.st_mode & S_IFMT) == S_IFREG) {
-    rc = true;
+  else {
+    stat("/usr/local/bin/gmt", &sb);
+    if ((sb.st_mode & S_IFMT) == S_IFREG) {
+      strcpy(gmt_path, "/usr/local");
+      rc = true;
+    }
+    else {
+      stat("/opt/homebrew/bin/gmt", &sb);	// Apple Silicon
+      if ((sb.st_mode & S_IFMT) == S_IFREG) {
+        strcpy(gmt_path, "/opt/homebrew");
+        rc = true;
+      }
+      else {
+        stat("/bin/gmt", &sb);
+        if ((sb.st_mode & S_IFMT) == S_IFREG) {
+          rc = true;
+        }
+      }
+    }
   }
 
   return rc;

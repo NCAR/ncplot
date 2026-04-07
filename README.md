@@ -36,7 +36,7 @@ ncplot is available via [MacPorts](https://www.macports.org/) or follow the [Mac
 
 Redhat
 ```
-openmotif-devel (motif-devel CentOS 8 & Fedora)
+motif-devel
 netcdf-devel
 flex-devel
 gsl-devel

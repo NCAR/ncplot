@@ -185,6 +185,9 @@ static void CreateMainParmsWindow()
 
   MainParmsWindow = XmCreateRowColumn(MainParmsShell, (char *)"parmsRC", NULL, 0);
 
+  WindowManagerCloseSetDismiss(MainParmsShell, MainParmsWindow);
+
+
   RC[0] = createParamsTitles(MainParmsWindow, parmsText);
 
 

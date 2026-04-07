@@ -76,6 +76,7 @@ void PSheader(FILE *fp, PLOT_INFO *plot)
   time_t	print_time = time((time_t *)NULL);
 
   user = (getpwuid(getuid()))->pw_gecos;
+  if (user == 0) user = "Unknown";
   date = ctime(&print_time);
 
   /* Print standard header info, and quadruple number of pixels

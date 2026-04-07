@@ -18,6 +18,8 @@ AUTHOR:		websterc@ncar
 -------------------------------------------------------------------------
 */
 
+#define register
+
 #include <Xm/Xm.h>
 #include <Xm/MessageB.h>
 #include <Xm/SelectioB.h>

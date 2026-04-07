@@ -27,7 +27,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1998-2022
 static const int TOTAL_PARMS = 17;
 
 extern Widget	AppShell;
-static Widget	TrackShell = NULL, TrackParmsWindow, parmsText[TOTAL_PARMS],
+static Widget	TrackParmsShell = NULL, TrackParmsWindow, parmsText[TOTAL_PARMS],
 		autoScaleButton, autoTicsButton;
 
 static void	CreateTrackParmsWindow(),
@@ -57,7 +57,7 @@ void SetTrackDefaults()
 {
   int	i;
 
-  if (!TrackShell)
+  if (!TrackParmsShell)
     return;
 
   SetDefaults(parmsText, &xyzPlot);
@@ -111,10 +111,13 @@ static void CreateTrackParmsWindow()
   int		i;
   Widget	RC[5];
 
-  TrackShell = XtCreatePopupShell("editXYZShell",
+  TrackParmsShell = XtCreatePopupShell("editXYZShell",
                   topLevelShellWidgetClass, AppShell, NULL, 0);
 
-  TrackParmsWindow = XmCreateRowColumn(TrackShell, (char *)"parmsRC", NULL, 0);
+  TrackParmsWindow = XmCreateRowColumn(TrackParmsShell, (char *)"parmsRC", NULL, 0);
+
+  WindowManagerCloseSetDismiss(TrackParmsShell, TrackParmsWindow);
+
 
   for (i = 0; i < TOTAL_PARMS; ++i)
     parmsText[i] = NULL;

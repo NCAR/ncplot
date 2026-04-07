@@ -249,6 +249,9 @@ void CreateExpressionWindow()
 
   ExpWindow = XmCreateRowColumn(ExpShell, (char *)"expParRC", NULL, 0);
 
+  WindowManagerCloseSetDismiss(ExpShell, ExpWindow);
+
+
   n = 0;
   frame = XmCreateFrame(ExpWindow, (char *)"expFrame", args, n);
   XtManageChild(frame);

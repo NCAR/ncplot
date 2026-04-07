@@ -260,6 +260,9 @@ static void CreateTrackOptWin()
   n = 0;
   TrackOptWindow = XmCreateForm(TrackOptShell, (char *)"trackOptWindow", args, n);
 
+  WindowManagerCloseSetDismiss(TrackOptShell, TrackOptWindow);
+
+
   n = 0;
   trackOptRC = XmCreateRowColumn(TrackOptWindow, (char *)"trackOptRC", args, n);
   XtManageChild(trackOptRC);

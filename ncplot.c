@@ -32,6 +32,7 @@ Widget  DiffShell, DifferenceWindow = NULL;
 
 Widget	CreateMainWindow(Widget parent);
 void	CreateControlWindow(Widget parent);
+void	SetupTrapWMClose(Widget app);
 
 static XtResource resources[] = {
 	{XtNfont24, XtCFont24, XtRString, sizeof(char *),
@@ -101,6 +102,13 @@ int main(int argc, char *argv[])
     OpenControlWindow(NULL, NULL, NULL);
     XtManageChild(MainWindow);
     XtPopup(XtParent(MainWindow), XtGrabNone);
+
+    // Trap Window Manager close.
+    SetupTrapWMClose(AppShell);
+    // Other shells throughout the program will call this function, when created
+    WindowManagerCloseSetQuit(MainShell);
+    WindowManagerCloseSetQuit(ControlShell);
+
 
     if (RealTime)
       XtAppAddTimeOut(appContext, 1000, UpdateDataRT, NULL);

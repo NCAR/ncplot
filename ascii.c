@@ -122,6 +122,9 @@ static void CreateASCIIwindow()
   n = 0;
   ASCIIwindow = XmCreateForm(ASCIIshell, (char *)"asciiForm", args, n);
 
+  WindowManagerCloseSetDismiss(ASCIIshell, ASCIIwindow);
+
+
   n = 0;
   XtSetArg(args[n], XmNtopAttachment, XmATTACH_FORM); n++;
   XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;

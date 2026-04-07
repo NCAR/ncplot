@@ -13,9 +13,9 @@ OS = $(shell uname)
 ARCH = $(shell uname -m)
 
 
-# Linux Redhat / CentOS / Fedora
+# Linux Redhat / Alma / Fedora
 #
-# yum install flex-devel netcdf-devel motif-devel gsl-devel \
+# dnf install flex-devel netcdf-devel motif-devel gsl-devel \
 #    xorg-x11-fonts-ISO8859-1-75dpi xorg-x11-fonts-ISO8859-1-100dpi
 #
 WWW	= /net/www/docs/raf/Software/ncplot
@@ -30,19 +30,9 @@ ifeq ($(findstring ubuntu,$(shell uname -a)),ubuntu)
 endif
 
 
-# Mac OS X (ncplot is availble from macports as of 2021).
+# Mac OSX (ncplot is availble from macports as of 2021).
 #
-# Requires XCode from Apple App Store.  Don't forget to run Xcode after it is
-# installed to accept license.
-#
-# Need to get XQuartz download for X11, it is no longer bundled
-# with MacOS.  https://www.xquartz.org/
-#
-# Using Homebrew instead of MacPorts.  https://brew.sh/
-#  brew install openmotif netcdf gsl pkg-config
-#  brew install gmt  ; for geo-politcal maps.
-#  brew install whatever else
-#
+# See INSTALL file.
 
 ifeq ($(OS), Darwin)
   ifeq ($(ARCH), arm64)
@@ -88,7 +78,7 @@ SRCS=	ncplot.c global.c init.c X.c Xwin.c annotate.c arrows.c ascii.c\
 	regret1.c rt.c search.c spctrm.c spec.c specPS.c specX.c\
 	stats.c template.c timestamps.c titles.c track.c validate.c\
 	variance.c window.c xyPS.c xyX.c xyzPS.c xyzX.c zoom.c Xquery.c\
-	Xerror.c Xfile.c Xwarn.c sanity.c opener.c
+	Xerror.c Xfile.c Xwarn.c sanity.c opener.c wm.c
 
 OBJS=	ncplot.o global.o init.o X.o Xwin.o annotate.o arrows.o ascii.o\
 	autoscale.o barbs.o ccb.o color.o control.o cospec.o crosshair.o\
@@ -100,7 +90,7 @@ OBJS=	ncplot.o global.o init.o X.o Xwin.o annotate.o arrows.o ascii.o\
 	regret1.o rt.o search.o spctrm.o spec.o specPS.o specX.o\
 	stats.o template.o timestamps.o titles.o track.o validate.o\
 	variance.o window.o xyPS.o xyX.o xyzPS.o xyzX.o zoom.o Xquery.o\
-	Xerror.o Xfile.o Xwarn.o sanity.o opener.o
+	Xerror.o Xfile.o Xwarn.o sanity.o opener.o wm.o
 
 SPECOBJ=cospec.o detrend.o ed_spec.o global.o init.o spctrm.o spec.o\
 	specPS.o specX.o variance.o window.o dataIO.o ascii.o

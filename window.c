@@ -35,8 +35,7 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 /* -------------------------------------------------------------------- */
 double Bartlett(int j, int N)
 {
-  return(0.42 -  0.5 * cos(2.0 * M_PI * j / (N - 1)) +
-         0.08 * cos(4.0 * M_PI * j / (N - 1)));
+  return(1.0 - fabs((2.0 * j) / (N - 1) - 1.0));
 
 }	/* END BARTLETT */
 
@@ -65,7 +64,21 @@ double Hanning(int j, int N)
 /* -------------------------------------------------------------------- */
 double Parzen(int j, int N)
 {
-  return(1.0 - fabs((j - 0.5 * (N - 1)) / (0.5 * (N + 1))));
+  double L    = N / 2.0;
+  double n    = j - (N - 1) / 2.0;
+  double absn = fabs(n);
+  double t;
+
+  if (absn <= L / 2.0)
+    {
+    t = absn / L;
+    return(1.0 - 6.0*t*t + 6.0*t*t*t);
+    }
+  else
+    {
+    t = 1.0 - absn / L;
+    return(2.0 * t*t*t);
+    }
 
 }	/* END PARZEN */
 
@@ -79,7 +92,7 @@ double Square(int j, int N)
 /* -------------------------------------------------------------------- */
 double Triangle(int j, int N)
 {
-  return(1.0 - fabs(1.0 - ((2.0 * j) / (N - 1)) ));
+  return(1.0 - fabs((2.0 * j - (N - 1)) / (N + 1)));
 
 }	/* END TRIANGLE */
 
@@ -88,7 +101,7 @@ double Welch(int j, int N)
 {
   double	rc;
 
-  rc = (j - 0.5 * (N - 1)) / (0.5 * (N + 1));
+  rc = (j - 0.5 * (N - 1)) / (0.5 * (N - 1));
 
   return(1.0 - rc * rc);
 
