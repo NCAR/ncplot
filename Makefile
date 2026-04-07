@@ -18,7 +18,7 @@ ARCH = $(shell uname -m)
 # yum install flex-devel netcdf-devel motif-devel gsl-devel \
 #    xorg-x11-fonts-ISO8859-1-75dpi xorg-x11-fonts-ISO8859-1-100dpi
 #
-WWW	= /net/www/docs/raf/Software
+WWW	= /net/www/docs/raf/Software/ncplot
 
 
 # Linux Ubuntu
@@ -126,7 +126,8 @@ install: ${PROG}
 	cp ${PROG} $(BIN)
 
 publish: $(PROG)
-	cp ${PROG}.html $(WWW)
+	cp docs/${PROG}.html $(WWW)
+	cp docs/*.png $(WWW)
 
 clean:
 	rm -f core* ${OBJS} ${PROG} exp.tab.h exp.tab.c lex.yy.c
