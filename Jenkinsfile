@@ -18,6 +18,11 @@ pipeline {
         sh 'make'
       }
     }
+    stage('Publish') {
+      steps {
+        sh 'make publish'
+      }
+    }
   }
   post {
     failure {
