@@ -23,7 +23,7 @@ ncplot was written at the Research Aviation Facility of The National Center for 
 
 ## Documentation
 
-[User's Manual](https://www.eol.ucar.edu/raf/Software/ncplot.html).\
+[User's Manual](https://www.eol.ucar.edu/raf/Software/ncplot/ncplot.html).\
 [RAF netCDF file conventions](https://www.eol.ucar.edu/raf/Software/netCDF.html).
 
 ## Build

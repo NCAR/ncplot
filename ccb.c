@@ -428,7 +428,7 @@ void BrowseTo(Widget w, XtPointer client, XtPointer call)
       opener("https://www.eol.ucar.edu/raf/Software");
       break;
     case 3:
-      opener("https://www.eol.ucar.edu/raf/Software/ncplot.html");
+      opener("https://www.eol.ucar.edu/raf/Software/ncplot/ncplot.html");
       break;
     }
 
