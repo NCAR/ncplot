@@ -15,8 +15,6 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 #ifndef EXTERN_H
 #define EXTERN_H
 
-extern const size_t	BUFFSIZE, MAX_DATAFILES, MAX_DATASETS, MAX_PANELS;
-
 extern bool	Interactive, DataChanged, AsciiWinOpen, Statistics,
 		ScatterPlot, WindBarbs, UTCseconds, Color, StatsWinOpen,
 		LandMarks, ProjectToXY, ProjectToBack, RealTime,

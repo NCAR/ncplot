@@ -37,6 +37,11 @@ COPYRIGHT:	University Corporation for Atmospheric Research, 1997-2022
 #define ERR		(-1)
 #endif
 
+constexpr size_t BUFFSIZE = 4096;
+constexpr size_t MAX_DATAFILES = 4;
+constexpr size_t MAX_DATASETS = 32;
+constexpr size_t MAX_PANELS = 4;
+
 #define COMMENT	'#'	/* Comment character for textfiles  */
 
 #define SecondsSinceMidnite(t)	(t[0] * 3600 + t[1] * 60 + t[2])
