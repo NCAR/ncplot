@@ -68,17 +68,17 @@ CXXFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES} -Wno-write-strings -Wno-overflow
 PROG	= ncplot
 HDRS	= define.h extern.h
 
-SRCS=	ncplot.c global.c init.c X.c Xwin.c annotate.c arrows.c ascii.c\
-	autoscale.c barbs.c ccb.c color.c control.c cospec.c crosshair.c\
-	cursor.c dataIO.c detrend.c diff.c diffPS.c diffX.c ed_diff.c\
-	ed_parms.c ed_plot.c ed_print.c ed_spec.c ed_stats.c ed_xy.c\
-	ed_xyz.c elia.c equal.c error.c expar.c exp.tab.c lex.yy.c\
-	geopolmap.c header.c labels.c landmarks.c logtics.c page.c\
-	panel.c plotPS.c plotX.c png.c preferences.c print.c ps.c regret.c\
-	regret1.c rt.c search.c spctrm.c spec.c specPS.c specX.c\
-	stats.c template.c timestamps.c titles.c track.c validate.c\
-	variance.c window.c xyPS.c xyX.c xyzPS.c xyzX.c zoom.c Xquery.c\
-	Xerror.c Xfile.c Xwarn.c sanity.c opener.c wm.c
+SRCS=	ncplot.cc global.cc init.cc X.cc Xwin.cc annotate.cc arrows.cc ascii.cc\
+	autoscale.cc barbs.cc ccb.cc color.cc control.cc cospec.cc crosshair.cc\
+	cursor.cc dataIO.cc detrend.cc diff.cc diffPS.cc diffX.cc ed_diff.cc\
+	ed_parms.cc ed_plot.cc ed_print.cc ed_spec.cc ed_stats.cc ed_xy.cc\
+	ed_xyz.cc elia.cc equal.cc error.cc expar.cc exp.tab.cc lex.yy.cc\
+	geopolmap.cc header.cc labels.cc landmarks.cc logtics.cc page.cc\
+	panel.cc plotPS.cc plotX.cc png.cc preferences.cc print.cc ps.cc regret.cc\
+	regret1.cc rt.cc search.cc spctrm.cc spec.cc specPS.cc specX.cc\
+	stats.cc template.c timestamps.cc titles.cc track.cc validate.cc\
+	variance.cc window.cc xyPS.cc xyX.cc xyzPS.cc xyzX.cc zoom.cc Xquery.cc\
+	Xerror.cc Xfile.cc Xwarn.cc sanity.cc opener.cc wm.cc
 
 OBJS=	ncplot.o global.o init.o X.o Xwin.o annotate.o arrows.o ascii.o\
 	autoscale.o barbs.o ccb.o color.o control.o cospec.o crosshair.o\
@@ -100,16 +100,17 @@ PSOBJ=	annotate.o arrows.o ascii.o barbs.o diffPS.o ed_print.o global.o\
 	xyPS.o xyzPS.o
 
 
-.c.o:
-	${CXX} ${CXXFLAGS} -c $*.c
+.cc.o:
+	${CXX} ${CXXFLAGS} -c $*.cc
 
 ${PROG}: ${OBJS}
 	${CXX} ${CXXFLAGS} ${LIB_DIRS} ${OBJS} ${LIBS} -o $@
 
-exp.tab.c exp.tab.h: exp.y
-	${YACC} ${YFLAGS} exp.y
-lex.yy.c: exp.l
-	${LEX} exp.l
+exp.tab.cc exp.tab.h: exp.y
+	${YACC} ${YFLAGS} --defines=exp.tab.h --output=exp.tab.cc exp.y
+
+lex.yy.cc: exp.l
+	${LEX} --outfile=lex.yy.cc exp.l
 
 install: ${PROG}
 	test -d $(BIN) || mkdir $(BIN)
@@ -120,7 +121,7 @@ publish: $(PROG)
 	cp docs/*.png $(WWW)
 
 clean:
-	rm -f core* ${OBJS} ${PROG} exp.tab.h exp.tab.c lex.yy.c
+	rm -f core* ${OBJS} ${PROG} exp.tab.h exp.tab.cc lex.yy.cc
 
 print:
 	enscript -2Gr -b${PROG} ${HDRS} ${SRCS}
@@ -131,4 +132,4 @@ ${PSOBJ}:	ps.h
 
 ncplot.o:	fbr.h
 dataIO.o rt.o stats.o:	${NCH_DEP}
-lex.yy.o:	lex.yy.c exp.tab.h
+lex.yy.o:	lex.yy.cc exp.tab.h
