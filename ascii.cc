@@ -292,7 +292,7 @@ static void freqDomainASCII(FILE *fp, int nPoints)
 {
   int		i, set, nSets = 1;
   double	value = 0;
-  char		tmp[128];
+  char		tmp[132];
 
   if (!fp)
     XmTextSetString(asciiText, (char *)"");
@@ -304,7 +304,7 @@ static void freqDomainASCII(FILE *fp, int nPoints)
   strcpy(buffer, "  Freq");
   for (set = 0; set < nSets; ++set)
     {
-    snprintf(tmp, BUFFSIZE, ",  %s", dataSet[set].varInfo->name.c_str());
+    snprintf(tmp, 132, ",  %s", dataSet[set].varInfo->name.c_str());
     strcat(buffer, tmp);
     }
 

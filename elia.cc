@@ -30,7 +30,7 @@ void ComputeELIA()
     {
     case SPECTRA:
       nSets = std::min(NumberDataSets, MAX_PSD);
-      [[fallthrough]]
+      [[fallthrough]];
     case COSPECTRA:
       dataP = psd[0].Pxx;
       break;
