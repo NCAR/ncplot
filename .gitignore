@@ -1,7 +1,7 @@
 # ignore objects and archives, anywhere in the tree.
 *.o
 ncplot
-exp.tab.c
+exp.tab.cc
 exp.tab.h
-lex.yy.c
+lex.yy.cc
 gmt.history
