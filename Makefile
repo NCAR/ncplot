@@ -132,4 +132,7 @@ ${PSOBJ}:	ps.h
 
 ncplot.o:	fbr.h
 dataIO.o rt.o stats.o:	${NCH_DEP}
-lex.yy.o:	lex.yy.cc exp.tab.h
+lex.yy.o: lex.yy.cc exp.tab.h                                                                                      
+	${CXX} ${CXXFLAGS} -c lex.yy.cc
+exp.tab.o: exp.tab.cc exp.tab.h
+	${CXX} ${CXXFLAGS} -c exp.tab.cc
