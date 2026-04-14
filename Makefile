@@ -63,7 +63,7 @@ endif
 
 
 
-CXXFLAGS	= -Wall -g -O2 ${INCLUDES} ${DEFINES} -Wno-write-strings -Wno-overflow
+CXXFLAGS	= -std=c++20 -Wall -g -O2 ${INCLUDES} ${DEFINES} -Wno-write-strings -Wno-overflow
 
 PROG	= ncplot
 HDRS	= define.h extern.h
