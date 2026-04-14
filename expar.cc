@@ -137,7 +137,7 @@ void AcceptExpressions(Widget w, XtPointer client, XtPointer call)
   /* Remove all expression varibles from dataFile[0].
    */
   for (	indx = dataFile[0].Variable.size()-1;
-	dataFile[0].Variable[indx]->name.find("USER") != std::string::npos;
+	indx >= 0 && dataFile[0].Variable[indx]->name.find("USER") != std::string::npos;
 	--indx)
     delete dataFile[0].Variable[indx];
 

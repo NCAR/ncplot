@@ -31,7 +31,7 @@ static size_t nMarks = 0;
 void ClearLandmarks()
 {
   for (size_t i = 0; i < nMarks; ++i)
-    delete landMark[i].tag;
+    delete [] landMark[i].tag;
 
   nMarks = 0;
 }
@@ -170,7 +170,7 @@ static void addLandmark(const char str[])
 {
   char tempTag[64];
 
-  sscanf(str, "%f %f %s\n", &landMark[nMarks].lat, &landMark[nMarks].lon,
+  sscanf(str, "%f %f %63s\n", &landMark[nMarks].lat, &landMark[nMarks].lon,
 				tempTag);
   landMark[nMarks].tag = new char[strlen(tempTag)+1];
   strcpy(landMark[nMarks].tag, tempTag);

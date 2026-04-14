@@ -23,7 +23,7 @@ static struct _annotations
 	{
 	int	whichPlot;	/* TIME_SERIES | XY_PLOT, etc	*/
 	float	x, y;		/* Position, ratio of pixel&windowWidth	*/
-	char	text[48];
+	char	text[80];
 	} anot[8];
 
 static int	currentAnot = 0;
@@ -83,7 +83,8 @@ void ProcessText(Widget w, XtPointer client, XmDrawingAreaCallbackStruct *evt)
 
   if (buffer[0] == 8)		/* Backspace key	*/
     {
-    anot[currentAnot].text[strlen(anot[currentAnot].text)-1] = '\0';
+    size_t n = std::min((size_t)0, strlen(anot[currentAnot].text)-1);
+    anot[currentAnot].text[n] = '\0';
     }
   else
   if (buffer[0] == '\r')	/* Carriage return	*/
